@@ -4,8 +4,16 @@
         <servlet-name>AccountServlet</servlet-name>
         <servlet-class>controllers.AccountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateMenteeProfile</servlet-name>
+        <servlet-class>controllers.UpdateMenteeProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AccountServlet</servlet-name>
         <url-pattern>/AccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateMenteeProfile</servlet-name>
+        <url-pattern>/UpdateMenteeProfile</url-pattern>
     </servlet-mapping>
 </web-app>

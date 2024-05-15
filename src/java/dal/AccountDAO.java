@@ -31,13 +31,13 @@ public class AccountDAO {
         }
     }
     
-    public void insertAcocount(String gmail,String userName,String fullName,String passWord,String dob,String sex,String address,String phone,String role,String status ){
-        try {
-            String query = "";
-        } catch (Exception e) {
-            System.out.println("insertAcocount: " + e.getMessage());
-        }
-    }
+//    public void insertAcocount(String gmail,String userName,String fullName,String passWord,String dob,String sex,String address,String phone,String role,String status ){
+//        try {
+//            String query = "";
+//        } catch (Exception e) {
+//            System.out.println("insertAcocount: " + e.getMessage());
+//        }
+//    }
     
     public ArrayList<Account> listAccount(){
         ArrayList<Account> list = new ArrayList<>();
