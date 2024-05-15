@@ -4,6 +4,8 @@
  */
 package models;
 
+import java.sql.Date;
+
 /**
  *
  * @author 2k3so
@@ -15,10 +17,12 @@ public class Mentor extends Account{
     public Mentor() {
     }
 
-    public Mentor(String avatar, String gmail, String userName, String fullName, String passWord, String dob, String sex, String address, String phone, String role, String status) {
-        super(gmail, userName, fullName, passWord, dob, sex, address, phone, role, status);
+    public Mentor(String avatar, String gmail, String userName, String fullName, String passWord, String sex, String address, String phone, String role, String status, Date dob) {
+        super(gmail, userName, fullName, passWord, sex, address, phone, role, status, dob);
         this.avatar = avatar;
     }
+
+    
 
     public String getMentorGmail() {
         return mentorGmail;

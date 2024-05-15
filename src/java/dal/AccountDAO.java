@@ -57,7 +57,7 @@ public class AccountDAO {
                         rs.getString(7),
                         rs.getString(8), 
                         rs.getString(9),
-                        rs.getString(10)));
+                        rs.getDate(10)));
             }
         } catch (Exception e) {
             System.out.println("listAccount: " + e.getMessage());
