@@ -24,6 +24,7 @@ create table Account(
 GO
 create table Mentee(
 	GMailMentee varchar(200) foreign key references Account(GMail),
+	Avatar varchar(250),
 	primary key (GMailMentee)
 )
 GO
@@ -62,15 +63,21 @@ create table FeedBack(
 GO
 
 create table RequestFormMentee(
+	RequestID int identity(1,1) primary key,
 	GMailMentor varchar(200) foreign key references Mentor(GMailMentor),
 	GMailMentee varchar(200) foreign key references Mentee(GMailMentee),
-	SkillId int,
 	DeadlineDate date,
 	Title nvarchar(200),
 	[Description] nvarchar(200),
 	[Status] bit,
 	DeadlineHour time,
-	primary key (GMailMentor, GMailMentee)
+)
+GO
+
+create table RequestSkill(
+	SkillId int foreign key references Skill(SkillId),
+	RequestID int foreign key references RequestFormMentee(RequestID)
+	primary key (SkillId, RequestID)
 )
 GO
 
