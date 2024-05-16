@@ -85,9 +85,9 @@ public class MenteeDAO {
 
     public void updateMentee(String avatar, String gmail) {
         try {
-            String query = "UPDATE Mentee "
-                    + "SET avatar = ?"
-                    + "Where GMailMentee = ?";
+            String query = "UPDATE Mentee \n"
+                    + "  SET avatar = ?\n"
+                    + "  Where GMailMentee = ?";
             con = new DBContext().connection;//mo ket noi voi sql
             ps = con.prepareStatement(query);
             ps.setString(1, avatar);
@@ -100,8 +100,13 @@ public class MenteeDAO {
 
     public static void main(String[] args) {
         MenteeDAO dao = new MenteeDAO();
-        dao.updateMentee("https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/369379689_1366399897591293_8940630815157082441_n.jpg?stp=cp6_dst-jpg&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=cUa3iWkEji8Q7kNvgEYPqAz&_nc_ht=scontent.fhan15-2.fna&oh=00_AYDeP0efDg7eO64aVwCpngIKcNvCw3fbaTOjRU8i65pmmg&oe=664B845F", 
+        dao.updateAccountMentee("sonpham123",
+                "Hoang Hai ád",
+                "2003-12-12",
+                "1",
+                "Hn",
                 "2k3sonpham@gmail.com");
+        dao.updateMentee("https://www.denofgeek.com/wp-content/uploads/2022/03/Elden-Ring-sorceries.jpg?fit=3840%2C2160", "2k3sonpham@gmail.com");
     }
 
 }
