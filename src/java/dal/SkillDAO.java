@@ -45,7 +45,7 @@ public class SkillDAO{
         }
         return list;
     }
-    
+
 //    public static void main(String[] args) {
 //        SkillDAO sd = new SkillDAO();
 //        for(Skill s : sd.getSkills()){
