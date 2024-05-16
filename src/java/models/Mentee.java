@@ -21,6 +21,14 @@ public class Mentee extends Account{
         this.avatar = avatar;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         return "Mentee{" + "menteeGmail=" + super.getGmail() + ", avatar=" + avatar + '}';

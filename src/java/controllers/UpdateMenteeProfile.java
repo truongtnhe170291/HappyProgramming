@@ -72,7 +72,22 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String gmail = request.getParameter("gmail");
+            String avatar = request.getParameter("avatar");
+            String username = request.getParameter("username");
+            String fullname = request.getParameter("fullname");
+            String dob = request.getParameter("dob");
+            String sex = request.getParameter("sex");
+            String address = request.getParameter("address");
+            
+            MenteeDAO dao = new MenteeDAO();
+            dao.updateAccountMentee(username, fullname, dob, sex, address, gmail);
+            dao.updateMentee(avatar, gmail);
+            response.sendRedirect("UpdateMenteeProfile");
+        } catch (Exception e) {
+            response.sendRedirect("UpdateMenteeProfile");
+        }
     }
 
     /** 
