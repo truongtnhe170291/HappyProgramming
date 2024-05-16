@@ -52,12 +52,15 @@ public class AccountDAO {
                         rs.getString(2), 
                         rs.getString(3), 
                         rs.getString(4), 
-                        rs.getString(5), 
+                        rs.getString(10), 
                         rs.getString(6), 
                         rs.getString(7),
                         rs.getString(8), 
                         rs.getString(9),
-                        rs.getDate(10)));
+                        rs.getDate(5)));
+            }
+            for(Account a : list){
+                System.out.println("name: " + a.getUserName() + " pass: " + a.getPassWord());
             }
         } catch (Exception e) {
             System.out.println("listAccount: " + e.getMessage());
