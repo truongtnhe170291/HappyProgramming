@@ -74,6 +74,7 @@ public class UpdateMenteeProfile extends HttpServlet {
     throws ServletException, IOException {
         try {
             String gmail = request.getParameter("gmail");
+            
             String avatar = request.getParameter("avatar");
             String username = request.getParameter("username");
             String fullname = request.getParameter("fullname");
@@ -81,8 +82,29 @@ public class UpdateMenteeProfile extends HttpServlet {
             String sex = request.getParameter("sex");
             String address = request.getParameter("address");
             
+            String person = "" + gmail + "\n " + avatar + "\n " + fullname + "\n" + username + "\n " + dob + "\n " + sex + "\n " + address;
+            
+//            response.setContentType("text/html;charset=UTF-8");
+//            try (PrintWriter out = response.getWriter()) {
+//                /* TODO output your page here. You may use following sample code. */
+//                out.println("<!DOCTYPE html>");
+//                out.println("<html>");
+//                out.println("<head>");
+//                out.println("<title>Servlet UpdateMenteeProfile</title>");
+//                out.println("</head>");
+//                out.println("<body>");
+//                out.println("<h1>" + person + "</h1>");
+//                out.println("</body>");
+//                out.println("</html>");
+//            }
+            
             MenteeDAO dao = new MenteeDAO();
-            dao.updateAccountMentee(username, fullname, dob, sex, address, gmail);
+            dao.updateAccountMentee(username, 
+                fullname,
+                dob,
+                sex, 
+                address, 
+                gmail);
             dao.updateMentee(avatar, gmail);
             response.sendRedirect("UpdateMenteeProfile");
         } catch (Exception e) {
