@@ -12,7 +12,7 @@ import java.sql.Date;
  */
 public class Mentor extends Account{
     
-    private String mentorGmail ,avatar;
+    private String avatar;
 
     public Mentor() {
     }
@@ -22,27 +22,12 @@ public class Mentor extends Account{
         this.avatar = avatar;
     }
 
-    
-
-    public String getMentorGmail() {
-        return mentorGmail;
-    }
-
-    public void setMentorGmail(String mentorGmail) {
-        this.mentorGmail = mentorGmail;
-    }
-
     public String getAvatar() {
         return avatar;
     }
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    @Override
-    public String toString() {
-        return "Mentor{" + "mentorGmail=" + mentorGmail + ", avatar=" + avatar + '}';
     }
 
 }

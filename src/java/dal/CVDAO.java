@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import models.CV;
 
 /**
@@ -33,7 +34,7 @@ public class CVDAO {
 
     public boolean addCV(CV cv) {
         String sql = "INSERT INTO CV (GMailMentor, GMail, UserName, FullName, Dob, Sex, [Address], Avatar, Profession, ProfessionIntro, AchievementDescription, ServiceDescription) VALUES\n"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?),";
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, cv.getgMailMentor());
@@ -67,7 +68,7 @@ public class CVDAO {
     // Thêm data vào bảng CVSkill
     public boolean AddDataCVSkill(int skillId, int cvId) {
         String sql = "INSERT INTO CVSkill (SkillId, CVId) VALUES\n"
-                + "(?, ?),";
+                + "(?, ?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, skillId);
@@ -97,5 +98,24 @@ public class CVDAO {
             System.out.println(e);
         }
         return -1;
+    }
+    
+    public static void main(String[] args) {
+        CVDAO cvdao = new CVDAO();
+        CV c = new CV();
+        c.setAvatar("abc.jpg");
+        c.setAddress("HN");
+        c.setDob(java.sql.Date.valueOf(LocalDate.now()));
+        c.setFullName("abc");
+        c.setAchievementDescription("hgdhdkd");
+        c.setProfession("iroreu");
+        c.setServiceDescription("údfiuu");
+        c.setSex(true);
+        c.setgMail("abc.com");
+        c.setgMailMentor("michael.brown@gmail.com");
+        c.setUserName("hihi");
+        c.setProfessionIntro("Intro");
+        c.setSkills(new int[]{2, 5});
+        cvdao.addCV(c);
     }
 }

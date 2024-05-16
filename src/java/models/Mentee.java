@@ -11,7 +11,7 @@ import java.sql.Date;
  * @author 2k3so
  */
 public class Mentee extends Account{
-    private String menteeGmail, avatar;
+    private String avatar;
 
     public Mentee() {
     }
