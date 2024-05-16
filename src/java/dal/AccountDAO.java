@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import models.Account;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -65,4 +69,52 @@ public class AccountDAO {
         return list;
     }
     
+    // Get account by username and password
+    public Account getAccount(String username, String password) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            return null;
+        }
+
+        String sql = "SELECT * FROM Account WHERE username = ? AND password = ?";
+        Account acc = null;
+
+        try (PreparedStatement pre = con.prepareStatement(sql)) {
+            // Set the username and password as parameters for the query
+            pre.setString(1, username);
+            pre.setString(2, password);
+
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    // Map the result set to an Account object
+                    String gmail = rs.getString("GMail");
+                    String fullName = rs.getString("FullName");
+                    Date dateOfBirth = rs.getDate("Dob");
+                    String sex = rs.getString("Sex");
+                    String address = rs.getString("Address");
+                    String phone = rs.getString("Phone");
+                    String role = rs.getString("Role");
+                    String status = rs.getString("Status");
+
+                    acc = new Account(gmail, username, fullName, password, sex, address, phone, role, status, dateOfBirth);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, "An error occurred while getting account", ex);
+        }
+
+        return acc;
+    }
+    public void changePassWord(Account a) {
+        String sql="update Account set Password=? where Username=?";
+        try (PreparedStatement pre = con.prepareStatement(sql)) {
+            pre.setString(1, a.getPassWord());
+            pre.setString(2, a.getUserName());
+            pre.executeUpdate();
+        
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+    }
+
+
 }

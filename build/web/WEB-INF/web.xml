@@ -8,6 +8,14 @@
         <servlet-name>UpdateMenteeProfile</servlet-name>
         <servlet-class>controllers.UpdateMenteeProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangPassServlet</servlet-name>
+        <servlet-class>controllers.ChangPassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>controllers.LoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AccountServlet</servlet-name>
         <url-pattern>/AccountServlet</url-pattern>
@@ -15,5 +23,13 @@
     <servlet-mapping>
         <servlet-name>UpdateMenteeProfile</servlet-name>
         <url-pattern>/UpdateMenteeProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangPassServlet</servlet-name>
+        <url-pattern>/ChangPassServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
 </web-app>
