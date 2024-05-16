@@ -5,20 +5,25 @@
 
 package controllers;
 
-import dal.MenteeDAO;
+
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import models.Mentee;
+import java.util.ArrayList;
+import java.util.List;
+import models.Skill;
 
 /**
  *
- * @author 2k3so
+ * @author Admin
  */
-public class UpdateMenteeProfile extends HttpServlet {
+@WebServlet(name="SkillServlet", urlPatterns={"/SkillServlet"})
+public class SkillServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +40,10 @@ public class UpdateMenteeProfile extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateMenteeProfile</title>");  
+            out.println("<title>Servlet SkillServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Hello World"+"</h1>");
+            out.println("<h1>Servlet SkillServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,11 +60,10 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        MenteeDAO dao = new MenteeDAO();
-        Mentee mentee = dao.getCurrentMentee("2k3sonpham@gmail.com");
-        
-        request.setAttribute("mentee", mentee);
-        request.getRequestDispatcher("UpdateMenteeProfileDemo.jsp").forward(request, response);
+        SkillDAO skillDAO = new SkillDAO();
+        List<Skill> list = skillDAO.getSkills();
+        request.setAttribute("listSkill", list);
+        request.getRequestDispatcher("ListSkill.jsp").forward(request, response);
     } 
 
     /** 
@@ -72,44 +76,7 @@ public class UpdateMenteeProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try {
-            String gmail = request.getParameter("gmail");
-            
-            String avatar = request.getParameter("avatar");
-            String username = request.getParameter("username");
-            String fullname = request.getParameter("fullname");
-            String dob = request.getParameter("dob");
-            String sex = request.getParameter("sex");
-            String address = request.getParameter("address");
-            
-            String person = "" + gmail + "\n " + avatar + "\n " + fullname + "\n" + username + "\n " + dob + "\n " + sex + "\n " + address;
-            
-//            response.setContentType("text/html;charset=UTF-8");
-//            try (PrintWriter out = response.getWriter()) {
-//                /* TODO output your page here. You may use following sample code. */
-//                out.println("<!DOCTYPE html>");
-//                out.println("<html>");
-//                out.println("<head>");
-//                out.println("<title>Servlet UpdateMenteeProfile</title>");
-//                out.println("</head>");
-//                out.println("<body>");
-//                out.println("<h1>" + person + "</h1>");
-//                out.println("</body>");
-//                out.println("</html>");
-//            }
-            
-            MenteeDAO dao = new MenteeDAO();
-            dao.updateAccountMentee(username, 
-                fullname,
-                dob,
-                sex, 
-                address, 
-                gmail);
-            dao.updateMentee(avatar, gmail);
-            response.sendRedirect("UpdateMenteeProfile");
-        } catch (Exception e) {
-            response.sendRedirect("UpdateMenteeProfile");
-        }
+        processRequest(request, response);
     }
 
     /** 
