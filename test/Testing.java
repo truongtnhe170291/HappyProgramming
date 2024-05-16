@@ -1,5 +1,6 @@
 
 import dal.AccountDAO;
+import dal.MenteeDAO;
 import java.util.ArrayList;
 import models.Account;
 
@@ -14,10 +15,14 @@ import models.Account;
  */
 public class Testing {
     public static void main(String[] args) {
-        AccountDAO dao = new AccountDAO();
-        ArrayList<Account> list = dao.listAccount();
-        for (Account a : list) {
-            System.out.println(a.toString());
-        }
+//        AccountDAO dao = new AccountDAO();
+//        ArrayList<Account> list = dao.listAccount();
+//        for (Account a : list) {
+//            System.out.println(a.toString());
+//        }
+
+        MenteeDAO dao = new MenteeDAO();
+        System.out.println(dao.getCurrentMentee("2k3sonpham@gmail.com"));
+        
     }
 }
