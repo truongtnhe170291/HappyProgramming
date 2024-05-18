@@ -11,7 +11,7 @@ import java.sql.Date;
  * @author 2k3so
  */
 public class Mentee extends Account{
-    private String menteeGmail, avatar;
+    private String menteeName, avatar;
 
     public Mentee() {
     }
@@ -20,9 +20,7 @@ public class Mentee extends Account{
         super(userName, gmail, fullName, password, dob, sex, address, phone, roleId, statusId);
         this.avatar = avatar;
     }
-
     
-
     public String getAvatar() {
         return avatar;
     }
@@ -33,7 +31,7 @@ public class Mentee extends Account{
 
     @Override
     public String toString() {
-        return "Mentee{" + "menteeGmail=" + super.getGmail() + ", avatar=" + avatar + '}';
+        return "Mentee{" + super.toString() + "avatar=" + avatar + '}';
     }
-
+    
 }
