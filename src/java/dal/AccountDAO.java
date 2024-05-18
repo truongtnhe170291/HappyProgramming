@@ -110,5 +110,15 @@ public class AccountDAO {
         }
     }
 
-
+   public void changePasswordByEmail(Account a) {
+        try {
+            String sql = "UPDATE Accounts SET pass_word = ? WHERE gmail = ?";
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setString(1, a.getPassword());
+                pstmt.setString(2, a.getGmail());              
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

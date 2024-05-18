@@ -55,14 +55,14 @@
 <body>
   
     <div class="centers ">
-        <button class="btn-17 ">
+        <button class="btn-17 btn-mentor">
   <span class="text-container">
     <span class="text ">Mentor</span>
   </span>
 </button>
-     <button class="btn-17 ">
+     <button class="btn-17 btn-mentee">
   <span class="text-container ">
-    <span class="text ">Mentee</span>
+    <span class="text " >Mentee</span>
   </span>
 </button>
 </div>
@@ -110,7 +110,7 @@
         <div class="form-group mb-15">
             <label for="password-field">confirm password</label>
             <div class="position-relative">
-                <input id="password-field" type="password" class="form-control" name="confirm_password" placeholder="Password">
+                <input id="password-field" type="password" class="form-control" name="confirm_password" placeholder="confirm_Password">
                 <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
             </div>
         </div>
@@ -137,6 +137,10 @@
             <label for="">Address</label>
             <input type="text" class="form-control" id="Address" name="Address">
         </div>
+            <div class="form-group mb-20">
+               <label for="">Role</label>
+               <input type="number" class="form-control hide-role" id="role" name="role" readonly>
+            </div>
         </div>
         <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
             <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type="submit" value="Create Account"/>
@@ -179,7 +183,19 @@
     const mainContent = document.querySelector('.main-content');
     const mentorButton = document.querySelector('.btn-17:nth-of-type(1)');
     const menteeButton = document.querySelector('.btn-17:nth-of-type(2)');
+     document.addEventListener("DOMContentLoaded", function() {
+      const mentorBtn = document.querySelector(".btn-mentor");
+      const menteeBtn = document.querySelector(".btn-mentee");
+      const roleInput = document.getElementById("role");
 
+      mentorBtn.addEventListener("click", function() {
+         roleInput.value = 2; // Thiết lập giá trị Role thành 2 khi nhấp vào nút Mentor
+      });
+
+      menteeBtn.addEventListener("click", function() {
+         roleInput.value = 1; // Thiết lập giá trị Role thành 1 khi nhấp vào nút Mentee
+      });
+   });
     mainContent.style.display = 'none';
 
     mentorButton.addEventListener('click', function() {

@@ -37,7 +37,7 @@ public class NewPassword extends HttpServlet {
                 if (newPassword != null && confPassword != null && newPassword.equals(confPassword)) {
                     a.setPassword(newPassword);
                     a.setGmail(email);
-		ac.changePassWord(a);
+		ac.changePasswordByEmail(a);
 				
                     	        
 					request.setAttribute("status", "resetSuccess");
