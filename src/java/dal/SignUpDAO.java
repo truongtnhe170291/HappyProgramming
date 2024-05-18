@@ -51,7 +51,7 @@ public class SignUpDAO {
 
   
     public boolean isDuplicateAccount(String gmail, String userName) {
-        String query = "SELECT COUNT(*) FROM Account WHERE GMail = ? OR UserName = ?";
+        String query = "SELECT COUNT(*) FROM Accounts WHERE gmail = ? OR user_name = ?";
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
             preparedStatement.setString(1, gmail);
             preparedStatement.setString(2, userName);
@@ -72,8 +72,8 @@ public class SignUpDAO {
         
     
     Account testAccount = new Account();
-    testAccount.setUserName("testuser");
-    testAccount.setGmail("test@example.com");
+    testAccount.setUserName("testusers");
+    testAccount.setGmail("vuvinhpc1235@gmail.com");
     testAccount.setFullName("Test User");
     testAccount.setPassword("testpassword");
     testAccount.setDob(Date.valueOf("2000-01-01"));
