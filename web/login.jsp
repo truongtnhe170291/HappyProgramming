@@ -95,7 +95,7 @@
                                        <span class="checkbox-text">Keep me logged in</span>
                                     </label>
                                  </div>
-                                 <a href="forget-password.html">forget password?</a>
+                                 <a href="forget-password.jsp">forget password?</a>
                               </div>
                               <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
                                   <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value=" sign in"/>

@@ -58,7 +58,7 @@ try {
     e.printStackTrace(); 
 }
 
-      if(gmail !=null && !gmail.isEmpty() && password == confirm_password) {
+      if(gmail !=null && !gmail.isEmpty() && confirm_password.equals(password)) {
         Account account = new Account();
         account.setGmail(gmail);
         account.setUserName(userName);
