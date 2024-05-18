@@ -1,41 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models;
+
 import java.sql.Date;
-/**
- *
- * @author 2k3so
- */
+
+
+
 public class Account {
-    private String gmail, userName, fullName, passWord, sex, address, phone, role, status;
+    private String userName;
+    private String gmail;
+    private String fullName;
+    private String password;
     private Date dob;
-
-    public Account() {
-    }
-
-    public Account(String gmail, String userName, String fullName, String passWord, String sex, String address, String phone, String role, String status, Date dob) {
-        this.gmail = gmail;
+    private boolean sex;
+    private String address;
+    private String phone;
+    private int roleId;
+    private int statusId;
+public Account(){}
+    public Account(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, int roleId, int statusId) {
         this.userName = userName;
+        this.gmail = gmail;
         this.fullName = fullName;
-        this.passWord = passWord;
+        this.password = password;
+        this.dob = dob;
         this.sex = sex;
         this.address = address;
         this.phone = phone;
-        this.role = role;
-        this.status = status;
-        this.dob = dob;
-    }
-
-    
-
-    public String getGmail() {
-        return gmail;
-    }
-
-    public void setGmail(String gmail) {
-        this.gmail = gmail;
+        this.roleId = roleId;
+        this.statusId = statusId;
     }
 
     public String getUserName() {
@@ -46,6 +37,14 @@ public class Account {
         this.userName = userName;
     }
 
+    public String getGmail() {
+        return gmail;
+    }
+
+    public void setGmail(String gmail) {
+        this.gmail = gmail;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -54,12 +53,12 @@ public class Account {
         this.fullName = fullName;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Date getDob() {
@@ -70,13 +69,11 @@ public class Account {
         this.dob = dob;
     }
 
-    
-
-    public String getSex() {
+    public boolean isSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(boolean sex) {
         this.sex = sex;
     }
 
@@ -96,25 +93,22 @@ public class Account {
         this.phone = phone;
     }
 
-    public String getRole() {
-        return role;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
-    public String getStatus() {
-        return status;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" + "gmail=" + gmail + ", userName=" + userName + ", fullName=" + fullName + ", passWord=" + passWord + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", phone=" + phone + ", role=" + role + ", status=" + status + '}';
-    }
     
+   
 }
