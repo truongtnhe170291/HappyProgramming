@@ -1167,8 +1167,12 @@
                            <div class="nav-author__options">
                               <ul>
                                  <li>
-                                    <a href="">
+                                    <a href="user_info.jsp">
                                        <i class="uil uil-user"></i> Profile</a>
+                                 </li>
+                                 <li>
+                                    <a href="#">
+                                       <i class="uil uil-user"></i> Change PassWord</a>
                                  </li>
                                  <li>
                                     <a href="">

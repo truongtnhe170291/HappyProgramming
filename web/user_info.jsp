@@ -93,7 +93,7 @@
                            </li>
                            <li class="nav-item">
                               <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
-                                 <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">work info</a>
+                                 <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
                            </li>
                            <li class="nav-item">
                               <a class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" href="#v-pills-messages" role="tab" aria-selected="false">
