@@ -28,6 +28,7 @@
                 margin-right: 10px;
             }
         </style>
+
         <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- inject:css-->
@@ -124,93 +125,78 @@
                                     <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
-                                                <div class="mt-sm-40 mb-sm-50 mt-20 mb-20">
-                                                    <div class="user-tab-info-title mb-sm-40 mb-20 text-capitalize">
-                                                        <h5 class="fw-500">Personal Information</h5>
-                                                    </div>
-                                                    <div class="account-profile d-flex align-items-center mb-4">
-                                                        <div class="ap-img pro_img_wrapper">
-                                                            <input id="file-upload" type="file" name="fileUpload" class="d-none" accept="image/*">
-                                                            <!-- Profile picture image -->
-                                                            <label for="file-upload">
-                                                                <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img/author/profile.png" alt="profile">
-                                                                <span class="cross" id="remove_pro_pic">
-                                                                    <img src="img/svg/camera.svg" alt="camera" class="svg">
-                                                                </span>
-                                                            </label>
+                                                <form action="updatementee" method="post">
+                                                    <div class="mt-sm-40 mb-sm-50 mt-20 mb-20">
+                                                        <div class="user-tab-info-title mb-sm-40 mb-20 text-capitalize">
+                                                            <h5 class="fw-500">Personal Information</h5>
                                                         </div>
-                                                        <div class="account-profile__title">
-                                                            <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
-                                                        </div>
-                                                    </div>
+                                                        <div class="account-profile d-flex align-items-center mb-4">
+                                                            <div class="ap-img pro_img_wrapper">
+                                                                <input id="file-upload" type="file" name="fileUpload" class="d-none" accept="image/*">
+                                                                <!-- Profile picture image -->
+                                                                <label for="file-upload" class="position-relative d-inline-block">
+                                                                    <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img\tungche2.jpg" alt="profile">
+                                                                    <span class="cross position-absolute" id="remove_pro_pic">
+                                                                        <img src="img/svg/camera.svg" alt="camera" class="svg">
+                                                                    </span>
+                                                                </label>
+                                                            </div>
 
-                                                    <div class="edit-profile__body">
-                                                        <form>
+                                                            <div class="account-profile__title">
+                                                                <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="edit-profile__body">
+
                                                             <div class="form-group mb-25">
-                                                                <label for="name1">name</label>
-                                                                <input type="text" class="form-control" id="name1" placeholder="Duran Clayton">
+                                                                <label for="name1">User name</label>
+                                                                <input type="text" class="form-control" id="name1" name="username" value="${mentee.userName}" placeholder="${mentee.userName}" readonly>
+                                                            </div>
+                                                            <div class="form-group mb-25">
+                                                                <label for="name1">Full Name</label>
+                                                                <input type="text" class="form-control" id="name1" name="fullname" value="${mentee.fullName}" placeholder="${mentee.fullName}">
+                                                            </div>
+                                                            <div class="form-group mb-25">
+                                                                <div class="sexOption">
+                                                                    <label for="sexOption">
+                                                                        Sex
+                                                                    </label>
+                                                                    <select class="js-example-basic-single js-states form-control" id="sexOption" name="sex">
+                                                                        <option value="1" ${mentee.sex == '1' ? 'selected' : '1'}>Male</option>
+                                                                        <option value="0" ${mentee.sex == '0' ? 'selected' : '0'}>Female</option>>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="name2">Email</label>
-                                                                <input type="email" class="form-control" id="name2" placeholder="sample@email.com">
+                                                                <input type="email" class="form-control" id="name2" name="gmail" value="${mentee.gmail}" placeholder="${mentee.gmail}">
+                                                            </div>
+                                                            <div class="form-group mb-25">
+                                                                <label for="dob">Date of birth</label>
+                                                                <input type="date" class="form-control" name="dob" value="${mentee.dob}">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber5">phone number</label>
-                                                                <input type="tel" class="form-control" id="phoneNumber5" placeholder="+440 2546 5236">
+                                                                <input type="tel" class="form-control" id="phoneNumber" name="phone" value="${mentee.phone}" placeholder="${mentee.phone}">
                                                             </div>
                                                             <div class="form-group mb-25">
-                                                                <div class="countryOption">
-                                                                    <label for="countryOption">
-                                                                        country
-                                                                    </label>
-                                                                    <select class="js-example-basic-single js-states form-control" id="countryOption">
-                                                                        <option value="JAN">event</option>
-                                                                        <option value="FBR">Venues</option>
-                                                                    </select>
-                                                                </div>
+                                                                <label for="address">Address</label>
+                                                                <input type="text" class="form-control" id="address" name="address" value="${mentee.address}" placeholder="${mentee.address}">
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <div class="cityOption">
-                                                                    <label for="cityOption">
-                                                                        city
-                                                                    </label>
-                                                                    <select class="js-example-basic-single js-states form-control" id="cityOption">
-                                                                        <option value="JAN">event</option>
-                                                                        <option value="FBR">Venues</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="name3">company name</label>
-                                                                <input type="text" class="form-control" id="name3" placeholder="Example">
-                                                            </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber2">website</label>
-                                                                <input type="email" class="form-control" id="phoneNumber2" placeholder="www.example.com">
-                                                            </div>
+
                                                             <div class="button-group d-flex pt-sm-25 justify-content-md-end justify-content-start ">
-
-
-                                                                <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md btn-sm">cancel
+                                                                <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md btn-sm">
+                                                                    cancel
                                                                 </button>
 
-
-
-
-
-
-
-                                                                <button class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save &amp; Next
+                                                                <button type="submit" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">
+                                                                    Save &amp; Next
                                                                 </button>
-
-
-
-
-
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -301,11 +287,7 @@
                                                     </div>
 
                                                     </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                     <div class="row justify-content-center">
                                         <div class="col-xxl-4 col-10">
@@ -545,5 +527,4 @@
     <script src="assets/theme_assets/js/main.js"></script>
     <!-- endinject-->
 </body>
-
 </html>
