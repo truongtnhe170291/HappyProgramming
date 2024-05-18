@@ -109,21 +109,22 @@
                                     <div class="user-tab-info-title mb-sm-40 mb-20 text-capitalize">
                                        <h5 class="fw-500">Personal Information</h5>
                                     </div>
-                                    <div class="account-profile d-flex align-items-center mb-4 ">
-                                       <div class="ap-img pro_img_wrapper">
-                                          <input id="file-upload" type="file" name="fileUpload" class="d-none">
-                                          <!-- Profile picture image-->
-                                          <label for="file-upload">
-                                             <img class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img/author/profile.png" alt="profile">
-                                             <span class="cross" id="remove_pro_pic">
-                                                <img src="img/svg/camera.svg" alt="camera" class="svg">
-                                             </span>
-                                          </label>
-                                       </div>
-                                       <div class="account-profile__title">
-                                          <h6 class="fs-15 ms-20 fw-500 text-capitalize">profile photo</h6>
-                                       </div>
-                                    </div>
+                                   <div class="account-profile d-flex align-items-center mb-4">
+                                <div class="ap-img pro_img_wrapper">
+                                   <input id="file-upload" type="file" name="fileUpload" class="d-none" accept="image/*">
+                                   <!-- Profile picture image -->
+                                   <label for="file-upload">
+                                      <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img/author/profile.png" alt="profile">
+                                      <span class="cross" id="remove_pro_pic">
+                                         <img src="img/svg/camera.svg" alt="camera" class="svg">
+                                      </span>
+                                   </label>
+                                </div>
+                                <div class="account-profile__title">
+                                   <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
+                                </div>
+                             </div>
+
                                     <div class="edit-profile__body">
                                        <form>
                                           <div class="form-group mb-25">
@@ -437,6 +438,18 @@
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
+   <script>
+   document.getElementById('file-upload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profile-img').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
    <!-- inject:js-->
    <script src="assets/vendor_assets/js/jquery/jquery-3.5.1.min.js"></script>
    <script src="assets/vendor_assets/js/jquery/jquery-ui.js"></script>
