@@ -35,13 +35,13 @@ create table Accounts(
 GO
 create table Mentees(
 	mentee_name varchar(200) foreign key references Accounts([user_name]),
-	avatar varchar(250),
+	avatar varchar(500),
 	primary key (mentee_name)
 )
 GO
 create table Mentors(
 	mentor_name varchar(200) foreign key references Accounts([user_name]),
-	avatar varchar(250),
+	avatar varchar(500),
 	primary key (mentor_name)
 )
 GO
