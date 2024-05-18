@@ -38,7 +38,8 @@ public class SignUpServlet extends HttpServlet {
        String gmail = request.getParameter("email");
         String userName = request.getParameter("username");
         String fullName = request.getParameter("fullname");
-        String password = request.getParameter("Password");
+        String password = request.getParameter("password");
+        String confirm_password = request.getParameter("confirm_password");
         String stringDateFrom = request.getParameter("Dob");
         String sex = request.getParameter("sex");
         String address = request.getParameter("Address");
@@ -57,7 +58,7 @@ try {
     e.printStackTrace(); 
 }
 
-      if(gmail !=null && !gmail.isEmpty()) {
+      if(gmail !=null && !gmail.isEmpty() && password == confirm_password) {
         Account account = new Account();
         account.setGmail(gmail);
         account.setUserName(userName);
@@ -118,7 +119,8 @@ try {
 			mySession.setAttribute("otp",otpvalue); 
 			mySession.setAttribute("gmail",gmail); 
 			dispatcher.forward(request, response);
-		}
+		}else{
+               request.setAttribute("error", "password not the same confirm password");}
 
        }
     }
