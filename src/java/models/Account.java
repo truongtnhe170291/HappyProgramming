@@ -109,6 +109,9 @@ public Account(){}
         this.statusId = statusId;
     }
 
-    
-   
+    @Override
+    public String toString() {
+        return "Account{" + "userName=" + userName + ", gmail=" + gmail + ", fullName=" + fullName + ", password=" + password + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", phone=" + phone + ", roleId=" + roleId + ", statusId=" + statusId + '}';
+    }
+
 }
