@@ -8,7 +8,15 @@ package models;
  *
  * @author Admin
  */
+import java.sql.Date;
+import java.util.List;
 public class MentorDetails {
-    private String 
-    
+    private String avatar;
+    private String full_name;
+    private String address;
+    private Date dob;
+    private String phone;
+    private String gmail;
+    private boolean sex;
+    private List<String> decription;
 }
