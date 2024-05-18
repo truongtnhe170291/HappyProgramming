@@ -31,28 +31,31 @@
     <body>
         <div class="container">
             <h2 class="mb-4">Update Mentee Profile</h2>
-            <form action="UpdateMenteeProfile?${mentee.gmail}" method="post">
+            <form action="updatementee" method="post">
                 <div class="form-group row">
                     <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
                     <div class="col-sm-2">
                         <img class="avatar-img" src="${mentee.getAvatar()}" alt="Avatar">
                     </div>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control-file" name="avatar" value="${mentee.getAvatar()}">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="gmail" class="col-sm-2 col-form-label">Gmail</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="gmail" value="${mentee.gmail}" readonly>
+                        <input type="text" class="form-control-file" name="avatar" value="${mentee.getAvatar()}"><br/>
+                        <h4 style="color: green">${message}</h4>
+                        <h4 style="color: red">${message1}</h4>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="username" class="col-sm-2 col-form-label">User Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="username" value="${mentee.userName}">
+                        <input type="text" class="form-control" name="username" value="${mentee.userName}" readonly>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="gmail" class="col-sm-2 col-form-label">Gmail</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="gmail" value="${mentee.gmail}" >
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <label for="fullname" class="col-sm-2 col-form-label">Full Name</label>
                     <div class="col-sm-10">
@@ -69,8 +72,8 @@
                     <label for="sex" class="col-sm-2 col-form-label">Sex</label>
                     <div class="col-sm-10">
                         <select class="form-control" name="sex">
-                            <option value="1" ${mentee.sex == 'Male' ? 'selected' : '1'}>Male</option>
-                            <option value="0" ${mentee.sex == 'Female' ? 'selected' : '0'}>Female</option>
+                            <option value="1" ${mentee.sex == '1' ? 'selected' : '1'}>Male</option>
+                            <option value="0" ${mentee.sex == '0' ? 'selected' : '0'}>Female</option>
                         </select>
                     </div>
                 </div>

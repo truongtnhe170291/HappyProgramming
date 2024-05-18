@@ -65,7 +65,7 @@ public class ValidateOtp extends HttpServlet {
                 
                 if (success) {
                     request.setAttribute("email", request.getParameter("email"));
-                    dispatcher = request.getRequestDispatcher("home.jsp");
+                    dispatcher = request.getRequestDispatcher("login.jsp");
                     dispatcher.forward(request, response);
                 } else {
                     request.setAttribute("message", "Failed to create account.");
