@@ -13,6 +13,7 @@ import java.sql.Date;
 public class Mentor extends Account{
     
     private String mentorGmail ,avatar;
+    
 
     public Mentor() {
     }
@@ -21,7 +22,6 @@ public class Mentor extends Account{
         super(userName, gmail, fullName, password, dob, sex, address, phone, roleId, statusId);
         this.avatar = avatar;
     }
-
     
 
     
