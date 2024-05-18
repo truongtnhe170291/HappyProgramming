@@ -863,7 +863,6 @@
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
                 <!-- ends: navbar-left -->
