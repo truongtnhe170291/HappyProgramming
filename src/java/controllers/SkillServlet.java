@@ -63,7 +63,7 @@ public class SkillServlet extends HttpServlet {
         SkillDAO skillDAO = new SkillDAO();
         List<Skill> list = skillDAO.getSkills();
         request.setAttribute("listSkill", list);
-        request.getRequestDispatcher("ListSkill.jsp").forward(request, response);
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     } 
 
     /** 

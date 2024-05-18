@@ -20,9 +20,5 @@ public class FeedBackService {
     private FeedBackService() {
         fd = new FeedBackDAO();
     }
-    
-    public boolean AddFeedback(FeedBack fb){
-        String check = fd.doFeedBack(fb.getMentorGmail(), fb.getMenteeGmail(), fb.getStar(), fb.getComment());
-        return true;
-    }
+ 
 }
