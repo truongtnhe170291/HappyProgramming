@@ -18,7 +18,6 @@ import models.CV;
 public class CVDAO {
 
     private Connection con;
-    private String status = "OK";
 
     PreparedStatement ps;
     ResultSet rs;
@@ -28,27 +27,90 @@ public class CVDAO {
         try {
             con = new DBContext().connection;
         } catch (Exception e) {
-            status = "Error";
+            System.out.println("Error at connection!!!");
         }
     }
 
-    public boolean addCV(CV cv) {
-        String sql = "INSERT INTO CV (GMailMentor, GMail, UserName, FullName, Dob, Sex, [Address], Avatar, Profession, ProfessionIntro, AchievementDescription, ServiceDescription) VALUES\n"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    // update cv đã có
+    public boolean updateCV(CV cv) {
+        String sql = "UPDATE [dbo].[CV] \n"
+                + "   SET [mentor_name] = ?,\n"
+                + "       [gmail] = ?,\n"
+                + "       [full_name] = ?,\n"
+                + "       [dob] = ?,\n"
+                + "       [sex] = ?,\n"
+                + "       [address] = ?,\n"
+                + "       [avatar] = ?,\n"
+                + "       [profession] = ?,\n"
+                + "       [profession_intro] = ?,\n"
+                + "       [achievement_description] = ?,\n"
+                + "       [service_description] = ?\n"
+                + " WHERE [cv_id] = ?;";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, cv.getgMailMentor());
-            ps.setString(2, cv.getgMail());
-            ps.setString(3, cv.getUserName());
-            ps.setString(4, cv.getFullName());
-            ps.setDate(5, cv.getDob());
-            ps.setBoolean(6, cv.isSex());
-            ps.setString(7, cv.getAddress());
-            ps.setString(8, cv.getAvatar());
-            ps.setString(9, cv.getProfession());
-            ps.setString(10, cv.getProfessionIntro());
-            ps.setString(11, cv.getAchievementDescription());
-            ps.setString(12, cv.getServiceDescription());
+            ps.setString(1, cv.getUserName());
+            ps.setString(2, cv.getGmail());
+            ps.setString(3, cv.getFullName());
+            ps.setDate(4, cv.getDob());
+            ps.setBoolean(5, cv.isSex());
+            ps.setString(6, cv.getAddress());
+            ps.setString(7, cv.getAvatar());
+            ps.setString(8, cv.getProfession());
+            ps.setString(9, cv.getProfessionIntro());
+            ps.setString(10, cv.getAchievementDescription());
+            ps.setString(11, cv.getServiceDescription());
+            ps.setInt(12, cv.getCvId());
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                if (removeCVSkills(cv.getCvId())) {
+                    for (int skilId : cv.getSkills()) { //với mỗi skill intert vào bảng CVSkill
+                        AddDataCVSkill(skilId, cv.getCvId());
+                    }
+                    return true;
+                }
+                else
+                    throw new SQLException("Can't remove CVSkills");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    // Xóa Các skill của CV
+    public boolean removeCVSkills(int cv_id) {
+        String sql = "DELETE FROM [dbo].[CVSkills]\n"
+                + "      WHERE [CVSkills].cv_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cv_id);
+            int result = ps.executeUpdate();
+            if (result >= 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    // Thêm CV vào database 
+    public boolean addCV(CV cv) {
+        String sql = "INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], avatar, profession, profession_intro, achievement_description, service_description) VALUES\n"
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cv.getUserName());
+            ps.setString(2, cv.getGmail());
+            ps.setString(3, cv.getFullName());
+            ps.setDate(4, cv.getDob());
+            ps.setBoolean(5, cv.isSex());
+            ps.setString(6, cv.getAddress());
+            ps.setString(7, cv.getAvatar());
+            ps.setString(8, cv.getProfession());
+            ps.setString(9, cv.getProfessionIntro());
+            ps.setString(10, cv.getAchievementDescription());
+            ps.setString(11, cv.getServiceDescription());
 
             int result = ps.executeUpdate();
             if (result == 1) {
@@ -67,15 +129,15 @@ public class CVDAO {
 
     // Thêm data vào bảng CVSkill
     public boolean AddDataCVSkill(int skillId, int cvId) {
-        String sql = "INSERT INTO CVSkill (SkillId, CVId) VALUES\n"
+        String sql = "INSERT INTO CVSkills (skill_id, cv_id) VALUES\n"
                 + "(?, ?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, skillId);
             ps.setInt(2, cvId);
-            
+
             int result = ps.executeUpdate();
-            if(result == 1){
+            if (result == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -86,7 +148,7 @@ public class CVDAO {
 
     //Lấy ra CV mới nhất được insert vào
     public int getCVId() {
-        String sql = "select TOP 1 c.CVId from CV c order by c.CVId desc";
+        String sql = "select TOP 1 c.cv_id from CV c order by c.cv_id desc";
         try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -99,23 +161,28 @@ public class CVDAO {
         }
         return -1;
     }
-    
-    public static void main(String[] args) {
-        CVDAO cvdao = new CVDAO();
-        CV c = new CV();
-        c.setAvatar("abc.jpg");
-        c.setAddress("HN");
-        c.setDob(java.sql.Date.valueOf(LocalDate.now()));
-        c.setFullName("abc");
-        c.setAchievementDescription("hgdhdkd");
-        c.setProfession("iroreu");
-        c.setServiceDescription("údfiuu");
-        c.setSex(true);
-        c.setgMail("abc.com");
-        c.setgMailMentor("michael.brown@gmail.com");
-        c.setUserName("hihi");
-        c.setProfessionIntro("Intro");
-        c.setSkills(new int[]{2, 5});
-        cvdao.addCV(c);
-    }
+
+//    public static void main(String[] args) {
+//        CVDAO cvdao = new CVDAO();
+//        CV c = new CV();
+//        c.setAvatar("abc.jpg");
+//        c.setAddress("HN");
+//        c.setDob(java.sql.Date.valueOf(LocalDate.now()));
+//        c.setFullName("abc");
+//        c.setAchievementDescription("hgdhdkd");
+//        c.setProfession("iroreu");
+//        c.setServiceDescription("údfiuu");
+//        c.setSex(true);
+//        c.setGmail("abc.com");
+//        c.setUserName("fge");
+//        c.setProfessionIntro("Intro");
+//        c.setSkills(new int[]{2, 5});
+//        c.setCvId(1);
+//        if(cvdao.addCV(c)){
+//            System.out.println("OK");
+//        }else{
+//            System.out.println("Not OK");
+//        }
+        //cvdao.updateCV(c);
+  //  }
 }

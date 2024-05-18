@@ -10,9 +10,9 @@ import java.sql.Date;
  */
 public class CV {
     private int cvId;
-    private String gMailMentor;
+    private String userName;
     private Mentor mentor;
-    private String gMail, userName, fullName;
+    private String gmail, fullName;
     private Date dob;
     private boolean sex;
     private String address,avatar, profession, professionIntro, achievementDescription, serviceDescription;
@@ -21,11 +21,10 @@ public class CV {
     public CV() {
     }
 
-    public CV(int cvId, String gMailMentor, Mentor mentor, String gMail, String userName, String fullName, Date dob, boolean sex, String address, String avatar, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
+    public CV(int cvId, Mentor mentor, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String avatar, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
         this.cvId = cvId;
-        this.gMailMentor = gMailMentor;
         this.mentor = mentor;
-        this.gMail = gMail;
+        this.gmail = gmail;
         this.userName = userName;
         this.fullName = fullName;
         this.dob = dob;
@@ -39,10 +38,9 @@ public class CV {
         this.skills = skills;
     }
 
-    public CV(int cvId, String gMailMentor, String gMail, String userName, String fullName, Date dob, boolean sex, String address, String avatar, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
+    public CV(int cvId, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String avatar, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
         this.cvId = cvId;
-        this.gMailMentor = gMailMentor;
-        this.gMail = gMail;
+        this.gmail = gmail;
         this.userName = userName;
         this.fullName = fullName;
         this.dob = dob;
@@ -72,14 +70,6 @@ public class CV {
         this.cvId = cvId;
     }
 
-    public String getgMailMentor() {
-        return gMailMentor;
-    }
-
-    public void setgMailMentor(String gMailMentor) {
-        this.gMailMentor = gMailMentor;
-    }
-
     public Mentor getMentor() {
         return mentor;
     }
@@ -88,12 +78,12 @@ public class CV {
         this.mentor = mentor;
     }
 
-    public String getgMail() {
-        return gMail;
+    public String getGmail() {
+        return gmail;
     }
 
-    public void setgMail(String gMail) {
-        this.gMail = gMail;
+    public void setGmail(String gmail) {
+        this.gmail = gmail;
     }
 
     public String getUserName() {

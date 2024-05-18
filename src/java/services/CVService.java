@@ -26,4 +26,8 @@ public class CVService {
     public boolean createCV(CV cv){
         return cvDao.addCV(cv);
     }
+    
+    public boolean updateCV(CV cv){
+        return cvDao.updateCV(cv);
+    }
 }
