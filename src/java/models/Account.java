@@ -2,9 +2,8 @@ package models;
 
 import java.sql.Date;
 
-
-
 public class Account {
+
     private String userName;
     private String gmail;
     private String fullName;
@@ -15,7 +14,10 @@ public class Account {
     private String phone;
     private int roleId;
     private int statusId;
-public Account(){}
+
+    public Account() {
+    }
+
     public Account(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, int roleId, int statusId) {
         this.userName = userName;
         this.gmail = gmail;

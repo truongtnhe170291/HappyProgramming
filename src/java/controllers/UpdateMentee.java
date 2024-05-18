@@ -14,6 +14,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Mentee;
 
+import dal.MenteeDAO;
+
+import dal.MenteeDAO;
+
 /**
  *
  * @author 2k3so
@@ -63,7 +67,7 @@ public class UpdateMentee extends HttpServlet {
         Mentee mentee = dao.getCurrentMentee("user1");
 
         request.setAttribute("mentee", mentee);
-        request.getRequestDispatcher("UpdateMenteeProfileDemo.jsp").forward(request, response);
+        request.getRequestDispatcher("user_info.jsp").forward(request, response);
     }
 
     /**
@@ -90,19 +94,19 @@ public class UpdateMentee extends HttpServlet {
             MenteeDAO dao = new MenteeDAO();
             boolean check = false;
 
-            if (! gmail.isEmpty() || avatar.isEmpty() || fullname.isEmpty() || dob.isEmpty() || address.isEmpty()) {
+            if (!gmail.isEmpty() || avatar.isEmpty() || fullname.isEmpty() || dob.isEmpty() || address.isEmpty()) {
                 dao.updateAccountMentee(username, fullname, dob, sex, address, gmail);
                 dao.updateMentee(avatar, username);
                 // Load data to form
                 Mentee mentee = dao.getCurrentMentee("user1");
                 request.setAttribute("message", "Update Success");
                 request.setAttribute("mentee", mentee);
-                request.getRequestDispatcher("UpdateMenteeProfileDemo.jsp").forward(request, response);
+                request.getRequestDispatcher("user_info.jsp").forward(request, response);
             } else {
                 Mentee mentee = dao.getCurrentMentee("user1");
                 request.setAttribute("message1", "Update Fail");
                 request.setAttribute("mentee", mentee);
-                request.getRequestDispatcher("UpdateMenteeProfileDemo.jsp").forward(request, response);
+                request.getRequestDispatcher("user_info.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
@@ -110,7 +114,7 @@ public class UpdateMentee extends HttpServlet {
             Mentee mentee = dao.getCurrentMentee("user1");
             request.setAttribute("message1", "Update Fail");
             request.setAttribute("mentee", mentee);
-            request.getRequestDispatcher("UpdateMenteeProfileDemo.jsp").forward(request, response);
+            request.getRequestDispatcher("user_info.jsp").forward(request, response);
         }
     }
 

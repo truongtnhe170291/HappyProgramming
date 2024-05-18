@@ -103,9 +103,9 @@ public class MenteeDAO {
         MenteeDAO dao = new MenteeDAO();
         dao.updateAccountMentee(
                 "user1",
-                "hoanghai", 
-                "2003-12-5", 
-                "1", 
+                "Tùng che", 
+                "2003-11-30", 
+                "0", 
                 "hanoi",
                 "gmail@com.com");
     }
