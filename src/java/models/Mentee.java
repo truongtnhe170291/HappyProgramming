@@ -16,10 +16,12 @@ public class Mentee extends Account{
     public Mentee() {
     }
 
-    public Mentee(String avatar, String gmail, String userName, String fullName, String passWord, String sex, String address, String phone, String role, String status, Date dob) {
-        super(gmail, userName, fullName, passWord, sex, address, phone, role, status, dob);
+    public Mentee(String avatar, String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, int roleId, int statusId) {
+        super(userName, gmail, fullName, password, dob, sex, address, phone, roleId, statusId);
         this.avatar = avatar;
     }
+
+    
 
     public String getAvatar() {
         return avatar;

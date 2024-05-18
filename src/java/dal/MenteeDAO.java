@@ -35,7 +35,7 @@ public class MenteeDAO {
     public Mentee getCurrentMentee(String gmail) {
         Mentee mentee = null;
         try {
-            String query = "SELECT * FROM Account a JOIN Mentee mentee ON a.GMail = mentee.GMailMentee\n"
+            String query = "SELECT * FROM Accounts a JOIN Mentees mentee ON a. = mentee.GMailMentee\n"
                     + "WHERE a.GMail = ?  and a.Role = 'mentee'";
             con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
@@ -43,17 +43,17 @@ public class MenteeDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 mentee = new Mentee(
-                        rs.getString(12),
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(6),
-                        rs.getString(7),
+                        rs.getString(1), 
+                        rs.getString(2), 
+                        rs.getString(3), 
+                        rs.getString(4), 
+                        rs.getString(5),
+                        rs.getDate(6), 
+                        rs.getBoolean(7), 
                         rs.getString(8),
-                        rs.getString(9),
-                        rs.getString(10),
-                        rs.getDate(5));
+                        rs.getString(9), 
+                        rs.getInt(10),
+                        rs.getInt(11));
             }
         } catch (Exception e) {
             System.out.println("getCurrentMentee: " + e.getMessage());

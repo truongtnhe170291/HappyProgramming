@@ -39,7 +39,7 @@ public class AccountDAO {
     public ArrayList<Account> listAccount(){
         ArrayList<Account> list = new ArrayList<>();
         try {
-            String query = "select * from [Account]";
+            String query = "select * from [Accounts]";
             con = new DBContext().connection;//mo ket noi voi sql
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
@@ -49,14 +49,14 @@ public class AccountDAO {
                         rs.getString(2), 
                         rs.getString(3), 
                         rs.getString(4), 
-                        rs.getString(5), 
-                        rs.getString(6), 
+                        rs.getDate(5), 
+                        rs.getBoolean(6), 
                         rs.getString(7),
                         rs.getString(8), 
-                        rs.getString(9),
-                        rs.getDate(10)));
+                        rs.getInt(9),
+                        rs.getInt(10)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("listAccount: " + e.getMessage());
         }
         return list;
@@ -68,7 +68,7 @@ public class AccountDAO {
             return null;
         }
 
-        String sql = "SELECT * FROM Account WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM Accounts WHERE user_name = ? AND pass_word = ?";
         Account acc = null;
 
         try (PreparedStatement pre = con.prepareStatement(sql)) {
@@ -79,16 +79,17 @@ public class AccountDAO {
             try (ResultSet rs = pre.executeQuery()) {
                 if (rs.next()) {
                     // Map the result set to an Account object
-                    String gmail = rs.getString("GMail");
-                    String fullName = rs.getString("FullName");
-                    Date dateOfBirth = rs.getDate("Dob");
-                    String sex = rs.getString("Sex");
-                    String address = rs.getString("Address");
-                    String phone = rs.getString("Phone");
-                    String role = rs.getString("Role");
-                    String status = rs.getString("Status");
-
-                    acc = new Account(gmail, username, fullName, password, sex, address, phone, role, status, dateOfBirth);
+                    acc = new Account(
+                        rs.getString(1), 
+                        rs.getString(2), 
+                        rs.getString(3), 
+                        rs.getString(4), 
+                        rs.getDate(5), 
+                        rs.getBoolean(6), 
+                        rs.getString(7),
+                        rs.getString(8), 
+                        rs.getInt(9),
+                        rs.getInt(10));
                 }
             }
         } catch (SQLException ex) {
@@ -98,9 +99,9 @@ public class AccountDAO {
         return acc;
     }
     public void changePassWord(Account a) {
-        String sql="update Account set Password=? where Username=?";
+        String sql="update Accounts set pass_word=? where user_name=?";
         try (PreparedStatement pre = con.prepareStatement(sql)) {
-            pre.setString(1, a.getPassWord());
+            pre.setString(1, a.getPassword());
             pre.setString(2, a.getUserName());
             pre.executeUpdate();
         

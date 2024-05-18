@@ -9,6 +9,7 @@ import dal.MenteeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import models.Mentee;
  *
  * @author 2k3so
  */
+@WebServlet(name="NewServlet", urlPatterns={"/NewServlet"})
 public class UpdateMenteeProfile extends HttpServlet {
    
     /** 

@@ -31,7 +31,7 @@ public class SkillDAO{
     }
     //Lấy ra danh sách skill của hệ thống
     public List<Skill> getSkills(){
-        String sql = "select * from Skill";
+        String sql = "select * from Skills";
         List<Skill> list = new ArrayList<>();
         try {
             ps = con.prepareStatement(sql);
@@ -46,10 +46,10 @@ public class SkillDAO{
         return list;
     }
 
-//    public static void main(String[] args) {
-//        SkillDAO sd = new SkillDAO();
-//        for(Skill s : sd.getSkills()){
-//            System.out.println(s.getSkillName());
-//        }
-//    }
+    public static void main(String[] args) {
+        SkillDAO sd = new SkillDAO();
+        for(Skill s : sd.getSkills()){
+            System.out.println(s.getSkillName());
+        }
+    }
 }

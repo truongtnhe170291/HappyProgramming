@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import models.CV;
 
 /**
@@ -161,28 +162,28 @@ public class CVDAO {
         return -1;
     }
 
-//    public static void main(String[] args) {
-//        CVDAO cvdao = new CVDAO();
-//        CV c = new CV();
-//        c.setAvatar("abc.jpg");
-//        c.setAddress("HN");
-//        c.setDob(java.sql.Date.valueOf(LocalDate.now()));
-//        c.setFullName("abc");
-//        c.setAchievementDescription("hgdhdkd");
-//        c.setProfession("iroreu");
-//        c.setServiceDescription("údfiuu");
-//        c.setSex(true);
-//        c.setGmail("abc.com");
-//        c.setUserName("fge");
-//        c.setProfessionIntro("Intro");
-//        c.setSkills(new int[]{2, 5});
-//        c.setCvId(1);
-//        if(cvdao.addCV(c)){
-//            System.out.println("OK");
-//        }else{
-//            System.out.println("Not OK");
-//        }
+    public static void main(String[] args) {
+        CVDAO cvdao = new CVDAO();
+        CV c = new CV();
+        c.setAvatar("abc.jpg");
+        c.setAddress("HN");
+        c.setDob(java.sql.Date.valueOf(LocalDate.now()));
+        c.setFullName("abc");
+        c.setAchievementDescription("hgdhdkd");
+        c.setProfession("iroreu");
+        c.setServiceDescription("údfiuu");
+        c.setSex(true);
+        c.setGmail("abc.com");
+        c.setUserName("fge");
+        c.setProfessionIntro("Intro");
+        c.setSkills(new int[]{2, 5});
+        c.setCvId(1);
+        if(cvdao.addCV(c)){
+            System.out.println("OK");
+        }else{
+            System.out.println("Not OK");
+        }
         //cvdao.updateCV(c);
-  //  }
+    }
 
 }
