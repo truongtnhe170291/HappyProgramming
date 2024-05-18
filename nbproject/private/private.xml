@@ -3,22 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/FeedBackServlet.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/CVDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/models/Mentee.java</file>
             <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/user_info.jsp</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/MenteeDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/services/FeedBackService.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/assets/vendor_assets/css/bootstrap/scss/forms/_input-group.scss</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/SkillServlet.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/META-INF/web.xml</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/Home.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/control_nav.jsp</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/index.jsp</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/AccountDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/SkillDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/sidebar.jsp</file>
         </group>
     </open-files>
 </project-private>
