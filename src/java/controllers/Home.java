@@ -5,6 +5,7 @@
 
 package controllers;
 
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import models.Skill;
 
 /**
  *
@@ -26,6 +29,9 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        SkillDAO skillDAO = new SkillDAO();
+        List<Skill> list = skillDAO.getSkills();
+        request.setAttribute("listSkill", list);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     } 
 
