@@ -55,7 +55,7 @@
 </head>
 
 <body>
-    <form action="Home" method="get" >
+   
    <main class="main-content">
 
       <div class="admin">
@@ -73,11 +73,12 @@
                               <h6>Sign in</h6>
                            </div>
                         </div>
+                         <form action="home" method="post" >
                         <div class="card-body">
                            <div class="edit-profile__body">
                               <div class="form-group mb-25">
                                  <label for="username">Username or Email Address</label>
-                                 <input type="text" class="form-control" id="username" placeholder="name@example.com">
+                                 <input type="text" class="form-control" id="username" name="username">
                               </div>
                               <div class="form-group mb-15">
                                  <label for="password-field">password</label>
@@ -97,12 +98,13 @@
                                  <a href="forget-password.html">forget password?</a>
                               </div>
                               <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                                 <button class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn ">
-                                    sign in
-                                 </button>
+                                  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value=" sign in"/>
+                                   
                               </div>
                            </div>
-                        </div><!-- End: .card-body -->
+                        </div>
+                             ${mess}
+                        </form>
                         <div class="px-20">
                            <p class="social-connector social-connector__admin text-center">
                               <span>Or</span>
@@ -167,7 +169,7 @@
          </li>
       </ul>
    </div>
-        </form>
+     
    <!-- inject:js-->
 
    <script src="assets/vendor_assets/js/jquery/jquery-3.5.1.min.js"></script>
