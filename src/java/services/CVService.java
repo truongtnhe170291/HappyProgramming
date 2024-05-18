@@ -23,11 +23,17 @@ public class CVService {
         cvDao = new CVDAO();
     }
     
-    public boolean createCV(CV cv){
-        return cvDao.addCV(cv);
-    }
-    
-    public boolean updateCV(CV cv){
-        return cvDao.updateCV(cv);
+    public CV createOrUpdateCV(CV cv){
+        CV c = cvDao.getCVByUserName(cv.getUserName());
+        if( c != null){
+            if(cvDao.updateCV(cv, c.getCvId())){
+                return c;
+            }
+        }else{
+            if(cvDao.addCV(cv)){
+                return cvDao.getCVByUserName(cv.getUserName());
+            }
+        }
+        return null;
     }
 }

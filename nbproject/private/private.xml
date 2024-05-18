@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/controllers/SkillServlet.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/web/ListSkill.jsp</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/dal/MenteeDAO.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/Mentor.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/web/home.jsp</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/dal/SkillDAO.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/controllers/Home.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/CV.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/MentorDetails.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/dal/MentorDAO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/MenteeDAO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/CVServlet.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/assets/vendor_assets/css/bootstrap/scss/helpers/_ratio.scss</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/user_info.jsp</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/assets/vendor_assets/css/bootstrap/scss/mixins/_container.scss</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/AccountDAO.java</file>
         </group>
     </open-files>
 </project-private>

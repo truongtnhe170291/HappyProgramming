@@ -208,19 +208,20 @@
                                                         <h5 class="fw-500">CV Information</h5>
                                                     </div>
                                                     <div class="edit-profile__body">
-                                                        <form>
-                                                            <div class="form-group mb-25">
-                                                                <label for="name4">Full Name</label>
-                                                                <input name="fullName" type="text" class="form-control" id="name4" placeholder="Duran Clayton">
+                                                        <form action="cv" method="POST">
+                                                            <c:set var="cv" value="${requestScope.cv}"></c:set>
+                                                                <div class="form-group mb-25">
+                                                                    <label for="name4">Full Name</label>
+                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="name4" placeholder="Duran Clayton">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Mail</label>
-                                                                <input name="gmail" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
-                                                            <div class="form-group mb-25 form-group-calender">
+                                                            <div class="form-group mb-25 form-group">
                                                                 <label for="datepicker">Date of birth</label>
                                                                 <div class="position-relative">
-                                                                    <input name="dob" type="text" class="form-control" id="datepicker" placeholder="January 20, 2018">
+                                                                    <input name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
                                                                     <a href="#"><img class="svg" src="img/svg/chevron-right.svg" alt="chevron-right"></a>
                                                                 </div>
                                                             </div>
@@ -229,13 +230,13 @@
                                                                 <div class="d-flex">
                                                                     <div class="radio-horizontal-list d-flex flex-wrap">
                                                                         <div class="radio-theme-default custom-radio ">
-                                                                            <input name="sex" class="radio" type="radio" name="radio-optional" value=0 id="radio-hl1">
+                                                                            <input name="sex" ${cv.sex ? "checked": ""} class="radio" type="radio"  value="1" id="radio-hl1">
                                                                             <label for="radio-hl1">
                                                                                 <span class="radio-text">Male</span>
                                                                             </label>
                                                                         </div>
                                                                         <div class="radio-theme-default custom-radio ">
-                                                                            <input name="sex" class="radio" type="radio" name="radio-optional" value=0 id="radio-hl2">
+                                                                            <input name="sex" ${cv.sex ? "": "checked"} class="radio" type="radio"  value="0" id="radio-hl2">
                                                                             <label for="radio-hl2">
                                                                                 <span class="radio-text">Female</span>
                                                                             </label>
@@ -245,286 +246,286 @@
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Address</label>
-                                                                <input name="address" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="address" value="${cv.address}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
-                                                                <input name="profession" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession introduction</label>
-                                                                <input name="professionIntro" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="professionIntro" value="${cv.professionIntro}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
-                                                                <input name="achievementDescription" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="achievementDescription" value="${cv.achievementDescription}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
-                                                                <input name="serviceDescription" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="serviceDescription" value="${cv.serviceDescription}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
                                                             <div class="form-group mb-25 status-radio ">
                                                                 <label for="hiringDateCheckbox">Skill</label>
                                                                 <div class="d-flex ">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="" id="hiringDateCheckbox">
-                                                                        <label class="form-check-label" for="hiringDateCheckbox">C#</label>
-                                                                    </div>
-                                                                    <div class="form-check ">
-                                                                        <input class="form-check-input" type="checkbox" value="" id="hiringDateCheckbox">
-                                                                        <label class="form-check-label" for="hiringDateCheckbox">java</label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="" id="hiringDateCheckbox">
-                                                                        <label class="form-check-label" for="hiringDateCheckbox">Javascript</label>
+                                                                    <c:forEach items="${requestScope.skills}" var="skill">
+                                                                        <c:set var="isChecked" value="false"/>
+                                                                        <c:forEach items="${cv.skills}" var="cvskill">
+                                                                            <c:if test="${skill.skillID == cvskill}">
+                                                                                <c:set var="isChecked" value="true"/>
+                                                                            </c:if>
+                                                                        </c:forEach>
+                                                                        <div class="form-check">
+                                                                            <input name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox">
+                                                                            <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
+                                                                        </div>
+
+                                                                    </c:forEach>
+                                                                </div>
+                                                            </div>
+                                                            <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
+                                                                <button id="edit_oki" class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md btn-sm">edit</button>
+                                                                <button type="submit" id="button_oki" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
+                                                            </div>
+
+                                                        </form>
+
+                                                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                                            <div class="row justify-content-center">
+                                                                <div class="col-xxl-4 col-10">
+                                                                    <div class="user-social-profile mt-40 mb-50">
+                                                                        <div class="user-tab-info-title mb-40 text-capitalize">
+                                                                            <h5>social profiles</h5>
+                                                                        </div>
+                                                                        <div class="edit-profile__body">
+                                                                            <form>
+                                                                                <div class=" mb-30">
+                                                                                    <label for="socialUrl">facebook</label>
+                                                                                    <div class="input-group flex-nowrap">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text bg-facebook border-facebook text-white wh-44 radius-xs justify-content-center" id="addon-wrapping1">
+                                                                                                <i class="lab la-facebook-f fs-18"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type="text" class="form-control form-control--social" placeholder="Url" aria-label="Username" aria-describedby="addon-wrapping1" id="socialUrl">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class=" mb-30">
+                                                                                    <label for="twitterUrl">twitter</label>
+                                                                                    <div class="input-group flex-nowrap">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text bg-twitter border-twitter text-white wh-44 radius-xs justify-content-center" id="addon-wrapping2">
+                                                                                                <i class="lab la-twitter fs-18"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type="text" class="form-control form-control--social" placeholder="@Username" aria-label="Username" aria-describedby="addon-wrapping2" id="twitterUrl">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class=" mb-30">
+                                                                                    <label for="webUrl">Website</label>
+                                                                                    <div class="input-group flex-nowrap">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text bg-ruby border-ruby text-white wh-44 radius-xs justify-content-center" id="addon-wrapping3">
+                                                                                                <i class="las la-basketball-ball fs-18"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type="text" class="form-control form-control--social" placeholder="Url" aria-label="Username" aria-describedby="addon-wrapping3" id="webUrl">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class=" mb-30">
+                                                                                    <label for="instagramUrl">instagram</label>
+                                                                                    <div class="input-group flex-nowrap">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text bg-instagram border-instagram text-white wh-44 radius-xs justify-content-center" id="addon-wrapping4">
+                                                                                                <i class="lab la-instagram fs-18"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type="text" class="form-control form-control--social" aria-describedby="addon-wrapping4" placeholder="Url" id="instagramUrl">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class=" mb-30">
+                                                                                    <label for="githubUrl">github</label>
+                                                                                    <div class="input-group flex-nowrap">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text bg-dark border-dark  text-white wh-44 radius-xs justify-content-center" id="addon-wrapping5">
+                                                                                                <i class="lab la-github fs-18"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type="text" class="form-control form-control--social" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping5" id="githubUrl">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class=" mb-30">
+                                                                                    <label for="mediumUrl">medium</label>
+                                                                                    <div class="input-group flex-nowrap">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text bg-dark border-dark text-white wh-44 radius-xs justify-content-center" id="addon-wrapping6">
+                                                                                                <i class="lab la-medium fs-18"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type="text" class="form-control form-control--social" placeholder="Username" aria-label="medium" aria-describedby="addon-wrapping6" id="mediumUrl">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
+
+
+                                                                                    <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md">back
+                                                                                    </button>
+
+
+
+
+
+
+
+                                                                                    <button class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2">Save profile
+                                                                                    </button>
+
+
+
+
+
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-                                                        <button id="edit_oki" class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md btn-sm">edit</button>
-                                                        <button type="button" id="button_oki" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
-                                                    </div>
-
-                                                    </form>
-
-                                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                    <div class="row justify-content-center">
-                                        <div class="col-xxl-4 col-10">
-                                            <div class="user-social-profile mt-40 mb-50">
-                                                <div class="user-tab-info-title mb-40 text-capitalize">
-                                                    <h5>social profiles</h5>
-                                                </div>
-                                                <div class="edit-profile__body">
-                                                    <form>
-                                                        <div class=" mb-30">
-                                                            <label for="socialUrl">facebook</label>
-                                                            <div class="input-group flex-nowrap">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text bg-facebook border-facebook text-white wh-44 radius-xs justify-content-center" id="addon-wrapping1">
-                                                                        <i class="lab la-facebook-f fs-18"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control form-control--social" placeholder="Url" aria-label="Username" aria-describedby="addon-wrapping1" id="socialUrl">
-                                                            </div>
-                                                        </div>
-                                                        <div class=" mb-30">
-                                                            <label for="twitterUrl">twitter</label>
-                                                            <div class="input-group flex-nowrap">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text bg-twitter border-twitter text-white wh-44 radius-xs justify-content-center" id="addon-wrapping2">
-                                                                        <i class="lab la-twitter fs-18"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control form-control--social" placeholder="@Username" aria-label="Username" aria-describedby="addon-wrapping2" id="twitterUrl">
-                                                            </div>
-                                                        </div>
-                                                        <div class=" mb-30">
-                                                            <label for="webUrl">Website</label>
-                                                            <div class="input-group flex-nowrap">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text bg-ruby border-ruby text-white wh-44 radius-xs justify-content-center" id="addon-wrapping3">
-                                                                        <i class="las la-basketball-ball fs-18"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control form-control--social" placeholder="Url" aria-label="Username" aria-describedby="addon-wrapping3" id="webUrl">
-                                                            </div>
-                                                        </div>
-                                                        <div class=" mb-30">
-                                                            <label for="instagramUrl">instagram</label>
-                                                            <div class="input-group flex-nowrap">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text bg-instagram border-instagram text-white wh-44 radius-xs justify-content-center" id="addon-wrapping4">
-                                                                        <i class="lab la-instagram fs-18"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control form-control--social" aria-describedby="addon-wrapping4" placeholder="Url" id="instagramUrl">
-                                                            </div>
-                                                        </div>
-                                                        <div class=" mb-30">
-                                                            <label for="githubUrl">github</label>
-                                                            <div class="input-group flex-nowrap">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text bg-dark border-dark  text-white wh-44 radius-xs justify-content-center" id="addon-wrapping5">
-                                                                        <i class="lab la-github fs-18"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control form-control--social" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping5" id="githubUrl">
-                                                            </div>
-                                                        </div>
-                                                        <div class=" mb-30">
-                                                            <label for="mediumUrl">medium</label>
-                                                            <div class="input-group flex-nowrap">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text bg-dark border-dark text-white wh-44 radius-xs justify-content-center" id="addon-wrapping6">
-                                                                        <i class="lab la-medium fs-18"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control form-control--social" placeholder="Username" aria-label="medium" aria-describedby="addon-wrapping6" id="mediumUrl">
-                                                            </div>
-                                                        </div>
-                                                        <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-
-
-                                                            <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md">back
-                                                            </button>
-
-
-
-
-
-
-
-                                                            <button class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2">Save profile
-                                                            </button>
-
-
-
-
-
-                                                        </div>
-                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                <footer class="footer-wrapper">
+                                    <div class="footer-wrapper__inside">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="footer-copyright">
+                                                        <p><span>© 2023</span><a href="#">Sovware</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="footer-menu text-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">About</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Team</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Contact</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- ends: .Footer Menu -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </footer>
+                                </main>
+                                <div id="overlayer">
+                                    <div class="loader-overlay">
+                                        <div class="dm-spin-dots spin-lg">
+                                            <span class="spin-dot badge-dot dot-primary"></span>
+                                            <span class="spin-dot badge-dot dot-primary"></span>
+                                            <span class="spin-dot badge-dot dot-primary"></span>
+                                            <span class="spin-dot badge-dot dot-primary"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overlay-dark-sidebar"></div>
+                                <div class="customizer-overlay"></div>
+                                <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
+                                <script>
+                                    document.getElementById('file-upload').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-img').src = e.target.result;
+                                            }
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
 
-        </div>
-        <footer class="footer-wrapper">
-            <div class="footer-wrapper__inside">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="footer-copyright">
-                                <p><span>© 2023</span><a href="#">Sovware</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="footer-menu text-end">
-                                <ul>
-                                    <li>
-                                        <a href="#">About</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Team</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Contact</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- ends: .Footer Menu -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </main>
-    <div id="overlayer">
-        <div class="loader-overlay">
-            <div class="dm-spin-dots spin-lg">
-                <span class="spin-dot badge-dot dot-primary"></span>
-                <span class="spin-dot badge-dot dot-primary"></span>
-                <span class="spin-dot badge-dot dot-primary"></span>
-                <span class="spin-dot badge-dot dot-primary"></span>
-            </div>
-        </div>
-    </div>
-    <div class="overlay-dark-sidebar"></div>
-    <div class="customizer-overlay"></div>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
-    <script>
-        document.getElementById('file-upload').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('profile-img').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
+                                    document.addEventListener('DOMContentLoaded', () => {
+                                        const save = document.getElementById("button_oki");
+                                        const cancel = document.getElementById("edit_oki");
+                                        const form1 = document.getElementById("form1-status");
+                                        const form2 = document.getElementById("form2-status");
+                                        const formall1 = document.getElementById("activett_1");
+                                        const formall2 = document.getElementById("activett_2");
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const save = document.getElementById("button_oki");
-            const cancel = document.getElementById("edit_oki");
-            const form1 = document.getElementById("form1-status");
-            const form2 = document.getElementById("form2-status");
-            const formall1 = document.getElementById("activett_1");
-            const formall2 = document.getElementById("activett_2");
+                                        save.addEventListener('click', () => {
+                                            form1.textContent = 'Active';
+                                            form2.textContent = 'Active';
+                                            formall1.classList.remove('status-not-active');
+                                            formall1.classList.add('status-active');
+                                            formall2.classList.remove('status-not-active');
+                                            formall2.classList.add('status-active');
+                                        });
 
-            save.addEventListener('click', () => {
-                form1.textContent = 'Active';
-                form2.textContent = 'Active';
-                formall1.classList.remove('status-not-active');
-                formall1.classList.add('status-active');
-                formall2.classList.remove('status-not-active');
-                formall2.classList.add('status-active');
-            });
-
-            cancel.addEventListener('click', () => {
-                form1.textContent = 'Not Active';
-                form2.textContent = 'Not Active';
-                formall1.classList.remove('status-active');
-                formall1.classList.add('status-not-active');
-                formall2.classList.remove('status-active');
-                formall2.classList.add('status-not-active');
-            });
-        });
-    </script>
-    <!-- inject:js-->
-    <script src="assets/vendor_assets/js/jquery/jquery-3.5.1.min.js"></script>
-    <script src="assets/vendor_assets/js/jquery/jquery-ui.js"></script>
-    <script src="assets/vendor_assets/js/bootstrap/popper.js"></script>
-    <script src="assets/vendor_assets/js/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/vendor_assets/js/moment/moment.min.js"></script>
-    <script src="assets/vendor_assets/js/accordion.js"></script>
-    <script src="assets/vendor_assets/js/apexcharts.min.js"></script>
-    <script src="assets/vendor_assets/js/autoComplete.js"></script>
-    <script src="assets/vendor_assets/js/Chart.min.js"></script>
-    <script src="assets/vendor_assets/js/daterangepicker.js"></script>
-    <script src="assets/vendor_assets/js/drawer.js"></script>
-    <script src="assets/vendor_assets/js/dynamicBadge.js"></script>
-    <script src="assets/vendor_assets/js/dynamicCheckbox.js"></script>
-    <script src="assets/vendor_assets/js/footable.min.js"></script>
-    <script src="assets/vendor_assets/js/fullcalendar@5.2.0.js"></script>
-    <script src="assets/vendor_assets/js/google-chart.js"></script>
-    <script src="assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js"></script>
-    <script src="assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="assets/vendor_assets/js/jquery.countdown.min.js"></script>
-    <script src="assets/vendor_assets/js/jquery.filterizr.min.js"></script>
-    <script src="assets/vendor_assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/vendor_assets/js/jquery.peity.min.js"></script>
-    <script src="assets/vendor_assets/js/jquery.star-rating-svg.min.js"></script>
-    <script src="assets/vendor_assets/js/leaflet.js"></script>
-    <script src="assets/vendor_assets/js/leaflet.markercluster.js"></script>
-    <script src="assets/vendor_assets/js/loader.js"></script>
-    <script src="assets/vendor_assets/js/message.js"></script>
-    <script src="assets/vendor_assets/js/moment.js"></script>
-    <script src="assets/vendor_assets/js/muuri.min.js"></script>
-    <script src="assets/vendor_assets/js/notification.js"></script>
-    <script src="assets/vendor_assets/js/popover.js"></script>
-    <script src="assets/vendor_assets/js/select2.full.min.js"></script>
-    <script src="assets/vendor_assets/js/slick.min.js"></script>
-    <script src="assets/vendor_assets/js/trumbowyg.min.js"></script>
-    <script src="assets/vendor_assets/js/wickedpicker.min.js"></script>
-    <script src="assets/theme_assets/js/apexmain.js"></script>
-    <script src="assets/theme_assets/js/charts.js"></script>
-    <script src="assets/theme_assets/js/drag-drop.js"></script>
-    <script src="assets/theme_assets/js/footable.js"></script>
-    <script src="assets/theme_assets/js/full-calendar.js"></script>
-    <script src="assets/theme_assets/js/googlemap-init.js"></script>
-    <script src="assets/theme_assets/js/icon-loader.js"></script>
-    <script src="assets/theme_assets/js/jvectormap-init.js"></script>
-    <script src="assets/theme_assets/js/leaflet-init.js"></script>
-    <script src="assets/theme_assets/js/main.js"></script>
-    <!-- endinject-->
-</body>
-</html>
+                                        cancel.addEventListener('click', () => {
+                                            form1.textContent = 'Not Active';
+                                            form2.textContent = 'Not Active';
+                                            formall1.classList.remove('status-active');
+                                            formall1.classList.add('status-not-active');
+                                            formall2.classList.remove('status-active');
+                                            formall2.classList.add('status-not-active');
+                                        });
+                                    });
+                                </script>
+                                <!-- inject:js-->
+                                <script src="assets/vendor_assets/js/jquery/jquery-3.5.1.min.js"></script>
+                                <script src="assets/vendor_assets/js/jquery/jquery-ui.js"></script>
+                                <script src="assets/vendor_assets/js/bootstrap/popper.js"></script>
+                                <script src="assets/vendor_assets/js/bootstrap/bootstrap.min.js"></script>
+                                <script src="assets/vendor_assets/js/moment/moment.min.js"></script>
+                                <script src="assets/vendor_assets/js/accordion.js"></script>
+                                <script src="assets/vendor_assets/js/apexcharts.min.js"></script>
+                                <script src="assets/vendor_assets/js/autoComplete.js"></script>
+                                <script src="assets/vendor_assets/js/Chart.min.js"></script>
+                                <script src="assets/vendor_assets/js/daterangepicker.js"></script>
+                                <script src="assets/vendor_assets/js/drawer.js"></script>
+                                <script src="assets/vendor_assets/js/dynamicBadge.js"></script>
+                                <script src="assets/vendor_assets/js/dynamicCheckbox.js"></script>
+                                <script src="assets/vendor_assets/js/footable.min.js"></script>
+                                <script src="assets/vendor_assets/js/fullcalendar@5.2.0.js"></script>
+                                <script src="assets/vendor_assets/js/google-chart.js"></script>
+                                <script src="assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js"></script>
+                                <script src="assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js"></script>
+                                <script src="assets/vendor_assets/js/jquery.countdown.min.js"></script>
+                                <script src="assets/vendor_assets/js/jquery.filterizr.min.js"></script>
+                                <script src="assets/vendor_assets/js/jquery.magnific-popup.min.js"></script>
+                                <script src="assets/vendor_assets/js/jquery.peity.min.js"></script>
+                                <script src="assets/vendor_assets/js/jquery.star-rating-svg.min.js"></script>
+                                <script src="assets/vendor_assets/js/leaflet.js"></script>
+                                <script src="assets/vendor_assets/js/leaflet.markercluster.js"></script>
+                                <script src="assets/vendor_assets/js/loader.js"></script>
+                                <script src="assets/vendor_assets/js/message.js"></script>
+                                <script src="assets/vendor_assets/js/moment.js"></script>
+                                <script src="assets/vendor_assets/js/muuri.min.js"></script>
+                                <script src="assets/vendor_assets/js/notification.js"></script>
+                                <script src="assets/vendor_assets/js/popover.js"></script>
+                                <script src="assets/vendor_assets/js/select2.full.min.js"></script>
+                                <script src="assets/vendor_assets/js/slick.min.js"></script>
+                                <script src="assets/vendor_assets/js/trumbowyg.min.js"></script>
+                                <script src="assets/vendor_assets/js/wickedpicker.min.js"></script>
+                                <script src="assets/theme_assets/js/apexmain.js"></script>
+                                <script src="assets/theme_assets/js/charts.js"></script>
+                                <script src="assets/theme_assets/js/drag-drop.js"></script>
+                                <script src="assets/theme_assets/js/footable.js"></script>
+                                <script src="assets/theme_assets/js/full-calendar.js"></script>
+                                <script src="assets/theme_assets/js/googlemap-init.js"></script>
+                                <script src="assets/theme_assets/js/icon-loader.js"></script>
+                                <script src="assets/theme_assets/js/jvectormap-init.js"></script>
+                                <script src="assets/theme_assets/js/leaflet-init.js"></script>
+                                <script src="assets/theme_assets/js/main.js"></script>
+                                <!-- endinject-->
+                                </body>
+                                </html>

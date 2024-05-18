@@ -15,13 +15,13 @@ public class CV {
     private String gmail, fullName;
     private Date dob;
     private boolean sex;
-    private String address,avatar, profession, professionIntro, achievementDescription, serviceDescription;
+    private String address, profession, professionIntro, achievementDescription, serviceDescription;
     private int[] skills;
     
     public CV() {
     }
 
-    public CV(int cvId, Mentor mentor, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String avatar, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
+    public CV(int cvId, Mentor mentor, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
         this.cvId = cvId;
         this.mentor = mentor;
         this.gmail = gmail;
@@ -30,7 +30,6 @@ public class CV {
         this.dob = dob;
         this.sex = sex;
         this.address = address;
-        this.avatar = avatar;
         this.profession = profession;
         this.professionIntro = professionIntro;
         this.achievementDescription = achievementDescription;
@@ -38,7 +37,7 @@ public class CV {
         this.skills = skills;
     }
 
-    public CV(int cvId, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String avatar, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
+    public CV(int cvId, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
         this.cvId = cvId;
         this.gmail = gmail;
         this.userName = userName;
@@ -46,7 +45,6 @@ public class CV {
         this.dob = dob;
         this.sex = sex;
         this.address = address;
-        this.avatar = avatar;
         this.profession = profession;
         this.professionIntro = professionIntro;
         this.achievementDescription = achievementDescription;
@@ -124,14 +122,6 @@ public class CV {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getProfession() {

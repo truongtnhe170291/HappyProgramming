@@ -13,10 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Mentee;
-
 import dal.MenteeDAO;
-
-import dal.MenteeDAO;
+import services.MenteeService;
+import services.SkillService;
 
 /**
  *
@@ -63,9 +62,10 @@ public class UpdateMentee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        MenteeDAO dao = new MenteeDAO();
-        Mentee mentee = dao.getCurrentMentee("user1");
-
+        MenteeService menteeService = MenteeService.getInstance();
+        Mentee mentee = menteeService.getCurrentMentee("user1");
+        SkillService skillService = SkillService.getInstance();
+        request.setAttribute("skills", skillService.getSkills());
         request.setAttribute("mentee", mentee);
         request.getRequestDispatcher("user_info.jsp").forward(request, response);
     }

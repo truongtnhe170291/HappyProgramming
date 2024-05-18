@@ -2,51 +2,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import java.text.SimpleDateFormat;
+import models.CV;
+import models.Mentee;
+import services.CVService;
+import services.MenteeService;
+import services.SkillService;
+import java.sql.Date;
+import java.text.ParseException;
 /**
  *
  * @author Admin
  */
-@WebServlet(name="CVServlet", urlPatterns={"/CVServlet"})
+@WebServlet(name = "CVServlet", urlPatterns = {"/cv"})
 public class CVServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CVServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CVServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -54,12 +36,12 @@ public class CVServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+            throws ServletException, IOException {
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -67,12 +49,64 @@ public class CVServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        try {
+            // Get data from UpdateMenteeProfileDemo.jsp
+            String gmail = request.getParameter("gmail");
+            String fullname = request.getParameter("fullName");
+            String dob = request.getParameter("dob");
+            String _sex = request.getParameter("sex");
+            String address = request.getParameter("address");
+            String profession = request.getParameter("profession");
+            String professionIntro = request.getParameter("professionIntro");
+            String achievementDescription = request.getParameter("achievementDescription");
+            String serviceDescription = request.getParameter("serviceDescription");
+            String[] _skills = request.getParameterValues("skills");
+            int[] skills;
+            if (_skills.length > 0) {
+                skills = new int[_skills.length];
+                for (int i = 0; i < _skills.length; i++) {
+                    skills[i] = Integer.parseInt(_skills[i]);
+                }
+            } else {
+                skills = new int[0];
+            }
+            boolean sex;
+            sex = _sex.equals("1");
+            
+            
+            // lấy từ session khi người dùng đăng nhập
+            String username = "user2";
+
+            // Lấy các Skill và profile
+            MenteeService menteeService = MenteeService.getInstance();
+            Mentee mentee = menteeService.getCurrentMentee("user1");
+            SkillService skillService = SkillService.getInstance();
+            request.setAttribute("skills", skillService.getSkills());
+            request.setAttribute("mentee", mentee);
+
+            CV c = new CV(0, gmail, username, fullname, java.sql.Date.valueOf(dob),sex , address, profession, professionIntro, achievementDescription, serviceDescription, skills);
+            CVService cvService = CVService.getInstance();
+            CV newCv = cvService.createOrUpdateCV(c);
+            if (newCv!=null) {
+                System.out.println("ok");
+                request.setAttribute("cv", newCv);
+                request.getRequestDispatcher("user_info.jsp").forward(request, response);
+            }else{
+                String msg = "Create or Update Fail";
+                request.setAttribute("msg", msg);
+                request.getRequestDispatcher("user_info.jsp").forward(request, response);
+            }
+
+        } catch (ServletException | IOException | NumberFormatException e) {
+            System.out.println(e);
+        }
+
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

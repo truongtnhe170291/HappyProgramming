@@ -98,16 +98,19 @@ public class AccountDAO {
 
         return acc;
     }
-    public void changePassWord(Account a) {
+    public boolean changePassWord(Account a) {
         String sql="update Accounts set pass_word=? where user_name=?";
         try (PreparedStatement pre = con.prepareStatement(sql)) {
             pre.setString(1, a.getPassword());
             pre.setString(2, a.getUserName());
-            pre.executeUpdate();
-        
+            int result = pre.executeUpdate();
+            if(result == 1){
+                return true;
+            }
         }catch(SQLException e){
             System.out.println(e);
         }
+        return false;
     }
 
 

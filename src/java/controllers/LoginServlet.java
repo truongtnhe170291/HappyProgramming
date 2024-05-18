@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Account;
+import services.AccountService;
 
 /**
  *
@@ -72,8 +73,8 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         Account acc;
-        AccountDAO dao = new AccountDAO();
-        acc = dao.getAccount(username, password);
+        AccountService accountService = AccountService.getInstance();
+        acc = accountService.getAccount(username, password);
 
         try {
             if (acc == null) {

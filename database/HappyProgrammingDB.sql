@@ -35,13 +35,13 @@ create table Accounts(
 GO
 create table Mentees(
 	mentee_name varchar(200) foreign key references Accounts([user_name]),
-	avatar varchar(500),
+	avatar varchar(250),
 	primary key (mentee_name)
 )
 GO
 create table Mentors(
 	mentor_name varchar(200) foreign key references Accounts([user_name]),
-	avatar varchar(500),
+	avatar varchar(250),
 	primary key (mentor_name)
 )
 GO
@@ -103,7 +103,6 @@ create table CV(
 	dob date,
 	sex bit,
 	[address] varchar(200),
-	avatar nvarchar(250),
 	profession nvarchar(200),
 	profession_intro nvarchar(1000),
 	achievement_description nvarchar(1000),
@@ -200,9 +199,9 @@ INSERT INTO RequestSkills (skill_id, request_id) VALUES
 (1, 5);
 GO
 -- Thêm dữ liệu vào bảng CV
-INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], avatar, profession, profession_intro, achievement_description, service_description) VALUES
-('user2', 'user2@gmail.com', 'User Two', '1992-02-02', 0, 'Address 2', 'avatar2.png', 'Java Developer', 'Experienced Java Developer', 'Developed several Java applications', 'Provides Java training'),
-('user5', 'user5@gmail.com', 'User Five', '1998-05-05', 1, 'Address 5', 'avatar5.png', 'Web Developer', 'Expert in web technologies', 'Built numerous websites', 'Offers web development services');
+INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description) VALUES
+('user2', 'user2@gmail.com', 'User Two', '1992-02-02', 0, 'Address 2', 'Java Developer', 'Experienced Java Developer', 'Developed several Java applications', 'Provides Java training'),
+('user5', 'user5@gmail.com', 'User Five', '1998-05-05', 1, 'Address 5', 'Web Developer', 'Expert in web technologies', 'Built numerous websites', 'Offers web development services');
 GO
 -- Thêm dữ liệu vào bảng CVSkills
 INSERT INTO CVSkills (skill_id, cv_id) VALUES
