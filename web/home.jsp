@@ -60,7 +60,12 @@
 
    <!-- Fonts -->
    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
+   <style>
+  .selected-category {
+    background-color:#E6E6FA;
+    color: #fff; 
+}
+</style>
 </head>
 
 <body class="layout-light side-menu">
@@ -407,10 +412,10 @@
 
 
 
-
+                                              <a href="Productdetail.jsp">
                                                 <button class="btn btn-primary btn-default btn-squared border-0 px-25">buy now
                                                 </button>
-
+                                                </a>
 
 
 
@@ -1295,6 +1300,21 @@
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
+   <script>
+   document.addEventListener('DOMContentLoaded', function () {
+    const categoryItems = document.querySelectorAll('.product-category li');
+
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Xóa lớp 'selected-category' khỏi tất cả các thẻ
+            categoryItems.forEach(i => i.classList.remove('selected-category'));
+            
+            // Thêm lớp 'selected-category' vào thẻ được nhấp vào
+            this.classList.add('selected-category');
+        });
+    });
+});
+</script>
    <!-- inject:js-->
    <script src="assets/vendor_assets/js/jquery/jquery-3.5.1.min.js"></script>
    <script src="assets/vendor_assets/js/jquery/jquery-ui.js"></script>
