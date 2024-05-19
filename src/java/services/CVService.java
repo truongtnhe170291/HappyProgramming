@@ -27,7 +27,7 @@ public class CVService {
         CV c = cvDao.getCVByUserName(cv.getUserName());
         if( c != null){
             if(cvDao.updateCV(cv, c.getCvId())){
-                return c;
+                return cvDao.getCVByUserName(cv.getUserName());
             }
         }else{
             if(cvDao.addCV(cv)){

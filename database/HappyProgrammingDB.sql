@@ -27,7 +27,7 @@ create table Accounts(
 	[pass_word] varchar(200) not null,
 	dob date,
 	sex bit,
-	[address] varchar(200),
+	[address] nvarchar(200),
 	phone varchar(100),
 	role_id int foreign key references Roles(role_id),
 	status_id int foreign key references AccountStatuses(status_id)
@@ -102,7 +102,7 @@ create table CV(
 	full_name nvarchar(100),
 	dob date,
 	sex bit,
-	[address] varchar(200),
+	[address] nvarchar(200),
 	profession nvarchar(200),
 	profession_intro nvarchar(1000),
 	achievement_description nvarchar(1000),
