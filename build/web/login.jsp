@@ -73,7 +73,7 @@
                               <h6>Sign in</h6>
                            </div>
                         </div>
-                         <form action="home" method="post" >
+                         <form action="login" method="post" >
                         <div class="card-body">
                            <div class="edit-profile__body">
                               <div class="form-group mb-25">
@@ -103,37 +103,11 @@
                               </div>
                            </div>
                         </div>
-                             ${mess}
+                            
                         </form>
-                        <div class="px-20">
-                           <p class="social-connector social-connector__admin text-center">
-                              <span>Or</span>
-                           </p>
-                           <div class="button-group d-flex align-items-center justify-content-center">
-                              <ul class="admin-socialBtn">
-                                 <li>
-                                    <button class="btn text-dark google">
-                                       <img class="svg" src="img/google-Icon.svg" alt="img" />
-                                    </button>
-                                 </li>
-                                 <li>
-                                    <button class=" radius-md wh-48 content-center facebook">
-                                       <i class="uil uil-facebook-f"></i>
-                                    </button>
-                                 </li>
-                                 <li>
-                                    <button class="radius-md wh-48 content-center twitter">
-                                       <i class="uil uil-twitter"></i>
-                                    </button>
-                                 </li>
-                                 <li>
-                                    <button class="radius-md wh-48 content-center github">
-                                       <i class="uil uil-github"></i>
-                                    </button>
-                                 </li>
-                              </ul>
+                       <div class="button-group align-items-center justify-content-center color-ruby">
+                                    ${mess}
                            </div>
-                        </div>
                         <div class="admin-topbar">
                            <p class="mb-0">
                               Don't have an account?

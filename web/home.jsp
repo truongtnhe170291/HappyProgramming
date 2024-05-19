@@ -137,7 +137,7 @@
                                                     <div class="widget_title" data-bs-toggle="collapse"
                                                         data-bs-target="#multiCollapseExample2" role="button"
                                                         aria-expanded="true">
-                                                        <h6>Category</h6>
+                                                        <h6>Skills</h6>
                                                     </div>
                                                     <!-- Title -->
                                                     <!-- Body -->
@@ -1579,7 +1579,6 @@
                             </div>
                         </div>
                         <!-- End: .products -->
-
                     </div>
                     <footer class="footer-wrapper">
                         <div class="footer-wrapper__inside">

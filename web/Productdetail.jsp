@@ -1,6 +1,6 @@
 <%-- 
     Document   : Productdetail
-    Created on : May 18, 2024, 3:06:53 PM
+    Created on : May 19, 2024, 9:18:07 AM
     Author     : 84979
 --%>
 
@@ -53,7 +53,7 @@
 
    <link rel="stylesheet" href="assets/vendor_assets/css/wickedpicker.min.css">
 
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="style/style.css">
 
    <!-- endinject -->
 
@@ -61,7 +61,11 @@
 
    <!-- Fonts -->
    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
+   <style>
+       .Comment{
+           transform: translateY(-200px);
+       }
+   </style>
 </head>
 
 <body class="layout-light side-menu">
@@ -281,18 +285,23 @@
                                  <span class="free"> Blue, Green, Light</span>
                               </div>
                            </div>
+                           
                            <!-- End: Product Availability -->
                            <!-- End: Product Details -->
                         </div>
                      </div>
                   </div>
                </div>
+
                <!-- End: Card -->
             </div>
-
          </div>
 
-      </div>
+ </div>
+      <div class="Comment"> <jsp:include page="Comment.jsp" />
+</div>
+
+     
       <footer class="footer-wrapper">
          <div class="footer-wrapper__inside">
             <div class="container-fluid">
