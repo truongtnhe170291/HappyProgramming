@@ -13,12 +13,12 @@
 </head>
 <body>
     <h2>Create Request</h2>
-    <form action="CreateRequestServlet" method="post">
-        <label for="gMailMentor">Mentor Email:</label>
-        <input type="email" id="gMailMentor" name="gMailMentor" required><br>
+    <form action="RequestController" method="post">
+        <label for="mentorName">Mentor Name:</label>
+        <input type="text" id="mentorName" name="mentorName" value="user2" required><br>
         
-        <label for="gMailMentee">Mentee Email:</label>
-        <input type="email" id="gMailMentee" name="gMailMentee" required><br>
+        <label for="gMailMentee">Mentee Name:</label>
+        <input type="text" id="menteeName" name="menteeName" value="user1" required><br>
         
         <label for="deadlineDate">Deadline Date:</label>
         <input type="date" id="deadlineDate" name="deadlineDate" required><br>

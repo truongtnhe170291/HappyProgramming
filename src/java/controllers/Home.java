@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controllers;
 
 import dal.SkillDAO;
@@ -20,23 +19,22 @@ import models.Skill;
  *
  * @author 84979
  */
-@WebServlet(name="Home", urlPatterns={"/home"})
-
+@WebServlet(name = "Home", urlPatterns = {"/home"})
 
 public class Home extends HttpServlet {
- 
-   
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         SkillDAO skillDAO = new SkillDAO();
         List<Skill> list = skillDAO.getSkills();
         request.setAttribute("listSkill", list);
         request.getRequestDispatcher("home.jsp").forward(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -44,12 +42,16 @@ public class Home extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
 //        processRequest(request, response);
+
+        String rawProductId = request.getParameter("product_id");
+        int productId = Integer.parseInt(rawProductId);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
