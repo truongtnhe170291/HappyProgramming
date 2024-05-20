@@ -23,6 +23,9 @@ public class CVService {
         cvDao = new CVDAO();
     }
     
+    public CV getCVByUserName(String username){
+        return cvDao.getCVByUserName(username);
+    }
     public CV createOrUpdateCV(CV cv){
         CV c = cvDao.getCVByUserName(cv.getUserName());
         if( c != null){

@@ -18,6 +18,7 @@ import services.MenteeService;
 import services.SkillService;
 import java.sql.Date;
 import java.text.ParseException;
+import models.Account;
 /**
  *
  * @author Admin
@@ -76,11 +77,12 @@ public class CVServlet extends HttpServlet {
             
             
             // lấy từ session khi người dùng đăng nhập
-            String username = "user2";
+            Account acc = (Account)request.getSession().getAttribute("user");
+            String username = acc.getUserName();
 
             // Lấy các Skill và profile
             MenteeService menteeService = MenteeService.getInstance();
-            Mentee mentee = menteeService.getCurrentMentee("user1");
+            Mentee mentee = menteeService.getCurrentMentee(username);
             SkillService skillService = SkillService.getInstance();
             request.setAttribute("skills", skillService.getSkills());
             request.setAttribute("mentee", mentee);

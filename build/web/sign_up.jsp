@@ -7,49 +7,9 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>Test</title>
+   <title>FMASTER</title>
+          <jsp:include page="style/linkcss.jsp" />
 
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-   <!-- inject:css-->
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/bootstrap/bootstrap.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/daterangepicker.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/fontawesome.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/footable.standalone.min.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/fullcalendar@5.2.0.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/jquery-jvectormap-2.0.5.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/jquery.mCustomScrollbar.min.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/leaflet.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/line-awesome.min.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/magnific-popup.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/MarkerCluster.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/MarkerCluster.Default.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/select2.min.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/slick.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/star-rating-svg.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/trumbowyg.min.css">
-
-   <link rel="stylesheet" href="assets/vendor_assets/css/wickedpicker.min.css">
-
-   <link rel="stylesheet" href="style/style.css">
-
-   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.0/css/line.css">
 </head>
 
 <body>
@@ -115,30 +75,30 @@
             </div>
         </div>
         <div class="form-group mb-20">
-            <label for="">fullname</label>
+            <label>fullname</label>
             <input type="text" class="form-control" id="username" name="fullname" placeholder="BUI THI A">
         </div>
         <div class="form-group mb-20">
-            <label for="">phone number</label>
+            <label>phone number</label>
             <input type="tel" class="form-control" id="tel" name="tel">
         </div>
         <div class="form-group mb-20">
-            <label for="">Date Of Birth</label>
+            <label>Date Of Birth</label>
             <input type="date" class="form-control" id="Dob" name="Dob">
         </div>
         <div class="form-group mb-20">
-            <label for="">sex:</label>
+            <label>sex:</label>
             <select name="sex">
                 <option value="male">male</option>
                 <option value="female">female</option>
             </select>
         </div>
          <div class="form-group mb-20">
-            <label for="">Address</label>
+            <label>Address</label>
             <input type="text" class="form-control" id="Address" name="Address">
         </div>
             <div class="form-group mb-20">
-               <label for="">Role</label>
+               <label>Role</label>
                <input type="number" class="form-control hide-role" id="role" name="role" readonly>
             </div>
         </div>
@@ -165,7 +125,6 @@
                </div><!-- End: .col-xl-5 -->
             </div>
          </div>
-      </div><!-- End: .admin-element  -->
 
  
    </main>
@@ -215,97 +174,8 @@
     });
 </script>
 
-   <script src="assets/vendor_assets/js/jquery/jquery-3.5.1.min.js"></script>
+           <jsp:include page="style/linkJS.jsp" />
 
-   <script src="assets/vendor_assets/js/jquery/jquery-ui.js"></script>
-
-   <script src="assets/vendor_assets/js/bootstrap/popper.js"></script>
-
-   <script src="assets/vendor_assets/js/bootstrap/bootstrap.min.js"></script>
-
-   <script src="assets/vendor_assets/js/moment/moment.min.js"></script>
-
-   <script src="assets/vendor_assets/js/accordion.js"></script>
-
-   <script src="assets/vendor_assets/js/apexcharts.min.js"></script>
-
-   <script src="assets/vendor_assets/js/autoComplete.js"></script>
-
-   <script src="assets/vendor_assets/js/Chart.min.js"></script>
-
-   <script src="assets/vendor_assets/js/daterangepicker.js"></script>
-
-   <script src="assets/vendor_assets/js/drawer.js"></script>
-
-   <script src="assets/vendor_assets/js/dynamicBadge.js"></script>
-
-   <script src="assets/vendor_assets/js/dynamicCheckbox.js"></script>
-
-   <script src="assets/vendor_assets/js/footable.min.js"></script>
-
-   <script src="assets/vendor_assets/js/fullcalendar@5.2.0.js"></script>
-
-   <script src="assets/vendor_assets/js/google-chart.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery.countdown.min.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery.filterizr.min.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery.magnific-popup.min.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery.peity.min.js"></script>
-
-   <script src="assets/vendor_assets/js/jquery.star-rating-svg.min.js"></script>
-
-   <script src="assets/vendor_assets/js/leaflet.js"></script>
-
-   <script src="assets/vendor_assets/js/leaflet.markercluster.js"></script>
-
-   <script src="assets/vendor_assets/js/loader.js"></script>
-
-   <script src="assets/vendor_assets/js/message.js"></script>
-
-   <script src="assets/vendor_assets/js/moment.js"></script>
-
-   <script src="assets/vendor_assets/js/muuri.min.js"></script>
-
-   <script src="assets/vendor_assets/js/notification.js"></script>
-
-   <script src="assets/vendor_assets/js/popover.js"></script>
-
-   <script src="assets/vendor_assets/js/select2.full.min.js"></script>
-
-   <script src="assets/vendor_assets/js/slick.min.js"></script>
-
-   <script src="assets/vendor_assets/js/trumbowyg.min.js"></script>
-
-   <script src="assets/vendor_assets/js/wickedpicker.min.js"></script>
-
-   <script src="assets/theme_assets/js/apexmain.js"></script>
-
-   <script src="assets/theme_assets/js/charts.js"></script>
-
-   <script src="assets/theme_assets/js/drag-drop.js"></script>
-
-   <script src="assets/theme_assets/js/footable.js"></script>
-
-   <script src="assets/theme_assets/js/full-calendar.js"></script>
-
-   <script src="assets/theme_assets/js/googlemap-init.js"></script>
-
-   <script src="assets/theme_assets/js/icon-loader.js"></script>
-
-   <script src="assets/theme_assets/js/jvectormap-init.js"></script>
-
-   <script src="assets/theme_assets/js/leaflet-init.js"></script>
-
-   <script src="assets/theme_assets/js/main.js"></script>
-
-   <!-- endinject-->
 </body>
 
 </html>
