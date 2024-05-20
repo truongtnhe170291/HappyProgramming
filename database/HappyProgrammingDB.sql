@@ -53,6 +53,7 @@ GO
 create table Skills(
 	skill_id int identity(1,1) primary key,
 	skill_name nvarchar(200) not null,
+	img nvarchar(300),
 	[description] nvarchar(600),
 	[status] bit
 )
@@ -157,9 +158,10 @@ INSERT INTO Managers (manager_name) VALUES ('user3');
 GO
 
 -- Insert into Skills
-INSERT INTO Skills (skill_name, [description], [status]) VALUES ('Java Programming', 'Java development skills', 1);
-INSERT INTO Skills (skill_name, [description], [status]) VALUES ('Database Management', 'Database administration and management', 1);
-INSERT INTO Skills (skill_name, [description], [status]) VALUES ('Web Development', 'HTML, CSS, JavaScript skills', 1);
+INSERT INTO Skills (skill_name,img, [description], [status]) VALUES 
+('Java Programming','default.jpg', 'Java development skills', 1),
+('Database Management','default.jpg', 'Database administration and management', 1),
+('Web Development','default.jpg', 'HTML, CSS, JavaScript skills', 1)
 GO
 
 -- Insert into MentorSkills
