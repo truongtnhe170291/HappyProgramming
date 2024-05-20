@@ -11,11 +11,17 @@ package models;
 public class Skill {
     private int skillID;
     private String skillName;
+    private String description;
+    private int status;
 
-    public Skill(int skillID, String skillName) {
+    public Skill(int skillID, String skillName, String description, int status) {
         this.skillID = skillID;
         this.skillName = skillName;
+        this.description = description;
+        this.status = status;
     }
+    
+    
 
     public Skill() {
     }
@@ -34,6 +40,22 @@ public class Skill {
 
     public void setSkillName(String skillName) {
         this.skillName = skillName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
