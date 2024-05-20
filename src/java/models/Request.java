@@ -7,62 +7,62 @@ package models;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Request {
-    private int requestID;
-    private String gMailMentor;
-    private String gMailMentee;
-    private Date deadlineDate;
+    private int requestId;
+    private String mentorName;
+    private String menteeName;
+    private LocalDate deadlineDate;
     private String title;
     private String description;
-    private boolean status;
-    private Time deadlineHour;
+    private int statusId;
+    private java.time.LocalTime deadlineHour;
 
     // Default constructor
     public Request() {}
 
-    // Parameterized constructor
-    public Request(int requestID, String gMailMentor, String gMailMentee, Date deadlineDate, String title, String description, boolean status, Time deadlineHour) {
-        this.requestID = requestID;
-        this.gMailMentor = gMailMentor;
-        this.gMailMentee = gMailMentee;
+    public Request(int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
+        this.requestId = requestId;
+        this.mentorName = mentorName;
+        this.menteeName = menteeName;
         this.deadlineDate = deadlineDate;
         this.title = title;
         this.description = description;
-        this.status = status;
+        this.statusId = statusId;
         this.deadlineHour = deadlineHour;
     }
 
-    // Getters and Setters
-    public int getRequestID() {
-        return requestID;
+    public int getRequestId() {
+        return requestId;
     }
 
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
-    public String getGMailMentor() {
-        return gMailMentor;
+    public String getMentorName() {
+        return mentorName;
     }
 
-    public void setGMailMentor(String gMailMentor) {
-        this.gMailMentor = gMailMentor;
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
     }
 
-    public String getGMailMentee() {
-        return gMailMentee;
+    public String getMenteeName() {
+        return menteeName;
     }
 
-    public void setGMailMentee(String gMailMentee) {
-        this.gMailMentee = gMailMentee;
+    public void setMenteeName(String menteeName) {
+        this.menteeName = menteeName;
     }
 
-    public Date getDeadlineDate() {
+    public LocalDate getDeadlineDate() {
         return deadlineDate;
     }
 
-    public void setDeadlineDate(Date deadlineDate) {
+    public void setDeadlineDate(LocalDate deadlineDate) {
         this.deadlineDate = deadlineDate;
     }
 
@@ -82,33 +82,27 @@ public class Request {
         this.description = description;
     }
 
-    public boolean isStatus() {
-        return status;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
-    public Time getDeadlineHour() {
+    public LocalTime getDeadlineHour() {
         return deadlineHour;
     }
 
-    public void setDeadlineHour(Time deadlineHour) {
+    public void setDeadlineHour(LocalTime deadlineHour) {
         this.deadlineHour = deadlineHour;
     }
 
+    
+
     @Override
     public String toString() {
-        return "Request{" +
-                "requestID=" + requestID +
-                ", gMailMentor='" + gMailMentor + '\'' +
-                ", gMailMentee='" + gMailMentee + '\'' +
-                ", deadlineDate=" + deadlineDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", deadlineHour=" + deadlineHour +
-                '}';
+        return "Request{" + "requestId=" + requestId + ", mentorName=" + mentorName + ", menteeName=" + menteeName + ", deadlineDate=" + deadlineDate + ", title=" + title + ", description=" + description + ", statusId=" + statusId + ", deadlineHour=" + deadlineHour + '}';
     }
+
 }
