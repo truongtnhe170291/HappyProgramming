@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import models.Account;
+import models.CV;
+import services.CVService;
+import services.SkillService;
 
 /**
  *
@@ -65,7 +68,13 @@ public class UpdateAccountServlet extends HttpServlet {
         
         Account curentAccount = (Account) session.getAttribute("user");
         Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-        
+        CVService cvService = CVService.getInstance();
+        CV cv = cvService.getCVByUserName(curentAccount.getUserName());
+        if(cv != null){
+            SkillService skillService = SkillService.getInstance();
+            request.setAttribute("skills", skillService.getSkills());
+            request.setAttribute("cv", cv);
+        }
         request.setAttribute("user", a);
         request.getRequestDispatcher("user_info.jsp").forward(request, response);
     }

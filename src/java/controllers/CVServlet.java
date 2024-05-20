@@ -19,6 +19,7 @@ import services.SkillService;
 import java.sql.Date;
 import java.text.ParseException;
 import models.Account;
+import services.AccountService;
 /**
  *
  * @author Admin
@@ -81,17 +82,16 @@ public class CVServlet extends HttpServlet {
             String username = acc.getUserName();
 
             // Lấy các Skill và profile
-            MenteeService menteeService = MenteeService.getInstance();
-            Mentee mentee = menteeService.getCurrentMentee(username);
+            AccountService accountService = AccountService.getInstance();
+            // lấy account từ session
             SkillService skillService = SkillService.getInstance();
             request.setAttribute("skills", skillService.getSkills());
-            request.setAttribute("mentee", mentee);
+            request.setAttribute("user", accountService.getAccount(acc.getUserName(), acc.getPassword()));
 
             CV c = new CV(0, gmail, username, fullname, java.sql.Date.valueOf(dob),sex , address, profession, professionIntro, achievementDescription, serviceDescription, skills);
             CVService cvService = CVService.getInstance();
             CV newCv = cvService.createOrUpdateCV(c);
             if (newCv!=null) {
-                System.out.println("ok");
                 request.setAttribute("cv", newCv);
                 request.getRequestDispatcher("user_info.jsp").forward(request, response);
             }else{
