@@ -29,19 +29,18 @@ create table Accounts(
 	sex bit,
 	[address] nvarchar(200),
 	phone varchar(100),
+	avatar varchar(250),
 	role_id int foreign key references Roles(role_id),
 	status_id int foreign key references AccountStatuses(status_id)
 )
 GO
 create table Mentees(
 	mentee_name varchar(200) foreign key references Accounts([user_name]),
-	avatar varchar(250),
 	primary key (mentee_name)
 )
 GO
 create table Mentors(
 	mentor_name varchar(200) foreign key references Accounts([user_name]),
-	avatar varchar(250),
 	primary key (mentor_name)
 )
 GO
@@ -63,12 +62,12 @@ create table MentorSkills(
 )
 GO
 create table FeedBacks(
-	feedback_id int identity(1,1) primary key,
 	mentor_name varchar(200) foreign key references Mentors(mentor_name),
 	mentee_name varchar(200) foreign key references Mentees(mentee_name),
 	star int,
 	comment nvarchar(1000),
 	time_feedback date,
+	primary key (mentor_name, mentee_name)
 )
 GO
 create table RequestStatuses(
@@ -116,97 +115,112 @@ create table CVSkills(
 )
 
 GO
--- Thêm dữ liệu vào bảng AccountStatuses
-INSERT INTO AccountStatuses (status_name) VALUES
+USE HappyProgrammingDB;
+GO
+
+-- Insert rows into AccountStatuses
+INSERT INTO AccountStatuses (status_name) VALUES 
 ('Active'),
 ('Inactive'),
 ('Pending'),
-('Blocked'),
-('Suspended');
+('Suspended'),
+('Deleted');
 GO
--- Thêm dữ liệu vào bảng Roles
-INSERT INTO Roles (role_name) VALUES
-('Mentee'),
+
+-- Insert rows into Roles
+INSERT INTO Roles (role_name) VALUES 
+('Admin'),
 ('Mentor'),
-('Manager');
+('Mentee'),
+('Manager'),
+('User');
 GO
--- Thêm dữ liệu vào bảng Accounts
-INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, role_id, status_id) VALUES
-('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, 'Address 1', '1234567890', 1, 1),
-('user2', 'user2@gmail.com', 'User Two', 'password2', '1992-02-02', 0, 'Address 2', '2345678901', 2, 1),
-('user3', 'user3@gmail.com', 'User Three', 'password3', '1994-03-03', 1, 'Address 3', '3456789012', 3, 1),
-('user4', 'user4@gmail.com', 'User Four', 'password4', '1996-04-04', 0, 'Address 4', '4567890123', 1, 2),
-('user5', 'user5@gmail.com', 'User Five', 'password5', '1998-05-05', 1, 'Address 5', '5678901234', 2, 2);
+
+-- Insert rows into Accounts
+INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES 
+('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'avatar1.jpg', 2, 1),
+('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '2345678901', 'avatar2.jpg', 2, 2),
+('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '3456789012', 'avatar3.jpg', 3, 3),
+('user4', 'user4@gmail.com', 'User Four', 'password4', '1993-04-04', 0, '101 Pine St', '4567890123', 'avatar4.jpg', 2, 4),
+('user5', 'user5@gmail.com', 'User Five', 'password5', '1994-05-05', 1, '202 Birch St', '5678901234', 'avatar5.jpg', 3, 5);
 GO
--- Thêm dữ liệu vào bảng Mentees
-INSERT INTO Mentees (mentee_name, avatar) VALUES
-('user1', 'avatar1.png'),
-('user4', 'avatar4.png');
+
+-- Insert rows into Mentees
+INSERT INTO Mentees (mentee_name) VALUES 
+('user3'),
+('user5')
+
 GO
--- Thêm dữ liệu vào bảng Mentors
-INSERT INTO Mentors (mentor_name, avatar) VALUES
-('user2', 'avatar2.png'),
-('user5', 'avatar5.png');
+
+-- Insert rows into Mentors
+INSERT INTO Mentors (mentor_name) VALUES 
+('user1'),
+('user2'),
+('user4')
 GO
--- Thêm dữ liệu vào bảng Managers
-INSERT INTO Managers (manager_name) VALUES
-('user3');
+
+-- Insert rows into Managers
+
+
+
+
+-- Insert rows into Skills
+INSERT INTO Skills (skill_name) VALUES 
+('Java'),
+('Python'),
+('SQL'),
+('HTML'),
+('CSS');
 GO
--- Thêm dữ liệu vào bảng Skills
-INSERT INTO Skills (skill_name) VALUES
-('Java Programming'),
-('Database Management'),
-('Web Development'),
-('Data Analysis'),
-('Machine Learning');
-GO
--- Thêm dữ liệu vào bảng MentorSkills
-INSERT INTO MentorSkills (mentor_name, skill_id, [rate]) VALUES
-('user2', 1, 4.5),
+
+-- Insert rows into MentorSkills
+INSERT INTO MentorSkills (mentor_name, skill_id, [rate]) VALUES 
+('user1', 1, 4.5),
 ('user2', 2, 4.0),
-('user5', 3, 5.0),
-('user5', 4, 4.2),
-('user5', 5, 4.8);
+('user4', 4, 3.5)
 GO
--- Thêm dữ liệu vào bảng FeedBacks
-INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES
-('user2', 'user1', 5, 'Great mentor!', '2024-01-01'),
-('user2', 'user4', 4, 'Very helpful.', '2024-02-01'),
-('user5', 'user1', 5, 'Excellent support.', '2024-03-01'),
-('user5', 'user4', 3, 'Good, but can improve.', '2024-04-01'),
-('user2', 'user1', 5, 'Fantastic mentor!', '2024-05-01');
+
+-- Insert rows into FeedBacks
+INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
+('user1', 'user3', 5, 'Great mentor!', '2024-05-01'),
+('user2', 'user5', 4, 'Very helpful.', '2024-05-02')
 GO
--- Thêm dữ liệu vào bảng RequestStatuses
-INSERT INTO RequestStatuses (status_name) VALUES
+
+-- Insert rows into RequestStatuses
+INSERT INTO RequestStatuses (status_name) VALUES 
 ('Open'),
-('Processing'),
-('Closed');
+('In Progress'),
+('Closed'),
+('Cancelled'),
+('Pending Review');
 GO
--- Thêm dữ liệu vào bảng RequestsFormMentee
-INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, title, [description], status_id, deadline_hour) VALUES
-('user2', 'user1', '2024-06-01', 'Learn Java', 'Need to learn Java basics', 1, '12:00:00'),
-('user2', 'user4', '2024-06-10', 'Database Course', 'Introduction to databases', 1, '14:00:00'),
-('user5', 'user1', '2024-07-01', 'Web Dev Project', 'Help with web development', 1, '16:00:00'),
-('user5', 'user4', '2024-07-10', 'Data Analysis', 'Data analysis techniques', 1, '10:00:00'),
-('user2', 'user1', '2024-08-01', 'Advanced Java', 'Advanced Java programming', 1, '18:00:00');
+
+-- Insert rows into RequestsFormMentee
+INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, title, [description], status_id, deadline_hour) VALUES 
+('user1', 'user3', '2024-06-01', 'Java Basics', 'Need help with Java basics', 1, '12:00:00'),
+('user2', 'user5', '2024-06-02', 'Python Advanced', 'Guidance on advanced Python topics', 2, '14:00:00'),
+('user4', 'user1', '2024-06-04', 'HTML and CSS', 'Assistance with web design', 4, '18:00:00')
 GO
--- Thêm dữ liệu vào bảng RequestSkills
-INSERT INTO RequestSkills (skill_id, request_id) VALUES
+
+-- Insert rows into RequestSkills
+INSERT INTO RequestSkills (skill_id, request_id) VALUES 
 (1, 1),
 (2, 2),
 (3, 3),
 (4, 4),
-(1, 5);
+(5, 5);
 GO
--- Thêm dữ liệu vào bảng CV
-INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description) VALUES
-('user2', 'user2@gmail.com', 'User Two', '1992-02-02', 0, 'Address 2', 'Java Developer', 'Experienced Java Developer', 'Developed several Java applications', 'Provides Java training'),
-('user5', 'user5@gmail.com', 'User Five', '1998-05-05', 1, 'Address 5', 'Web Developer', 'Expert in web technologies', 'Built numerous websites', 'Offers web development services');
+
+-- Insert rows into CV
+INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description) VALUES 
+('user1', 'user1@gmail.com', 'User One', '1990-01-01', 1, '123 Main St', 'Software Engineer', 'Experienced in Java and Python', 'Developed several applications', 'Offering mentoring in programming'),
+('user2', 'user2@gmail.com', 'User Two', '1991-02-02', 0, '456 Elm St', 'Data Scientist', 'Skilled in data analysis and machine learning', 'Published research papers', 'Offering mentoring in data science'),
+('user4', 'user4@gmail.com', 'User Four', '1993-04-04', 0, '101 Pine St', 'Web Developer', 'Proficient in HTML, CSS, and JavaScript', 'Designed several websites', 'Offering mentoring in web development')
 GO
--- Thêm dữ liệu vào bảng CVSkills
-INSERT INTO CVSkills (skill_id, cv_id) VALUES
+
+-- Insert rows into CVSkills
+INSERT INTO CVSkills (skill_id, cv_id) VALUES 
 (1, 1),
-(2, 1),
-(3, 2),
-(4, 2),
-(5, 2);
+(2, 2),
+(3, 3),
+

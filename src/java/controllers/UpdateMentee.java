@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Mentee;
 import dal.MenteeDAO;
+import models.Account;
+import models.CV;
+import services.CVService;
 import services.MenteeService;
 import services.SkillService;
 
@@ -63,10 +66,22 @@ public class UpdateMentee extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         MenteeService menteeService = MenteeService.getInstance();
-        Mentee mentee = menteeService.getCurrentMentee("user1");
+        //get account from session
+        Account acc = (Account)request.getSession().getAttribute("user");
+        Mentee mentee = menteeService.getCurrentMentee(acc.getUserName());
+        if(mentee != null){
+            System.out.println("OK");
+            request.setAttribute("mentee", mentee);
+        }
         SkillService skillService = SkillService.getInstance();
+        CVService cvService = CVService.getInstance();
+        CV cv = cvService.getCVByUserName(acc.getUserName());
+        if(cv != null){
+            request.setAttribute("cv", cv);
+        }
+        
         request.setAttribute("skills", skillService.getSkills());
-        request.setAttribute("mentee", mentee);
+        
         request.getRequestDispatcher("user_info.jsp").forward(request, response);
     }
 

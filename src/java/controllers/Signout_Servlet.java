@@ -5,7 +5,6 @@
 
 package controllers;
 
-import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import models.Account;
-import services.AccountService;
 
 /**
  *
- * @author DIEN MAY XANH
- */@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+ * @author Admin
+ */
+@WebServlet(name="Signout_Servlet", urlPatterns={"/signout"})
+public class Signout_Servlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +35,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("<title>Servlet Signout_Servlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Signout_Servlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +55,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        request.getSession().removeAttribute("user");
+        response.sendRedirect("login.jsp");
     } 
 
     /** 
@@ -70,26 +69,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        PrintWriter pr = response.getWriter();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        Account acc;
-        AccountService accountService = AccountService.getInstance();
-        acc = accountService.getAccount(username, password);
-
-        try {
-            if (acc == null) {
-                request.setAttribute("mess", "Invalid username or password");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            } else {
-                request.getSession().setAttribute("user", acc);
-                response.sendRedirect("home");
-            }
-        } catch (Exception e) {
-            request.setAttribute("mess", "An error occurred while processing your request");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
+        processRequest(request, response);
     }
 
     /** 

@@ -108,7 +108,7 @@
                                                         <i class="uil uil-bell"></i> Help</a>
                                                 </li>
                                             </ul>
-                                            <a href="login.jsp" class="nav-author__signout">
+                                            <a href="signout" class="nav-author__signout">
                                                 <i class="uil uil-sign-out-alt"></i> Sign Out</a>
                                         </div>
                                     </div>

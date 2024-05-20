@@ -41,8 +41,8 @@ public class FeedBackDAO {
         ps = con.prepareStatement(query);
         rs = ps.executeQuery();
           while(rs.next()){
-                FeedBack f = new FeedBack(rs.getInt(1), rs.getString(2), rs.getString(3),
-                                          rs.getInt(4), rs.getString(5), rs.getDate(6));
+                FeedBack f = new FeedBack(rs.getString(1), rs.getString(2),
+                                          rs.getInt(3), rs.getString(4), rs.getDate(5));
                 list.add(f);
             }
     } catch (Exception e) {
@@ -111,5 +111,6 @@ public String deleteFeedBack(int feedbackID) {
             System.out.println(s.toString());
         }
     }
+ 
 
 }
