@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/dal/AccountDAO.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/web/user_info.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/dal/MenteeDAO.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/web/sidebar.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/UpdateAccountServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/LoginServlet.java</file>
+        </group>
     </open-files>
 </project-private>
