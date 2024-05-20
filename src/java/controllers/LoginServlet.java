@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Account;
 import services.AccountService;
 
@@ -71,6 +72,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         PrintWriter pr = response.getWriter();
+        HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         Account acc;
@@ -82,7 +84,7 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("mess", "Invalid username or password");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                request.getSession().setAttribute("user", acc);
+                session.setAttribute("user", acc);
                 response.sendRedirect("home");
             }
         } catch (Exception e) {

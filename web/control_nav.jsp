@@ -87,7 +87,7 @@
                                         <div class="nav-author__options">
                                             <ul>
                                                 <li>
-                                                    <a href="updatementee">
+                                                    <a href="UpdateAccountServlet">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
                                                 <li>

@@ -12,6 +12,7 @@ public class Account {
     private boolean sex;
     private String address;
     private String phone;
+    private String avatar;
     private int roleId;
     private int statusId;
 
@@ -31,6 +32,28 @@ public class Account {
         this.statusId = statusId;
     }
 
+    public Account(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, String avatar, int roleId, int statusId) {
+        this.userName = userName;
+        this.gmail = gmail;
+        this.fullName = fullName;
+        this.password = password;
+        this.dob = dob;
+        this.sex = sex;
+        this.address = address;
+        this.phone = phone;
+        this.avatar = avatar;
+        this.roleId = roleId;
+        this.statusId = statusId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    
     public String getUserName() {
         return userName;
     }

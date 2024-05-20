@@ -41,6 +41,7 @@ create table Mentees(
 GO
 create table Mentors(
 	mentor_name varchar(200) foreign key references Accounts([user_name]),
+	rate float,
 	primary key (mentor_name)
 )
 GO
@@ -51,13 +52,14 @@ create table Managers(
 GO
 create table Skills(
 	skill_id int identity(1,1) primary key,
-	skill_name nvarchar(200) not null
+	skill_name nvarchar(200) not null,
+	[description] nvarchar(600),
+	[status] bit
 )
 GO
 create table MentorSkills(
 	mentor_name varchar(200) foreign key references Mentors(mentor_name),
 	skill_id int foreign key references Skills(skill_id),
-	[rate] float,
 	primary key (mentor_name, skill_id)
 )
 GO
@@ -118,109 +120,87 @@ GO
 USE HappyProgrammingDB;
 GO
 
--- Insert rows into AccountStatuses
-INSERT INTO AccountStatuses (status_name) VALUES 
-('Active'),
-('Inactive'),
-('Pending'),
-('Suspended'),
-('Deleted');
+-- Insert into AccountStatuses
+INSERT INTO AccountStatuses (status_name) VALUES ('Active');
+INSERT INTO AccountStatuses (status_name) VALUES ('Inactive');
+INSERT INTO AccountStatuses (status_name) VALUES ('Pending');
 GO
 
--- Insert rows into Roles
-INSERT INTO Roles (role_name) VALUES 
-('Admin'),
-('Mentor'),
-('Mentee'),
-('Manager'),
-('User');
+-- Insert into Roles
+INSERT INTO Roles (role_name) VALUES ('Admin');
+INSERT INTO Roles (role_name) VALUES ('Mentee');
+INSERT INTO Roles (role_name) VALUES ('Mentor');
 GO
 
--- Insert rows into Accounts
-INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES 
-('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'avatar1.jpg', 2, 1),
-('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '2345678901', 'avatar2.jpg', 2, 2),
-('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '3456789012', 'avatar3.jpg', 3, 3),
-('user4', 'user4@gmail.com', 'User Four', 'password4', '1993-04-04', 0, '101 Pine St', '4567890123', 'avatar4.jpg', 2, 4),
-('user5', 'user5@gmail.com', 'User Five', 'password5', '1994-05-05', 1, '202 Birch St', '5678901234', 'avatar5.jpg', 3, 5);
+-- Insert into Accounts
+INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id)
+VALUES ('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'avatar1.png', 2, 1);
+INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id)
+VALUES ('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '0987654321', 'avatar2.png', 2, 2);
+INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id)
+VALUES ('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '1112223333', 'avatar3.png', 3, 3);
 GO
 
--- Insert rows into Mentees
-INSERT INTO Mentees (mentee_name) VALUES 
-('user3'),
-('user5')
-
+-- Insert into Mentees
+INSERT INTO Mentees (mentee_name) VALUES ('user1');
+INSERT INTO Mentees (mentee_name) VALUES ('user2');
 GO
 
--- Insert rows into Mentors
-INSERT INTO Mentors (mentor_name) VALUES 
-('user1'),
-('user2'),
-('user4')
+-- Insert into Mentors
+INSERT INTO Mentors (mentor_name, rate) VALUES ('user3', 3.5);
 GO
 
--- Insert rows into Managers
-
-
-
-
--- Insert rows into Skills
-INSERT INTO Skills (skill_name) VALUES 
-('Java'),
-('Python'),
-('SQL'),
-('HTML'),
-('CSS');
+-- Insert into Managers
+INSERT INTO Managers (manager_name) VALUES ('user1');
+INSERT INTO Managers (manager_name) VALUES ('user2');
+INSERT INTO Managers (manager_name) VALUES ('user3');
 GO
 
--- Insert rows into MentorSkills
-INSERT INTO MentorSkills (mentor_name, skill_id, [rate]) VALUES 
-('user1', 1, 4.5),
-('user2', 2, 4.0),
-('user4', 4, 3.5)
+-- Insert into Skills
+INSERT INTO Skills (skill_name, [description], [status]) VALUES ('Java Programming', 'Java development skills', 1);
+INSERT INTO Skills (skill_name, [description], [status]) VALUES ('Database Management', 'Database administration and management', 1);
+INSERT INTO Skills (skill_name, [description], [status]) VALUES ('Web Development', 'HTML, CSS, JavaScript skills', 1);
 GO
 
--- Insert rows into FeedBacks
-INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
-('user1', 'user3', 5, 'Great mentor!', '2024-05-01'),
-('user2', 'user5', 4, 'Very helpful.', '2024-05-02')
+-- Insert into MentorSkills
+INSERT INTO MentorSkills (mentor_name, skill_id) VALUES ('user3', 1);
+INSERT INTO MentorSkills (mentor_name, skill_id) VALUES ('user3', 2);
+INSERT INTO MentorSkills (mentor_name, skill_id) VALUES ('user3', 3);
 GO
 
--- Insert rows into RequestStatuses
-INSERT INTO RequestStatuses (status_name) VALUES 
-('Open'),
-('In Progress'),
-('Closed'),
-('Cancelled'),
-('Pending Review');
+-- Insert into FeedBacks
+INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES ('user1', 'user3', 5, 'Excellent mentor', '2024-05-01');
+INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES ('user2', 'user3', 4, 'Very helpful', '2024-05-02');
 GO
 
--- Insert rows into RequestsFormMentee
-INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, title, [description], status_id, deadline_hour) VALUES 
-('user1', 'user3', '2024-06-01', 'Java Basics', 'Need help with Java basics', 1, '12:00:00'),
-('user2', 'user5', '2024-06-02', 'Python Advanced', 'Guidance on advanced Python topics', 2, '14:00:00'),
-('user4', 'user1', '2024-06-04', 'HTML and CSS', 'Assistance with web design', 4, '18:00:00')
+-- Insert into RequestStatuses
+INSERT INTO RequestStatuses (status_name) VALUES ('Pending');
+INSERT INTO RequestStatuses (status_name) VALUES ('Approved');
+INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
 GO
 
--- Insert rows into RequestSkills
-INSERT INTO RequestSkills (skill_id, request_id) VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
+-- Insert into RequestsFormMentee
+
+INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, title, [description], status_id, deadline_hour)
+VALUES ('user3', 'user1', '2024-06-03', 'Website Development', 'Help needed for website development', 3, '14:00:00');
 GO
 
--- Insert rows into CV
-INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description) VALUES 
-('user1', 'user1@gmail.com', 'User One', '1990-01-01', 1, '123 Main St', 'Software Engineer', 'Experienced in Java and Python', 'Developed several applications', 'Offering mentoring in programming'),
-('user2', 'user2@gmail.com', 'User Two', '1991-02-02', 0, '456 Elm St', 'Data Scientist', 'Skilled in data analysis and machine learning', 'Published research papers', 'Offering mentoring in data science'),
-('user4', 'user4@gmail.com', 'User Four', '1993-04-04', 0, '101 Pine St', 'Web Developer', 'Proficient in HTML, CSS, and JavaScript', 'Designed several websites', 'Offering mentoring in web development')
+-- Insert into RequestSkills
+INSERT INTO RequestSkills (skill_id, request_id) VALUES (1, 1);
+INSERT INTO RequestSkills (skill_id, request_id) VALUES (2, 2);
+INSERT INTO RequestSkills (skill_id, request_id) VALUES (3, 3);
 GO
 
--- Insert rows into CVSkills
-INSERT INTO CVSkills (skill_id, cv_id) VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
+-- Insert into CV
+INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description)
+VALUES ('user3', 'user3@gmail.com', 'User Three', '1992-03-03', 1, '789 Oak St', 'Web Developer', 'Specializes in front-end development', 'Created numerous responsive websites', 'Available for web development projects');
+GO
+
+-- Insert into CVSkills
+INSERT INTO CVSkills (skill_id, cv_id) VALUES (1, 1);
+INSERT INTO CVSkills (skill_id, cv_id) VALUES (2, 1);
+INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 1);
+GO
+
+
 

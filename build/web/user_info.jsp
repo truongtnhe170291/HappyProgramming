@@ -77,7 +77,7 @@
                                     <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
-                                                <form action="updatementee" method="post">
+                                                <form action="updateuser" method="post">
                                                     <div class="mt-sm-40 mb-sm-50 mt-20 mb-20">
                                                         <div class="user-tab-info-title mb-sm-40 mb-20 text-capitalize">
                                                             <h5 class="fw-500">Personal Information</h5>
@@ -103,11 +103,11 @@
 
                                                             <div class="form-group mb-25">
                                                                 <label for="name1">User name</label>
-                                                                <input type="text" class="form-control" id="name1" name="username" value="${mentee.userName}" placeholder="${mentee.userName}" readonly>
+                                                                <input type="text" class="form-control" id="name1" name="username" value="${user.userName}" placeholder="${user.userName}" readonly>
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="name1">Full Name</label>
-                                                                <input type="text" class="form-control" id="name1" name="fullname" value="${mentee.fullName}" placeholder="${mentee.fullName}">
+                                                                <input type="text" class="form-control" id="name1" name="fullname" value="${user.fullName}" placeholder="${user.fullName}">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <div class="sexOption">
@@ -115,26 +115,26 @@
                                                                         Sex
                                                                     </label>
                                                                     <select class="js-example-basic-single js-states form-control" id="sexOption" name="sex">
-                                                                        <option value="1" ${mentee.sex == '1' ? 'selected' : '1'}>Male</option>
-                                                                        <option value="0" ${mentee.sex == '0' ? 'selected' : '0'}>Female</option>>
+                                                                        <option value="1" ${user.sex == '1' ? 'selected' : '1'}>Male</option>
+                                                                        <option value="0" ${user.sex == '0' ? 'selected' : '0'}>Female</option>>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="name2">Email</label>
-                                                                <input type="email" class="form-control" id="name2" name="gmail" value="${mentee.gmail}" placeholder="${mentee.gmail}">
+                                                                <input type="email" class="form-control" id="name2" name="gmail" value="${user.gmail}" placeholder="${user.gmail}">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="dob">Date of birth</label>
-                                                                <input type="date" class="form-control" name="dob" value="${mentee.dob}">
+                                                                <input type="date" class="form-control" name="dob" value="${user.dob}">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber5">phone number</label>
-                                                                <input type="tel" class="form-control" id="phoneNumber" name="phone" value="${mentee.phone}" placeholder="${mentee.phone}">
+                                                                <input type="tel" class="form-control" id="phoneNumber" name="phone" value="${user.phone}" placeholder="${user.phone}">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="address">Address</label>
-                                                                <input type="text" class="form-control" id="address" name="address" value="${mentee.address}" placeholder="${mentee.address}">
+                                                                <input type="text" class="form-control" id="address" name="address" value="${user.address}" placeholder="${user.address}">
                                                             </div>
 
                                                             <div class="button-group d-flex pt-sm-25 justify-content-md-end justify-content-start ">

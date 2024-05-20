@@ -51,10 +51,11 @@ public class AccountDAO {
                         rs.getString(4), 
                         rs.getDate(5), 
                         rs.getBoolean(6), 
-                        rs.getString(7),
+                        rs.getString(7), 
                         rs.getString(8), 
-                        rs.getInt(9),
-                        rs.getInt(10)));
+                        rs.getString(9), 
+                        rs.getInt(10), 
+                        rs.getInt(11)));
             }
         } catch (SQLException e) {
             System.out.println("listAccount: " + e.getMessage());
@@ -86,10 +87,11 @@ public class AccountDAO {
                         rs.getString(4), 
                         rs.getDate(5), 
                         rs.getBoolean(6), 
-                        rs.getString(7),
+                        rs.getString(7), 
                         rs.getString(8), 
-                        rs.getInt(9),
-                        rs.getInt(10));
+                        rs.getString(9), 
+                        rs.getInt(10), 
+                        rs.getInt(11));
                 }
             }
         } catch (SQLException ex) {
@@ -111,6 +113,29 @@ public class AccountDAO {
             System.out.println(e);
         }
         return false;
+    }
+    
+    public void updateAccount(String username, String fullname, String dob, String sex, String address,
+            String gmail, String avatar) {
+        try {
+            String query = "UPDATE Accounts \r\n" + //
+                    "SET gmail = ?, full_name = ?, dob = ?, sex = ?, address = ?, avatar = ?\r\n"
+                    + //
+                    "Where user_name = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, gmail);
+            ps.setString(2, fullname);
+            ps.setString(3, dob);
+            ps.setString(4, sex);
+            ps.setString(5, address);
+            ps.setString(6, avatar);
+            ps.setString(7, username);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("updateAccount: " + e.getMessage());
+        }
     }
 
    public void changePasswordByEmail(Account a) {
