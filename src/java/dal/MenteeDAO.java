@@ -32,34 +32,34 @@ public class MenteeDAO {
         }
     }
 
-    public Mentee getCurrentMentee(String userName) {
-        Mentee mentee = null;
-        try {
-            String query = "SELECT * FROM Accounts a JOIN Mentees mentee ON a.user_name = mentee.mentee_name\r\n" + //
-                    "WHERE a.user_name = ?  and a.role_id = '1'";
-            con = new DBContext().connection;// mo ket noi voi sql
-            ps = con.prepareStatement(query);
-            ps.setString(1, userName);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                mentee = new Mentee(
-                        rs.getString(12),
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getDate(5),
-                        rs.getBoolean(6),
-                        rs.getString(7),
-                        rs.getString(8),
-                        rs.getInt(9),
-                        rs.getInt(10));
-            }
-        } catch (Exception e) {
-            System.out.println("getCurrentMentee: " + e.getMessage());
-        }
-        return mentee;
-    }
+//    public Mentee getCurrentMentee(String userName) {
+//        Mentee mentee = null;
+//        try {
+//            String query = "SELECT * FROM Accounts a JOIN Mentees mentee ON a.user_name = mentee.mentee_name\r\n" + //
+//                    "WHERE a.user_name = ?  and a.role_id = '1'";
+//            con = new DBContext().connection;// mo ket noi voi sql
+//            ps = con.prepareStatement(query);
+//            ps.setString(1, userName);
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                mentee = new Mentee(
+//                        rs.getString(12),
+//                        rs.getString(1),
+//                        rs.getString(2),
+//                        rs.getString(3),
+//                        rs.getString(4),
+//                        rs.getDate(5),
+//                        rs.getBoolean(6),
+//                        rs.getString(7),
+//                        rs.getString(8),
+//                        rs.getInt(9),
+//                        rs.getInt(10));
+//            }
+//        } catch (Exception e) {
+//            System.out.println("getCurrentMentee: " + e.getMessage());
+//        }
+//        return mentee;
+//    }
 
     public void updateAccountMentee(String username, String fullname, String dob, String sex, String address,
             String gmail) {

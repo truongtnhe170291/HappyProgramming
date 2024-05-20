@@ -23,7 +23,7 @@ public class MenteeService {
         menteeDAO = new MenteeDAO();
     }
     
-    public Mentee getCurrentMentee(String userName){
-        return menteeDAO.getCurrentMentee(userName);
-    }
+//    public Mentee getCurrentMentee(String userName){
+//        return menteeDAO.getCurrentMentee(userName);
+//    }
 }
