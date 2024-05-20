@@ -20,8 +20,7 @@ import services.AccountService;
 /**
  *
  * @author DIEN MAY XANH
- */
-@WebServlet(name="LoginServlet", urlPatterns={"/login"})
+ */@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
    
     /** 

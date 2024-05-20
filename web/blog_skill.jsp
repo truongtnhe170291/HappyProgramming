@@ -150,7 +150,6 @@
                         <li class="page-item"><a class="page-link" href="#">5</a></li>
                         <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
                     </ul>
-                    <!-- end: Pagination -->
                 </div>
                 <!-- end: post content -->
             </section>

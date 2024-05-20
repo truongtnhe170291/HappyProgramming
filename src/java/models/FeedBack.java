@@ -9,7 +9,7 @@ import java.sql.Date;
  * @author Admin
  */
 public class FeedBack {
-    private int feedbackID;
+
     private String mentorName, menteeName;
     private int star;
     private String comment;
@@ -25,16 +25,16 @@ public class FeedBack {
         this.timeFeedBack = timeFeedBack;
     }
 
-
-    public FeedBack(int feedbackID, String mentorName, String menteeName, int star, String comment, Date timeFeedBack) {
-        this.feedbackID = feedbackID;
-        this.mentorName = mentorName;
+    public FeedBack(String menteeName, int star, String comment, Date timeFeedBack) {
         this.menteeName = menteeName;
         this.star = star;
         this.comment = comment;
         this.timeFeedBack = timeFeedBack;
     }
+       
 
+
+   
 
     public int getStar() {
         return star;
@@ -44,13 +44,7 @@ public class FeedBack {
         this.star = star;
     }
 
-    public int getFeedbackID() {
-        return feedbackID;
-    }
-
-    public void setFeedbackID(int feedbackID) {
-        this.feedbackID = feedbackID;
-    }
+   
 
     public String getMentorName() {
         return mentorName;
@@ -88,8 +82,9 @@ public class FeedBack {
 
     @Override
     public String toString() {
-        return "FeedBack{" + "feedbackID=" + feedbackID + ", mentorName=" + mentorName + ", menteeName=" + menteeName + ", star=" + star + ", comment=" + comment + ", timeFeedBack=" + timeFeedBack + '}';
+        return "FeedBack{" + "mentorName=" + mentorName + ", menteeName=" + menteeName + ", star=" + star + ", comment=" + comment + ", timeFeedBack=" + timeFeedBack + '}';
     }
 
+   
   
 }

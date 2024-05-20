@@ -23,6 +23,11 @@ public class Skill {
         this.status = status;
     }
 
+    public Skill(int skillID, String skillName) {
+        this.skillID = skillID;
+        this.skillName = skillName;
+    }
+
     
     public String getImg() {
         return img;
