@@ -13,15 +13,21 @@ public class Skill {
     private String skillName;
     private String img;
     private String description;
-    private int status;
+    private boolean status;
 
-    public Skill(int skillID, String skillName, String img, String description, int status) {
+    public Skill(int skillID, String skillName, String img, String description, boolean status) {
         this.skillID = skillID;
         this.skillName = skillName;
         this.img = img;
         this.description = description;
         this.status = status;
     }
+
+    public Skill(int skillID, String skillName) {
+        this.skillID = skillID;
+        this.skillName = skillName;
+    }
+    
 
     
     public String getImg() {
@@ -59,13 +65,15 @@ public class Skill {
         this.description = description;
     }
 
-    public int getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
+
+   
 
     @Override
     public String toString() {

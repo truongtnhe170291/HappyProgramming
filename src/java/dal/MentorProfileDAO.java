@@ -37,6 +37,35 @@ public class MentorProfileDAO {
             status = "Error";
         }
     }
+     
+     
+     public List<MentorProfile> getAllMentors() throws SQLException {
+    String sql = "SELECT DISTINCT c.full_name, a.avatar, a.user_name, f.avg_star " +
+                 "FROM dbo.CV c " +
+                 "INNER JOIN dbo.Accounts a ON c.mentor_name = a.user_name " +
+                 "LEFT JOIN ( " +
+                 "  SELECT mentor_name, AVG(star) AS avg_star " +
+                 "  FROM dbo.FeedBacks " +
+                 "  GROUP BY mentor_name " +
+                 ") f ON c.mentor_name = f.mentor_name;"; // Semicolon added
+
+    PreparedStatement ps = con.prepareStatement(sql);
+    ResultSet rs = ps.executeQuery();
+
+    List<MentorProfile> mentors = new ArrayList<>();
+    while (rs.next()) {
+        MentorProfile mentor = new MentorProfile();
+        mentor.setFull_name(rs.getString("full_name"));
+        mentor.setAvatar(rs.getString("avatar"));
+        mentor.setMentorName(rs.getString("user_name")); // Assuming user_name represents mentor name
+        mentor.setStar(rs.getFloat("avg_star")); // Cast to float for starAVG
+
+        mentors.add(mentor);
+    }
+
+    return mentors;
+}
+     
    public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
     String sql = "SELECT c.*, a.phone, a.avatar " +
                  "FROM CV c " +

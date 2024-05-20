@@ -37,7 +37,7 @@ public class SkillDAO{
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
-                Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getInt(4));
+                Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getBoolean(4));
                 list.add(s);
             }
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class SkillDAO{
             ps.setString(1, username);
             rs = ps.executeQuery();
             while(rs.next()){
-                Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getInt(4));
+                Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getBoolean(4));
                 list.add(s);
             }
         } catch (SQLException e) {
