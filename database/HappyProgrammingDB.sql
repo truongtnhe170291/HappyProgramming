@@ -62,12 +62,12 @@ create table MentorSkills(
 )
 GO
 create table FeedBacks(
-	feedback_id int identity(1,1) primary key,
 	mentor_name varchar(200) foreign key references Mentors(mentor_name),
 	mentee_name varchar(200) foreign key references Mentees(mentee_name),
 	star int,
 	comment nvarchar(1000),
 	time_feedback date,
+	primary key (mentor_name, mentee_name)
 )
 GO
 create table RequestStatuses(
