@@ -9,6 +9,7 @@ import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import services.AccountService;
  *
  * @author DIEN MAY XANH
  */
+@WebServlet(name="LoginServlet", urlPatterns={"/login"})
 public class LoginServlet extends HttpServlet {
    
     /** 
@@ -82,7 +84,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 request.getSession().setAttribute("user", acc);
-                response.sendRedirect("home.jsp");
+                response.sendRedirect("home");
             }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");
