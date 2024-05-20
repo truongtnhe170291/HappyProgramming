@@ -3,20 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/services/AccountService.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/CVDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/user_info.jsp</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/AccountDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/models/Request.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/services/CVService.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/CVServlet.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/UpdateMentee.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/Home.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/models/Account.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/SignUpDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/RequestDAO.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/LoginServlet.java</file>
-            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/ChangPassServlet.java</file>
+            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/Mentor.java</file>
         </group>
     </open-files>
 </project-private>
