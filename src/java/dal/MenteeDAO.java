@@ -36,7 +36,7 @@ public class MenteeDAO {
         Mentee mentee = null;
         try {
             String query = "SELECT * FROM Accounts a JOIN Mentees mentee ON a.user_name = mentee.mentee_name\r\n" + //
-                    "WHERE a.user_name = ?";
+                    "WHERE a.user_name = ?  and a.role_id = '1'";
             con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
             ps.setString(1, userName);
