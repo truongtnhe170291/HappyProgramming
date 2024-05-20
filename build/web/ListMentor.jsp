@@ -35,6 +35,7 @@
     <th>Họ và tên</th>
     <th>Tên Mentor</th>
     <th>Đánh giá trung bình</th>
+    <th>Chi tiết</th> <!-- Thêm cột mới -->
   </tr>
   
   <c:forEach items="${mentors}" var="mentor">
@@ -43,6 +44,12 @@
       <td>${mentor.full_name}</td>
       <td>${mentor.mentorName}</td>
       <td>${mentor.getStar()}</td>
+      <td> <!-- Thêm nút "View Details" -->
+        <form action="MentorProfileServlet" method="post">
+          <input type="hidden" name="mentorName" value="${mentor.mentorName}" />
+          <input type="submit" value="Xem chi tiết" />
+        </form>
+      </td>
     </tr>
   </c:forEach>
 </table>
