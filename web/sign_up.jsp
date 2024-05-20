@@ -9,7 +9,12 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>FMASTER</title>
           <jsp:include page="style/linkcss.jsp" />
-
+     <style>
+        .error-message {
+            color: red;
+            font-size: 0.875em;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,81 +40,93 @@
                <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-8">
                   <div class="edit-profile">
                      <div class="edit-profile__logos">
-                        <a href="index.jsp">
+                        <a href="homes.jsp">
                  
                         </a>
                      </div>
-                     <div class="card border-0">
-                        <div class="card-header">
-                           <div class="edit-profile__title">
-                              <h6>Sign Up</h6>
-                           </div>
+<div class="card border-0">
+        <div class="card-header">
+            <div class="edit-profile__title">
+                <h6>Sign Up</h6>
+            </div>
+        </div>
+        <form id="signupForm" action="signup" method="Post">
+            <div class="card-body">
+                <div class="edit-profile__body">
+                    <div class="form-group mb-20">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                        <div class="error-message" id="usernameError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com">
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    <div class="form-group mb-15">
+                        <label for="password-field">Password</label>
+                        <div class="position-relative">
+                            <input id="password-field" type="password" class="form-control" name="password" placeholder="Password">
+                            <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                         </div>
-                         <form action="signup" method="Post"> 
-                          
-                        <div class="card-body">
-                           <div class="edit-profile__body">
-
-    <div class="edit-profile__body">
-      
-        <div class="form-group mb-20">
-            <label for="username">username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
-        </div>
-        <div class="form-group mb-20">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com">
-        </div>
-        <div class="form-group mb-15">
-            <label for="password-field">password</label>
-            <div class="position-relative">
-                <input id="password-field" type="password" class="form-control" name="password" placeholder="Password">
-                <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+                    <div class="form-group mb-15">
+                        <label for="confirm-password-field">Confirm Password</label>
+                        <div class="position-relative">
+                            <input id="confirm-password-field" type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
+                            <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
+                        </div>
+                        <div class="error-message" id="confirmPasswordError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="BUI THI A">
+                        <div class="error-message" id="fullnameError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="tel">Phone Number</label>
+                        <input type="tel" class="form-control" id="tel" name="tel" minlength="10" maxlength="10">
+                        <div class="error-message" id="telError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="Dob">Date Of Birth</label>
+                        <input type="date" class="form-control" id="Dob" name="Dob">
+                        <div class="error-message" id="dobError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="sex">Sex:</label>
+                        <select name="sex" id="sex">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <div class="error-message" id="sexError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="Address">Address</label>
+                        <input type="text" class="form-control" id="Address" name="Address">
+                        <div class="error-message" id="addressError"></div>
+                    </div>
+                    <div class="form-group mb-20">
+                        <label for="role">Role</label>
+                        <input type="number" class="form-control hide-role" id="role" name="role" readonly>
+                    </div>
+                </div>
+                <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                    <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn" type="submit" value="Create Account">
+                </div>
             </div>
-        </div>
-        <div class="form-group mb-15">
-            <label for="password-field">confirm password</label>
-            <div class="position-relative">
-                <input id="password-field" type="password" class="form-control" name="confirm_password" placeholder="confirm_Password">
-                <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
-            </div>
-        </div>
-        <div class="form-group mb-20">
-            <label>fullname</label>
-            <input type="text" class="form-control" id="username" name="fullname" placeholder="BUI THI A">
-        </div>
-        <div class="form-group mb-20">
-            <label>phone number</label>
-            <input type="tel" class="form-control" id="tel" name="tel">
-        </div>
-        <div class="form-group mb-20">
-            <label>Date Of Birth</label>
-            <input type="date" class="form-control" id="Dob" name="Dob">
-        </div>
-        <div class="form-group mb-20">
-            <label>sex:</label>
-            <select name="sex">
-                <option value="male">male</option>
-                <option value="female">female</option>
-            </select>
-        </div>
-         <div class="form-group mb-20">
-            <label>Address</label>
-            <input type="text" class="form-control" id="Address" name="Address">
-        </div>
-            <div class="form-group mb-20">
-               <label>Role</label>
-               <input type="number" class="form-control hide-role" id="role" name="role" readonly>
-            </div>
-        </div>
-        <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-            <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type="submit" value="Create Account"/>
-        </div>
-    </div>
-</div>
-                              ${error}
-</form>
-                        </div><!-- End: .card-body -->
+            <%
+                String errorMessage = (String) request.getAttribute("error");
+                if (errorMessage != null) {
+            %>
+            <script type="text/javascript">
+                alert('<%= errorMessage %>');
+            </script>
+            <%
+                }
+            %>
+        </form>
 
  
                         <div class="admin-topbar">
@@ -139,6 +156,128 @@
    </div>
    
  <script>
+      document.getElementById('signupForm').addEventListener('submit', function(event) {
+            // Prevent form submission
+            event.preventDefault();
+
+            // Clear previous errors
+            clearErrors();
+
+            // Validate fields
+            let valid = true;
+            if (!validateUsername()) valid = false;
+            if (!validateEmail()) valid = false;
+            if (!validatePassword()) valid = false;
+            if (!validateConfirmPassword()) valid = false;
+            if (!validateFullName()) valid = false;
+            if (!validatePhoneNumber()) valid = false;
+            if (!validateDOB()) valid = false;
+            if (!validateSex()) valid = false;
+            if (!validateAddress()) valid = false;
+
+            // If all fields are valid, submit the form
+            if (valid) {
+                this.submit();
+            }
+        });
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(function(element) {
+                element.innerHTML = '';
+            });
+        }
+
+        function validateUsername() {
+            const username = document.getElementById('username').value;
+            if (!username) {
+                document.getElementById('usernameError').innerText = 'Username is required.';
+                return false;
+            }
+            return true;
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email').value;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email) {
+                document.getElementById('emailError').innerText = 'Email is required.';
+                return false;
+            } else if (!emailPattern.test(email)) {
+                document.getElementById('emailError').innerText = 'Invalid email format.';
+                return false;
+            }
+            return true;
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('password-field').value;
+            if (!password) {
+                document.getElementById('passwordError').innerText = 'Password is required.';
+                return false;
+            }
+            return true;
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('password-field').value;
+            const confirmPassword = document.getElementById('confirm-password-field').value;
+            if (!confirmPassword) {
+                document.getElementById('confirmPasswordError').innerText = 'Confirm password is required.';
+                return false;
+            } else if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').innerText = 'Passwords do not match.';
+                return false;
+            }
+            return true;
+        }
+
+        function validateFullName() {
+            const fullname = document.getElementById('fullname').value;
+            if (!fullname) {
+                document.getElementById('fullnameError').innerText = 'Full name is required.';
+                return false;
+            }
+            return true;
+        }
+
+        function validatePhoneNumber() {
+            const phoneNumber = document.getElementById('tel').value;
+            if (!phoneNumber) {
+                document.getElementById('telError').innerText = 'Phone number is required.';
+                return false;
+            } else if (phoneNumber.length !== 10) {
+                document.getElementById('telError').innerText = 'Phone number must be 10 digits.';
+                return false;
+            }
+            return true;
+        }
+
+        function validateDOB() {
+            const dob = document.getElementById('Dob').value;
+            if (!dob) {
+                document.getElementById('dobError').innerText = 'Date of birth is required.';
+                return false;
+            }
+            return true;
+        }
+
+        function validateSex() {
+            const sex = document.getElementById('sex').value;
+            if (!sex) {
+                document.getElementById('sexError').innerText = 'Sex is required.';
+                return false;
+            }
+            return true;
+        }
+
+        function validateAddress() {
+            const address = document.getElementById('Address').value;
+            if (!address) {
+                document.getElementById('addressError').innerText = 'Address is required.';
+                return false;
+            }
+            return true;
+        }
     const mainContent = document.querySelector('.main-content');
     const mentorButton = document.querySelector('.btn-17:nth-of-type(1)');
     const menteeButton = document.querySelector('.btn-17:nth-of-type(2)');

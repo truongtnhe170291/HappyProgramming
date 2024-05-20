@@ -66,7 +66,7 @@ public class MentorProfileServlet extends HttpServlet {
             List<MentorProfile> list = mentorProfileDAO.getAllMentors();
              request.setAttribute("mentors", list);
              
-             System.out.println(list.get(0).getStar());
+
              
              request.getRequestDispatcher("ListMentor.jsp").forward(request, response);
         } catch (SQLException ex) {

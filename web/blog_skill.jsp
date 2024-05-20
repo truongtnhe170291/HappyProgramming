@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Document title -->
-    <title>Fmaster</title>
+    <title>POLO | The Multi-Purpose HTML5 Template</title>
     <!-- Stylesheets & Fonts -->
     <link href="css/plugins.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -52,16 +52,6 @@
                             <li>
                                 <a id="btn-search" href="#"> <i class="icon-search"></i></a>
                             </li>
-                            <li>
-                                <div class="p-dropdown">
-                                    <a href="#"><i class="icon-globe"></i><span>EN</span></a>
-                                    <ul class="p-dropdown-content">
-                                        <li><a href="#">French</a></li>
-                                        <li><a href="#">Spanish</a></li>
-                                        <li><a href="#">English</a></li>
-                                    </ul>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                     <!--end: Header Extras-->
@@ -76,7 +66,7 @@
                             <nav>
                                 <ul>
                                     <li><a href="homes.jsp">Home</a></li>
-                                    <li class="dropdown"><a href="#">Features</a>
+                                    <li class="dropdown"><a href="detailCourse.jsp">Features</a>
                                         <ul class="dropdown-menu"> 
                                                     <li><a href="blog_skill.jsp">Mentor detail</a></li>
                                                     <li><a href="user_info.jsp">CV</a></li>                            
@@ -117,7 +107,7 @@
                     <div class="post-item border bc-general bc-music bc-economics bc-medical bc-sport bc-science">
                         <div class="post-item-wrap">
                             <div class="post-image">
-                                <a href="#">
+                                <a href="detailCourse.jsp">
                                     <img alt="" src="images/blog/12.jpg">
                                 </a>
                                 <span class="post-meta-category"><a href="">Lifestyle</a></span>
@@ -125,7 +115,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">Standard post with a single image
+                                <h2><a href="detailCourse.jsp">Standard post with a single image
                                     </a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
@@ -150,7 +140,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">Simplicity, a post with slider gallery</a></h2>
+                                <h2><a href="detailCourse.jsp">Simplicity, a post with slider gallery</a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
                             </div>
@@ -161,7 +151,7 @@
                     <div class="post-item border bc-general bc-music bc-economics">
                         <div class="post-item-wrap">
                             <div class="post-image">
-                                <a href="#">
+                                <a href="detailCourse.jsp">
                                     <img alt="" src="images/blog/17.jpg">
                                 </a>
                                 <span class="post-meta-category"><a href="">Science</a></span>
@@ -169,7 +159,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">Standard post with a single image
+                                <h2><a href="detailCourse.jsp">Standard post with a single image
                                     </a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
@@ -181,7 +171,7 @@
                     <div class="post-item border bc-general bc-economics">
                         <div class="post-item-wrap">
                             <div class="post-image">
-                                <a href="#">
+                                <a href="detailCourse.jsp">
                                     <img alt="" src="images/blog/18.jpg">
                                 </a>
                                 <span class="post-meta-category"><a href="">Science</a></span>
@@ -189,7 +179,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">Standard post with a single image
+                                <h2><a href="detailCourse.jsp">Standard post with a single image
                                     </a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
@@ -209,7 +199,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">This is a example post with YouTube</a></h2>
+                                <h2><a href="detailCourse.jsp">This is a example post with YouTube</a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More </a>
                             </div>
@@ -233,7 +223,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">Simplicity, a post with slider gallery</a></h2>
+                                <h2><a href="detailCourse.jsp">Simplicity, a post with slider gallery</a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
                             </div>
@@ -244,7 +234,7 @@
                     <div class="post-item border bc-economics bc-medical">
                         <div class="post-item-wrap">
                             <div class="post-image">
-                                <a href="#">
+                                <a href="detailCourse.jsp">
                                     <img alt="" src="images/blog/14.jpg">
                                 </a>
                                 <span class="post-meta-category"><a href="">Lifestyle</a></span>
@@ -252,7 +242,7 @@
                             <div class="post-item-description">
                                 <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
                                 <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33 Comments</a></span>
-                                <h2><a href="#">Standard post with a single image
+                                <h2><a href="detailCourse.jsp">Standard post with a single image
                                     </a></h2>
                                 <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
                                 <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
