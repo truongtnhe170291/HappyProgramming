@@ -79,7 +79,7 @@
                                         <li><a href="homes.jsp">Home</a></li>
                                         <li class="dropdown"><a href="#">Features</a>
                                             <ul class="dropdown-menu"> 
-                                                <li><a href="blog_skill.jsp">Mentor detail</a></li>
+                                                <li><a href="skill">Skills</a></li>
                                                 <li><a href="user_info.jsp">CV</a></li>                            
                                             </ul>
                                         </li>

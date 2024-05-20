@@ -22,7 +22,7 @@ import models.Skill;
  *
  * @author Admin
  */
-@WebServlet(name="SkillServlet", urlPatterns={"/SkillServlet"})
+@WebServlet(name="SkillServlet", urlPatterns={"/skill"})
 public class SkillServlet extends HttpServlet {
    
     /** 
@@ -63,7 +63,7 @@ public class SkillServlet extends HttpServlet {
         SkillDAO skillDAO = new SkillDAO();
         List<Skill> list = skillDAO.getSkills();
         request.setAttribute("listSkill", list);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
     } 
 
     /** 

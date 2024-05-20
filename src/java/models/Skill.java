@@ -11,17 +11,26 @@ package models;
 public class Skill {
     private int skillID;
     private String skillName;
+    private String img;
     private String description;
     private int status;
 
-    public Skill(int skillID, String skillName, String description, int status) {
+    public Skill(int skillID, String skillName, String img, String description, int status) {
         this.skillID = skillID;
         this.skillName = skillName;
+        this.img = img;
         this.description = description;
         this.status = status;
     }
+
     
-    
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public Skill() {
     }
