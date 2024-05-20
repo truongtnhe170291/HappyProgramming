@@ -9,25 +9,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-               <jsp:include page="style/linkcss.jsp" />
-  <style>
-/*    .toggle-icon {
-      transition: transform 0.3s;
-    }
+        <title>FMASTER</title>
+      <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    li.expanded .toggle-icon {
-      transform: rotate(90deg);
-    }
+<link rel="stylesheet" href="assets/vendor_assets/css/bootstrap/bootstrap.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/daterangepicker.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/fontawesome.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/footable.standalone.min.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/fullcalendar@5.2.0.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/jquery-jvectormap-2.0.5.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/leaflet.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/line-awesome.min.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/magnific-popup.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/MarkerCluster.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/MarkerCluster.Default.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/select2.min.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/slick.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/star-rating-svg.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/trumbowyg.min.css">
+<link rel="stylesheet" href="assets/vendor_assets/css/wickedpicker.min.css">
+<link rel="stylesheet" href="style/style.css">
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    .has-child > ul {
-      display: none;
-    }
 
-    li.expanded > ul {
-      display: block;
-    }*/
-  </style>
+
     </head>
     <body>
        <div class="sidebar-wrapper">
@@ -40,7 +47,7 @@
                         <span class="menu-text">Layouts</span>
                         <span class="toggle-icon"></span>
                      </a>
-                     <ul>
+                     <ul class="toggle">
                         <li class="l_sidebar">
                            <a href="#" data-layout="light">Light Mode</a>
                         </li>
@@ -56,7 +63,7 @@
                         <span class="menu-text text-initial">Add ...</span>
                         <span class="toggle-icon"></span>
                      </a>
-                     <ul>
+                     <ul class="toggle">
                         <li class="">
                            <a href="products.html">Products</a>
                         </li>
@@ -81,7 +88,7 @@
                         <span class="menu-text">Project</span>
                         <span class="toggle-icon"></span>
                      </a>
-                     <ul>
+                     <ul class="toggle">
                         <li class="">
                            <a href="projects.html">Project</a>
                         </li>
@@ -107,7 +114,7 @@
                         <span class="menu-text">Users</span>
                         <span class="toggle-icon"></span>
                      </a>
-                     <ul>
+                     <ul class="toggle">
                         <li class="">
                            <a href="users-card.html">Users Grid</a>
                         </li>
@@ -116,7 +123,7 @@
                               List</a>
                         </li>
                         <li class="">
-                           <a href="user-info.html">Add User</a>
+                           <a href="user-info.jsp">Add User</a>
                         </li>
                      </ul>
                   </li>
@@ -131,7 +138,7 @@
                         <span class="toggle-icon"></span>
 
                      </a>
-                     <ul>
+                     <ul class="toggle">
                         <li class="">
                            <a href="firestore.html">View All</a>
                         </li>
@@ -143,13 +150,13 @@
                   </li>
           
                   <li class="">
-                     <a href="login.html">
+                     <a href="login.jsp">
                         <span class="nav-icon uil uil-signin"></span>
                         <span class="menu-text">Log In</span>
                      </a>
                   </li>
                   <li class="">
-                     <a href="sign-up.html">
+                     <a href="sign-up.jsp">
                         <span class="nav-icon uil uil-sign-out-alt"></span>
                         <span class="menu-text">Sign Up</span>
                      </a>
@@ -159,19 +166,7 @@
          </div>
       </div>
     </body>
-<!--<script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const toggles = document.querySelectorAll('.has-child > a.ch');
 
-      toggles.forEach(function(toggle) {
-        toggle.addEventListener('click', function(event) {
-          event.preventDefault();
-          const parentLi = this.parentElement;
-          parentLi.classList.toggle('expanded');
-        });
-      });
-    });
-  </script>-->
-   <jsp:include page="style/linkJS.jsp" />
+  
 
 </html>

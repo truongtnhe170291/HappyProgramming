@@ -13,7 +13,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>HexaDash</title>
+   <title>FMASTER</title>
    <jsp:include page="style/linkcss.jsp" />
 
 
@@ -301,7 +301,6 @@
    </div>
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
-    <jsp:include page="style/linkJS.jsp" />
 </body>
 
 </html>
