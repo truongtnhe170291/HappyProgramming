@@ -175,21 +175,4 @@ public class AccountDAO {
         return false;
     }
 
-    public boolean isMentee(String account) {
-        String query = "SELECT * FROM [Accounts] \n"
-                + "Where role_id = '3' and user_name = ?";
-        try (PreparedStatement statement = con.prepareStatement(query)) {
-            statement.setString(1, account);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle any exceptions here
-        }
-        return false;
-    }
-
 }

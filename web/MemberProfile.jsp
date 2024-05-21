@@ -317,13 +317,13 @@
 
                             <div class="tab-pane fade in active" id="profile">
                                 <div class="row">
-                                    <form class="form" action="UpdateAccountServlet?role=mentee" method="post" enctype="multipart/form-data">
+                                    <form class="form" action="UpdateAccountServlet" method="post" enctype="multipart/form-data">
                                         <div>
                                             <div class="">
                                                 <div class="flext">
                                                     <input id="file-upload" type="file" name="fileUpload" class="d-none">
                                                     <label for="file-upload" class="">
-                                                        <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img\tungche2.jpg" alt="profile">                                                                  
+                                                        <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img/${user.avatar}" alt="profile">                                                                  
                                                         <img src="img\camera.png"/>
                                                     </label>
                                                 </div>
