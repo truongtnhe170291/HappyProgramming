@@ -24271,6 +24271,8 @@ body:after {
 .team-members ul {
   padding: 0;
   margin: 0;
+  height: 300px;
+  width: 300px;
 }
 .team-members ul li {
   display: flex;

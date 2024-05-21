@@ -42,6 +42,7 @@
           <th>Tên Mentor</th>
           <th>Đánh giá trung bình</th>
           <th>Chi tiết</th> <!-- Thêm cột mới -->
+          
         </tr>
 
         <c:forEach items="${mentors}" var="mentor">

@@ -3,7 +3,7 @@
     Created on : May 21, 2024, 3:39:50 PM
     Author     : 84979
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -163,165 +163,91 @@
                             </p>
                         </div>
                         <div class="row team-members">
-                            <div class="col-lg-3">
-                                <div class="team-member">
-                                    <div class="team-image">
-                                        <img src="images/team/6.jpg">
-                                    </div>
-                                    <div class="team-desc">
-                                        <h3>Alea Smith</h3>
-                                        <span>Software Developer</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                                        <div class="align-center">
-                                            <a class="btn btn-xs btn-slide btn-light" href="#">
-                                                <i class="fab fa-facebook-f"></i>
-                                                <span>Facebook</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                                <i class="fab fa-twitter"></i>
-                                                <span>Twitter</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                                <i class="fab fa-instagram"></i>
-                                                <span>Instagram</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                                <i class="icon-mail"></i>
-                                                <span>Mail</span>
-                                            </a>
+                            <div class="row team-members">
+                                <c:forEach items="${requestScope.mentors}" var="member">
+                                    <div class="col-lg-3">
+                                        <div class="team-member">
+                                            <div class="team-image">
+                                                <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                                    <img src="${member.getAvatar()}" alt="${member.mentorName}">
+                                                </a>
+
+                                            </div>
+                                            <div class="team-desc">
+                                                <h3>
+                                                    <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">${member.getFull_name()}</a>
+                                                </h3>
+                                                <p>
+                                                    <c:forEach items="${member.listSkills}" var="skill">
+                                                    <p>${skill.skillName}</p>
+                                                </c:forEach>
+                                                </p>
+                                                <div class="align-center">
+                                                    <a class="btn btn-xs btn-slide btn-light" href="#">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                        <span>Facebook</span>
+                                                    </a>
+                                                    <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
+                                                        <i class="fab fa-twitter"></i>
+                                                        <span>Twitter</span>
+                                                    </a>
+                                                    <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
+                                                        <i class="fab fa-instagram"></i>
+                                                        <span>Instagram</span>
+                                                    </a>
+                                                    <a class="btn btn-xs btn-slide btn-light" href="#" data-width="80">
+                                                        <i class="icon-mail"></i>
+                                                        <span>Mail</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </c:forEach>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="team-member">
-                                    <div class="team-image">
-                                        <img src="images/team/7.jpg">
-                                    </div>
-                                    <div class="team-desc">
-                                        <h3>Ariol Doe</h3>
-                                        <span>Software Developer</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                                        <div class="align-center">
-                                            <a class="btn btn-xs btn-slide btn-light" href="#">
-                                                <i class="fab fa-facebook-f"></i>
-                                                <span>Facebook</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                                <i class="fab fa-twitter"></i>
-                                                <span>Twitter</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                                <i class="fab fa-instagram"></i>
-                                                <span>Instagram</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                                <i class="icon-mail"></i>
-                                                <span>Mail</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="team-member">
-                                    <div class="team-image">
-                                        <img src="images/team/8.jpg">
-                                    </div>
-                                    <div class="team-desc">
-                                        <h3>Emma Ross</h3>
-                                        <span>Software Developer</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                                        <div class="align-center">
-                                            <a class="btn btn-xs btn-slide btn-light" href="#">
-                                                <i class="fab fa-facebook-f"></i>
-                                                <span>Facebook</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                                <i class="fab fa-twitter"></i>
-                                                <span>Twitter</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                                <i class="fab fa-instagram"></i>
-                                                <span>Instagram</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                                <i class="icon-mail"></i>
-                                                <span>Mail</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="team-member">
-                                    <div class="team-image">
-                                        <img src="images/team/9.jpg">
-                                    </div>
-                                    <div class="team-desc">
-                                        <h3>Victor Loda</h3>
-                                        <span>Software Developer</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
-                                        <div class="align-center">
-                                            <a class="btn btn-xs btn-slide btn-light" href="#">
-                                                <i class="fab fa-facebook-f"></i>
-                                                <span>Facebook</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                                <i class="fab fa-twitter"></i>
-                                                <span>Twitter</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                                <i class="fab fa-instagram"></i>
-                                                <span>Instagram</span>
-                                            </a>
-                                            <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                                <i class="icon-mail"></i>
-                                                <span>Mail</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
+
+
                     </div>
-                </section>
-            </div><!-- End row -->
-            <hr>
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <ul class="pagination">
-                        <li><a href="#">&laquo;</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
-                </div>
             </div>
+        </section>
+    </div><!-- End row -->
+    <hr>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <ul class="pagination">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
 
-        </div><!-- End container -->
-    </section><!-- End main_content -->
+</div><!-- End container -->
+</section><!-- End main_content -->
 
 
-    <div id="toTop">Back to top</div>
+<div id="toTop">Back to top</div>
 
-    <!-- JQUERY -->
-    <script src="jss/jquery-2.2.4.min.js"></script>
+<!-- JQUERY -->
+<script src="jss/jquery-2.2.4.min.js"></script>
 
 
-    <!-- OTHER JS --> 
-    <script src="jss/superfish.js"></script>
-    <script src="jss/bootstrap.min.js"></script>
-    <script src="jss/retina.min.js"></script>
-    <script src="assets/validate.js"></script>
-    <script src="jss/jquery.placeholder.js"></script>
-    <script src="jss/functions.js"></script>
-    <script src="jss/classie.js"></script>
-    <script src="jss/uisearch.js"></script>
-    <script>new UISearch(document.getElementById('sb-search'));</script>
+<!-- OTHER JS --> 
+<script src="jss/superfish.js"></script>
+<script src="jss/bootstrap.min.js"></script>
+<script src="jss/retina.min.js"></script>
+<script src="assets/validate.js"></script>
+<script src="jss/jquery.placeholder.js"></script>
+<script src="jss/functions.js"></script>
+<script src="jss/classie.js"></script>
+<script src="jss/uisearch.js"></script>
+<script>new UISearch(document.getElementById('sb-search'));</script>
 
 
 </body>

@@ -66,7 +66,22 @@ public class MentorProfileDAO {
     }
 
     return mentors;
+}   
+     
+     
+     public List<MentorProfile> getAllMentorBySkillID(int skillID) throws SQLException {
+    List<MentorProfile> allMentors = getAllMentors(); // Assume you have implemented this method
+
+    List<MentorProfile> mentorsWithSkill = new ArrayList<>();
+    for (MentorProfile mentor : allMentors) {
+        if (mentor.getListSkills().stream().anyMatch(skill -> skill.getSkillID() == skillID)) {
+            mentorsWithSkill.add(mentor);
+        }
+    }
+
+    return mentorsWithSkill;
 }
+
      
    public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
     String sql = "SELECT c.*, a.phone, a.avatar " +
