@@ -64,7 +64,7 @@
 
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu"> 
-                                            <li><a href="blog_skill.jsp">SKILLS</a></li>
+                                            <li><a href="skill">SKILLS</a></li>
 
                                         </ul>
                                     </li>
@@ -76,7 +76,7 @@
                                     <c:if test="${sessionScope.user != null}">
                                         <li class="t">
                                             <a href="javascript:;" class="nav-item-toggle">
-                                                <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
+                                                <span class="nav-item__title">${sessionScope.user.fullName}<i class="las la-angle-down nav-item__arrow"></i></span>
                                             </a>
                                             <ul class="dropdown-menu"> 
                                                 <li>  <div class="nav-author__info">
@@ -97,12 +97,9 @@
                                                         Settings</a>
                                                 </li>
                                                 <li>
-                                                    <a href="newPassword.jsp">
-                                                        <i class="uil uil-key-skeleton"></i> Change Password</a>
-                                                </li>
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-users-alt"></i> Apply CV</a>
+                                                    <a href="changepass">
+                                                        <i class="uil uil-key-skeleton"></i> Change Password
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <a href="">
