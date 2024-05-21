@@ -96,7 +96,7 @@
                                                         Settings</a>
                                                 </li>
                                                 <li>
-                                                    <a href="">
+                                                    <a href="newPassword.jsp">
                                                         <i class="uil uil-key-skeleton"></i> Change Password</a>
                                                 </li>
                                                 <li>

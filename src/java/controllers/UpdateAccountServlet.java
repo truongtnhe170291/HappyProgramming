@@ -7,18 +7,29 @@ package controllers;
 import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
+import java.util.regex.Pattern;
 import models.Account;
 
 /**
  *
  * @author 2k3so
  */
+@MultipartConfig
 @WebServlet(name = "UpdateAccountServlet", urlPatterns = {"/UpdateAccountServlet"})
 public class UpdateAccountServlet extends HttpServlet {
 
@@ -62,12 +73,13 @@ public class UpdateAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         AccountDAO dao = new AccountDAO();
         HttpSession session = request.getSession();
-        
+
         Account curentAccount = (Account) session.getAttribute("user");
         Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-        
+
         request.setAttribute("user", a);
         request.getRequestDispatcher("user_info.jsp").forward(request, response);
+
     }
 
     /**
@@ -81,7 +93,74 @@ public class UpdateAccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String userName = request.getParameter("username");
+        String fullName = request.getParameter("fullname");
+        String sex = request.getParameter("sex");
+        String gmail = request.getParameter("gmail");
+        String dob = request.getParameter("dob");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        Part filePart = request.getPart("fileUpload");
+        HttpSession session = request.getSession();
+        AccountDAO dao = new AccountDAO();
+        boolean flag = true;
+
+        Account curentAccount = (Account) session.getAttribute("user");
+        Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
+
+        String resultFileName = a.getAvatar();
+
+            // Lấy tên tệp
+            String fileName = filePart.getSubmittedFileName();
+            String uploadDirectory = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\build\\web\\img\\" + fileName;
+            try {
+                OutputStream out = new FileOutputStream(uploadDirectory);
+                InputStream in = filePart.getInputStream();
+                byte[] bytes = new byte[in.available()];
+                in.read(bytes);
+                out.write(bytes);
+                out.close();
+            } catch (IOException e) {
+                fileName = "default.jpg";
+            }
+
+        if (userName.isBlank() || fullName.isBlank() || gmail.isBlank() || dob.isBlank() || phone.isBlank() || address.isBlank()) {
+            flag = false;
+        } else if (!isValidPhoneNumber(phone)) {
+            flag = false;
+        } else if (!isValidName(fullName)) {
+            flag = false;
+        } else {
+            flag = true;
+        }
+
+        if (flag) {
+            dao.updateAccount(userName, fullName, dob, sex, address, gmail, fileName, phone);
+            request.setAttribute("user", a);
+            request.getRequestDispatcher("user_info.jsp").forward(request, response);
+        } else {
+            request.setAttribute("user", a);
+            request.getRequestDispatcher("user_info.jsp").forward(request, response);
+        }
+
+    }
+
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        String PhoneNumberPattern = "^(0[3|5|7|8|9])+([0-9]{8})$";
+        Pattern pattern = Pattern.compile(PhoneNumberPattern);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
+    }
+
+    public boolean isValidName(String name) {
+        String regex = "^[\\p{L} .'-]+$";
+        if (name == null || name.length() > 50) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
     }
 
     /**

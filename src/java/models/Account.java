@@ -136,7 +136,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "userName=" + userName + ", gmail=" + gmail + ", fullName=" + fullName + ", password=" + password + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", phone=" + phone + ", roleId=" + roleId + ", statusId=" + statusId + '}';
+        return "Account{" + "userName=" + userName + ", gmail=" + gmail + ", fullName=" + fullName + ", password=" + password + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", phone=" + phone + ", roleId=" + roleId + ", statusId=" + statusId + ", avatar=" + avatar +'}';
     }
 
 }
