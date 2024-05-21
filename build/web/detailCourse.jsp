@@ -26,11 +26,7 @@
     </style>
 </head>
     <body>
-<<<<<<< HEAD
-        <jsp:inlucde page="header.jsp"/>
-=======
         <jsp:include page="header.jsp"/>
->>>>>>> 36900211320325a6257e15ef93a8b60e61eca904
         <jsp:include page="courses.jsp"/>
         <jsp:include page="Comment.jsp"/>
           <!-- end: Body Inner -->

@@ -27,7 +27,7 @@
                 <div class="container">
                     <!--Logo-->
                     <div id="logo">
-                        <a href="index.html">
+                        <a href="homes.jsp">
                             <span class="logo-default">POLO</span>
                             <span class="logo-dark">POLO</span>
                         </a>
@@ -88,7 +88,7 @@
                                                         </div>
                                                     </div></li>
                                                 <li>
-                                                    <a href="updatementee">
+                                                    <a href="UpdateAccountServlet?role=mentee">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>           
                                                 <li>

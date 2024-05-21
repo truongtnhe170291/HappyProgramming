@@ -79,10 +79,16 @@ public class UpdateAccountServlet extends HttpServlet {
 
         Account curentAccount = (Account) session.getAttribute("user");
         Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-        
-        request.setAttribute("user", a);
-        request.getRequestDispatcher("user_info.jsp").forward(request, response);
 
+        try {
+            if (request.getParameter("role").equals("mentee")) {
+                request.setAttribute("user", a);
+                request.getRequestDispatcher("MemberProfile.jsp").forward(request, response);
+            }
+        } catch (NullPointerException e) {
+            request.setAttribute("user", a);
+            request.getRequestDispatcher("user_info.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -105,65 +111,36 @@ public class UpdateAccountServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         Part filePart = request.getPart("fileUpload");
+
         HttpSession session = request.getSession();
         AccountDAO dao = new AccountDAO();
         boolean flag = true;
 
-        Account curentAccount = (Account) session.getAttribute("user");
-        Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-
-        String resultFileName = a.getAvatar();
-
-            // Lấy tên tệp
-            String fileName = filePart.getSubmittedFileName();
-            String uploadDirectory = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\build\\web\\img\\" + fileName;
-            try {
-                OutputStream out = new FileOutputStream(uploadDirectory);
-                InputStream in = filePart.getInputStream();
-                byte[] bytes = new byte[in.available()];
-                in.read(bytes);
-                out.write(bytes);
-                out.close();
-            } catch (IOException e) {
-                fileName = "default.jpg";
-            }
-
-        if (userName.isBlank() || fullName.isBlank() || gmail.isBlank() || dob.isBlank() || phone.isBlank() || address.isBlank()) {
-            flag = false;
-        } else if (!isValidPhoneNumber(phone)) {
-            flag = false;
-        } else if (!isValidName(fullName)) {
-            flag = false;
-        } else {
-            flag = true;
+//        Account curentAccount = (Account) session.getAttribute("user");
+//        Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
+//        String resultFileName = a.getAvatar();
+//
+//        // Lấy tên tệp
+//        String fileName = filePart.getSubmittedFileName();
+//        String uploadDirectory = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\build\\web\\img\\" + fileName;
+//        try {
+//            OutputStream out = new FileOutputStream(uploadDirectory);
+//            InputStream in = filePart.getInputStream();
+//            byte[] bytes = new byte[in.available()];
+//            in.read(bytes);
+//            out.write(bytes);
+//            out.close();
+//        } catch (IOException e) {
+//            fileName = "default.jpg";
+//        }
+        try {
+            dao.updateAccount(userName, fullName, dob, sex, address, gmail, "123", phone);
+            response.sendRedirect("UpdateAccountServlet?role=mentee");
+        } catch (NullPointerException e) {
+            dao.updateAccount(userName, fullName, dob, sex, address, gmail, "123", phone);
+            response.sendRedirect("UpdateAccountServlet");
         }
 
-        if (flag) {
-            dao.updateAccount(userName, fullName, dob, sex, address, gmail, fileName, phone);
-            request.setAttribute("user", a);
-            request.getRequestDispatcher("user_info.jsp").forward(request, response);
-        } else {
-            request.setAttribute("user", a);
-            request.getRequestDispatcher("user_info.jsp").forward(request, response);
-        }
-
-    }
-
-    public boolean isValidPhoneNumber(String phoneNumber) {
-        String PhoneNumberPattern = "^(0[3|5|7|8|9])+([0-9]{8})$";
-        Pattern pattern = Pattern.compile(PhoneNumberPattern);
-        Matcher matcher = pattern.matcher(phoneNumber);
-        return matcher.matches();
-    }
-
-    public boolean isValidName(String name) {
-        String regex = "^[\\p{L} .'-]+$";
-        if (name == null || name.length() > 50) {
-            return false;
-        }
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(name);
-        return matcher.matches();
     }
 
     /**

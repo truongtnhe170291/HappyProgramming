@@ -28,16 +28,12 @@
         <!-- Body Inner -->
         <div class="body-inner">
             <!-- Header -->
-<<<<<<< HEAD
-            <jsp:inlucde page="header.jsp"/>
-=======
             <jsp:include page="header.jsp"/>
->>>>>>> 36900211320325a6257e15ef93a8b60e61eca904
             <!-- end: Header -->
             <!-- Inspiro Slider -->
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
                 <!-- Slide 1 -->
-                <div class="slide kenburns" data-bg-image="images/slider/notgeneric_bg3.jpg">
+                <div class="slide" data-bg-video="video/pexels-waves.mp4">
                     <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-center text-light">

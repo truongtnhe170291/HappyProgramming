@@ -30,4 +30,8 @@ public class AccountService {
     public boolean changePassWord(Account a){
         return accountDAO.changePassWord(a);
     }
+    
+    public boolean isMentee(String userName){
+        return accountDAO.isMentee(userName);
+    }
 }

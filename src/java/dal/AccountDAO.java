@@ -100,11 +100,6 @@ public class AccountDAO {
 
         return acc;
     }
-    
-    public static void main(String[] args) {
-        AccountDAO dao = new AccountDAO();
-        System.out.println(dao.getAccount("user1", "123"));
-    }
 
     public boolean changePassWord(Account a) {
         String sql = "update Accounts set pass_word=? where user_name=?";
@@ -146,6 +141,11 @@ public class AccountDAO {
         }
     }
     
+    public static void main(String[] args) {
+        AccountDAO dao = new AccountDAO();
+        dao.updateAccount("user1", "pham hung son", "2003-12-2", "1", "Thanh hao 123", "2k3sonpham@gmail.com", "123", "01234266733");
+    }
+
     public void changePasswordByEmail(Account a) {
         try {
             String sql = "UPDATE Accounts SET pass_word = ? WHERE gmail = ?";
@@ -166,6 +166,23 @@ public class AccountDAO {
                 if (resultSet.next()) {
                     int count = resultSet.getInt(1);
                     return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle any exceptions here
+        }
+        return false;
+    }
+
+    public boolean isMentee(String account) {
+        String query = "SELECT * FROM [Accounts] \n"
+                + "Where role_id = '3' and user_name = ?";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, account);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
                 }
             }
         } catch (SQLException e) {

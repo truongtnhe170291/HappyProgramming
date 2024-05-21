@@ -190,7 +190,7 @@
                 display: flex;
 
             }
-                .rounded-circle{
+            .rounded-circle{
                 width: 200px;
                 height: 200px;
             }
@@ -198,12 +198,12 @@
     </head>
     <body>
 
-      <header id="header" data-fullwidth="true">
+        <header id="header" data-fullwidth="true">
             <div class="header-inner">
                 <div class="container">
                     <!--Logo-->
                     <div id="logo">
-                        <a href="index.html">
+                        <a href="homes.jsp">
                             <span class="logo-default">POLO</span>
                             <span class="logo-dark">POLO</span>
                         </a>
@@ -237,55 +237,55 @@
                             <nav>
                                 <ul>
                                     <li><a href="homes.jsp">Home</a></li>
-                                   
+
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu"> 
-                                                    <li><a href="blog_skill.jsp">Mentor detail</a></li>
-                                                    <li><a href="user_info.jsp">CV</a></li>                            
+                                            <li><a href="blog_skill.jsp">Mentor detail</a></li>
+                                            <li><a href="user_info.jsp">CV</a></li>                            
                                         </ul>
                                     </li>
-                                     <li><a href="login.jsp">Login</a></li>
-                                      <li><a href="sign_up.jsp">Sign up</a></li>
-                                      <li class="t">
-                                           <a href="javascript:;" class="nav-item-toggle">
-                                    <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
-                                </a>
-                                            <ul class="dropdown-menu"> 
-                                                    <li>  <div class="nav-author__info">
-                                            <div class="author-img">
-                                                <img src="img/author-nav.jpg" alt="" class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <span>UI Designer</span>
-                                            </div>
-                                        </div></li>
-                                                    <li>
-                                                    <a href="updatementee">
-                                                        <i class="uil uil-user"></i> Profile</a>
-                                                </li>           
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-setting"></i>
-                                                        Settings</a>
-                                                </li>
-                                                <li>
-                                                    <a href="newPassword.jsp">
-                                                        <i class="uil uil-key-skeleton"></i> Change Password</a>
-                                                </li>
-                                                 <li>
-                                                    <a href="">
-                                                        <i class="uil uil-users-alt"></i> Apply CV</a>
-                                                </li>
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-bell"></i> Help</a>
-                                                </li>
-                                                <li>
-                                                 <a href="login.jsp" class="nav-author__signout">
-                                                <i class="uil uil-sign-out-alt"></i> Sign Out</a>
-                                                 </li>
+                                    <li><a href="login.jsp">Login</a></li>
+                                    <li><a href="sign_up.jsp">Sign up</a></li>
+                                    <li class="t">
+                                        <a href="javascript:;" class="nav-item-toggle">
+                                            <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
+                                        </a>
+                                        <ul class="dropdown-menu"> 
+                                            <li>  <div class="nav-author__info">
+                                                    <div class="author-img">
+                                                        <img src="img/author-nav.jpg" alt="" class="rounded-circle">
+                                                    </div>
+                                                    <div>
+                                                        <span>UI Designer</span>
+                                                    </div>
+                                                </div></li>
+                                            <li>
+                                                <a href="updatementee">
+                                                    <i class="uil uil-user"></i> Profile</a>
+                                            </li>           
+                                            <li>
+                                                <a href="">
+                                                    <i class="uil uil-setting"></i>
+                                                    Settings</a>
+                                            </li>
+                                            <li>
+                                                <a href="newPassword.jsp">
+                                                    <i class="uil uil-key-skeleton"></i> Change Password</a>
+                                            </li>
+                                            <li>
+                                                <a href="">
+                                                    <i class="uil uil-users-alt"></i> Apply CV</a>
+                                            </li>
+                                            <li>
+                                                <a href="">
+                                                    <i class="uil uil-bell"></i> Help</a>
+                                            </li>
+                                            <li>
+                                                <a href="login.jsp" class="nav-author__signout">
+                                                    <i class="uil uil-sign-out-alt"></i> Sign Out</a>
+                                            </li>
                                         </ul>
-                                       </li>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>
@@ -300,7 +300,7 @@
             <div class="container">
 
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="homes.jsp">Home</a></li>
                     <li class="active">Active page</li>
                 </ol>
                 <div class="row">
@@ -317,29 +317,29 @@
 
                             <div class="tab-pane fade in active" id="profile">
                                 <div class="row">
-                                    <div>
-                                        <div class="">
-                                            <div class="flext">
-                                                <input id="file-upload" type="file" name="fileUpload" class="d-none">
-                                                <label for="file-upload" class="">
-                                                    <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img\tungche2.jpg" alt="profile">                                                                  
-                                                    <img src="img\camera.png"/>
-                                                </label>
-                                            </div>
+                                    <form class="form" action="UpdateAccountServlet?role=mentee" method="post" enctype="multipart/form-data">
+                                        <div>
+                                            <div class="">
+                                                <div class="flext">
+                                                    <input id="file-upload" type="file" name="fileUpload" class="d-none">
+                                                    <label for="file-upload" class="">
+                                                        <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="img\tungche2.jpg" alt="profile">                                                                  
+                                                        <img src="img\camera.png"/>
+                                                    </label>
+                                                </div>
 
-                                            <div class="account-profile__title">
-                                                <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
+                                                <div class="account-profile__title">
+                                                    <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <form class="form">
 
                                         <label>
-                                            <input class="input" type="text" name="username" value="">
-                                            <span>username</span>
+                                            <input class="input" type="text" name="username" value="${user.userName}" readonly>
+                                            <span>Username</span>
                                         </label>  
                                         <label>
-                                            <input class="input" type="text" placeholder="" required="">
+                                            <input class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
                                             <span>Fullname</span>
                                         </label>              
                                         <label>
@@ -352,21 +352,21 @@
                                             </select>
                                         </label> 
                                         <label>
-                                            <input class="input" type="email" placeholder="" required="">
+                                            <input class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
                                             <span>Email</span>
                                         </label> 
 
                                         <label>
-                                            <input class="input" type="date" name="dob" placeholder="" required="">
+                                            <input class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="">
                                             <span>Date of birth</span>
                                         </label> 
 
                                         <label>
-                                            <input class="input" type="tel" placeholder="" required="" minlength="10" maxlength="10">
+                                            <input class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10">
                                             <span>Phone number</span>
                                         </label>
                                         <label>
-                                            <input class="input" type="text" placeholder="" required="">
+                                            <input class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
                                             <span>Address</span>
                                         </label>
                                         <button class="submit">Save</button>

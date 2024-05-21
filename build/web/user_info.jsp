@@ -135,12 +135,17 @@
                                                                     <strong style="color: red;">Oh No!</strong> Your email is not valid.
                                                                 </div>
                                                             </div>
-
-                                                            <div class="form-group mb-25">
-                                                                <label for="dob">Date of birth</label>
-                                                                <input type="date" class="form-control" name="dob" value="${user.dob}">
+                                                                
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="dob">Date of birth</label>
+                                                                    <input type="date" class="form-control" id="dob" name="dob" value="${user.dob}">
+                                                                </div>
+                                                                <div style="display: none" id="dobError" class="alert alert-warning alert-dismissible fade show disabled" role="alert">
+                                                                    <strong style="color: red;">Oh No!</strong> Your date of birth is invalid.
+                                                                </div>
                                                             </div>
-
+                                                                
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber5">phone number</label>
@@ -309,6 +314,8 @@
                                         var phoneError = document.getElementById('phoneError');
                                         var nameInput = document.getElementById('fullname');
                                         var nameError = document.getElementById('nameError');
+                                        var dobInput = document.getElementById('dob');
+                                        var dobError = document.getElementById('dobError');
 
                                         if (emailInput) {
                                             emailInput.addEventListener('input', function () {
@@ -343,6 +350,17 @@
                                             });
                                         }
 
+                                        if (dobInput) {
+                                            dobInput.addEventListener('input', function () {
+                                                var dobValue = dobInput.value;
+                                                if (!validateBirthDate(dobValue)) {
+                                                    dobError.style.display = 'block';
+                                                } else {
+                                                    dobError.style.display = 'none';
+                                                }
+                                            });
+                                        }
+
                                         function validatePhone(phone) {
                                             var re = /^(0|84)(2(0[3-9]|1[0-689]|2[0-25-9]|3[2-9]|4[0-9]|5[124-9]|6[0369]|7[0-7]|8[0-9]|9[012346789])|3[2-9]|5[25689]|7[06-9]|8[0-9]|9[012346789])([0-9]{7})$/;
                                             return re.test(phone);
@@ -352,10 +370,21 @@
                                             var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                                             return re.test(email);
                                         }
-                                        
+
                                         function validateName(name) {
                                             var re = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
                                             return re.test(name);
+                                        }
+
+                                        function validateBirthDate(birthDate) {
+                                            var currentDate = new Date();
+
+                                            var selectedDate = new Date(birthDate);
+
+                                            if (selectedDate >= currentDate) {
+                                                return false;
+                                            }
+                                            return true;
                                         }
                                     });
 
