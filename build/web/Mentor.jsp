@@ -1,16 +1,9 @@
-<%-- 
-    Document   : Mentor
-    Created on : May 21, 2024, 1:29:21 AM
-    Author     : 84979
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   	<meta charset="utf-8">
-    <title>FMASTER</title>
+    <title>Fmaster</title>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
     
     <!-- Favicons-->
@@ -24,23 +17,12 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Raleway:400,500,600,700,800" rel="stylesheet">
     
     <!-- CSS -->
-    <link href="styles/bootstrap.min.css" rel="stylesheet">
-    <link href="styles/superfish.css" rel="stylesheet">
-    <link href="styles/style.css" rel="stylesheet">
-    <link href="fontello/styles/fontello.css" rel="stylesheet">
-    <!-- color scheme css -->
-    
-     <meta name="description" content="Themeforest Template Polo, html template">
-    <link rel="icon" type="image/png" href="images/favicon.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    
-
-    <link href="css/plugins.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/superfish.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-      <script src="http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="http://oss.maxcdn.com/libs/respond.jss/1.3.0/respond.min.js"></script>
+    <link href="fontello/css/fontello.css" rel="stylesheet">
     
+<<<<<<< HEAD
       <style>
         .rounded-circle{
                   width: 200px;
@@ -153,21 +135,133 @@
           </div>
       </div>
   </header>
+=======
+    
+<style>
+      .rounded-circle{
+                width: 200px;
+                height: 200px;
+            }
+    li {
+    list-style-type: none;
+}
+#header{
+    position: fixed;
+}
+</style>
+  </head>
+  <body>
+
+     <header id="header" data-fullwidth="true">
+            <div class="header-inner">
+                <div class="container">
+                    <!--Logo-->
+                    <div id="logo">
+                        <a href="index.html">
+                            <span class="logo-default">POLO</span>
+                            <span class="logo-dark">POLO</span>
+                        </a>
+                    </div>
+                    <!--End: Logo-->
+                    <!-- Search -->
+                    <div id="search"><a id="btn-search-close" class="btn-search-close" aria-label="Close search form"><i class="icon-x"></i></a>
+                        <form class="search-form" action="search-results-page.html" method="get">
+                            <input class="form-control" name="q" type="text" placeholder="Type & Search..." />
+                            <span class="text-muted">Start typing & press "Enter" or "ESC" to close</span>
+                        </form>
+                    </div>
+                    <!-- end: search -->
+                    <!--Header Extras-->
+                    <div class="header-extras">
+                        <ul>
+                            <li>
+                                <a id="btn-search" href="#"> <i class="icon-search"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--end: Header Extras-->
+                    <!--Navigation Resposnive Trigger-->
+                    <div id="mainMenu-trigger">
+                        <a class="lines-button x"><span class="lines"></span></a>
+                    </div>
+                    <!--end: Navigation Resposnive Trigger-->
+                    <!--Navigation-->
+                    <div id="mainMenu">
+                        <div class="container">
+                            <nav>
+                                <ul>
+                                    <li><a href="homes.jsp">Home</a></li>
+                                   
+                                    <li class="dropdown"><a href="#">Features</a>
+                                        <ul class="dropdown-menu"> 
+                                                    <li><a href="blog_skill.jsp">Mentor detail</a></li>
+                                                    <li><a href="user_info.jsp">CV</a></li>                            
+                                        </ul>
+                                    </li>
+                                     <li><a href="login.jsp">Login</a></li>
+                                      <li><a href="sign_up.jsp">Sign up</a></li>
+                                      <li class="t">
+                                           <a href="javascript:;" class="nav-item-toggle">
+                                    <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
+                                </a>
+                                            <ul class="dropdown-menu"> 
+                                                    <li>  <div class="nav-author__info">
+                                            <div class="author-img">
+                                                <img src="img/author-nav.jpg" alt="" class="rounded-circle">
+                                            </div>
+                                            <div>
+                                                <span>UI Designer</span>
+                                            </div>
+                                        </div></li>
+                                                    <li>
+                                                    <a href="updatementee">
+                                                        <i class="uil uil-user"></i> Profile</a>
+                                                </li>           
+                                                <li>
+                                                    <a href="">
+                                                        <i class="uil uil-setting"></i>
+                                                        Settings</a>
+                                                </li>
+                                                <li>
+                                                    <a href="newPassword.jsp">
+                                                        <i class="uil uil-key-skeleton"></i> Change Password</a>
+                                                </li>
+                                                 <li>
+                                                    <a href="">
+                                                        <i class="uil uil-users-alt"></i> Apply CV</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">
+                                                        <i class="uil uil-bell"></i> Help</a>
+                                                </li>
+                                                <li>
+                                                 <a href="login.jsp" class="nav-author__signout">
+                                                <i class="uil uil-sign-out-alt"></i> Sign Out</a>
+                                                 </li>
+                                        </ul>
+                                       </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!--END: NAVIGATION-->
+                </div>
+            </div>
+        </header>
+>>>>>>> 36900211320325a6257e15ef93a8b60e61eca904
 
 <section id="main_content">
 
 <div class="container">
 
-      
+<ol class="breadcrumb">
+  <li><a href="index.html">Home</a></li>
+  <li class="active">Active page</li>
+</ol>
       <div class="row">
      <aside class="col-md-4">
      	<div class=" box_style_1 profile">
-		<p class="text-center"><img src="img/teacher_2_small.jpg" alt="Teacher" class="img-circle styled"></p>
-        		  <ul class="social_teacher">
-                    <li><a href="#"><i class="icon-facebook"></i></a></li>
-                    <li><a href="#"><i class="icon-twitter"></i></a></li>
-                    <li><a href="#"><i class=" icon-google"></i></a></li>
-                </ul>   
+		<p class="text-center"><img src="img/teacher_2_small.jpg" alt="Teacher" class="img-circle styled"></p>  
                  <ul>
                      <li>Name <strong class="pull-right">Carla Twain</strong> </li>
                      <li>Email <strong class="pull-right">info@domain.com</strong></li>
@@ -306,16 +400,11 @@
 </div><!-- End container -->
 </section><!-- End main_content-->
 
+    <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
 
-
-<div id="toTop">Back to top</div>
 <!-- JQUERY -->
 <script src="jss/jquery-2.2.4.min.js"></script>
-  <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
-    <!--Plugins-->
-    <script src="js/jquery.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/functions.js"></script>s
+
 <!-- OTHER JS --> 
 <script src="jss/superfish.js"></script>
 <script src="jss/bootstrap.min.js"></script>
@@ -325,7 +414,8 @@
 <script src="jss/functions.js"></script>
 <script src="jss/classie.js"></script>
 <script src="jss/uisearch.js"></script>
-<script>new UISearch( document.getElementById( 'sb-search' ) );</script>
-
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/functions.js"></script>
   </body>
 </html>
