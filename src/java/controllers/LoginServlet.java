@@ -82,20 +82,21 @@ public class LoginServlet extends HttpServlet {
         Account acc;
         AccountService accountService = AccountService.getInstance();
         acc = accountService.getAccount(username, password);
-
+        // 1: Mentee, 2: Mentor, 3: Manager, 4: Admin
         try {
             if (acc == null) {
                 request.setAttribute("mess", "Invalid username or password");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
-            }
+            }  
             session.setAttribute("user", acc);
-            // 1: mentee, 2: mentor, 3: Admin
             if (acc.getRoleId() == 1) {
-                response.sendRedirect("home");
+                response.sendRedirect("homes.jsp");
                 return;
+            } 
+            if(acc.getRoleId() == 2){
+                response.sendRedirect("home");
             }
-            response.sendRedirect("homementor");
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");
             request.getRequestDispatcher("error.jsp").forward(request, response);

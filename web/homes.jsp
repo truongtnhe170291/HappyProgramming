@@ -33,7 +33,7 @@
             <!-- Inspiro Slider -->
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
                 <!-- Slide 1 -->
-                <div class="slide kenburns" data-bg-image="images/slider/notgeneric_bg3.jpg">
+                <div class="slide" data-bg-video="video/pexels-waves.mp4">
                     <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-center text-light">
