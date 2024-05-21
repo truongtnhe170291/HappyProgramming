@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Properties;
 import java.util.Random;
 import javax.mail.Message;
@@ -32,7 +33,11 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
                 request.getRequestDispatcher("sign_up.jsp").forward(request, response);
-}
+} 
+     public static String encodeString(String value) {
+        return Base64.getEncoder().encodeToString(value.getBytes());
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        String gmail = request.getParameter("email");
@@ -57,7 +62,7 @@ try {
     dateFrom = Date.valueOf(LocalDate.MIN);
     e.printStackTrace(); 
 }
-
+  
       if(gmail !=null && !gmail.isEmpty() && confirm_password.equals(password)) {
         Account account = new Account();
         account.setGmail(gmail);
@@ -75,8 +80,9 @@ try {
             request.getRequestDispatcher("sign_up.jsp").forward(request, response);
             return;
         }
-        
-            String accountDetails = gmail + "|" + userName + "|" + fullName + "|" + password + "|" + dateFrom + "|" + (account.isSex() ? "female" : "male") + "|" + address + "|" + phone + "|" + role ;
+         String encodedFullName = encodeString(fullName);
+          String encodedAddress = encodeString(address);
+            String accountDetails = gmail + "|" + userName + "|" + encodedFullName + "|" + password + "|" + dateFrom + "|" + (account.isSex() ? "female" : "male") + "|" + encodedAddress + "|" + phone + "|" + role ;
         Cookie accountCookie = new Cookie("detail", accountDetails);
         accountCookie.setMaxAge(10 * 60); 
         response.addCookie(accountCookie);

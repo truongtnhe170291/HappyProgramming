@@ -43,7 +43,7 @@ public class SucessOtp extends HttpServlet {
 		{
 			request.setAttribute("message","wrong otp");
 			
-		   dispatcher=request.getRequestDispatcher("EnterOtp.jsp");
+		   dispatcher=request.getRequestDispatcher("confirmOtp.jsp");
 			dispatcher.forward(request, response);
 		
 		}

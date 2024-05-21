@@ -10,9 +10,13 @@
    <title>FMASTER</title>
           <jsp:include page="style/linkcss.jsp" />
      <style>
-        .error-message {
+          .error-message {
             color: red;
-            font-size: 0.875em;
+            display: none;
+            margin-top: 5px;
+        }
+        #role{
+            display: none;
         }
     </style>
 </head>
@@ -55,18 +59,18 @@
                 <div class="edit-profile__body">
                     <div class="form-group mb-20">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                         <div class="error-message" id="usernameError"></div>
                     </div>
                     <div class="form-group mb-20">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com" required>
                         <div class="error-message" id="emailError"></div>
                     </div>
                     <div class="form-group mb-15">
                         <label for="password-field">Password</label>
                         <div class="position-relative">
-                            <input id="password-field" type="password" class="form-control" name="password" placeholder="Password">
+                            <input id="password-field" type="password" class="form-control" name="password" placeholder="Password" required>
                             <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                         </div>
                         <div class="error-message" id="passwordError"></div>
@@ -74,25 +78,25 @@
                     <div class="form-group mb-15">
                         <label for="confirm-password-field">Confirm Password</label>
                         <div class="position-relative">
-                            <input id="confirm-password-field" type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
+                            <input id="confirm-password-field" type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
                             <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                         </div>
                         <div class="error-message" id="confirmPasswordError"></div>
                     </div>
                     <div class="form-group mb-20">
                         <label for="fullname">Full Name</label>
-                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="BUI THI A">
+                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="BUI THI A" required>
                         <div class="error-message" id="fullnameError"></div>
                     </div>
                     <div class="form-group mb-20">
                         <label for="tel">Phone Number</label>
-                        <input type="tel" class="form-control" id="tel" name="tel" minlength="10" maxlength="10">
+                        <input type="tel" class="form-control" id="tel" name="tel" minlength="10" maxlength="10" required>
                         <div class="error-message" id="telError"></div>
                     </div>
                     <div class="form-group mb-20">
-                        <label for="Dob">Date Of Birth</label>
-                        <input type="date" class="form-control" id="Dob" name="Dob">
-                        <div class="error-message" id="dobError"></div>
+                        <label for="Dob">Date of Birth:</label>
+                        <input type="date" class="form-control" id="Dob" name="Dob" required>
+                        <span class="error-message" id="error-message">Bạn phải đủ 12 tuổi.</span>
                     </div>
                     <div class="form-group mb-20">
                         <label for="sex">Sex:</label>
@@ -104,16 +108,18 @@
                     </div>
                     <div class="form-group mb-20">
                         <label for="Address">Address</label>
-                        <input type="text" class="form-control" id="Address" name="Address">
+                        <input type="text" class="form-control" id="Address" name="Address" required>
                         <div class="error-message" id="addressError"></div>
                     </div>
                     <div class="form-group mb-20">
                         <label for="role">Role</label>
-                        <input type="number" class="form-control hide-role" id="role" name="role" readonly>
+                        <input type="number" class="form-control hide-role" id="role" name="role" readonly >
+                         <input type="text" class="form-control hide-role" id="roleDisplay" readonly >
+
                     </div>
                 </div>
                 <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                    <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn" type="submit" value="Create Account">
+                    <input  id="submitBtn" class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn" type="submit" value="Create Account">
                 </div>
             </div>
             <%
@@ -157,10 +163,7 @@
    
  <script>
       document.getElementById('signupForm').addEventListener('submit', function(event) {
-            // Prevent form submission
-            event.preventDefault();
 
-            // Clear previous errors
             clearErrors();
 
             // Validate fields
@@ -187,14 +190,6 @@
             });
         }
 
-        function validateUsername() {
-            const username = document.getElementById('username').value;
-            if (!username) {
-                document.getElementById('usernameError').innerText = 'Username is required.';
-                return false;
-            }
-            return true;
-        }
 
         function validateEmail() {
             const email = document.getElementById('email').value;
@@ -209,48 +204,6 @@
             return true;
         }
 
-        function validatePassword() {
-            const password = document.getElementById('password-field').value;
-            if (!password) {
-                document.getElementById('passwordError').innerText = 'Password is required.';
-                return false;
-            }
-            return true;
-        }
-
-        function validateConfirmPassword() {
-            const password = document.getElementById('password-field').value;
-            const confirmPassword = document.getElementById('confirm-password-field').value;
-            if (!confirmPassword) {
-                document.getElementById('confirmPasswordError').innerText = 'Confirm password is required.';
-                return false;
-            } else if (password !== confirmPassword) {
-                document.getElementById('confirmPasswordError').innerText = 'Passwords do not match.';
-                return false;
-            }
-            return true;
-        }
-
-        function validateFullName() {
-            const fullname = document.getElementById('fullname').value;
-            if (!fullname) {
-                document.getElementById('fullnameError').innerText = 'Full name is required.';
-                return false;
-            }
-            return true;
-        }
-
-        function validatePhoneNumber() {
-            const phoneNumber = document.getElementById('tel').value;
-            if (!phoneNumber) {
-                document.getElementById('telError').innerText = 'Phone number is required.';
-                return false;
-            } else if (phoneNumber.length !== 10) {
-                document.getElementById('telError').innerText = 'Phone number must be 10 digits.';
-                return false;
-            }
-            return true;
-        }
 
         function validateDOB() {
             const dob = document.getElementById('Dob').value;
@@ -260,24 +213,27 @@
             }
             return true;
         }
+        document.getElementById('submitBtn').addEventListener('click', function(event) {
+            
+            const dobInput = document.getElementById('Dob');
+            const dobValue = new Date(dobInput.value);
+            const today = new Date();
+            const age = today.getFullYear() - dobValue.getFullYear();
+            const monthDiff = today.getMonth() - dobValue.getMonth();
+            const dayDiff = today.getDate() - dobValue.getDate();
+            const errorMessage = document.getElementById('error-message');
 
-        function validateSex() {
-            const sex = document.getElementById('sex').value;
-            if (!sex) {
-                document.getElementById('sexError').innerText = 'Sex is required.';
-                return false;
+            if (age < 12 || (age === 12 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+                errorMessage.style.display = 'block';
+                dobInput.setCustomValidity('Bạn phải đủ 12 tuổi.');
+                dobInput.reportValidity();
+                dobInput.focus();
+            } else {
+                errorMessage.style.display = 'none';
+                dobInput.setCustomValidity('');
             }
-            return true;
-        }
+        });
 
-        function validateAddress() {
-            const address = document.getElementById('Address').value;
-            if (!address) {
-                document.getElementById('addressError').innerText = 'Address is required.';
-                return false;
-            }
-            return true;
-        }
     const mainContent = document.querySelector('.main-content');
     const mentorButton = document.querySelector('.btn-17:nth-of-type(1)');
     const menteeButton = document.querySelector('.btn-17:nth-of-type(2)');
@@ -285,13 +241,18 @@
       const mentorBtn = document.querySelector(".btn-mentor");
       const menteeBtn = document.querySelector(".btn-mentee");
       const roleInput = document.getElementById("role");
-
+      const roleDisplay = document.getElementById("roleDisplay");
       mentorBtn.addEventListener("click", function() {
          roleInput.value = 2; // Thiết lập giá trị Role thành 2 khi nhấp vào nút Mentor
+         roleDisplay.value = "Mentor";
+         console.log(roleDisplay.value);
+         console.log(roleInput.value);
       });
 
       menteeBtn.addEventListener("click", function() {
          roleInput.value = 1; // Thiết lập giá trị Role thành 1 khi nhấp vào nút Mentee
+         roleDisplay.value = "Mentee";
+         console.log(roleDisplay.textContent);
       });
    });
     mainContent.style.display = 'none';

@@ -52,13 +52,13 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                 Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("minhvqhe176726@fpt.edu.vn", "uwdu ufxk lpae tojc"); // email and app password
+                        return new PasswordAuthentication("minhvqhe176726@fpt.edu.vn", "uwdu ufxk lpae tojc"); 
                     }
                 });
 
                 try {
                     MimeMessage message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress("minhvqhe176726@fpt.edu.vn")); // your email
+                    message.setFrom(new InternetAddress("minhvqhe176726@fpt.edu.vn")); 
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
                     message.setSubject("Hello");
                     message.setText("Your OTP is: " + otpvalue);
@@ -69,7 +69,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                 }
 
                 dispatcher = request.getRequestDispatcher("confirmOtp.jsp");
-                request.setAttribute("message", "OTP is sent to your email id");
+                request.setAttribute("messages", "OTP is sent to your email id");
                 mySession.setAttribute("otps", otpvalue);
                 mySession.setAttribute("emails", email);
                 dispatcher.forward(request, response);
