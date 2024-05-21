@@ -26,7 +26,7 @@
     </style>
 </head>
     <body>
-        <jsp:inlucde page="header.jsp"/>
+        <jsp:include page="header.jsp"/>
         <jsp:include page="courses.jsp"/>
         <jsp:include page="Comment.jsp"/>
           <!-- end: Body Inner -->
