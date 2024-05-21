@@ -79,20 +79,7 @@ public class UpdateAccountServlet extends HttpServlet {
 
         Account curentAccount = (Account) session.getAttribute("user");
         Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-<<<<<<< HEAD
-
-=======
-        // show skills 
-        SkillService skillService = SkillService.getInstance();
-        request.setAttribute("skills", skillService.getSkills());
-
-        CVService cvService = CVService.getInstance();
-        CV cv = cvService.getCVByUserName(curentAccount.getUserName());
-        if (cv != null) {
-
-            request.setAttribute("cv", cv);
-        }
->>>>>>> 6452d8b6fd3bfa683d4489a2a764e7fc856362a5
+        
         request.setAttribute("user", a);
         request.getRequestDispatcher("user_info.jsp").forward(request, response);
 
