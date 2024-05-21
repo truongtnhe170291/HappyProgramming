@@ -1,7 +1,7 @@
 <%-- 
-    Document   : changpass
-    Created on : May 16, 2024, 4:21:37 PM
-    Author     : DIEN MAY XANH
+Document   : ChangePasswords
+Created on : May 21, 2024, 4:14:32 PM
+Author     : 84979
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Change pass</title>
+        <title>Fmaster</title>
         <style>
             .login-box {
                 position: absolute;
@@ -59,7 +59,7 @@
                 font-size: 12px;
             }
 
-            .login-box form a {
+            .login-box form button {
                 position: relative;
                 display: inline-block;
                 padding: 10px 20px;
@@ -73,7 +73,7 @@
                 letter-spacing: 4px
             }
 
-            .login-box a:hover {
+            .login-box button:hover {
                 background: #03f40f;
                 color: #fff;
                 border-radius: 5px;
@@ -83,7 +83,7 @@
                     0 0 100px #03f40f;
             }
 
-            .login-box a span {
+            .login-box button span {
                 position: absolute;
                 display: block;
             }
@@ -98,7 +98,7 @@
                 }
             }
 
-            .login-box a span:nth-child(1) {
+            .login-box button span:nth-child(2) {
                 bottom: 2px;
                 left: -100%;
                 width: 100%;
@@ -106,33 +106,54 @@
                 background: linear-gradient(90deg, transparent, #03f40f);
                 animation: btn-anim1 2s linear infinite;
             }
+            .anh{
+                align-items: center;
+                border-radius: 50%;
+                width: 300px;
+                height: 300px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+            .fullname{
+                width: 100%;
+                text-align: center;
+                font-size: 30px;
+                color:#fff;
+
+            }
         </style>
     </head>
     <body>
+    <center>  <a href="homes.jsp">
+            to home
+            <span></span>
+        </a></center>
+    <div class="login-box">
 
-        <div class="login-box">
+        <form action="changepass" method="post">
+            <img name="img_author" class="anh" src="img/tungche1.jpg" alt="alt"/>
+            <div class="fullname">${sessionScope.user.fullName}</div>
+            <div class="user-box">
+                <input type="text" name="opass" required>
+                <label>Old Password</label>
+            </div>
+            <div class="user-box">
+                <input type="text" name="pass" required>
+                <label>New Password</label>
+            </div>
+            <div class="user-box">
+                <input type="password" name="rpass" required>
+                <label>confirm New Password</label>
+            </div><center>
+                <h4 style="color: red">${requestScope.msg}</h4>
+                <button>
+                    change password
+                    <span></span>
+                </button>
+            </center>
+        </form>
 
-            <form>
-                <div class="user-box">
-                    <input type="text" name="" required="">
-                    <label>Old Password</label>
-                </div>
-                <div class="user-box">
-                    <input type="text" name="" required="">
-                    <label>New Password</label>
-                </div>
-                <div class="user-box">
-                    <input type="password" name="" required="">
-                    <label>Confirm New Password</label>
-                </div><center>
-                    <a href="#">
-                        SEND
-                        <span></span>
-                    </a></center>
-            </form>
-        </div>
-
-
-
+    </div>
 </body>
-</html>
+</html> 

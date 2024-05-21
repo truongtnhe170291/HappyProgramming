@@ -11,19 +11,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Base64;
 import models.Account;
 
 @WebServlet("/ValidateOtp")
 public class ValidateOtp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+        
+     public static String decodeString(String encodedValue) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedValue);
+        return new String(decodedBytes);
+    }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int value = Integer.parseInt(request.getParameter("otp"));
         HttpSession session = request.getSession();
         int otp = (int) session.getAttribute("otp");
         RequestDispatcher dispatcher = null;
-
+        
         if (value == otp) {
             String accountDetails = null;
             Cookie[] cookies = request.getCookies();
@@ -31,6 +36,9 @@ public class ValidateOtp extends HttpServlet {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals("detail")) {
                         accountDetails = cookie.getValue();
+                       Cookie cookieToDelete = new Cookie("detail", "");
+                        cookieToDelete.setMaxAge(0);
+                        response.addCookie(cookieToDelete);
                         break;
                     }
                 }
@@ -40,11 +48,11 @@ public class ValidateOtp extends HttpServlet {
                 String[] details = accountDetails.split("\\|");
                 String gmail = details[0];
                 String userName = details[1];
-                String fullName = details[2];
+                String fullName = decodeString(details[2]);
                 String password = details[3];
                 Date dob = Date.valueOf(details[4]);
                 boolean sex = "female".equalsIgnoreCase(details[5]); 
-                String address = details[6];
+                String address = decodeString(details[6]);
                 String phone = details[7];
                 int roleId = Integer.parseInt(details[8]);
 

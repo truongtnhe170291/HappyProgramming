@@ -30,4 +30,5 @@ public class AccountService {
     public boolean changePassWord(Account a){
         return accountDAO.changePassWord(a);
     }
+    
 }

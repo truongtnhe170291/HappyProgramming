@@ -1,73 +1,109 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter OTP</title>
+     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+     <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .panel-body {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .input-group-text {
+            background-color: #f1f1f1;
+            border: 1px solid #ced4da;
+            border-right: 0;
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+        .form-control {
+            border-left: 0;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        .form-group p {
+            margin: 0;
+        }
+    </style>
+    <script>
+        let timer;
+        function startCountdown(duration, display) {
+            let time = duration;
+            display.textContent = time;
+            timer = setInterval(function () {
+                time--;
+                display.textContent = time;
 
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+                if (time <= 0) {
+                    clearInterval(timer);
+                    document.getElementById('otp-button').value = 'Reset send OTP';
+                    document.getElementById('otp-button').onclick = sendNewOTP;
+                }
+            }, 1000);
+        }
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        function sendNewOTP() {
+            document.getElementById('register-form').action = 'SendNewOtp'; 
+            document.getElementById('register-form').submit();
+        }
 
-<style type="text/css">
-.form-gap {
-    padding-top: 70px;
-}
-</style>
+        window.onload = function () {
+            let duration = 30; // 30 seconds
+            let display = document.querySelector('#time');
+            startCountdown(duration, display);
+        };
+    </script>
 </head>
-
 <body>
-	<div class="form-gap"></div>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="text-center">
-							<h3>
-								<i class="fa fa-lock fa-4x"></i>
-							</h3>
-							<h2 class="text-center">Enter OTP</h2>
-									<%
-		  			if(request.getAttribute("message")!=null)
-		  			{
-		  				out.print("<p class='text-danger ml-1'>"+request.getAttribute("message")+"</p>");
-		  			}
-		  
-		  %>
-	
-							<div class="panel-body">
+    <div class="panel-body">
+        <form id="register-form" action="ValidateOtp" role="form" autocomplete="off" class="form" method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                    <input id="otp" name="otp" placeholder="Enter OTP" class="form-control" type="text" >
+                </div>
+            </div>
+            <div class="form-group">
+                <p>Time remaining: <span id="time">30</span> seconds</p>
+            </div>
+            <div class="form-group">
+                <input id="otp-button" name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Confirm" type="submit">
+                <br/>
+            </div>
 
-								<form id="register-form" action="ValidateOtp" role="form" autocomplete="off"
-									class="form" method="post">
+            <input type="hidden" class="hide" name="token" id="token" value="">
+        </form>
+      <a href="homes.jsp"> <input id="otp-button" name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Back To Home" type="submit"></a>
 
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon"><i
-												class="glyphicon glyphicon-envelope color-blue"></i></span> <input
-												id="opt" name="otp" placeholder="Enter OTP"
-												class="form-control" type="text" required="required">
-										</div>
-									</div>
-									<div class="form-group">
-										<input name="recover-submit"
-											class="btn btn-lg btn-primary btn-block"
-											value="Reset Password" type="submit">
-									</div>
-
-									<input type="hidden" class="hide" name="token" id="token"
-										value="">
-								</form>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    </div>
 </body>
 </html>
