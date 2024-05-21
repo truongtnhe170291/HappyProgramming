@@ -11,26 +11,30 @@ import java.util.List;
  * @author Admin
  */
 public class MentorProfile {
-    private int cvID;
+    private String mentorName;
     private String avatar;
     private String full_name;
-    private int star;
+    private float starAVG;
 
-    public MentorProfile(int cvID, String avatar, String full_name, int star) {
-        this.cvID = cvID;
+    public MentorProfile() {
+    }
+
+    public String getMentorName() {
+        return mentorName;
+    }
+
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
+    }
+
+    public MentorProfile(String mentorName, String avatar, String full_name, float starAVG) {
+        this.mentorName = mentorName;
         this.avatar = avatar;
         this.full_name = full_name;
-        this.star = star;
+        this.starAVG = starAVG;
     }
 
-    public int getCvID() {
-        return cvID;
-    }
-
-    public void setCvID(int cvID) {
-        this.cvID = cvID;
-    }
-
+   
     public String getAvatar() {
         return avatar;
     }
@@ -47,17 +51,21 @@ public class MentorProfile {
         this.full_name = full_name;
     }
 
-    public int getStar() {
-        return star;
+    public float getStar() {
+        return starAVG;
     }
 
-    public void setStar(int star) {
-        this.star = star;
+    public void setStar(float starAVG) {
+        this.starAVG = starAVG;
     }
 
     @Override
     public String toString() {
-        return "MentorProfile{" + "cvID=" + cvID + ", avatar=" + avatar + ", full_name=" + full_name + ", star=" + star + '}';
+        return "MentorProfile{" + "mentorName=" + mentorName + ", avatar=" + avatar + ", full_name=" + full_name + ", starAVG=" + starAVG + '}';
     }
+
+    
+
+  
     
 }

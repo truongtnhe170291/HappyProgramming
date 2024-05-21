@@ -27,8 +27,6 @@ public class Skill {
         this.skillID = skillID;
         this.skillName = skillName;
     }
-
-    
     public String getImg() {
         return img;
     }
@@ -64,13 +62,16 @@ public class Skill {
         this.description = description;
     }
 
-    public boolean getStatus() {
+
+    public boolean isStatus() {
         return status;
     }
 
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+   
 
     @Override
     public String toString() {
