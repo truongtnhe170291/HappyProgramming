@@ -11,40 +11,29 @@ import java.sql.Date;
  * @author 2k3so
  */
 public class Mentor extends Account{
-    
-    private String mentorGmail ,avatar;
+    private double rate;
     
 
     public Mentor() {
     }
 
-    public Mentor(String avatar, String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, int roleId, int statusId) {
-        super(userName, gmail, fullName, password, dob, sex, address, phone, roleId, statusId);
-        this.avatar = avatar;
+    public Mentor(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, String avatar, int roleId, int statusId) {
+        super(userName, gmail, fullName, password, dob, sex, address, phone, avatar, roleId, statusId);
     }
+
+    public Mentor(double rate, String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, String avatar, int roleId, int statusId) {
+        super(userName, gmail, fullName, password, dob, sex, address, phone, avatar, roleId, statusId);
+        this.rate = rate;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
     
-
-    
-
-    public String getMentorGmail() {
-        return mentorGmail;
-    }
-
-    public void setMentorGmail(String mentorGmail) {
-        this.mentorGmail = mentorGmail;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    @Override
-    public String toString() {
-        return "Mentor{" + "mentorGmail=" + mentorGmail + ", avatar=" + avatar + '}';
-    }
 
 }
