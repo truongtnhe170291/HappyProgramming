@@ -16,6 +16,34 @@
     padding-top: 70px;
 }
 </style>
+ <script>
+        let timer;
+        function startCountdown(duration, display) {
+            let time = duration;
+            display.textContent = time;
+            timer = setInterval(function () {
+                time--;
+                display.textContent = time;
+
+                if (time <= 0) {
+                    clearInterval(timer);
+                    document.getElementById('otp-button').value = 'Reset send OTP';
+                    document.getElementById('otp-button').onclick = sendNewOTP;
+                }
+            }, 1000);
+        }
+
+        function sendNewOTP() {
+            document.getElementById('register-form').action = 'sendnew'; 
+            document.getElementById('register-form').submit();
+        }
+
+        window.onload = function () {
+            let duration = 30; // 30 seconds
+            let display = document.querySelector('#time');
+            startCountdown(duration, display);
+        };
+    </script>
 </head>
 
 <body>
@@ -26,15 +54,12 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="text-center">
-							<h3>
-								<i class="fa fa-lock fa-4x"></i>
-							</h3>
-                                             
+							
 							<h2 class="text-center">Enter OTP</h2>
 									<%
-		  			if(request.getAttribute("message")!=null)
+		  			if(request.getAttribute("messages")!=null)
 		  			{
-		  				out.print("<p class='text-danger ml-1'>"+request.getAttribute("message")+"</p>");
+		  				out.print("<p class='text-danger ml-1'>"+request.getAttribute("messages")+"</p>");
 		  			}
 		  
 		  %>
@@ -52,8 +77,11 @@
 												class="form-control" type="text" required="required">
 										</div>
 									</div>
+                                                                                                        <div class="form-group">
+                                                  <p>Time remaining: <span id="time">30</span> seconds</p>
+                                              </div>
 									<div class="form-group">
-										<input name="recover-submit"
+										<input id="otp-button" name="recover-submit"
 											class="btn btn-lg btn-primary btn-block"
 											value="Reset Password" type="submit">
 									</div>
@@ -61,6 +89,8 @@
 									<input type="hidden" class="hide" name="token" id="token"
 										value="">
 								</form>
+                                                                  <a href="homes.jsp"> <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Back To Home" type="submit"></a>
+
 
 							</div>
 						</div>

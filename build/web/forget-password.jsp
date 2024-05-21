@@ -28,9 +28,7 @@
                <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-8">
                   <div class="edit-profile">
                      <div class="edit-profile__logos">
-                        <a href="index.html">
-                           <img class="dark" src="img/logo-dark.png" alt="">
-                           <img class="light" src="img/logo-white.png" alt="">
+                        <a href="login.jsp">
                         </a>
                      </div>
                      <div class="card border-0">
@@ -45,8 +43,15 @@
                               <form action="forgotPassword" method="post">
                               <div class="form-group mb-20">
                                  <label for="email">Email Adress</label>
-                                 <input type="text" class="form-control" id="email" placeholder="name@example.com" name="email">
+                                 <input type="text" class="form-control" id="email" placeholder="name@example.com" name="email" required>
                               </div>
+                                  	<%
+		  			if(request.getAttribute("messages")!=null)
+		  			{
+		  				out.print("<p class='text-danger ml-1'>"+request.getAttribute("messages")+"</p>");
+		  			}
+		  
+		  %>
                               <div class="d-flex">
                                  <input class="btn btn-primary btn-default btn-squared text-capitalize lh-normal px-md-50 py-15 signIn-createBtn" type="submit" value="Send Reset Instructions"/>
                                     
