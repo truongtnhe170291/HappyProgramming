@@ -89,9 +89,10 @@ public class UpdateAccountServlet extends HttpServlet {
         if (acc.getRoleId() == 2) {
             request.setAttribute("user", acc);
             SkillDAO skillDAO = new SkillDAO();
+            CVService cVService = CVService.getInstance();
+            request.setAttribute("cv", cVService.getCVByUserName(acc.getUserName()));
             List<Skill> list = skillDAO.getSkills();
-            request.setAttribute("listSkill", list);
-            
+            request.setAttribute("skills", list);
             request.getRequestDispatcher("user_info.jsp").forward(request, response);
         }
 
@@ -151,7 +152,6 @@ public class UpdateAccountServlet extends HttpServlet {
             dao.updateAccount(userName, fullName, dob, sex, address, gmail, fileName, phone);
             response.sendRedirect("UpdateAccountServlet");
         }
-
     }
 
     /**
