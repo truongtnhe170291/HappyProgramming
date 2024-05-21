@@ -28,7 +28,7 @@
         <!-- Body Inner -->
         <div class="body-inner">
             <!-- Header -->
-            <jsp:inlucde page="header.jsp"/>
+            <jsp:include page="header.jsp"/>
             <!-- end: Header -->
             <!-- Inspiro Slider -->
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
