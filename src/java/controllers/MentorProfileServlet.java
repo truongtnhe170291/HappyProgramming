@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.MentorProfile;
+import models.MentorProfileDTO;
 
 /**
  *
@@ -82,10 +83,21 @@ public class MentorProfileServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    }
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+    String mentorName = request.getParameter("mentorName");
+    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+    MentorProfileDTO mentor;
+        try {
+            mentor = mentorProfileDAO.getOneMentor(mentorName);
+            request.setAttribute("mentor", mentor);
+            request.getRequestDispatcher("CVDetail.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+}
+
 
     /** 
      * Returns a short description of the servlet.

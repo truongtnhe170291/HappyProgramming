@@ -15,13 +15,38 @@ public class MentorProfile {
     private String avatar;
     private String full_name;
     private float starAVG;
-
+    private List<Skill> listSkills;
     public MentorProfile() {
     }
 
     public String getMentorName() {
         return mentorName;
     }
+
+    public MentorProfile(String mentorName, String avatar, String full_name, float starAVG, List<Skill> listSkills) {
+        this.mentorName = mentorName;
+        this.avatar = avatar;
+        this.full_name = full_name;
+        this.starAVG = starAVG;
+        this.listSkills = listSkills;
+    }
+
+    public float getStarAVG() {
+        return starAVG;
+    }
+
+    public void setStarAVG(float starAVG) {
+        this.starAVG = starAVG;
+    }
+
+    public List<Skill> getListSkills() {
+        return listSkills;
+    }
+
+    public void setListSkills(List<Skill> listSkills) {
+        this.listSkills = listSkills;
+    }
+    
 
     public void setMentorName(String mentorName) {
         this.mentorName = mentorName;
