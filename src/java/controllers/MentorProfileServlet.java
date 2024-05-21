@@ -62,17 +62,17 @@ public class MentorProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+        String mentorName = request.getParameter("mentorName");
+    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+    MentorProfileDTO mentor;
         try {
-            List<MentorProfile> list = mentorProfileDAO.getAllMentors();
-             request.setAttribute("mentors", list);
-             
-
-             
-             request.getRequestDispatcher("ListMentor.jsp").forward(request, response);
+            mentor = mentorProfileDAO.getOneMentor(mentorName);
+            request.setAttribute("mentor", mentor);
+            request.getRequestDispatcher("Mentor.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+    
     } 
 
     /** 
@@ -85,17 +85,7 @@ public class MentorProfileServlet extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
-    String mentorName = request.getParameter("mentorName");
-    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-    MentorProfileDTO mentor;
-        try {
-            mentor = mentorProfileDAO.getOneMentor(mentorName);
-            request.setAttribute("mentor", mentor);
-            request.getRequestDispatcher("CVDetail.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
+   
 }
 
 

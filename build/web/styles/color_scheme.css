@@ -5,7 +5,7 @@
 header {background-color:#fff;border-bottom: 1px solid #27a39e;}
 ul#top_nav li {border-left: 1px solid #ccc;}
 ul#top_nav li a{color:#488dc6;}
-nav {background-color:#1cbbb4 ;}
+nav{background: none;}
 #main-features {background:#1cbbb4 url(../img/bg_sub-header.png) repeat 0 0;color:#fff;}
 .feature i{border:2px solid #fff;color: #FFC;}
 .divider_top{background:url(../img/top_divider.png) repeat-x center bottom;}
