@@ -80,15 +80,14 @@ public class UpdateAccountServlet extends HttpServlet {
         Account curentAccount = (Account) session.getAttribute("user");
         Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
 
-        try {
-            if (request.getParameter("role").equals("mentee")) {
-                request.setAttribute("user", a);
-                request.getRequestDispatcher("MemberProfile.jsp").forward(request, response);
-            }
-        } catch (NullPointerException e) {
+        if (a.getRoleId() == 1) {
+            request.setAttribute("user", a);
+            request.getRequestDispatcher("MemberProfile.jsp").forward(request, response);
+        } else {
             request.setAttribute("user", a);
             request.getRequestDispatcher("user_info.jsp").forward(request, response);
         }
+
     }
 
     /**
@@ -116,30 +115,8 @@ public class UpdateAccountServlet extends HttpServlet {
         AccountDAO dao = new AccountDAO();
         boolean flag = true;
 
-//        Account curentAccount = (Account) session.getAttribute("user");
-//        Account a = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-//        String resultFileName = a.getAvatar();
-//
-//        // Lấy tên tệp
-//        String fileName = filePart.getSubmittedFileName();
-//        String uploadDirectory = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\build\\web\\img\\" + fileName;
-//        try {
-//            OutputStream out = new FileOutputStream(uploadDirectory);
-//            InputStream in = filePart.getInputStream();
-//            byte[] bytes = new byte[in.available()];
-//            in.read(bytes);
-//            out.write(bytes);
-//            out.close();
-//        } catch (IOException e) {
-//            fileName = "default.jpg";
-//        }
-        try {
-            dao.updateAccount(userName, fullName, dob, sex, address, gmail, "123", phone);
-            response.sendRedirect("UpdateAccountServlet?role=mentee");
-        } catch (NullPointerException e) {
-            dao.updateAccount(userName, fullName, dob, sex, address, gmail, "123", phone);
-            response.sendRedirect("UpdateAccountServlet");
-        }
+        dao.updateAccount(userName, fullName, dob, sex, address, gmail, "123", phone);
+        response.sendRedirect("UpdateAccountServlet");
 
     }
 

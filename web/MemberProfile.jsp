@@ -194,6 +194,7 @@
                 width: 200px;
                 height: 200px;
             }
+
         </style>
     </head>
     <body>
@@ -317,7 +318,7 @@
 
                             <div class="tab-pane fade in active" id="profile">
                                 <div class="row">
-                                    <form class="form" action="UpdateAccountServlet?role=mentee" method="post" enctype="multipart/form-data">
+                                    <form class="form" action="UpdateAccountServlet" method="post" enctype="multipart/form-data">
                                         <div>
                                             <div class="">
                                                 <div class="flext">
@@ -338,10 +339,14 @@
                                             <input class="input" type="text" name="username" value="${user.userName}" readonly>
                                             <span>Username</span>
                                         </label>  
-                                        <label>
-                                            <input class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
-                                            <span>Fullname</span>
-                                        </label>              
+
+                                        <div style="margin-bottom: 15px">
+                                            <label>
+                                                <input id="fullname" class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
+                                                <span>Fullname</span>
+                                            </label>   
+                                            <h5 id="nameError" style="display: none"><strong style="color: red;">Oh No!</strong> Your name is not valid.</h5>
+                                        </div>
                                         <label>
                                             <label for="sexOption">
                                                 Sex
@@ -351,25 +356,37 @@
                                                 <option value="0" ${mentee.sex == '0' ? 'selected' : '0'}>Female</option>
                                             </select>
                                         </label> 
-                                        <label>
-                                            <input class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
-                                            <span>Email</span>
-                                        </label> 
 
-                                        <label>
-                                            <input class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="">
-                                            <span>Date of birth</span>
-                                        </label> 
+                                        <div style="margin-bottom: 15px">
+                                            <label>
+                                                <input id="email" class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
+                                                <span>Email</span>
+                                            </label> 
+                                            <h5 id="emailError" style="display: none"><strong style="color: red;">Oh No!</strong> Your email is not valid.</h5>
+                                        </div>
 
-                                        <label>
-                                            <input class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10">
-                                            <span>Phone number</span>
-                                        </label>
+                                        <div style="margin-bottom: 15px">
+                                            <label>
+                                                <input id="dob" class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="">
+                                                <span>Date of birth</span>
+                                            </label> 
+                                            <h5 id="dobError" style="display: none"><strong style="color: red;">Oh No!</strong> Your date of birth is invalid.</h5>
+                                        </div>
+
+                                        <div style="margin-bottom: 15px">
+                                            <label>
+                                                <input id="phoneNumber" class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10">
+                                                <span>Phone number</span>
+                                            </label>
+                                            <h5 id="phoneError" style="display: none"><strong style="color: red;">Oh No!</strong> Your phone number is not valid.</h5>
+                                        </div>
+
                                         <label>
                                             <input class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
                                             <span>Address</span>
                                         </label>
-                                        <button class="submit">Save</button>
+
+                                            <button id="submitForm" class="submit">Save</button>
                                     </form>
                                 </div><!-- End row -->
                             </div><!-- End tab-pane --> 
@@ -456,6 +473,99 @@
         <script src="jss/jquery-2.2.4.min.js"></script>
 
         <!-- OTHER JS --> 
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var emailInput = document.getElementById('email');
+                var emailError = document.getElementById('emailError');
+                var phoneInput = document.getElementById('phoneNumber');
+                var phoneError = document.getElementById('phoneError');
+                var nameInput = document.getElementById('fullname');
+                var nameError = document.getElementById('nameError');
+                var dobInput = document.getElementById('dob');
+                var dobError = document.getElementById('dobError');
+                var submitForm = document.getElementById('submitForm');
+
+                if (emailInput) {
+                    emailInput.addEventListener('input', function () {
+                        var emailValue = emailInput.value;
+                        if (!validateEmail(emailValue)) {
+                            emailError.style.display = 'block';
+                            submitForm.disabled = true;
+                        } else {
+                            emailError.style.display = 'none';
+                            submitForm.disabled = false;
+                        }
+                    });
+                }
+
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', function () {
+                        var phoneValue = phoneInput.value;
+                        if (!validatePhone(phoneValue)) {
+                            phoneError.style.display = 'block';
+                            submitForm.disabled = true;
+                        } else {
+                            phoneError.style.display = 'none';
+                            submitForm.disabled = false;
+                        }
+                    });
+                }
+
+                if (nameInput) {
+                    nameInput.addEventListener('input', function () {
+                        var nameValue = nameInput.value;
+                        if (!validateName(nameValue)) {
+                            nameError.style.display = 'block';
+                            submitForm.disabled = true;
+                        } else {
+                            nameError.style.display = 'none';
+                            submitForm.disabled = false;
+                        }
+                    });
+                }
+
+                if (dobInput) {
+                    dobInput.addEventListener('input', function () {
+                        var dobValue = dobInput.value;
+                        if (!validateBirthDate(dobValue)) {
+                            dobError.style.display = 'block';
+                            submitForm.disabled = true;
+                        } else {
+                            dobError.style.display = 'none';
+                            submitForm.disabled = false;
+                        }
+                    });
+                }
+
+                function validatePhone(phone) {
+                    var re = /^(0|84)(2(0[3-9]|1[0-689]|2[0-25-9]|3[2-9]|4[0-9]|5[124-9]|6[0369]|7[0-7]|8[0-9]|9[012346789])|3[2-9]|5[25689]|7[06-9]|8[0-9]|9[012346789])([0-9]{7})$/;
+                    return re.test(phone);
+                }
+
+                function validateEmail(email) {
+                    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return re.test(email);
+                }
+
+                function validateName(name) {
+                    var re = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
+                    return re.test(name);
+                }
+
+                function validateBirthDate(birthDate) {
+                    var currentDate = new Date();
+
+                    var selectedDate = new Date(birthDate);
+
+                    if (selectedDate >= currentDate) {
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+        </script>
         <script src="jss/superfish.js"></script>
         <script src="jss/bootstrap.min.js"></script>
         <script src="jss/retina.min.js"></script>
