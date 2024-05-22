@@ -26,8 +26,8 @@
                         <!--Logo-->
                         <div id="logo">
                             <a href="homes.jsp">
-                                <span class="logo-default">POLO</span>
-                                <span class="logo-dark">POLO</span>
+                                <span class="logo-default">FMASTER</span>
+                                <span class="logo-dark">FMASTER</span>
                             </a>
                         </div>
                         <!--End: Logo-->
