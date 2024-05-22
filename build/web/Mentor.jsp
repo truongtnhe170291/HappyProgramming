@@ -112,8 +112,10 @@
                                             <li><a href="user_info.jsp">CV</a></li>                            
                                         </ul>
                                     </li>
-                                    <li><a href="login.jsp">Login</a></li>
-                                    <li><a href="sign_up.jsp">Sign up</a></li>
+                                    <c:if test="${sessionScope.user == null}">
+                                        <li><a href="login.jsp">Login</a></li>
+                                        <li><a href="sign_up.jsp">Sign up</a></li>
+                                    </c:if>
                                     <li class="t">
                                         <a href="javascript:;" class="nav-item-toggle">
                                             <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>

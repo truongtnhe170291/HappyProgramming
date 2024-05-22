@@ -129,7 +129,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name2">Email</label>
-                                                                    <input type="email" class="form-control" id="email" name="gmail" value="${user.gmail}" placeholder="${user.gmail}">
+                                                                    <input readonly type="email" class="form-control" id="email" name="gmail" value="${user.gmail}" placeholder="${user.gmail}">
                                                                 </div>
                                                                 <div style="display: none" id="emailError" class="alert alert-warning alert-dismissible fade show disabled" role="alert">
                                                                     <strong style="color: red;">Oh No!</strong> Your email is not valid.
@@ -149,7 +149,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber5">phone number</label>
-                                                                    <input type="tel" class="form-control" id="phoneNumber" name="phone" value="${user.phone}" placeholder="${user.phone}" >
+                                                                    <input type="tel" class="form-control" id="phoneNumber" name="phone" value="${user.phone}" minlength="10" maxlength="10">
                                                                 </div>
                                                                 <div style="display: none" id="phoneError" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red;">Oh No!</strong> Your phone number is not valid.
@@ -205,7 +205,7 @@
                                                             <c:set var="cv" value="${requestScope.cv}"></c:set>
                                                                 <div class="form-group mb-25">
                                                                     <label for="name4">Full Name</label>
-                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="name4" placeholder="Duran Clayton">
+                                                                    <input name="fullName" value="${user.fullName}" type="text" class="form-control" id="name4" placeholder="Duran Clayton">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Mail</label>

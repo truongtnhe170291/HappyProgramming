@@ -83,7 +83,7 @@
                                                     <li>
                                                         <div class="nav-author__info">
                                                             <div class="author-img">
-                                                                <img src="img/author-nav.jpg" alt=""
+                                                                <img src="img/tungche2.jpg" alt=""
                                                                     class="rounded-circle">
                                                             </div>
                                                             <div>

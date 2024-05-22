@@ -268,10 +268,10 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img class="dev" src="img/tungche1.jpg" width="257" height="257">
+                                    <img class="dev" src="img/emhiu.jpg" width="257" height="257">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Alea Smith</h3>
+                                    <h3>Em Hius</h3>
                                     <span>Software Developer</span>
                                     <p>7 years of work experience. </p>
                                     <div class="align-center">
@@ -298,10 +298,10 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="img/tungche2.jpg" alt="">
+                                    <img src="img/son.jpg" alt="">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Ariol Doe</h3>
+                                    <h3>Son Pham</h3>
                                     <span>Software Developer</span>
                                     <p>7 years of work experience. </p>
                                     <div class="align-center">
@@ -328,12 +328,12 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="img/anh22.jpg" width="257" height="257" alt="">
+                                    <img src="img/truong (1).jpg" width="257" height="257" alt="">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Aren Foe</h3>
+                                    <h3>Nam Truong</h3>
                                     <span>Software Developer</span>
-                                    <p>4 years of work experience. </p>
+                                    <p>4 years of work experience. Leader</p>
                                     <div class="align-center">
                                         <a class="btn btn-xs btn-slide btn-light" href="#">
                                             <i class="fab fa-facebook-f"></i>
@@ -358,11 +358,11 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="img/anh23.jpg" width="257" height="257" alt="">
+                                    <img src="img/minh.jpg" width="257" height="257" alt="">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Choe lie</h3>
-                                    <span>Software Developer</span>
+                                    <h3>Quang Minh</h3>
+                                    <span>UI Developer</span>
                                     <p>5 years of work experience. </p>
                                     <div class="align-center">
                                         <a class="btn btn-xs btn-slide btn-light" href="#">

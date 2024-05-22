@@ -249,7 +249,7 @@
                                     <li><a href="sign_up.jsp">Sign up</a></li>
                                     <li class="t">
                                         <a href="javascript:;" class="nav-item-toggle">
-                                            <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
+                                            <span class="nav-item__title">${user.fullName}<i class="las la-angle-down nav-item__arrow"></i></span>
                                         </a>
                                         <ul class="dropdown-menu"> 
                                             <li>  <div class="nav-author__info">
@@ -380,7 +380,7 @@
 
                                         <div style="margin-bottom: 15px">
                                             <label>
-                                                <input id="email" class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
+                                                <input readonly id="email" class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
                                                 <span>Email</span>
                                             </label> 
                                             <h5 id="emailError" style="display: none"><strong style="color: red;">Oh No!</strong> Your email is not valid.</h5>

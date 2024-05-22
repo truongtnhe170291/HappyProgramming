@@ -89,11 +89,12 @@
                     text-align: center;
                 }
 
-                .signin a:hover {
-                    text-decoration: underline royalblue;
+
+                <li class="dropdown"><a href="#">Features</a><ul class="dropdown-menu"><li><a href="blog_skill.jsp">Mentor detail</a></li><li><a href="user_info.jsp">CV</a></li></ul></li><li><a href="login.jsp">Login</a></li><li><a href="sign_up.jsp">Sign up</a></li><li class="t"><a href="javascript:;" class="nav-item-toggle"><span class="nav-item__title">$ {
+                    user.fullName
                 }
 
-                .signin a {
+                <i class="las la-angle-down nav-item__arrow"></i></span></a><ul class="dropdown-menu"><li><div class="nav-author__info"><div class="author-img"><img src="img/author-nav.jpg" alt="" class="rounded-circle"></div><div><span>UI Designer</span></div></div></li><li><a href="updatementee"><i class="uil uil-user"></i>Profile</a></li><li><a href=""><i class="uil uil-setting"></i>Settings</a></li><li><a href="newPassword.jsp"><i class="uil uil-key-skeleton"></i>Change Password</a></li>.signin a {
                     color: #00bfff;
                 }
 
@@ -357,157 +358,166 @@
                                                 <span>Username</span>
                                             </label>
 
-
-                                            <div style="margin-bottom: 15px">
+                                            <<<<<<< HEAD=======<div style="margin-bottom: 15px">
                                                 <label>
-                                                    <input id="fullname" class="input" type="text" placeholder=""
-                                                        name="fullname" required="" value="${user.fullName}">
-                                                    <span>Fullname</span>
-                                                </label>
-                                                <h5 id="nameError" style="display: none"><strong style="color: red;">Oh
-                                                        No!</strong> Your name is not valid.</h5>
-                                            </div>
-
-                                            <label>
-                                                <label for="sexOption">
-                                                    Sex
-                                                </label>
-                                                <select class="js-example-basic-single js-states form-control"
-                                                    id="sexOption" name="sex">
-                                                    <option value="1" ${mentee.sex=='1' ? 'selected' : '1' }>Male
-                                                    </option>
-                                                    <option value="0" ${mentee.sex=='0' ? 'selected' : '0' }>Female
-                                                    </option>
-                                                </select>
-                                            </label>
-
-
-                                            <div style="margin-bottom: 15px">
-                                                <label>
-                                                    <input id="email" class="input" type="email" name="gmail"
+                                                    <input readonly id="email" class="input" type="email" name="gmail"
                                                         placeholder="" value="${user.gmail}" required="">
                                                     <span>Email</span>
                                                 </label>
                                                 <h5 id="emailError" style="display: none"><strong style="color: red;">Oh
                                                         No!</strong> Your email is not valid.</h5>
-                                            </div>
+                                    </div>
+                                    >>>>>>> b1e41ed41f712957714ed1926e3cbbef654801fb
 
-                                            <div style="margin-bottom: 15px">
-                                                <label>
-                                                    <input id="dob" class="input" type="date" name="dob" placeholder=""
-                                                        value="${user.dob}" required="">
-                                                    <span>Date of birth</span>
-                                                </label>
-                                                <h5 id="dobError" style="display: none"><strong style="color: red;">Oh
-                                                        No!</strong> Your date of birth is invalid.</h5>
-                                            </div>
+                                    <div style="margin-bottom: 15px">
+                                        <label>
+                                            <input id="fullname" class="input" type="text" placeholder=""
+                                                name="fullname" required="" value="${user.fullName}">
+                                            <span>Fullname</span>
+                                        </label>
+                                        <h5 id="nameError" style="display: none"><strong style="color: red;">Oh
+                                                No!</strong> Your name is not valid.</h5>
+                                    </div>
 
-                                            <div style="margin-bottom: 15px">
-                                                <label>
-                                                    <input id="phoneNumber" class="input" type="tel" placeholder=""
-                                                        name="phone" value="${user.phone}" required="" minlength="10"
-                                                        maxlength="10">
-                                                    <span>Phone number</span>
-                                                </label>
-                                                <h5 id="phoneError" style="display: none"><strong style="color: red;">Oh
-                                                        No!</strong> Your phone number is not valid.</h5>
-                                            </div>
-
-
-                                            <label>
-                                                <input class="input" type="text" placeholder="" name="address"
-                                                    value="${user.address}" required=""
-                                                    oninvalid="this.setCustomValidity('Vui lòng nhập địa chỉ')"
-                                                    oninput="this.setCustomValidity('')">
-                                                <span>Address</span>
-                                            </label>
-
-                                            <button id="submitForm" class="submit">Save</button>
-                                        </form>
-                                    </div><!-- End row -->
-                                </div><!-- End tab-pane -->
+                                    <label>
+                                        <label for="sexOption">
+                                            Sex
+                                        </label>
+                                        <select class="js-example-basic-single js-states form-control" id="sexOption"
+                                            name="sex">
+                                            <option value="1" ${mentee.sex=='1' ? 'selected' : '1' }>Male
+                                            </option>
+                                            <option value="0" ${mentee.sex=='0' ? 'selected' : '0' }>Female
+                                            </option>
+                                        </select>
+                                    </label>
 
 
+                                    <div style="margin-bottom: 15px">
+                                        <label>
+                                            <input id="email" class="input" type="email" name="gmail" placeholder=""
+                                                value="${user.gmail}" required="">
+                                            <span>Email</span>
+                                        </label>
+                                        <h5 id="emailError" style="display: none"><strong style="color: red;">Oh
+                                                No!</strong> Your email is not valid.</h5>
+                                    </div>
 
-                                <div class="tab-pane fade" id="agenda">
+                                    <div style="margin-bottom: 15px">
+                                        <label>
+                                            <input id="dob" class="input" type="date" name="dob" placeholder=""
+                                                value="${user.dob}" required="">
+                                            <span>Date of birth</span>
+                                        </label>
+                                        <h5 id="dobError" style="display: none"><strong style="color: red;">Oh
+                                                No!</strong> Your date of birth is invalid.</h5>
+                                    </div>
 
-                                    <div class="row">
-                                        <aside class="col-md-4">
-                                            <div class="box_style_1" id="external-events">
-                                                <h4>Draggable Events</h4>
-                                                <div class='external-event'>Coffe Break</div>
-                                                <div class='external-event'>Meeting</div>
-                                                <div class='external-event'>Lesson</div>
-                                                <div class='external-event'>Exam</div>
-                                                <p><input type='checkbox' id='drop-remove' /><label
-                                                        for='drop-remove'>remove after drop</label></p>
-                                            </div>
-                                        </aside>
+                                    <div style="margin-bottom: 15px">
+                                        <label>
+                                            <input id="phoneNumber" class="input" type="tel" placeholder="" name="phone"
+                                                value="${user.phone}" required="" minlength="10" maxlength="10">
+                                            <span>Phone number</span>
+                                        </label>
+                                        <h5 id="phoneError" style="display: none"><strong style="color: red;">Oh
+                                                No!</strong> Your phone number is not valid.</h5>
+                                    </div>
 
-                                        <div class="col-md-8">
-                                            <div id="calendar"></div><!-- End calendar -->
+
+                                    <label>
+                                        <input class="input" type="text" placeholder="" name="address"
+                                            value="${user.address}" required=""
+                                            oninvalid="this.setCustomValidity('Vui lòng nhập địa chỉ')"
+                                            oninput="this.setCustomValidity('')">
+                                        <span>Address</span>
+                                    </label>
+
+                                    <button id="submitForm" class="submit">Save</button>
+                                    </form>
+                                </div><!-- End row -->
+                            </div><!-- End tab-pane -->
+
+
+
+                            <div class="tab-pane fade" id="agenda">
+
+                                <div class="row">
+                                    <aside class="col-md-4">
+                                        <div class="box_style_1" id="external-events">
+                                            <h4>Draggable Events</h4>
+                                            <div class='external-event'>Coffe Break</div>
+                                            <div class='external-event'>Meeting</div>
+                                            <div class='external-event'>Lesson</div>
+                                            <div class='external-event'>Exam</div>
+                                            <p><input type='checkbox' id='drop-remove' /><label for='drop-remove'>remove
+                                                    after drop</label></p>
                                         </div>
-                                    </div><!-- End row -->
+                                    </aside>
 
-                                </div><!-- End tab-pane -->
-
-                                <div class="tab-pane fade" id="plans">
-                                    <h3>Change your Payment method</h3>
-                                    <div id="payment_opt">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="payment" checked><img src="img/logo_paypal.png"
-                                                alt="Paypal" class="payment_logos">
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="payment"><img src="img/logo_visa.png" alt="Card"
-                                                class="payment_logos">
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="payment"><img src="img/logo_master.png" alt="Card"
-                                                class="payment_logos">
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="payment"><img src="img/logo_maestro.png"
-                                                alt="Card" class="payment_logos">
-                                        </label>
+                                    <div class="col-md-8">
+                                        <div id="calendar"></div><!-- End calendar -->
                                     </div>
-                                    <hr>
+                                </div><!-- End row -->
 
-                                    <h3>Order summary</h3>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover " style="margin-bottom:0;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Items</th>
-                                                    <th>Amount</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Price of the course</td>
-                                                    <td>?0.99</td>
-                                                </tr>
-                                                <tr class="info"
-                                                    style="border-top: 2px solid #ccc; border-bottom: 2px solid #ccc; font-size:18px">
-                                                    <td><strong>TOTAL</strong></td>
-                                                    <td><strong>?0.99</strong></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><small>without VAT</small></td>
-                                                    <td><small>? 0.83</small></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><small>VAT (19%)</small></td>
-                                                    <td> <small>?0.16</small> </td>
-                                                </tr>
+                            </div><!-- End tab-pane -->
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div><!-- End tab-pane -->
-                            </div><!-- End col-md-8-->
-                        </div>
-                    </div><!-- End row-->
+                            <div class="tab-pane fade" id="plans">
+                                <h3>Change your Payment method</h3>
+                                <div id="payment_opt">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="payment" checked><img src="img/logo_paypal.png"
+                                            alt="Paypal" class="payment_logos">
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="payment"><img src="img/logo_visa.png" alt="Card"
+                                            class="payment_logos">
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="payment"><img src="img/logo_master.png" alt="Card"
+                                            class="payment_logos">
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="payment"><img src="img/logo_maestro.png" alt="Card"
+                                            class="payment_logos">
+                                    </label>
+                                </div>
+                                <hr>
+
+                                <h3>Order summary</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover " style="margin-bottom:0;">
+                                        <thead>
+                                            <tr>
+                                                <th>Items</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Price of the course</td>
+                                                <td>?0.99</td>
+                                            </tr>
+                                            <tr class="info"
+                                                style="border-top: 2px solid #ccc; border-bottom: 2px solid #ccc; font-size:18px">
+                                                <td><strong>TOTAL</strong></td>
+                                                <td><strong>?0.99</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>without VAT</small></td>
+                                                <td><small>? 0.83</small></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>VAT (19%)</small></td>
+                                                <td> <small>?0.16</small> </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><!-- End tab-pane -->
+                        </div><!-- End col-md-8-->
+                    </div>
+                </div><!-- End row-->
                 </div><!-- End container -->
             </section><!-- End main_content-->
 
