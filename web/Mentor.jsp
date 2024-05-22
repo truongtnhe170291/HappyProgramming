@@ -21,6 +21,9 @@
         <link href="css/superfish.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <link href="fontello/css/fontello.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous">
+
+
 
 
         <style>
@@ -37,10 +40,27 @@
             .profile img {
                 width: 150px;
                 height: 150px;
-                border-radius: 50%; 
+                border-radius: 50%;
                 object-fit: cover;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px; 
+                margin-bottom: 20px;
+            }
+            .avatar{
+                transform: translateY(-30px);
+                width: 100px;
+                height: 100px;
+                background-size: cover;
+            }
+            .course{
+
+                display: flex;
+                justify-content: space-between;
+            }
+            .ac{
+                transform: translateY(-24px);
+            }
+            .rounded-circle{
+                border-radius: 50%;
             }
         </style>
     </head>
@@ -52,8 +72,8 @@
                     <!--Logo-->
                     <div id="logo">
                         <a href="homes.jsp">
-                            <span class="logo-default">POLO</span>
-                            <span class="logo-dark">POLO</span>
+                            <span class="logo-default">FMASTER</span>
+                            <span class="logo-dark">FMASTER</span>
                         </a>
                     </div>
                     <!--End: Logo-->
@@ -101,10 +121,10 @@
                                         <ul class="dropdown-menu"> 
                                             <li>  <div class="nav-author__info">
                                                     <div class="author-img">
-                                                        <img src="img/author-nav.jpg" alt="" class="rounded-circle">
+                                                        <img src="" alt="" class="rounded-circle">
                                                     </div>
                                                     <div>
-                                                        <span>UI Designer</span>
+                                                        <span>Developer</span>
                                                     </div>
                                                 </div></li>
                                             <li>
@@ -147,85 +167,45 @@
 
             <div class="container">
 
-<<<<<<< HEAD
-<ol class="breadcrumb">
-  <li><a href="index.html">Home</a></li>
-  <li class="active">Active page</li>
-</ol>
-      
-<div class="row">
-  <aside class="col-md-4">
-    <div class=" box_style_1 profile">
-        <p class="text-center"><img src="${mentor.avatar}" alt="Teacher" class="img-circle styled"></p>  
-      <ul>
-        <li>Name <strong class="pull-right"><c:out value="${mentor.fullName}" /></strong> </li>
-        <li>Email <strong class="pull-right"><c:out value="${mentor.gmail}" /></strong></li>
-        <li>Telephone <strong class="pull-right"><c:out value="${mentor.phone}" /></strong></li>
-        <li>Address <strong class="pull-right"><c:out value="${mentor.address}" /></strong></li>
-        </ul>
-    </div></aside><div class="col-md-8">
-    
-      
-    <ul class="nav nav-tabs" id="mytabs">
-      <li class="active"><a href="#profile_teacher" data-toggle="tab">Profile</a></li>
-      <li><a href="#courses" data-toggle="tab">My Courses</a></li>
-    </ul>
-     
-    <div class="tab-content">
-    
-      <div class="tab-pane fade in active" id="profile_teacher">
-        <h3>About me</h3>
-        <p><c:out value="${mentor.profession}" /></p>
-        <h4>Credentials</h4>
-        <p><c:out value="${mentor.achievementDescription}" /></p>
-        <div class="row">
-          <div class="col-md-6">
-            <ul class="list_3">
-      
-            </ul>
-          </div>
-          </div> 
-      </div> 
-      
-      <div class="tab-pane fade in" id="courses">
-        <h3>Active courses</h3>
-        </div></div>          
-  </div>    
-</div>  
-</div><!-- End container -->
-</section><!-- End main_content-->
-=======
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
                     <li class="active">Active page</li>
                 </ol>
->>>>>>> a678e0f676ea9806891a0b803fc32ae9b461d934
 
                 <div class="row">
                     <aside class="col-md-4">
                         <div class=" box_style_1 profile">
-                            <p class="text-center"><img src="https://bookvexe.vn/wp-content/uploads/2023/04/tong-hop-25-hinh-anh-gai-xinh-toc-ngan-dep-nhat_1.jpg" alt="Teacher" class="img-circle styled"></p>  
+                            <p class="text-center"><img src="./img/${mentor.avatar}" alt="Teacher" class="img-circle styled"></p>  
                             <ul>
                                 <li>Name <strong class="pull-right"><c:out value="${mentor.fullName}" /></strong> </li>
                                 <li>Email <strong class="pull-right"><c:out value="${mentor.gmail}" /></strong></li>
                                 <li>Telephone <strong class="pull-right"><c:out value="${mentor.phone}" /></strong></li>
                                 <li>Address <strong class="pull-right"><c:out value="${mentor.address}" /></strong></li>
+                                <li>Gender <strong class="pull-right">${mentor.sex? "Male" : "Female"}</strong></li>                                <li>Address <strong class="pull-right"><c:out value="${mentor.address}" /></strong></li></li>
+                                <li>Price <strong class="pull-right"><c:out value="${mentor.rate}" /></strong></li>
                             </ul>
                         </div></aside><div class="col-md-8">
 
                           
                         <ul class="nav nav-tabs" id="mytabs">
                             <li class="active"><a href="#profile_teacher" data-toggle="tab">Profile</a></li>
-                            <li><a href="#courses" data-toggle="tab">My Courses</a></li>
+                            <li><a href="#courses" data-toggle="tab">Feedback</a></li>
                         </ul>
                          
                         <div class="tab-content">
 
                             <div class="tab-pane fade in active" id="profile_teacher">
                                 <h3>About me</h3>
-                                <p><c:out value="${mentor.profession}" /></p>
-                                <h4>Credentials</h4>
+                                <p><strong> Profession: </strong> <c:out value="${mentor.profession}" /></p>
+                                <p><strong> profession Introduction: </strong> <c:out value="${mentor.professionIntro}" /></p>
+                                <h4>My Achievement </h4>
                                 <p><c:out value="${mentor.achievementDescription}" /></p>
+                                <h4>Service Description </h4>
+                                <p><c:out value="${mentor.service_description}" /></p>
+                                <h4>My Skill </h4>
+
+                                <c:forEach items="${mentor.listSkills}" var="skill">
+                                    <p>${skill.skillName}</p>
+                                </c:forEach>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <ul class="list_3">
@@ -236,30 +216,66 @@
                             </div> 
 
                             <div class="tab-pane fade in" id="courses">
-                                <h3>Active courses</h3>
-                            </div></div>          
-                    </div>    
-                </div>  
-            </div><!-- End container -->
+                                <h3 class="ac">Rate & Comment</h3>
+
+                                <c:forEach items="${mentor.feedBacks}" var="feedback">
+                                    <div id ="te" class="course">
+                                        <div class="user-avatar">
+                                            <img class="avatar" src="img/${feedback.avatar}" alt="User Avatar">
+                                        </div>
+                                        <div id ="te" class="user-avatar">
+                                            <p>${feedback.menteeName}</p>
+                                        </div>
+                                        <div id ="te" class="rating">
+                                            <div class="star-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="comment">
+                                            <p>${feedback.comment}</p>
+                                        </div>
+                                    </div>
+
+                                </c:forEach>
+                            </div>          
+                        </div>    
+                    </div>  
+                </div><!-- End container -->
         </section><!-- End main_content-->
 
-        <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
 
-        <!-- JQUERY -->
         <script src="jss/jquery-2.2.4.min.js"></script>
 
-        <!-- OTHER JS --> 
 
         <script src="jss/superfish.js"></script>
         <script src="jss/bootstrap.min.js"></script>
-        <script src="jss/retina.min.js"></script>
-        <script src="assets/validate.js"></script>
         <script src="jss/jquery.placeholder.js"></script>
-        <script src="jss/functions.js"></script>
         <script src="jss/classie.js"></script>
         <script src="jss/uisearch.js"></script>
         <script src="js/jquery.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/functions.js"></script>
+        <script>
+        const numberOfStars = <%= session.getAttribute("feedback.star") %>;
+        const ratingContainer = document.getElementById("te");
+        while (ratingContainer.firstChild) {
+            ratingContainer.removeChild(ratingContainer.firstChild);
+        }
+        for (let i = 0; i < numberOfStars; i++) {
+            let star = document.createElement("i");
+            star.classList.add("fas", "fa-star");
+            ratingContainer.appendChild(star);
+        }
+        if (numberOfStars % 1 !== 0) {
+            let halfStar = document.createElement("i");
+            halfStar.classList.add("fas", "fa-star-half-alt");
+            ratingContainer.appendChild(halfStar);
+        }
+    </script>
     </body>
 </html>

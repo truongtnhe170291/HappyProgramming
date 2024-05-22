@@ -215,8 +215,8 @@
                         <!--Logo-->
                         <div id="logo">
                             <a href="homes.jsp">
-                                <span class="logo-default">POLO</span>
-                                <span class="logo-dark">POLO</span>
+                                <span class="logo-default">FMASTER</span>
+                                <span class="logo-dark">FMASTER</span>
                             </a>
                         </div>
                         <!--End: Logo-->
@@ -357,6 +357,7 @@
                                                 <span>Username</span>
                                             </label>
 
+
                                             <div style="margin-bottom: 15px">
                                                 <label>
                                                     <input id="fullname" class="input" type="text" placeholder=""
@@ -366,6 +367,7 @@
                                                 <h5 id="nameError" style="display: none"><strong style="color: red;">Oh
                                                         No!</strong> Your name is not valid.</h5>
                                             </div>
+
                                             <label>
                                                 <label for="sexOption">
                                                     Sex
@@ -378,6 +380,7 @@
                                                     </option>
                                                 </select>
                                             </label>
+
 
                                             <div style="margin-bottom: 15px">
                                                 <label>
@@ -410,9 +413,12 @@
                                                         No!</strong> Your phone number is not valid.</h5>
                                             </div>
 
+
                                             <label>
                                                 <input class="input" type="text" placeholder="" name="address"
-                                                    value="${user.address}" required="">
+                                                    value="${user.address}" required=""
+                                                    oninvalid="this.setCustomValidity('Vui lòng nhập địa chỉ')"
+                                                    oninput="this.setCustomValidity('')">
                                                 <span>Address</span>
                                             </label>
 
@@ -622,6 +628,17 @@
             <script src="jss/functions.js"></script>
             <script src="jss/classie.js"></script>
             <script src="jss/uisearch.js"></script>
+            <script>
+                function validateDOB(input) {
+                    var selectedDate = new Date(input.value);
+                    var currentDate = new Date();
+
+                    if (selectedDate > currentDate) {
+                        alert("DOB cannot be in the future.");
+                        input.value = ""; // Xóa giá trị nhập liệu
+                    }
+                }
+            </script>
 
         </body>
 
