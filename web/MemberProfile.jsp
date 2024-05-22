@@ -339,9 +339,9 @@
                                             <span>Username</span>
                                         </label>  
                                         <label>
-                                            <input class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
+                                            <input class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}" oninvalid="this.setCustomValidity('Vui lòng nhập họ và tên')" oninput="this.setCustomValidity('')">
                                             <span>Fullname</span>
-                                        </label>              
+                                        </label>          
                                         <label>
                                             <label for="sexOption">
                                                 Sex
@@ -352,21 +352,22 @@
                                             </select>
                                         </label> 
                                         <label>
-                                            <input class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
+                                            <input class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Vui lòng nhập địa chỉ email hợp lệ" oninvalid="this.setCustomValidity('Vui lòng nhập địa chỉ email hợp lệ')" oninput="this.setCustomValidity('')">
                                             <span>Email</span>
-                                        </label> 
+                                        </label>
 
-                                        <label>
-                                            <input class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="">
+                                        <<label>
+                                            <input class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="" onchange="validateDOB(this)">
                                             <span>Date of birth</span>
-                                        </label> 
+                                        </label>
+
 
                                         <label>
-                                            <input class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10">
+                                            <input class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10" pattern="[0-9]{10}" oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại đủ 10 số')" oninput="this.setCustomValidity('')">
                                             <span>Phone number</span>
                                         </label>
                                         <label>
-                                            <input class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
+                                            <input class="input" type="text" placeholder="" name="address" value="${user.address}" required="" oninvalid="this.setCustomValidity('Vui lòng nhập địa chỉ')" oninput="this.setCustomValidity('')">
                                             <span>Address</span>
                                         </label>
                                         <button class="submit">Save</button>
@@ -464,6 +465,17 @@
         <script src="jss/functions.js"></script>
         <script src="jss/classie.js"></script>
         <script src="jss/uisearch.js"></script>
+        <script>
+                                                function validateDOB(input) {
+                                                    var selectedDate = new Date(input.value);
+                                                    var currentDate = new Date();
+
+                                                    if (selectedDate > currentDate) {
+                                                        alert("DOB cannot be in the future.");
+                                                        input.value = ""; // Xóa giá trị nhập liệu
+                                                    }
+                                                }
+        </script>
 
     </body>
 </html>

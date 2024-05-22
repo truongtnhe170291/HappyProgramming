@@ -147,7 +147,7 @@
 <div class="row">
   <aside class="col-md-4">
     <div class=" box_style_1 profile">
-      <p class="text-center"><img src="img/teacher_2_small.jpg" alt="Teacher" class="img-circle styled"></p>  
+        <p class="text-center"><img src="${mentor.avatar}" alt="Teacher" class="img-circle styled"></p>  
       <ul>
         <li>Name <strong class="pull-right"><c:out value="${mentor.fullName}" /></strong> </li>
         <li>Email <strong class="pull-right"><c:out value="${mentor.gmail}" /></strong></li>
