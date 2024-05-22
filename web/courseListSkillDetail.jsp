@@ -163,50 +163,47 @@
                             </p>
                         </div>
                         <div class="row team-members">
-                            <div class="row team-members">
-                                <c:forEach items="${requestScope.mentors}" var="member">
-                                    <div class="col-lg-3">
-                                        <div class="team-member">
-                                            <div class="team-image">
-                                                <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
-                                                    <img src="${member.getAvatar()}" alt="${member.mentorName}">
-                                                </a>
-
-                                            </div>
-                                            <div class="team-desc">
-                                                <h3>
-                                                    <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">${member.getFull_name()}</a>
-                                                </h3>
-                                                <p>
-                                                    <c:forEach items="${member.listSkills}" var="skill">
+                            <c:forEach items="${requestScope.mentors}" var="member">
+                                <div class="col-lg-3">
+                                    <div class="team-member">
+                                        <div class="team-image">
+                                            <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                                <img src="https://bookvexe.vn/wp-content/uploads/2023/04/tong-hop-25-hinh-anh-gai-xinh-toc-ngan-dep-nhat_1.jpg" alt="${member.mentorName}">
+                                            </a>
+                                        </div>
+                                        <div class="team-desc">
+                                            <h3>
+                                                <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">${member.getFull_name()}</a>
+                                            </h3>
+                                            <div>
+                                                <c:forEach items="${member.listSkills}" var="skill">
                                                     <p>${skill.skillName}</p>
                                                 </c:forEach>
-                                                </p>
-                                                <div class="align-center">
-                                                    <a class="btn btn-xs btn-slide btn-light" href="#">
-                                                        <i class="fab fa-facebook-f"></i>
-                                                        <span>Facebook</span>
-                                                    </a>
-                                                    <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                                        <i class="fab fa-twitter"></i>
-                                                        <span>Twitter</span>
-                                                    </a>
-                                                    <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                                        <i class="fab fa-instagram"></i>
-                                                        <span>Instagram</span>
-                                                    </a>
-                                                    <a class="btn btn-xs btn-slide btn-light" href="#" data-width="80">
-                                                        <i class="icon-mail"></i>
-                                                        <span>Mail</span>
-                                                    </a>
-                                                </div>
+                                            </div>
+                                            <div class="align-center">
+                                                <a class="btn btn-xs btn-slide btn-light" href="#">
+                                                    <i class="fab fa-facebook-f"></i>
+                                                    <span>Facebook</span>
+                                                </a>
+                                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
+                                                    <i class="fab fa-twitter"></i>
+                                                    <span>Twitter</span>
+                                                </a>
+                                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
+                                                    <i class="fab fa-instagram"></i>
+                                                    <span>Instagram</span>
+                                                </a>
+                                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="80">
+                                                    <i class="icon-mail"></i>
+                                                    <span>Mail</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                </c:forEach>
-                            </div>
-
+                                </div>
+                            </c:forEach>
                         </div>
+
 
 
                     </div>
@@ -239,6 +236,14 @@
 
 
 <!-- OTHER JS --> 
+<style>
+    .team-image img {
+        width: 100%; /* Đặt chiều rộng của ảnh bằng với chiều rộng của khung chứa */
+        height: auto; /* Đặt chiều cao tự động để giữ tỉ lệ ảnh */
+        border-radius: 50%; /* Làm cho ảnh tròn */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Thêm hiệu ứng đổ bóng */
+    }
+</style>
 <script src="jss/superfish.js"></script>
 <script src="jss/bootstrap.min.js"></script>
 <script src="jss/retina.min.js"></script>

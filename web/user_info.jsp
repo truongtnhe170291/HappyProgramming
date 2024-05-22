@@ -135,7 +135,7 @@
                                                                     <strong style="color: red;">Oh No!</strong> Your email is not valid.
                                                                 </div>
                                                             </div>
-                                                                
+
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="dob">Date of birth</label>
@@ -145,7 +145,7 @@
                                                                     <strong style="color: red;">Oh No!</strong> Your date of birth is invalid.
                                                                 </div>
                                                             </div>
-                                                                
+
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber5">phone number</label>
@@ -163,7 +163,7 @@
 
                                                             <div class="button-group d-flex pt-sm-25 justify-content-md-end justify-content-start ">
                                                                 <!-- Button trigger modal -->
-                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                                <button id="submitForm" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                                     Save &amp; Next
                                                                 </button>
 
@@ -316,14 +316,17 @@
                                         var nameError = document.getElementById('nameError');
                                         var dobInput = document.getElementById('dob');
                                         var dobError = document.getElementById('dobError');
+                                        var submitForm = document.getElementById('submitForm');
 
                                         if (emailInput) {
                                             emailInput.addEventListener('input', function () {
                                                 var emailValue = emailInput.value;
                                                 if (!validateEmail(emailValue)) {
                                                     emailError.style.display = 'block';
+                                                    submitForm.disabled = true;
                                                 } else {
                                                     emailError.style.display = 'none';
+                                                    submitForm.disabled = false;
                                                 }
                                             });
                                         }
@@ -333,8 +336,10 @@
                                                 var phoneValue = phoneInput.value;
                                                 if (!validatePhone(phoneValue)) {
                                                     phoneError.style.display = 'block';
+                                                    submitForm.disabled = true;
                                                 } else {
                                                     phoneError.style.display = 'none';
+                                                    submitForm.disabled = false;
                                                 }
                                             });
                                         }
@@ -344,8 +349,10 @@
                                                 var nameValue = nameInput.value;
                                                 if (!validateName(nameValue)) {
                                                     nameError.style.display = 'block';
+                                                    submitForm.disabled = true;
                                                 } else {
                                                     nameError.style.display = 'none';
+                                                    submitForm.disabled = false;
                                                 }
                                             });
                                         }
@@ -355,8 +362,10 @@
                                                 var dobValue = dobInput.value;
                                                 if (!validateBirthDate(dobValue)) {
                                                     dobError.style.display = 'block';
+                                                    submitForm.disabled = true;
                                                 } else {
                                                     dobError.style.display = 'none';
+                                                    submitForm.disabled = false;
                                                 }
                                             });
                                         }
