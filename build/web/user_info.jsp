@@ -129,7 +129,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name2">Email</label>
-                                                                    <input type="email" class="form-control" id="email" name="gmail" value="${user.gmail}" placeholder="${user.gmail}">
+                                                                    <input readonly type="email" class="form-control" id="email" name="gmail" value="${user.gmail}" placeholder="${user.gmail}">
                                                                 </div>
                                                                 <div style="display: none" id="emailError" class="alert alert-warning alert-dismissible fade show disabled" role="alert">
                                                                     <strong style="color: red;">Oh No!</strong> Your email is not valid.
