@@ -72,29 +72,38 @@ public class FeedBackServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+@Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-    // Get data from form
-    String mentorGmail = request.getParameter("mentorGmail");
-    String menteeGmail = request.getParameter("menteeGmail");
-    int star = Integer.parseInt(request.getParameter("star"));
-    String comment = request.getParameter("comment");
+        throws ServletException, IOException {
+    try {
+        // Get data from form
+      
+        String mentorName = request.getParameter("mentorName");
+        String menteeName = request.getParameter("menteeName");
+        int star = Integer.parseInt(request.getParameter("star"));
+        String comment = request.getParameter("comment");
 
-    // Create new FeedBack object
-    FeedBack feedBack = new FeedBack(mentorGmail, menteeGmail, star, comment, new java.sql.Date(System.currentTimeMillis()));
+        // Create new FeedBack object
+        FeedBack feedBack = new FeedBack(mentorName, menteeName, star, comment, new java.sql.Date(System.currentTimeMillis()));
 
-    // Save to database
-    FeedBackDAO feedBackDAO = new FeedBackDAO();
-    String status = feedBackDAO.doFeedBack( mentorGmail, menteeGmail,star, comment);
+        // Save to database
+        FeedBackDAO feedBackDAO = new FeedBackDAO();
+        String status = feedBackDAO.addFeedBack(mentorName, menteeName, star, comment);
 
-    // Redirect or forward based on status
-    if ("OK".equals(status)) {
-        // If successful, redirect to a success page or reload the page
-        doGet(request, response);
-    } else {
-        // If there was an error, forward back to the form page and display an error message
-        request.setAttribute("error", "There was an error submitting your feedback. Please try again.");
+        // Redirect or forward based on status
+        if ("OK".equals(status)) {
+            // If successful, redirect to a success page or reload the page
+            doGet(request, response);
+        } else {
+            // If there was an error, forward back to the form page and display an error message
+            request.setAttribute("error", "There was an error submitting your feedback. Please try again.");
+            request.getRequestDispatcher("FeedBackForm.jsp").forward(request, response);
+        }
+    } catch (Exception e) {
+        // Handle any exceptions (e.g., invalid input, database connection issues)
+        e.printStackTrace();
+        // Forward back to the form page and display an error message
+        request.setAttribute("error", "An unexpected error occurred. Please try again later.");
         request.getRequestDispatcher("feedbackForm.jsp").forward(request, response);
     }
 }

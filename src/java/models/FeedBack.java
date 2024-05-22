@@ -9,20 +9,32 @@ import java.sql.Date;
  * @author Admin
  */
 public class FeedBack {
+
+    private String mentorName, menteeName;
     private int star;
-    private String menteeGmail, mentorGmail, comment;
+    private String comment;
     private Date  timeFeedBack;
 
     public FeedBack() {
     }
-
-    public FeedBack( String mentorGmail, String menteeGmail ,int star, String comment, Date timeFeedBack) {
+       public FeedBack(String mentorName, String menteeName, int star, String comment, Date timeFeedBack) {
+        this.mentorName = mentorName;
+        this.menteeName = menteeName;
         this.star = star;
-        this.menteeGmail = menteeGmail;
-        this.mentorGmail = mentorGmail;
         this.comment = comment;
         this.timeFeedBack = timeFeedBack;
     }
+
+    public FeedBack(String menteeName, int star, String comment, Date timeFeedBack) {
+        this.menteeName = menteeName;
+        this.star = star;
+        this.comment = comment;
+        this.timeFeedBack = timeFeedBack;
+    }
+       
+
+
+   
 
     public int getStar() {
         return star;
@@ -32,21 +44,25 @@ public class FeedBack {
         this.star = star;
     }
 
-    public String getMenteeGmail() {
-        return menteeGmail;
+   
+
+    public String getMentorName() {
+        return mentorName;
     }
 
-    public void setMenteeGmail(String menteeGmail) {
-        this.menteeGmail = menteeGmail;
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
     }
 
-    public String getMentorGmail() {
-        return mentorGmail;
+    public String getMenteeName() {
+        return menteeName;
     }
 
-    public void setMentorGmail(String mentorGmail) {
-        this.mentorGmail = mentorGmail;
+    public void setMenteeName(String menteeName) {
+        this.menteeName = menteeName;
     }
+
+   
 
     public String getComment() {
         return comment;
@@ -66,8 +82,9 @@ public class FeedBack {
 
     @Override
     public String toString() {
-        return "FeedBack{" + "star=" + star + ", menteeGmail=" + menteeGmail + ", mentorGmail=" + mentorGmail + ", comment=" + comment + ", timeFeedBack=" + timeFeedBack + '}';
+        return "FeedBack{" + "mentorName=" + mentorName + ", menteeName=" + menteeName + ", star=" + star + ", comment=" + comment + ", timeFeedBack=" + timeFeedBack + '}';
     }
+
+   
+  
 }
-    
-    

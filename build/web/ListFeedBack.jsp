@@ -1,11 +1,5 @@
 <%-- 
     Document   : ListFeedBack
-    Created on : May 16, 2024, 4:28:26 PM
-    Author     : Admin
---%>
-
-<%-- 
-    Document   : ListFeedBack
     Created on : May 16, 2024, 11:16:39 AM
     Author     : Admin
 --%>
@@ -22,17 +16,19 @@
     <h1>List of Feedbacks</h1>
     <table border="1">
         <tr>
+            <th>Id Feedback</th>
             <th>Star</th>
-            <th>Mentee Gmail</th>
-            <th>Mentor Gmail</th>
+            <th>Mentee Name</th>
+            <th>Mentor Name</th>
             <th>Comment</th>
             <th>Time Feedback</th>
         </tr>
         <c:forEach var="a" items="${listFeedBack}">
             <tr>
+                <td>${a.feedbackID}</td>
                 <td>${a.star}</td>
-                <td>${a.menteeGmail}</td>
-                <td>${a.mentorGmail}</td>
+                <td>${a.menteeName}</td>
+                <td>${a.mentorName}</td>
                 <td>${a.comment}</td>
                 <td>${a.timeFeedBack}</td>
             </tr>

@@ -15,10 +15,10 @@
 <body>
     <h1>Feedback Form</h1>
   <form action="FeedBackServlet" method="post">
-    <label for="mentorGmail">Mentor Gmail:</label><br>
-    <input type="email" id="mentorGmail" name="mentorGmail"><br>
-    <label for="menteeGmail">Mentee Gmail:</label><br>
-    <input type="email" id="menteeGmail" name="menteeGmail"><br>
+    <label for="mentorGmail">Mentor Name:</label><br>
+    <input type="text" id="mentorName" name="mentorName"><br>
+    <label for="menteeGmail">Mentee Name:</label><br>
+    <input type="text" id="menteeName" name="menteeName"><br>
     <label for="star">Star:</label><br>
     <input type="number" id="star" name="star" min="1" max="5"><br>
     <label for="comment">Comment:</label><br>
@@ -31,3 +31,4 @@
     </c:if>
 </body>
 </html>
+

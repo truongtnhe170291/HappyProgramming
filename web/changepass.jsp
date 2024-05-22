@@ -1,7 +1,7 @@
 <%-- 
-    Document   : changpass
-    Created on : May 16, 2024, 4:21:37 PM
-    Author     : DIEN MAY XANH
+Document   : ChangePasswords
+Created on : May 21, 2024, 4:14:32 PM
+Author     : 84979
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,30 +9,151 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Change pass</title>
+        <title>Fmaster</title>
+        <style>
+            .login-box {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 400px;
+                padding: 40px;
+                transform: translate(-50%, -50%);
+                background: rgba(24, 20, 20, 0.987);
+                box-sizing: border-box;
+                box-shadow: 0 15px 25px rgba(0,0,0,.6);
+                border-radius: 10px;
+            }
+
+            .login-box .user-box {
+                position: relative;
+            }
+
+            .login-box .user-box input {
+                width: 100%;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                margin-bottom: 30px;
+                border: none;
+                border-bottom: 1px solid #fff;
+                outline: none;
+                background: transparent;
+            }
+
+            .login-box .user-box label {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                pointer-events: none;
+                transition: .5s;
+            }
+
+            .login-box .user-box input:focus ~ label,
+            .login-box .user-box input:valid ~ label {
+                top: -20px;
+                left: 0;
+                color: #bdb8b8;
+                font-size: 12px;
+            }
+
+            .login-box form button {
+                position: relative;
+                display: inline-block;
+                padding: 10px 20px;
+                color: #ffffff;
+                font-size: 16px;
+                text-decoration: none;
+                text-transform: uppercase;
+                overflow: hidden;
+                transition: .5s;
+                margin-top: 40px;
+                letter-spacing: 4px
+            }
+
+            .login-box button:hover {
+                background: #03f40f;
+                color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 0 5px #03f40f,
+                    0 0 25px #03f40f,
+                    0 0 50px #03f40f,
+                    0 0 100px #03f40f;
+            }
+
+            .login-box button span {
+                position: absolute;
+                display: block;
+            }
+
+            @keyframes btn-anim1 {
+                0% {
+                    left: -100%;
+                }
+
+                50%,100% {
+                    left: 100%;
+                }
+            }
+
+            .login-box button span:nth-child(2) {
+                bottom: 2px;
+                left: -100%;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #03f40f);
+                animation: btn-anim1 2s linear infinite;
+            }
+            .anh{
+                align-items: center;
+                border-radius: 50%;
+                width: 300px;
+                height: 300px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+            .fullname{
+                width: 100%;
+                text-align: center;
+                font-size: 30px;
+                color:#fff;
+
+            }
+        </style>
     </head>
     <body>
-          <h1>Change Password</h1>
-    <form method="post" action="ChangPassServlet">
-        <input type="hidden" name="user" value="thang">
-        <label for="opass">Old Password:</label>
-        <input type="password" name="opass" id="opass" required><br>
-        
-        <label for="pass">New Password:</label>
-        <input type="password" name="pass" id="pass" required><br>
-        
-        <label for="rpass">Confirm New Password:</label>
-        <input type="password" name="rpass" id="rpass" required><br>
-        
-        <input type="submit" value="CHANGE">
-    </form>
-    
-    <c:if test="${not empty ms}">
-        <p style="color: red;">${ms}</p>
-    </c:if>
-    
-    <c:if test="${not empty mss}">
-        <p style="color: green;">${mss}</p>
-    </c:if>
-    </body>
-</html>
+    <center>  <a href="homes.jsp">
+            to home
+            <span></span>
+        </a></center>
+    <div class="login-box">
+
+        <form action="changepass" method="post">
+            <img name="img_author" class="anh" src="img/tungche1.jpg" alt="alt"/>
+            <div class="fullname">${sessionScope.user.fullName}</div>
+            <div class="user-box">
+                <input type="text" name="opass" required>
+                <label>Old Password</label>
+            </div>
+            <div class="user-box">
+                <input type="text" name="pass" required>
+                <label>New Password</label>
+            </div>
+            <div class="user-box">
+                <input type="password" name="rpass" required>
+                <label>confirm New Password</label>
+            </div><center>
+                <h4 style="color: red">${requestScope.msg}</h4>
+                <button>
+                    change password
+                    <span></span>
+                </button>
+            </center>
+        </form>
+
+    </div>
+</body>
+</html> 

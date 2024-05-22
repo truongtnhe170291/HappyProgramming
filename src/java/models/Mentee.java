@@ -11,27 +11,14 @@ import java.sql.Date;
  * @author 2k3so
  */
 public class Mentee extends Account{
-    private String menteeGmail, avatar;
-
+    
     public Mentee() {
     }
 
-    public Mentee(String avatar, String gmail, String userName, String fullName, String passWord, String sex, String address, String phone, String role, String status, Date dob) {
-        super(gmail, userName, fullName, passWord, sex, address, phone, role, status, dob);
-        this.avatar = avatar;
+    public Mentee(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, String avatar, int roleId, int statusId) {
+        super(userName, gmail, fullName, password, dob, sex, address, phone, avatar, roleId, statusId);
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    @Override
-    public String toString() {
-        return "Mentee{" + "menteeGmail=" + super.getGmail() + ", avatar=" + avatar + '}';
-    }
-
+    
+    
 }

@@ -21,8 +21,8 @@ public class Testing {
 //            System.out.println(a.toString());
 //        }
 
-        MenteeDAO dao = new MenteeDAO();
-        System.out.println(dao.getCurrentMentee("2k3sonpham@gmail.com"));
+//        MenteeDAO dao = new MenteeDAO();
+//        System.out.println(dao.getCurrentMentee("2k3sonpham@gmail.com"));
         
     }
 }
