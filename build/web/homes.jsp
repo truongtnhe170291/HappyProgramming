@@ -22,15 +22,18 @@
         <!-- Stylesheets & Fonts -->
         <link href="css/plugins.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
-    </head>
+          <style>
+               .dev {
+            background-size: cover;
+        }
 
+    </style>
+    </head>
+  
     <body>
-        <!-- Body Inner -->
         <div class="body-inner">
             <!-- Header -->
             <jsp:include page="header.jsp"/>
-            <!-- end: Header -->
-            <!-- Inspiro Slider -->
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
                 <!-- Slide 1 -->
                 <div class="slide" data-bg-video="video/pexels-waves.mp4">
@@ -38,8 +41,8 @@
                     <div class="container">
                         <div class="slide-captions text-center text-light">
                             <!-- Captions -->
-                            <h1 data-caption-animate="zoom-out">WELCOME TO THE WORLD OF POLO</h1>
-                            <p>Say hello to the smartest and most flexible bootstrap template. Polo is an powerful template that can build any type of websites, and quite possibly the only one you will ever need.</p>
+                            <h1 data-caption-animate="zoom-out">WELCOME TO THE WORLD OF FMASTER</h1>
+                            <p>Welcome aboard FMaster—the ultimate destination for creative minds. Whether you're here to learn, to create, or to be inspired, your journey starts now. So, dive in, explore, and let your imagination soar. The world of FMaster is yours to conquer..</p>
                             <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div>
 
                             <!-- end: Captions -->
@@ -53,8 +56,8 @@
                     <div class="container">
                         <div class="slide-captions text-start text-light">
                             <!-- Captions -->
-                            <h1>220+ Laytout Demos</h1>
-                            <p class="text-small">POLO is packed with 220+ pre-made layouts that allow you to quickly jumpstart your project. Completely customizable for creating your own designs.</p>
+                            <h1>100+ Quality mentors</h1>
+                            <p class="text-small">FMASTER: Discover & Develop Your Passion for Programming with Mentor Code: Detailed Instructions from Basic to Advanced</p>
                             <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div>
                             <!-- end: Captions -->
                         </div>
@@ -66,43 +69,43 @@
                 <div class="container">
                     <div class="heading-text heading-section">
                         <h2>WHAT WE DO</h2>
-                        <span class="lead">Create amam ipsum dolor sit amet, Beautiful nature, and rare feathers!.</span>
+                        <span class="lead">Our Job: Connects You With Mentors Bible Verses For My Respect Programming.</span>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <div data-animate="fadeInUp" data-animate-delay="0">
-                                <h4>Modern Design</h4>
-                                <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et. Quisque euismod orci ut et lobortis aliquam.</p>
+                                <h4>Thinking Skills</h4>
+                                <p>Thinking Skills: A Creative & Logical Approach to Problem Solving.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div data-animate="fadeInUp" data-animate-delay="200">
                                 <h4>Loaded with Features</h4>
-                                <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et. Quisque euismod orci ut et lobortis aliquam.</p>
+                                <p>Integrating Many Breakthrough Features To Help You Learn & Develop. Tools, Resources & Comprehensive Support for Developers.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div data-animate="fadeInUp" data-animate-delay="400">
                                 <h4>Completely Customizable</h4>
-                                <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et. Quisque euismod orci ut et lobortis aliquam.</p>
+                                <p>Total Personalization: Tailoring Roadmaps & Tools for Optimal Performance.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div data-animate="fadeInUp" data-animate-delay="600">
                                 <h4>100% Responsive Layout</h4>
-                                <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et. Quisque euismod orci ut et lobortis aliquam.</p>
+                                <p>Flexible & Responsive Interface: Unlimited Learning on Any Device.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div data-animate="fadeInUp" data-animate-delay="800">
                                 <h4>Clean Modern Code</h4>
-                                <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et. Quisque euismod orci ut et lobortis aliquam.</p>
+                                <p>Modern Prototype Code: The Perfect Combination of Clean and Modern.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div data-animate="fadeInUp" data-animate-delay="1000">
                                 <h4>Free Updates & Support</h4>
-                                <p>Lorem ipsum dolor sit amet, blandit vel sapien vitae, condimentum ultricies magna et. Quisque euismod orci ut et lobortis aliquam.</p>
+                                <p>Mentor Code: Free Support and Updates, Bringing Peace of Mind to Your Learning Journey.</p>
                             </div>
                         </div>
                     </div>
@@ -114,22 +117,22 @@
                 <div class="container">
                     <div class="heading-text heading-section">
                         <h2>Recent Work</h2>
-                        <span class="lead">Lorem ipsum dolor sit amet, coper suscipit lobortis nisl ut aliquip ex ea commodo
-                            consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie
-                            consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto.</span>
+                        <span class="lead">Beyond Syntax: Crafting Proficiency in Programming Languages with Mentor Code's Tailored Approach.</span>
                     </div>
                 </div>
                 <div class="portfolio">
                     <!-- Portfolio Items -->
                     <div id="portfolio" class="grid-layout portfolio-4-columns" data-margin="0">
                         <!-- portfolio item -->
-                        <div class="portfolio-item no-overlay ct-photography ct-media ct-branding ct-Media ct-webdesign">
+                        <div class="portfolio-item img-zoom ct-photography ct-marketing ct-media">
                             <div class="portfolio-item-wrap">
-                                <div class="portfolio-slider">
-                                    <div class="carousel dots-inside dots-dark arrows-dark" data-items="1" data-loop="true" data-autoplay="true" data-animate-in="fadeIn" data-animate-out="fadeOut" data-autoplay="1500">
-                                        <a href="#"><img src="images/portfolio/64.jpg" alt=""></a>
-                                        <a href="#"><img src="images/portfolio/70.jpg" alt=""></a>
-                                    </div>
+                                <div class="portfolio-image">
+                                    <a href="#"><img class="test" src="img/C.jpg" alt=""></a>
+                                    
+                                </div>
+                                <div class="portfolio-description">
+                                    <a title="Paper Pouch!" data-lightbox="image" href="img/C.jpg"><i class="icon-maximize"></i></a>
+                                    <a href="portfolio-page-grid-gallery.html"><i class="icon-link"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -138,10 +141,11 @@
                         <div class="portfolio-item img-zoom ct-photography ct-marketing ct-media">
                             <div class="portfolio-item-wrap">
                                 <div class="portfolio-image">
-                                    <a href="#"><img src="images/portfolio/60.jpg" alt=""></a>
+                                    <a href="#"><img class="test" src="img/JSs.jpg" alt=""></a>
+                                    
                                 </div>
                                 <div class="portfolio-description">
-                                    <a title="Paper Pouch!" data-lightbox="image" href="images/portfolio/83l.jpg"><i class="icon-maximize"></i></a>
+                                    <a title="Paper Pouch!" data-lightbox="image" href="img/C.jpg"><i class="icon-maximize"></i></a>
                                     <a href="portfolio-page-grid-gallery.html"><i class="icon-link"></i></a>
                                 </div>
                             </div>
@@ -151,7 +155,7 @@
                         <div class="portfolio-item img-zoom ct-photography ct-media ct-branding ct-Media">
                             <div class="portfolio-item-wrap">
                                 <div class="portfolio-image">
-                                    <a href="#"><img src="images/portfolio/61.jpg" alt=""></a>
+                                    <a href="#"><img src="img/java.jpg" alt=""></a>
                                 </div>
                                 <div class="portfolio-description">
                                     <a href="portfolio-page-grid-gallery.html">
@@ -166,7 +170,7 @@
                         <div class="portfolio-item img-zoom ct-photography ct-media ct-branding ct-marketing ct-webdesign">
                             <div class="portfolio-item-wrap">
                                 <div class="portfolio-image">
-                                    <a href="#"><img src="images/portfolio/65.jpg" alt=""></a>
+                                    <a href="#"><img src="img/sql.jpg" alt=""></a>
                                 </div>
                                 <div class="portfolio-description" data-lightbox="gallery">
                                     <a title="Photoshop Mock-up!" data-lightbox="gallery-image" href="images/portfolio/80l.jpg"><i class="icon-copy"></i></a>
@@ -176,60 +180,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end: portfolio item -->
-                        <!-- portfolio item -->
-                        <div class="portfolio-item img-zoom ct-marketing ct-media ct-branding ct-marketing ct-webdesign">
-                            <div class="portfolio-item-wrap">
-                                <div class="portfolio-image">
-                                    <a href="#"><img src="images/portfolio/66.jpg" alt=""></a>
-                                </div>
-                                <div class="portfolio-description">
-                                    <a href="portfolio-page-grid-gallery.html">
-                                        <h3>Last Iceland Sunshine</h3>
-                                        <span>Graphics</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end: portfolio item -->
-                        <!-- portfolio item -->
-                        <div class="portfolio-item img-zoom ct-photography ct-media ct-branding ct-marketing ct-webdesign">
-                            <div class="portfolio-item-wrap">
-                                <div class="portfolio-image">
-                                    <a href="#"><img src="images/portfolio/67.jpg" alt=""></a>
-                                </div>
-                                <div class="portfolio-description">
-                                    <a title="Paper Pouch!" data-lightbox="iframe" href="https://www.youtube.com/watch?v=k6Kly58LYzY"><i class="icon-play"></i></a>
-                                    <a href="portfolio-page-grid-gallery.html"><i class="icon-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-item no-overlay ct-photography ct-media ct-branding ct-Media ct-marketing ct-webdesign">
-                            <div class="portfolio-item-wrap">
-                                <div class="portfolio-slider">
-                                    <div class="carousel dots-inside dots-dark arrows-dark" data-items="1" data-loop="true" data-autoplay="true" data-animate-in="fadeIn" data-animate-out="fadeOut">
-                                        <a href="#"><img src="images/portfolio/68.jpg" alt=""></a>
-                                        <a href="#"><img src="images/portfolio/71.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end: portfolio item -->
-                        <!-- portfolio item -->
-                        <div class="portfolio-item img-zoom ct-photography ct-marketing ct-media">
-                            <div class="portfolio-item-wrap">
-                                <div class="portfolio-image">
-                                    <a href="#"><img src="images/portfolio/69.jpg" alt=""></a>
-                                </div>
-                                <div class="portfolio-description">
-                                    <a href="portfolio-page-grid-gallery.html">
-                                        <h3>Luxury Wine</h3>
-                                        <span>Graphics / Branding</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end: portfolio item -->
                     </div>
                     <!-- end: Portfolio Items -->
                 </div>
@@ -238,10 +188,7 @@
                 <div class="container">
                     <div class="heading-text heading-section">
                         <h2>OUR BLOG</h2>
-                        <span class="lead">The most happiest time of the day!. Morbi sagittis, sem quis lacinia faucibus,
-                            orci ipsum gravida tortor, vel interdum mi sapien ut justo. Nulla varius consequat magna, id
-                            molestie ipsum volutpat quis. A true story, that never been told!. Fusce id mi diam, non ornare
-                            orci. Pellentesque ipsum erat, facilisis ut venenatis eu, sodales vel dolor. </span>
+                        <span class="lead">Join the Conversation: Engage with Industry Trends, Best Practices, and Community Discussions on Our Blog. </span>
                     </div>
                     <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
                         <!-- Post item-->
@@ -249,17 +196,17 @@
                             <div class="post-item-wrap">
                                 <div class="post-image">
                                     <a href="#">
-                                        <img alt="" src="images/blog/12.jpg">
+                                        <img alt="" src="img/CD.png">
                                     </a>
                                     <span class="post-meta-category"><a href="">Lifestyle</a></span>
                                 </div>
                                 <div class="post-item-description">
-                                    <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
+                                    <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2024</span>
                                     <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33
                                             Comments</a></span>
-                                    <h2><a href="#">Standard post with a single image
+                                    <h2><a href="#">Ultimate C# Masterclass for 2024
                                         </a></h2>
-                                    <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
+                                    <p>In-depth .NET programming course from basics to advanced. Focus on clean code, performance and practice.</p>
                                     <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
                                 </div>
                             </div>
@@ -270,17 +217,17 @@
                             <div class="post-item-wrap">
                                 <div class="post-image">
                                     <a href="#">
-                                        <img alt="" src="images/blog/17.jpg">
+                                        <img alt="" src="img/react.png" width="356" height="200">
                                     </a>
                                     <span class="post-meta-category"><a href="">Science</a></span>
                                 </div>
                                 <div class="post-item-description">
-                                    <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
+                                    <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2024</span>
                                     <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33
                                             Comments</a></span>
-                                    <h2><a href="#">Standard post with a single image
+                                    <h2><a href="#">The Complete JavaScript Course 2024: From Zero to Expert!
                                         </a></h2>
-                                    <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
+                                    <p>The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!.</p>
                                     <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
                                 </div>
                             </div>
@@ -291,17 +238,17 @@
                             <div class="post-item-wrap">
                                 <div class="post-image">
                                     <a href="#">
-                                        <img alt="" src="images/blog/18.jpg">
+                                        <img alt="" src="img/python.jpg">
                                     </a>
                                     <span class="post-meta-category"><a href="">Science</a></span>
                                 </div>
                                 <div class="post-item-description">
-                                    <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2017</span>
+                                    <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2024</span>
                                     <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33
                                             Comments</a></span>
-                                    <h2><a href="#">Standard post with a single image
+                                    <h2><a href="#">100 Days of Code: The Complete Python Pro Bootcamp
                                         </a></h2>
-                                    <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet.</p>
+                                    <p>Master Python by building 100 projects in 100 days. Learn data science, automation, build websites, games and apps!.</p>
                                     <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>
                                 </div>
                             </div>
@@ -314,19 +261,19 @@
                 <div class="container">
                     <div class="heading-text heading-section text-center">
                         <h2>MEET OUR TEAM</h2>
-                        <p>Lorem ipsum dolor sit amet, consecte adipiscing elit. Suspendisse condimentum porttitor cursumus.
+                        <p>Meet the Dream Team: The People Powering Our Vision.
                         </p>
                     </div>
                     <div class="row team-members">
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="images/team/6.jpg">
+                                    <img class="dev" src="img/emhiu.jpg" width="257" height="257">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Alea Smith</h3>
+                                    <h3>Em Hius</h3>
                                     <span>Software Developer</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
+                                    <p>7 years of work experience. </p>
                                     <div class="align-center">
                                         <a class="btn btn-xs btn-slide btn-light" href="#">
                                             <i class="fab fa-facebook-f"></i>
@@ -351,12 +298,12 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="images/team/7.jpg">
+                                    <img src="img/son.jpg" alt="">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Ariol Doe</h3>
+                                    <h3>Son Pham</h3>
                                     <span>Software Developer</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
+                                    <p>7 years of work experience. </p>
                                     <div class="align-center">
                                         <a class="btn btn-xs btn-slide btn-light" href="#">
                                             <i class="fab fa-facebook-f"></i>
@@ -381,12 +328,12 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="images/team/8.jpg">
+                                    <img src="img/truong (1).jpg" width="257" height="257" alt="">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Emma Ross</h3>
+                                    <h3>Nam Truong</h3>
                                     <span>Software Developer</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
+                                    <p>4 years of work experience. Leader</p>
                                     <div class="align-center">
                                         <a class="btn btn-xs btn-slide btn-light" href="#">
                                             <i class="fab fa-facebook-f"></i>
@@ -411,12 +358,12 @@
                         <div class="col-lg-3">
                             <div class="team-member">
                                 <div class="team-image">
-                                    <img src="images/team/9.jpg">
+                                    <img src="img/minh.jpg" width="257" height="257" alt="">
                                 </div>
                                 <div class="team-desc">
-                                    <h3>Victor Loda</h3>
-                                    <span>Software Developer</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing tristique hendrerit laoreet. </p>
+                                    <h3>Quang Minh</h3>
+                                    <span>UI Developer</span>
+                                    <p>5 years of work experience. </p>
                                     <div class="align-center">
                                         <a class="btn btn-xs btn-slide btn-light" href="#">
                                             <i class="fab fa-facebook-f"></i>

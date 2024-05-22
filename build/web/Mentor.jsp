@@ -37,10 +37,10 @@
             .profile img {
                 width: 150px;
                 height: 150px;
-                border-radius: 50%; 
+                border-radius: 50%;
                 object-fit: cover;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px; 
+                margin-bottom: 20px;
             }
         </style>
     </head>
@@ -92,8 +92,10 @@
                                             <li><a href="user_info.jsp">CV</a></li>                            
                                         </ul>
                                     </li>
-                                    <li><a href="login.jsp">Login</a></li>
-                                    <li><a href="sign_up.jsp">Sign up</a></li>
+                                    <c:if test="${sessionScope.user == null}">
+                                        <li><a href="login.jsp">Login</a></li>
+                                        <li><a href="sign_up.jsp">Sign up</a></li>
+                                    </c:if>
                                     <li class="t">
                                         <a href="javascript:;" class="nav-item-toggle">
                                             <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
