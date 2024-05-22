@@ -321,7 +321,7 @@
                                                 <div class="flext">
                                                     <input id="file-upload" type="file" name="fileUpload" class="d-none">
                                                     <label for="file-upload" class="">
-                                                        <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./img/test.jpg" alt="profile">                                                                  
+                                                        <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./img/${user.avatar}" alt="profile">                                                                  
                                                         <img src="img\camera.png"/>
                                                     </label>
                                                 </div>

@@ -118,7 +118,7 @@ public class UpdateAccountServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         Part filePart = request.getPart("fileUpload");
-        String upload = getServletContext().getRealPath("") + File.separator + "img";
+        String upload = "C:\\Users\\Admin\\Desktop\\HappyProgramming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
 
@@ -127,7 +127,7 @@ public class UpdateAccountServlet extends HttpServlet {
         // Lấy tên tệp
         String fileName = filePart.getSubmittedFileName();
         if (!fileName.equals("") && !fileName.equals(oldavata)) {
-            String uploadDirectory = upload + File.separator + fileName;
+            String uploadDirectory = upload + fileName;
             System.out.println(uploadDirectory);
             try (OutputStream out = new FileOutputStream(uploadDirectory)) {
                 InputStream in = filePart.getInputStream();
