@@ -111,15 +111,23 @@
                                                         </div>
 
                                                         <div class="edit-profile__body">
-                                                            
-                                                            <div class="form-group mb-25">
-                                                                <label for="name1">User name</label>
-                                                                <input type="text" class="form-control" id="name1" name="username" value="${mentor.userName}" placeholder="${mentor.userName}" readonly>
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="name1">User name</label>
+                                                                    <input type="text" class="form-control" id="name1" name="username" value="${mentor.userName}" placeholder="${mentor.userName}" readonly>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="name1">Full Name</label>
-                                                                <input type="text" class="form-control" id="name1" name="fullname" value="${mentor.fullName}" placeholder="${mentor.fullName}">
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="name1">Full Name</label>
+                                                                    <input type="text" class="form-control" id="fullname" name="fullname" value="${mentor.fullName}" placeholder="Your name...">
+                                                                </div>
+                                                                <div style="display: none" id="nameError" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your name is not valid.
+                                                                </div>
                                                             </div>
+
                                                             <div class="form-group mb-25">
                                                                 <div class="sexOption">
                                                                     <label for="sexOption">
@@ -131,34 +139,70 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="name2">Email</label>
-                                                                <input type="email" class="form-control" id="name2" name="gmail" value="${mentor.gmail}" placeholder="${mentor.gmail}">
+
+                                                            <div style="margin-bottom: 15px"> 
+                                                                <div class="form-group mb-25">
+                                                                    <label for="name2">Email</label>
+                                                                    <input readonly type="email" class="form-control" id="name2" name="gmail" value="${mentor.gmail}" placeholder="${mentor.gmail}">
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="dob">Date of birth</label>
-                                                                <input type="date" class="form-control" name="dob" value="${mentor.dob}">
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="dob">Date of birth</label>
+                                                                    <input id="dob" type="date" class="form-control" name="dob" value="${mentor.dob}">
+                                                                </div>
+                                                                <div style="display: none" id="dobError" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your date of birth is invalid.
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber5">phone number</label>
-                                                                <input type="tel" class="form-control" id="phoneNumber" name="phone" value="${mentor.phone}" placeholder="${mentor.phone}">
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="phoneNumber5">phone number</label>
+                                                                    <input id="phoneNumber" type="tel" class="form-control" id="phoneNumber" name="phone" value="${mentor.phone}" placeholder="Your phone number...">
+                                                                </div>
+                                                                <div style="display: none" id="phoneError" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your phone number is not valid.
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="address">Address</label>
-                                                                <input type="text" class="form-control" id="address" name="address" value="${mentor.address}" placeholder="${mentor.address}">
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="address">Address</label>
+                                                                    <input type="text" class="form-control" id="address" name="address" value="${mentor.address}" placeholder="Your address...">
+                                                                </div>
+                                                                <div style="display: none" id="addressError" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your Address.
+                                                                </div>
                                                             </div>
 
                                                             <div class="button-group d-flex pt-sm-25 justify-content-md-end justify-content-start ">
-
-
-                                                                <button type="submit" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">
+                                                                <button id="submitForm" type="button" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                                     Save
                                                                 </button>
+                                                            </div>
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Notification</h1>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            This will change your information!
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </form>
-                                                <button id="edit_oki" class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md btn-sm author_2"> cancel </button>
                                             </div>
                                         </div>
                                     </div>
@@ -227,7 +271,7 @@
                                                             </div>
                                                             <div class="form-group mb-25 status-radio ">
                                                                 <label for="hiringDateCheckbox">Skill</label>
-                                                                <div class="d-flex ">
+                                                                <div class="d-flex">
                                                                     <c:forEach items="${requestScope.skills}" var="skill">
                                                                         <c:set var="isChecked" value="false"/>
                                                                         <c:forEach items="${cv.skills}" var="cvskill">
@@ -246,9 +290,7 @@
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
                                                                 <button type="submit" id="button_oki" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
                                                             </div>
-
                                                         </form>
-                                                        <button id="edit_oki" class="btn btn-light btn-default btn-squared fw-400 text-capitalize radius-md btn-sm author_1">edit</button>
 
 
                                                     </div>
@@ -287,6 +329,123 @@
                                         });
                                     });
 
+                                </script>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var emailInput = document.getElementById('email');
+                                        var emailError = document.getElementById('emailError');
+                                        var phoneInput = document.getElementById('phoneNumber');
+                                        var phoneError = document.getElementById('phoneError');
+                                        var nameInput = document.getElementById('fullname');
+                                        var nameError = document.getElementById('nameError');
+                                        var dobInput = document.getElementById('dob');
+                                        var dobError = document.getElementById('dobError');
+                                        var submitForm = document.getElementById('submitForm');
+                                        var addressInput = document.getElementById('address');
+                                        var addressError = document.getElementById('addressError');
+
+                                        if(addressInput){
+                                            addressInput.addEventListener('input', function () {
+                                                var addressValue = addressInput.value;
+                                                if (addressValue === "") {
+                                                    addressError.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    addressError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (emailInput) {
+                                            emailInput.addEventListener('input', function () {
+                                                var emailValue = emailInput.value;
+                                                if (!validateEmail(emailValue)) {
+                                                    emailError.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    emailError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (phoneInput) {
+                                            phoneInput.addEventListener('input', function () {
+                                                var phoneValue = phoneInput.value;
+                                                if (!validatePhone(phoneValue)) {
+                                                    phoneError.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    phoneError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (nameInput) {
+                                            nameInput.addEventListener('input', function () {
+                                                var nameValue = nameInput.value;
+                                                if (!validateName(nameValue)) {
+                                                    nameError.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    nameError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (dobInput) {
+                                            dobInput.addEventListener('input', function () {
+                                                var dobValue = dobInput.value;
+                                                if (!validateBirthDate(dobValue)) {
+                                                    dobError.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    dobError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        function validatePhone(phone) {
+                                            var re = /^(0|84)(2(0[3-9]|1[0-689]|2[0-25-9]|3[2-9]|4[0-9]|5[124-9]|6[0369]|7[0-7]|8[0-9]|9[012346789])|3[2-9]|5[25689]|7[06-9]|8[0-9]|9[012346789])([0-9]{7})$/;
+                                            return re.test(phone);
+                                        }
+
+                                        function validateEmail(email) {
+                                            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                            return re.test(email);
+                                        }
+
+                                        function validateName(name) {
+                                            var re = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
+                                            return re.test(name);
+                                        }
+
+                                        function validateBirthDate(birthDate) {
+                                            var currentDate = new Date();
+
+                                            var selectedDate = new Date(birthDate);
+
+                                            if (selectedDate >= currentDate) {
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    });
+
+                                    document.getElementById('file-upload').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-img').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
                                 </script>
                                 </body>
                                 </html>
