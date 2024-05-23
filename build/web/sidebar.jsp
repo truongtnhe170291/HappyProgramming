@@ -1,4 +1,4 @@
-<%-- 
+ <%-- 
     Document   : sidebar
     Created on : May 18, 2024, 9:18:33 AM
     Author     : 84979
@@ -65,43 +65,24 @@
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="products.html">Products</a>
+                           <a href="products.html">Course</a>
                         </li>
                         <li class="">
-                           <a href="product-details.jsp">Product
+                           <a href="product-details.jsp">Course
                               Details</a>
                         </li>
                         <li class="">
-                           <a href="add-product.html">Product
+                           <a href="add-product.html">Course
                               Add</a>
                         </li>
                         <li class="">
-                           <a href="add-product.html">Product
+                           <a href="add-product.html">Course
                               Edit</a>
                         </li>
 
                      </ul>
                   </li>
-                  <li class="has-child">
-                     <a href="#" class="ch">
-                        <span class="nav-icon uil uil-folder"></span>
-                        <span class="menu-text">Project</span>
-                        <span class="toggle-icon"></span>
-                     </a>
-                     <ul class="toggle">
-                        <li class="">
-                           <a href="projects.html">Project</a>
-                        </li>
-                        <li class="">
-                           <a href="application-ui.html">Project
-                              Details</a>
-                        </li>
-                        <li class="">
-                           <a href="create.html">Create
-                              Project</a>
-                        </li>
-                     </ul>
-                  </li>
+     
                   <li>
                      <a href="calendar.html" class="">
                         <span class="nav-icon uil uil-calendar-alt"></span>
@@ -111,55 +92,21 @@
                   <li class="has-child">
                      <a href="#" class="ch">
                         <span class="nav-icon uil uil-users-alt"></span>
-                        <span class="menu-text">Users</span>
+                        <span class="menu-text">Member</span>
                         <span class="toggle-icon"></span>
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="users-card.html">Users Grid</a>
+                           <a href="users-card.html">Member Grid</a>
                         </li>
                         <li class="">
-                           <a href="users-list.html">Users
+                           <a href="users-list.html">Member
                               List</a>
                         </li>
                         <li class="">
-                           <a href="user-info.jsp">Add User</a>
+                           <a href="user-info.jsp">Request Member</a>
                         </li>
                      </ul>
-                  </li>
-
-                  <li class="menu-title mt-30">
-                     <span>all Mentor</span>
-                  </li>
-                  <li class="has-child">
-                     <a href="#" class="ch">
-                        <span class="nav-icon uil uil-database"></span>
-                        <span class="menu-text">Mentor</span>
-                        <span class="toggle-icon"></span>
-
-                     </a>
-                     <ul class="toggle">
-                        <li class="">
-                           <a href="firestore.html">View All</a>
-                        </li>
-                        <li class="">
-                           <a href="firestore-add.html">Add
-                              New</a>
-                        </li>
-                     </ul>
-                  </li>
-          
-                  <li class="">
-                     <a href="login.jsp">
-                        <span class="nav-icon uil uil-signin"></span>
-                        <span class="menu-text">Log In</span>
-                     </a>
-                  </li>
-                  <li class="">
-                     <a href="sign-up.jsp">
-                        <span class="nav-icon uil uil-sign-out-alt"></span>
-                        <span class="menu-text">Sign Up</span>
-                     </a>
                   </li>
                </ul>
             </div>

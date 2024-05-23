@@ -12,10 +12,11 @@ Author     : 84979
         <title>Fmaster</title>
         <style>
             .login-box {
+                margin: 12px 12px;
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                width: 400px;
+                width: 600px;
                 padding: 40px;
                 transform: translate(-50%, -50%);
                 background: rgba(24, 20, 20, 0.987);
@@ -60,11 +61,12 @@ Author     : 84979
             }
 
             .login-box form button {
+                background: none;
                 position: relative;
                 display: inline-block;
                 padding: 10px 20px;
-                color: #ffffff;
                 font-size: 16px;
+                color: #fff;
                 text-decoration: none;
                 text-transform: uppercase;
                 overflow: hidden;
@@ -97,7 +99,11 @@ Author     : 84979
                     left: 100%;
                 }
             }
-
+            a{
+                text-decoration: none;
+                font-weight: bold;
+                color:#fff;
+            }
             .login-box button span:nth-child(2) {
                 bottom: 2px;
                 left: -100%;
@@ -106,8 +112,11 @@ Author     : 84979
                 background: linear-gradient(90deg, transparent, #03f40f);
                 animation: btn-anim1 2s linear infinite;
             }
+            .author_anh{
+                width: 100%;
+                text-align: center;
+            }
             .anh{
-                align-items: center;
                 border-radius: 50%;
                 width: 300px;
                 height: 300px;
@@ -125,14 +134,11 @@ Author     : 84979
         </style>
     </head>
     <body>
-    <center>  <a href="homes.jsp">
-            to home
-            <span></span>
-        </a></center>
+    
     <div class="login-box">
 
         <form action="changepass" method="post">
-            <img name="img_author" class="anh" src="img/tungche1.jpg" alt="alt"/>
+            <div class="author_anh"><img name="img_author" class="anh" src="img/tungche1.jpg" alt="alt"/></div>
             <div class="fullname">${sessionScope.user.fullName}</div>
             <div class="user-box">
                 <input type="text" name="opass" required>
@@ -151,6 +157,16 @@ Author     : 84979
                     change password
                     <span></span>
                 </button>
+                <br/>
+                 <button>
+                      <a href="homes.jsp">
+            to home
+            <span></span>
+                </a>
+                  
+                    <span></span>
+                </button>
+               
             </center>
         </form>
 

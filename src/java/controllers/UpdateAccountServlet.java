@@ -93,7 +93,7 @@ public class UpdateAccountServlet extends HttpServlet {
             request.setAttribute("cv", cVService.getCVByUserName(acc.getUserName()));
             List<Skill> list = skillDAO.getSkills();
             request.setAttribute("skills", list);
-            request.getRequestDispatcher("user_info.jsp").forward(request, response);
+            request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
         }
 
     }
@@ -118,6 +118,8 @@ public class UpdateAccountServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         Part filePart = request.getPart("fileUpload");
+        
+        // C:\Users\Admin\Desktop\HappyProgramming\web\img
         String upload = "C:\\Users\\Admin\\Desktop\\HappyProgramming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
@@ -139,9 +141,9 @@ public class UpdateAccountServlet extends HttpServlet {
                 System.out.println(e);
                 fileName = "default.jpg";
             }
-        } else if (fileName.equals(oldavata) && !fileName.equals("")) {
+        } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
             fileName = oldavata;
-        } else {
+        }else {
             fileName = "default.jpg";
         }
         AccountDAO dao = new AccountDAO();

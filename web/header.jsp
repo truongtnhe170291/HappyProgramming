@@ -83,7 +83,7 @@
                                                     <li>
                                                         <div class="nav-author__info">
                                                             <div class="author-img">
-                                                                <img src="img/tungche2.jpg" alt=""
+                                                                <img src="./img/${sessionScope.user.avatar}" alt=""
                                                                     class="rounded-circle">
                                                             </div>
                                                             <div>
