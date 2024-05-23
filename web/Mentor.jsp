@@ -27,143 +27,20 @@
 
 
         <style>
-            .rounded-circle{
-                width: 200px;
-                height: 200px;
-            }
-            li {
-                list-style-type: none;
-            }
-            #header{
-                position: fixed;
-            }
-            .profile img {
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-                object-fit: cover;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px;
-            }
-            .avatar{
-                transform: translateY(-30px);
-                width: 100px;
-                height: 100px;
-                background-size: cover;
-            }
+           
             .course{
-
                 display: flex;
                 justify-content: space-between;
             }
             .ac{
                 transform: translateY(-24px);
             }
-            .rounded-circle{
-                border-radius: 50%;
-            }
+
         </style>
     </head>
     <body>
 
-        <header id="header" data-fullwidth="true">
-            <div class="header-inner">
-                <div class="container">
-                    <!--Logo-->
-                    <div id="logo">
-                        <a href="homes.jsp">
-                            <span class="logo-default">FMASTER</span>
-                            <span class="logo-dark">FMASTER</span>
-                        </a>
-                    </div>
-                    <!--End: Logo-->
-                    <!-- Search -->
-                    <div id="search"><a id="btn-search-close" class="btn-search-close" aria-label="Close search form"><i class="icon-x"></i></a>
-                        <form class="search-form" action="search-results-page.html" method="get">
-                            <input class="form-control" name="q" type="text" placeholder="Type & Search..." />
-                            <span class="text-muted">Start typing & press "Enter" or "ESC" to close</span>
-                        </form>
-                    </div>
-                    <!-- end: search -->
-                    <!--Header Extras-->
-                    <div class="header-extras">
-                        <ul>
-                            <li>
-                                <a id="btn-search" href="#"> <i class="icon-search"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!--end: Header Extras-->
-                    <!--Navigation Resposnive Trigger-->
-                    <div id="mainMenu-trigger">
-                        <a class="lines-button x"><span class="lines"></span></a>
-                    </div>
-                    <!--end: Navigation Resposnive Trigger-->
-                    <!--Navigation-->
-                    <div id="mainMenu">
-                        <div class="container">
-                            <nav>
-                                <ul>
-                                    <li><a href="homes.jsp">Home</a></li>
-
-                                    <li class="dropdown"><a href="#">Features</a>
-                                        <ul class="dropdown-menu"> 
-                                            <li><a href="blog_skill.jsp">Mentor detail</a></li>
-                                            <li><a href="user_info.jsp">CV</a></li>                            
-                                        </ul>
-                                    </li>
-                                    <c:if test="${sessionScope.user == null}">
-                                        <li><a href="login.jsp">Login</a></li>
-                                        <li><a href="sign_up.jsp">Sign up</a></li>
-                                        </c:if>
-                                    <li class="t">
-                                        <a href="javascript:;" class="nav-item-toggle">
-                                            <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
-                                        </a>
-                                        <ul class="dropdown-menu"> 
-                                            <li>  <div class="nav-author__info">
-                                                    <div class="author-img">
-                                                        <img src="" alt="" class="rounded-circle">
-                                                    </div>
-                                                    <div>
-                                                        <span>Developer</span>
-                                                    </div>
-                                                </div></li>
-                                            <li>
-                                                <a href="updatementee">
-                                                    <i class="uil uil-user"></i> Profile</a>
-                                            </li>           
-                                            <li>
-                                                <a href="">
-                                                    <i class="uil uil-setting"></i>
-                                                    Settings</a>
-                                            </li>
-                                            <li>
-                                                <a href="newPassword.jsp">
-                                                    <i class="uil uil-key-skeleton"></i> Change Password</a>
-                                            </li>
-                                            <li>
-                                                <a href="">
-                                                    <i class="uil uil-users-alt"></i> Apply CV</a>
-                                            </li>
-                                            <li>
-                                                <a href="">
-                                                    <i class="uil uil-bell"></i> Help</a>
-                                            </li>
-                                            <li>
-                                                <a href="login.jsp" class="nav-author__signout">
-                                                    <i class="uil uil-sign-out-alt"></i> Sign Out</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <!--END: NAVIGATION-->
-                </div>
-            </div>
-        </header>
+        <jsp:include page="header.jsp"/>
 
         <section id="main_content">
 
@@ -182,7 +59,8 @@
                                 <li>Email <strong class="pull-right"><c:out value="${mentor.gmail}" /></strong></li>
                                 <li>Telephone <strong class="pull-right"><c:out value="${mentor.phone}" /></strong></li>
                                 <li>Address <strong class="pull-right"><c:out value="${mentor.address}" /></strong></li>
-                                <li>Gender <strong class="pull-right">${mentor.sex? "Male" : "Female"}</strong></li>                                <li>Address <strong class="pull-right"><c:out value="${mentor.address}" /></strong></li></li>
+                                <li>Gender <strong class="pull-right">${mentor.sex? "Male" : "Female"}</strong></li>                               
+                                <li>Address <strong class="pull-right"><c:out value="${mentor.address}" /></strong></li>
                                 <li>Price <strong class="pull-right"><c:out value="${mentor.rate}" /></strong></li>
                             </ul>
                         </div></aside><div class="col-md-8">
@@ -225,12 +103,10 @@
                                         <div class="user-avatar">
                                             <img class="avatar" src="img/${feedback.avatar}" alt="User Avatar">
                                         </div>
-                                        <div id="te" class="rating">
-                                            <div class="star-rating" data-rating="${feedback.star}">
-                                               
-                                            </div>
+                                        <div id ="te" class="user-avatar">
+                                            <p>${feedback.menteeName}</p>
                                         </div>
-                                   
+                                       <div class="rating" data-rating="${feedback.star}"> </div>
 
                                         <div class="comment">
                                             <p>${feedback.comment}</p>
@@ -245,44 +121,28 @@
         </section><!-- End main_content-->
 
 
-        <script src="jss/jquery-2.2.4.min.js"></script>
 
 
-        <script src="jss/superfish.js"></script>
         <script src="jss/bootstrap.min.js"></script>
-        <script src="jss/jquery.placeholder.js"></script>
         <script src="jss/classie.js"></script>
         <script src="jss/uisearch.js"></script>
-        <script src="js/jquery.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/functions.js"></script>
-     <script>
-   
-    document.querySelectorAll('.star-rating').forEach(function(element) {
-       
-        var rating = parseFloat(element.getAttribute('data-rating'));
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ratings = document.querySelectorAll('.rating');
+        console.log(ratings);
+        ratings.forEach(rating => {
+            const starValue = parseFloat(rating.getAttribute('data-rating'));
+            const fullStars = Math.floor(starValue);
 
-        // Calculate the number of full stars, half star, and empty stars
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 !== 0;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < fullStars; i++) {
+                rating.innerHTML += '<i class="fas fa-star"></i>';
+            }
 
-        // Create and append stars to the rating element
-        for (let i = 0; i < fullStars; i++) {
-            const star = document.createElement('i');
-            star.classList.add('fas', 'fa-star');
-            element.appendChild(star);
-        }
-        if (hasHalfStar) {
-            const halfStar = document.createElement('i');
-            halfStar.classList.add('fas', 'fa-star-half-alt');
-            element.appendChild(halfStar);
-        }
-        for (let i = 0; i < emptyStars; i++) {
-            const emptyStar = document.createElement('i');
-            emptyStar.classList.add('far', 'fa-star');
-            element.appendChild(emptyStar);
-        }
+            const emptyStars = 5 - Math.ceil(starValue);
+            for (let i = 0; i < emptyStars; i++) {
+                rating.innerHTML += '<i class="far fa-star"></i>';
+            }
+        });
     });
 </script>
 
