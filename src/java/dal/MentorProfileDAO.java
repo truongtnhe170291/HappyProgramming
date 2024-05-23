@@ -175,7 +175,7 @@ public class MentorProfileDAO {
         MentorProfileDAO dao = new MentorProfileDAO();
 
         // Retrieve the mentor profile using "user2" as the mentor name
-        MentorProfileDTO mentorProfile = dao.getOneMentor("manager_anna");
+        MentorProfileDTO mentorProfile = dao.getOneMentor("user3");
 
         if (mentorProfile != null) {
             System.out.println("Mentor Profile:");
