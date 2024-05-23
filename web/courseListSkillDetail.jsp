@@ -168,7 +168,7 @@
                                     <div class="team-member">
                                         <div class="team-image">
                                             <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
-                                                <img src="https://bookvexe.vn/wp-content/uploads/2023/04/tong-hop-25-hinh-anh-gai-xinh-toc-ngan-dep-nhat_1.jpg" alt="${member.mentorName}">
+                                                <img src="./img/${member.avatar}" alt="${member.mentorName}">
                                             </a>
                                         </div>
                                         <div class="team-desc">
