@@ -253,7 +253,7 @@
                                         <ul class="dropdown-menu"> 
                                             <li>  <div class="nav-author__info">
                                                     <div class="author-img">
-                                                        <img src="img/author-nav.jpg" alt="" class="rounded-circle">
+                                                        <img src="./img/${sessionScope.user.avatar}" alt="" class="rounded-circle">
                                                     </div>
                                                     <div>
                                                         <span>UI Designer</span>
@@ -377,11 +377,13 @@
                                             <h5 id="phoneError" style="display: none"><strong style="color: red;">Oh No!</strong> Your phone number is not valid.</h5>
                                         </div>
 
-                                        <label>
-                                            <input class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
-                                            <span>Address</span>
-                                        </label>
-
+                                        <div style="margin-bottom: 15px">
+                                            <label>
+                                                <input id="address" class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
+                                                <span>Address</span>
+                                            </label>
+                                            <h5 id="addressError" style="display: none"><strong style="color: red;">Oh No!</strong> Please input your Address.</h5>
+                                        </div>
                                         <button id="submitForm" class="submit">Save</button>
                                     </form>
                                 </div><!-- End row -->
@@ -481,6 +483,21 @@
                 var dobInput = document.getElementById('dob');
                 var dobError = document.getElementById('dobError');
                 var submitForm = document.getElementById('submitForm');
+                var addressInput = document.getElementById('address');
+                var addressError = document.getElementById('addressError');
+
+                if (addressInput) {
+                    addressInput.addEventListener('input', function () {
+                        var addressValue = addressInput.value;
+                        if (addressValue === "") {
+                            addressError.style.display = 'block';
+                            submitForm.disabled = true;
+                        } else {
+                            addressError.style.display = 'none';
+                            submitForm.disabled = false;
+                        }
+                    });
+                }
 
                 if (emailInput) {
                     emailInput.addEventListener('input', function () {
