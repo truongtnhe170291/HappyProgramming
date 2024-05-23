@@ -262,22 +262,6 @@
         <script src="js/jquery.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/functions.js"></script>
-        <script>
-        const numberOfStars = <%= session.getAttribute("feedback.star") %>;
-        const ratingContainer = document.getElementById("te");
-        while (ratingContainer.firstChild) {
-            ratingContainer.removeChild(ratingContainer.firstChild);
-        }
-        for (let i = 0; i < numberOfStars; i++) {
-            let star = document.createElement("i");
-            star.classList.add("fas", "fa-star");
-            ratingContainer.appendChild(star);
-        }
-        if (numberOfStars % 1 !== 0) {
-            let halfStar = document.createElement("i");
-            halfStar.classList.add("fas", "fa-star-half-alt");
-            ratingContainer.appendChild(halfStar);
-        }
-    </script>
+      
     </body>
 </html>
