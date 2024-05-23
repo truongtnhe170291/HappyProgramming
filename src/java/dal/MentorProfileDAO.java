@@ -44,7 +44,7 @@ public class MentorProfileDAO {
                 + "FROM dbo.CV c "
                 + "INNER JOIN dbo.Accounts a ON c.mentor_name = a.user_name "
                 + "LEFT JOIN ( "
-                + "  SELECT mentor_name, AVG(star) AS avg_star "
+                + "  SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star "
                 + "  FROM dbo.FeedBacks "
                 + "  GROUP BY mentor_name "
                 + ") f ON c.mentor_name = f.mentor_name;"; // Semicolon added

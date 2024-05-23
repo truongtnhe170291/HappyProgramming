@@ -225,6 +225,7 @@
                                         <div class="user-avatar">
                                             <img class="avatar" src="img/${feedback.avatar}" alt="User Avatar">
                                         </div>
+                                          <p><c:out value="${feedback.menteeName}" /></p>
                                         <div id="te" class="rating">
                                             <div class="star-rating" data-rating="${feedback.star}">
                                                

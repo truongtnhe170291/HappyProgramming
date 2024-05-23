@@ -180,6 +180,11 @@
                                                     <p>${skill.skillName}</p>
                                                 </c:forEach>
                                             </div>
+                                            <div id="te" class="rating">
+                                            <div class="star-rating" data-rating="${member.starAVG}">
+                                               
+                                            </div>
+                                        </div>
                                             <div class="align-center">
                                                 <a class="btn btn-xs btn-slide btn-light" href="#">
                                                     <i class="fab fa-facebook-f"></i>
@@ -253,6 +258,36 @@
 <script src="jss/classie.js"></script>
 <script src="jss/uisearch.js"></script>
 <script>new UISearch(document.getElementById('sb-search'));</script>
+  <script>
+   
+    document.querySelectorAll('.star-rating').forEach(function(element) {
+       
+        var rating = parseFloat(element.getAttribute('data-rating'));
+
+        // Calculate the number of full stars, half star, and empty stars
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 !== 0;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        // Create and append stars to the rating element
+        for (let i = 0; i < fullStars; i++) {
+            const star = document.createElement('i');
+            star.classList.add('fas', 'fa-star');
+            element.appendChild(star);
+        }
+        if (hasHalfStar) {
+            const halfStar = document.createElement('i');
+            halfStar.classList.add('fas', 'fa-star-half-alt');
+            element.appendChild(halfStar);
+        }
+        for (let i = 0; i < emptyStars; i++) {
+            const emptyStar = document.createElement('i');
+            emptyStar.classList.add('far', 'fa-star');
+            element.appendChild(emptyStar);
+        }
+    });
+</script>
+
 
 
 </body>

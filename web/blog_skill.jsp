@@ -56,7 +56,7 @@
                                 <div class="post-item border bc-general bc-music bc-economics">
                                     <div class="post-item-wrap">
                                         <div class="post-image">
-                                                <img alt="" src="img/${skill.img}">
+                                                <img alt="" src="${skill.img}">
                                             <span class="post-meta-category"><a href=""></a></span>
                                         </div>
                                         <div class="post-item-description">
