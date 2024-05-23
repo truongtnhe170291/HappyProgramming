@@ -115,7 +115,7 @@
                                     <c:if test="${sessionScope.user == null}">
                                         <li><a href="login.jsp">Login</a></li>
                                         <li><a href="sign_up.jsp">Sign up</a></li>
-                                    </c:if>
+                                        </c:if>
                                     <li class="t">
                                         <a href="javascript:;" class="nav-item-toggle">
                                             <span class="nav-item__title">Minh vq<i class="las la-angle-down nav-item__arrow"></i></span>
@@ -225,18 +225,12 @@
                                         <div class="user-avatar">
                                             <img class="avatar" src="img/${feedback.avatar}" alt="User Avatar">
                                         </div>
-                                        <div id ="te" class="user-avatar">
-                                            <p>${feedback.menteeName}</p>
-                                        </div>
-                                        <div id ="te" class="rating">
-                                            <div class="star-rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
+                                        <div id="te" class="rating">
+                                            <div class="star-rating" data-rating="${feedback.star}">
+                                               
                                             </div>
                                         </div>
+                                   
 
                                         <div class="comment">
                                             <p>${feedback.comment}</p>
@@ -262,6 +256,35 @@
         <script src="js/jquery.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/functions.js"></script>
-      
+     <script>
+   
+    document.querySelectorAll('.star-rating').forEach(function(element) {
+       
+        var rating = parseFloat(element.getAttribute('data-rating'));
+
+        // Calculate the number of full stars, half star, and empty stars
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 !== 0;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        // Create and append stars to the rating element
+        for (let i = 0; i < fullStars; i++) {
+            const star = document.createElement('i');
+            star.classList.add('fas', 'fa-star');
+            element.appendChild(star);
+        }
+        if (hasHalfStar) {
+            const halfStar = document.createElement('i');
+            halfStar.classList.add('fas', 'fa-star-half-alt');
+            element.appendChild(halfStar);
+        }
+        for (let i = 0; i < emptyStars; i++) {
+            const emptyStar = document.createElement('i');
+            emptyStar.classList.add('far', 'fa-star');
+            element.appendChild(emptyStar);
+        }
+    });
+</script>
+
     </body>
 </html>
