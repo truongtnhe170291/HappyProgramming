@@ -241,8 +241,7 @@
 
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu"> 
-                                            <li><a href="blog_skill.jsp">Mentor detail</a></li>
-                                            <li><a href="user_info.jsp">CV</a></li>                            
+                                            <li><a href="skill">SKILLS</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="login.jsp">Login</a></li>

@@ -86,23 +86,19 @@ if( window.innerWidth < 340 ) {
 });
 }
 
-<!-- Toggle -->			
 	$('.togglehandle').click(function()
 	{
 		$(this).toggleClass('active')
 		$(this).next('.toggledata').slideToggle()
 	});
 
-// alert close 
 	$('.clostalert').click(function()
 	{
 	$(this).parent('.alert').fadeOut ()
 	});	
 	
-<!-- Tooltip -->	
 $('.tooltip-1').tooltip({html:true});
 
-<!-- Accrodian -->	
 	var $acdata = $('.accrodian-data'),
 		$acclick = $('.accrodian-trigger');
 
@@ -143,8 +139,7 @@ function toggleChevron(e) {
 $('#accordion').on('hidden.bs.collapse', toggleChevron);
 $('#accordion').on('shown.bs.collapse', toggleChevron);
 $('#accordion').on('hidden.bs.collapse', function () {
-})
-<!-- testimonial carousel -->	
+});
 $(document).ready(function() {
   //Set the carousel options
   $('#quote-carousel').carousel({
