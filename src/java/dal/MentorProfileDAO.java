@@ -73,7 +73,7 @@ public class MentorProfileDAO {
 
         List<MentorProfile> mentorsWithSkill = new ArrayList<>();
         for (MentorProfile mentor : allMentors) {
-            if (mentor.getListSkills().stream().anyMatch(skill -> skill.getSkillID() == skillID)) {
+            if (mentor.getListSkills().stream().filter(skil -> skil.getSkillID() == skillID) != null) {
                 mentorsWithSkill.add(mentor);
             }
         }
@@ -169,52 +169,57 @@ public class MentorProfileDAO {
 
     public static void main(String[] args) throws SQLException {
         // Establish a connection to your database (replace with your connection logic)
-        Connection con = new DBContext().connection; // Assuming DBContext provides connection
-
-        // Create a MentorDAO instance
+//        Connection con = new DBContext().connection; // Assuming DBContext provides connection
+//
+//        // Create a MentorDAO instance
+//        MentorProfileDAO dao = new MentorProfileDAO();
+//
+//        // Retrieve the mentor profile using "user2" as the mentor name
+//        MentorProfileDTO mentorProfile = dao.getOneMentor("user3");
+//
+//        if (mentorProfile != null) {
+//            System.out.println("Mentor Profile:");
+//            System.out.println("Rate: " + mentorProfile.getRate());
+//            System.out.println("CV ID: " + mentorProfile.getCvID());
+//            System.out.println("Gmail: " + mentorProfile.getGmail());
+//            System.out.println("Full Name: " + mentorProfile.getFullName());
+//            System.out.println("Sex: " + mentorProfile.isSex());
+//            System.out.println("Address: " + mentorProfile.getAddress());
+//            System.out.println("Phone: " + mentorProfile.getPhone());
+//            System.out.println("Date of Birth: " + mentorProfile.getDob());
+//            System.out.println("Avatar: " + mentorProfile.getAvatar());
+//            System.out.println("Profession: " + mentorProfile.getProfession());
+//            System.out.println("Profession Intro: " + mentorProfile.getProfessionIntro());
+//            System.out.println("Achievement Description: " + mentorProfile.getAchievementDescription());
+//            System.out.println("Service Description: " + mentorProfile.getService_description());
+//
+//            // Print skills
+//            System.out.println("\nSkills:");
+//            for (Skill skill : mentorProfile.getListSkills()) {
+//                System.out.println("Skill ID: " + skill.getSkillID());
+//                System.out.println("Skill Name: " + skill.getSkillName());
+//            }
+//
+//            // Print feedbacks
+//            System.out.println("\nFeedbacks:");
+//            for (FeedBackDTO feedback : mentorProfile.getFeedBacks()) {
+//                System.out.println("Mentee Name: " + feedback.getMenteeName());
+//                System.out.println("Star: " + feedback.getStar());
+//                System.out.println("Comment: " + feedback.getComment());
+//                System.out.println("Time Feedback: " + feedback.getTimeFeedBack());
+//                System.out.println("Mentee Avatar: " + feedback.getAvatar());
+//            }
+//        } else {
+//            System.out.println("Mentor with name '' not found.");
+//        }
+//
+//        // Close the database connection (replace with your closing logic)
+//        con.close();
         MentorProfileDAO dao = new MentorProfileDAO();
-
-        // Retrieve the mentor profile using "user2" as the mentor name
-        MentorProfileDTO mentorProfile = dao.getOneMentor("manager_anna");
-
-        if (mentorProfile != null) {
-            System.out.println("Mentor Profile:");
-            System.out.println("Rate: " +mentorProfile.getRate());
-            System.out.println("CV ID: " + mentorProfile.getCvID());
-            System.out.println("Gmail: " + mentorProfile.getGmail());
-            System.out.println("Full Name: " + mentorProfile.getFullName());
-            System.out.println("Sex: " + mentorProfile.isSex());
-            System.out.println("Address: " + mentorProfile.getAddress());
-            System.out.println("Phone: " + mentorProfile.getPhone());
-            System.out.println("Date of Birth: " + mentorProfile.getDob());
-            System.out.println("Avatar: " + mentorProfile.getAvatar());
-            System.out.println("Profession: " + mentorProfile.getProfession());
-            System.out.println("Profession Intro: " + mentorProfile.getProfessionIntro());
-            System.out.println("Achievement Description: " + mentorProfile.getAchievementDescription());
-            System.out.println("Service Description: " + mentorProfile.getService_description());
-
-            // Print skills
-            System.out.println("\nSkills:");
-            for (Skill skill : mentorProfile.getListSkills()) {
-                System.out.println("Skill ID: " + skill.getSkillID());
-                System.out.println("Skill Name: " + skill.getSkillName());
-            }
-
-            // Print feedbacks
-            System.out.println("\nFeedbacks:");
-            for (FeedBackDTO feedback : mentorProfile.getFeedBacks()) {
-                System.out.println("Mentee Name: " + feedback.getMenteeName());
-                System.out.println("Star: " + feedback.getStar());
-                System.out.println("Comment: " + feedback.getComment());
-                System.out.println("Time Feedback: " + feedback.getTimeFeedBack());
-                System.out.println("Mentee Avatar: " + feedback.getAvatar());
-            }
-        } else {
-            System.out.println("Mentor with name '' not found.");
+        List<MentorProfile> list = dao.getAllMentorBySkillID(1);
+        for(var a : list){
+            System.out.println(a.getMentorName());
         }
-
-        // Close the database connection (replace with your closing logic)
-        con.close();
     }
 
 }
