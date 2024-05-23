@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/TaiLieu/HappyPrograming/web/blog_skill.jsp</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/web/Mentor.jsp</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/web/courseListSkillDetail.jsp</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/dal/MentorProfileDAO.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/FeedBack.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/MentorProfileDTO.java</file>
-            <file>file:/D:/TaiLieu/HappyPrograming/src/java/models/MentorProfile.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/Mentor.jsp</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/models/FeedBack.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/CVServlet.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/ShowMentors_Servlet.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/models/MentorProfileDTO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/models/FeedBackDTO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/MentorProfileDAO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/MentorProfileServlet.java</file>
         </group>
     </open-files>
 </project-private>

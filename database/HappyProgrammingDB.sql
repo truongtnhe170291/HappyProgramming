@@ -128,34 +128,33 @@ INSERT INTO AccountStatuses (status_name) VALUES ('Pending');
 GO
 
 -- Insert into Roles
-INSERT INTO Roles (role_name) VALUES ('Admin');
 INSERT INTO Roles (role_name) VALUES ('Mentee');
 INSERT INTO Roles (role_name) VALUES ('Mentor');
+INSERT INTO Roles (role_name) VALUES ('Admin');
 GO
 
 -- Insert into Accounts
-INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id)
-VALUES ('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'avatar1.png', 2, 1);
-INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id)
-VALUES ('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '0987654321', 'avatar2.png', 2, 2);
-INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id)
-VALUES ('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '1112223333', 'avatar3.png', 3, 3);
+INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES
+ ('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'avatar1.jpg', 1, 1),
+ ('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '0987654321', 'avatar2.jpg', 1, 1),
+ ('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '1112223333', 'avatar3.jpg', 2, 1),
+ ('user4', 'user4@gmail.com', 'User 4', 'password4', '2003-03-03', 1, '456 HN St', '0977333888', 'avatar4.jpg', 2, 1);
 GO
 
 -- Insert into Mentees
-INSERT INTO Mentees (mentee_name) VALUES ('user1');
-INSERT INTO Mentees (mentee_name) VALUES ('user2');
+INSERT INTO Mentees (mentee_name) VALUES 
+('user1'),
+('user2');
 GO
 
 -- Insert into Mentors
-INSERT INTO Mentors (mentor_name, rate) VALUES ('user3', 3.5);
+INSERT INTO Mentors (mentor_name, rate) VALUES 
+('user3', 3.5),
+('user4', 5.0);
 GO
 
 -- Insert into Managers
-INSERT INTO Managers (manager_name) VALUES ('user1');
-INSERT INTO Managers (manager_name) VALUES ('user2');
-INSERT INTO Managers (manager_name) VALUES ('user3');
-GO
+
 
 -- Insert into Skills
 INSERT INTO Skills (skill_name,img, [description], [status]) VALUES 
@@ -165,14 +164,19 @@ INSERT INTO Skills (skill_name,img, [description], [status]) VALUES
 GO
 
 -- Insert into MentorSkills
-INSERT INTO MentorSkills (mentor_name, skill_id) VALUES ('user3', 1);
-INSERT INTO MentorSkills (mentor_name, skill_id) VALUES ('user3', 2);
-INSERT INTO MentorSkills (mentor_name, skill_id) VALUES ('user3', 3);
+INSERT INTO MentorSkills (mentor_name, skill_id) VALUES 
+('user3', 1),
+('user3', 2),
+('user3', 3),
+('user4', 3),
+('user4', 1);
 GO
 
 -- Insert into FeedBacks
-INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES ('user1', 'user3', 5, 'Excellent mentor', '2024-05-01');
-INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES ('user2', 'user3', 4, 'Very helpful', '2024-05-02');
+INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
+('user3', 'user1', 5, 'Excellent mentor', '2024-05-01'),
+('user3', 'user2', 4, 'Very helpful', '2024-05-02'),
+('user4', 'user2', 4, 'GOOD', '2024-05-02');
 GO
 
 -- Insert into RequestStatuses
@@ -183,15 +187,9 @@ GO
 
 -- Insert into RequestsFormMentee
 
-INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, title, [description], status_id, deadline_hour)
-VALUES ('user3', 'user1', '2024-06-03', 'Website Development', 'Help needed for website development', 3, '14:00:00');
-GO
 
--- Insert into RequestSkills
-INSERT INTO RequestSkills (skill_id, request_id) VALUES (1, 1);
-INSERT INTO RequestSkills (skill_id, request_id) VALUES (2, 2);
-INSERT INTO RequestSkills (skill_id, request_id) VALUES (3, 3);
-GO
+
+
 
 -- Insert into CV
 INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description)
