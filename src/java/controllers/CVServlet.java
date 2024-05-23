@@ -10,14 +10,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import models.CV;
-import models.Mentee;
 import services.CVService;
-import services.MenteeService;
 import services.SkillService;
-import java.sql.Date;
-import java.text.ParseException;
 import models.Account;
 import services.AccountService;
 /**
@@ -93,11 +88,11 @@ public class CVServlet extends HttpServlet {
             CV newCv = cvService.createOrUpdateCV(c);
             if (newCv!=null) {
                 request.setAttribute("cv", newCv);
-                request.getRequestDispatcher("user_info.jsp").forward(request, response);
+                request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
             }else{
                 String msg = "Create or Update Fail";
                 request.setAttribute("msg", msg);
-                request.getRequestDispatcher("user_info.jsp").forward(request, response);
+                request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
             }
 
         } catch (ServletException | IOException | NumberFormatException e) {
