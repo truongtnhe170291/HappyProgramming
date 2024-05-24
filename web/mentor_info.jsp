@@ -216,19 +216,34 @@
                                                     <div class="edit-profile__body">
                                                         <form action="cv" method="POST">
                                                             <c:set var="cv" value="${requestScope.cv}"></c:set>
+                                                                <div style="margin-bottom: 15px">
+                                                                    <div class="form-group mb-25">
+                                                                        <label for="name4">Full Name</label>
+                                                                        <input id="fullname" name="fullName" value="${cv.fullName}" type="text" class="form-control" placeholder="Duran Clayton">
+                                                                </div>
+                                                                <div style="display: none" id="nameError" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your name is not valid.
+                                                                </div>
+                                                            </div>
+                                                                
+                                                            <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
-                                                                    <label for="name4">Full Name</label>
-                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="name4" placeholder="Duran Clayton">
+                                                                    <label for="phoneNumber1">Mail</label>
+                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="mailcv" placeholder="Design">
+                                                                </div>
+                                                                <div style="display: none" id="mailcvErr" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your email is invalid.
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Mail</label>
-                                                                <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
-                                                            </div>
+                                                                
                                                             <div class="form-group mb-25 form-group">
                                                                 <label for="datepicker">Date of birth</label>
                                                                 <div class="position-relative">
-                                                                    <input name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
+                                                                    <input id="dobcv" name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
                                                                 </div>
+                                                            </div>
+                                                            <div style="display: none" id="dobvcErr" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <strong style="color: red">Oh no!</strong> your birthday is invalid.
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber">Sex</label>
@@ -334,12 +349,16 @@
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var emailInput = document.getElementById('email');
                                         var emailError = document.getElementById('emailError');
+                                        var mailcv = document.getElementById('mailcv');
+                                        var mailcvErr = document.getElementById('mailcvErr');
                                         var phoneInput = document.getElementById('phoneNumber');
                                         var phoneError = document.getElementById('phoneError');
                                         var nameInput = document.getElementById('fullname');
                                         var nameError = document.getElementById('nameError');
                                         var dobInput = document.getElementById('dob');
                                         var dobError = document.getElementById('dobError');
+                                        var dobcv = document.getElementById('dobcv');
+                                        var dobcvErr = document.getElementById('dobcvErr');
                                         var submitForm = document.getElementById('submitForm');
                                         var addressInput = document.getElementById('address');
                                         var addressError = document.getElementById('addressError');
@@ -352,6 +371,19 @@
                                                     submitForm.disabled = true;
                                                 } else {
                                                     addressError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (mailcv) {
+                                            mailcv.addEventListener('input', function () {
+                                                var emailValue = mailcv.value;
+                                                if (!validateEmail(emailValue)) {
+                                                    mailcvErr.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    mailcvErr.style.display = 'none';
                                                     submitForm.disabled = false;
                                                 }
                                             });
@@ -404,6 +436,19 @@
                                                     submitForm.disabled = true;
                                                 } else {
                                                     dobError.style.display = 'none';
+                                                    submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (dobcv) {
+                                            dobcv.addEventListener('input', function () {
+                                                var dobValue = dobcv.value;
+                                                if (!validateBirthDate(dobValue)) {
+                                                    dobcvErr.style.display = 'block';
+                                                    submitForm.disabled = true;
+                                                } else {
+                                                    dobcvErr.style.display = 'none';
                                                     submitForm.disabled = false;
                                                 }
                                             });
