@@ -39,7 +39,7 @@
         }
 
         window.onload = function () {
-            let duration = 30; // 30 seconds
+            let duration = 40; 
             let display = document.querySelector('#time');
             startCountdown(duration, display);
         };
@@ -56,6 +56,7 @@
 						<div class="text-center">
 							
 							<h2 class="text-center">Enter OTP</h2>
+                                                        ${username_newpass}
 									<%
 		  			if(request.getAttribute("messages")!=null)
 		  			{

@@ -31,14 +31,14 @@ public class NewPassword extends HttpServlet {
 		String newPassword = request.getParameter("password");
 		String confPassword = request.getParameter("confPassword");
                 String email = (String) session.getAttribute("emails");
+                String username = (String) session.getAttribute("username_newpass");
+                Account a = new Account();
 		RequestDispatcher dispatcher = null;
 		          AccountDAO ac = new AccountDAO();
-                          Account a = new Account();
                 if (newPassword != null && confPassword != null && newPassword.equals(confPassword)) {
+                    a.setUserName(username);
                     a.setPassword(newPassword);
-                    a.setGmail(email);
-		ac.changePasswordByEmail(a);
-				
+		ac.changePassWord(a);
                     	        
 					request.setAttribute("status", "resetSuccess");
 					dispatcher = request.getRequestDispatcher("login.jsp");
