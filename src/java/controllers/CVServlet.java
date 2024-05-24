@@ -6,19 +6,26 @@ package controllers;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import models.CV;
 import services.CVService;
 import services.SkillService;
 import models.Account;
 import services.AccountService;
+
 /**
  *
  * @author Admin
  */
+@MultipartConfig
 @WebServlet(name = "CVServlet", urlPatterns = {"/cv"})
 public class CVServlet extends HttpServlet {
 
@@ -70,10 +77,40 @@ public class CVServlet extends HttpServlet {
             }
             boolean sex;
             sex = _sex.equals("1");
-            
-            
+
+            // insert anh save img file
+            Part filePart = request.getPart("fileUpload");
+
+            // C:\Users\Admin\Desktop\HappyProgramming\web\img
+            String upload = "C:\\Users\\Admin\\Desktop\\HappyProgramming\\web\\imgcv\\";
+
+            Account curentAccount = (Account) request.getSession().getAttribute("user");
+
+            String oldavata = curentAccount.getAvatar();
+
+            // Lấy tên tệp
+            String fileName = filePart.getSubmittedFileName();
+            if (!fileName.equals("") && !fileName.equals(oldavata)) {
+                String uploadDirectory = upload + fileName;
+                System.out.println(uploadDirectory);
+                try (OutputStream out = new FileOutputStream(uploadDirectory)) {
+                    InputStream in = filePart.getInputStream();
+                    byte[] bytes = new byte[in.available()];
+                    in.read(bytes);
+                    out.write(bytes);
+                    out.close();
+                } catch (IOException e) {
+                    System.out.println(e);
+                    fileName = "default.jpg";
+                }
+            } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
+                fileName = oldavata;
+            } else {
+                fileName = "default.jpg";
+            }
+
             // lấy từ session khi người dùng đăng nhập
-            Account acc = (Account)request.getSession().getAttribute("user");
+            Account acc = (Account) request.getSession().getAttribute("user");
             String username = acc.getUserName();
 
             // Lấy các Skill và profile
@@ -83,13 +120,13 @@ public class CVServlet extends HttpServlet {
             request.setAttribute("skills", skillService.getSkills());
             request.setAttribute("user", accountService.getAccount(acc.getUserName(), acc.getPassword()));
 
-            CV c = new CV(0, gmail, username, fullname, java.sql.Date.valueOf(dob),sex , address, profession, professionIntro, achievementDescription, serviceDescription, skills);
+            CV c = new CV(0, gmail, username, fullname, java.sql.Date.valueOf(dob), sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, fileName);
             CVService cvService = CVService.getInstance();
             CV newCv = cvService.createOrUpdateCV(c);
-            if (newCv!=null) {
+            if (newCv != null) {
                 request.setAttribute("cv", newCv);
                 request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
-            }else{
+            } else {
                 String msg = "Create or Update Fail";
                 request.setAttribute("msg", msg);
                 request.getRequestDispatcher("mentor_info.jsp").forward(request, response);

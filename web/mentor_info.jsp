@@ -93,6 +93,7 @@
                                                         <div class="user-tab-info-title mb-sm-40 mb-20 text-capitalize">
                                                             <h5 class="fw-500">Personal Information</h5>
                                                         </div>
+                                                        <img src="./img/${mentor.avatar}"/>
                                                         <div class="account-profile d-flex align-items-center mb-4">
                                                             <div class="ap-img pro_img_wrapper">
                                                                 <input id="file-upload" type="file" name="fileUpload" class="d-none" accept="image/*">
