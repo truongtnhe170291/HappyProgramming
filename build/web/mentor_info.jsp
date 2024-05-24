@@ -249,6 +249,9 @@
                                                                     <strong style="color: red">Oh no!</strong> Your date of birth is invalid.
                                                                 </div>
                                                             </div>
+                                                            <div style="display: none" id="dobvcErr" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <strong style="color: red">Oh no!</strong> your birthday is invalid.
+                                                            </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber">Sex</label>
                                                                 <div class="d-flex">
@@ -361,12 +364,16 @@
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var emailInput = document.getElementById('email');
                                         var emailError = document.getElementById('emailError');
+                                        var mailcv = document.getElementById('mailcv');
+                                        var mailcvErr = document.getElementById('mailcvErr');
                                         var phoneInput = document.getElementById('phoneNumber');
                                         var phoneError = document.getElementById('phoneError');
                                         var nameInput = document.getElementById('fullname');
                                         var nameError = document.getElementById('nameError');
                                         var dobInput = document.getElementById('dob');
                                         var dobError = document.getElementById('dobError');
+                                        var dobcv = document.getElementById('dobcv');
+                                        var dobcvErr = document.getElementById('dobcvErr');
                                         var submitForm = document.getElementById('submitForm');
                                         var addressInput = document.getElementById('address');
                                         var addressError = document.getElementById('addressError');
