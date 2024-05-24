@@ -215,19 +215,38 @@
                                                     </div>
                                                     <div class="edit-profile__body">
                                                         <form action="cv" method="POST">
-                                                            <c:set var="cv" value="${requestScope.cv}"></c:set>
+                                                            <c:set var="cv" value="${requestScope.cv}">
+
+                                                            </c:set>
+                                                            <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name4">Full Name</label>
-                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="name4" placeholder="Duran Clayton">
+                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Duran Clayton">
+                                                                </div>
+                                                                <div style="display: none" id="nameError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your name is invalid.
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Mail</label>
-                                                                <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25">
+                                                                    <label for="phoneNumber1">Mail</label>
+                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="Design">
+                                                                </div>
+                                                                <div style="display: none" id="emailError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your email is invalid.
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-25 form-group">
-                                                                <label for="datepicker">Date of birth</label>
-                                                                <div class="position-relative">
-                                                                    <input name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25 form-group">
+                                                                    <label for="datepicker">Date of birth</label>
+                                                                    <div class="position-relative">
+                                                                        <input id="dob2" name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
+                                                                    </div>
+                                                                </div>
+                                                                <div style="display: none" id="dobError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your date of birth is invalid.
                                                                 </div>
                                                             </div>
                                                             <div class="form-group mb-25">
@@ -249,10 +268,18 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Address</label>
-                                                                <input name="address" value="${cv.address}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+
+                                                            <div style="margin-bottom: 15px">
+
+                                                                <div class="form-group mb-25">
+                                                                    <label for="phoneNumber1">Address</label>
+                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Design">
+                                                                </div>
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your Address.
+                                                                </div>
                                                             </div>
+                                                                
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
                                                                 <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
@@ -288,7 +315,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-                                                                <button type="submit" id="button_oki" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
+                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
                                                             </div>
                                                         </form>
 
@@ -344,7 +371,17 @@
                                         var addressInput = document.getElementById('address');
                                         var addressError = document.getElementById('addressError');
 
-                                        if(addressInput){
+                                        var emailInput2 = document.getElementById('email2');
+                                        var emailError2 = document.getElementById('emailError2');
+                                        var nameInput2 = document.getElementById('fullname2');
+                                        var nameError2 = document.getElementById('nameError2');
+                                        var dobInput2 = document.getElementById('dob2');
+                                        var dobError2 = document.getElementById('dobError2');
+                                        var submitForm2 = document.getElementById('submitForm2');
+                                        var addressInput2 = document.getElementById('address2');
+                                        var addressError2 = document.getElementById('addressError2');
+
+                                        if (addressInput) {
                                             addressInput.addEventListener('input', function () {
                                                 var addressValue = addressInput.value;
                                                 if (addressValue === "") {
@@ -357,6 +394,20 @@
                                             });
                                         }
 
+                                        if (addressInput2) {
+                                            addressInput2.addEventListener('input', function () {
+                                                var addressValue = addressInput2.value;
+                                                if (addressValue === "") {
+                                                    addressError2.style.display = 'block';
+                                                    submitForm2.disabled = true;
+                                                } else {
+                                                    addressError2.style.display = 'none';
+                                                    submitForm2.disabled = false;
+                                                }
+                                            });
+                                        }
+
+
                                         if (emailInput) {
                                             emailInput.addEventListener('input', function () {
                                                 var emailValue = emailInput.value;
@@ -366,6 +417,19 @@
                                                 } else {
                                                     emailError.style.display = 'none';
                                                     submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (emailInput2) {
+                                            emailInput2.addEventListener('input', function () {
+                                                var emailValue = emailInput2.value;
+                                                if (!validateEmail(emailValue)) {
+                                                    emailError2.style.display = 'block';
+                                                    submitForm2.disabled = true;
+                                                } else {
+                                                    emailError2.style.display = 'none';
+                                                    submitForm2.disabled = false;
                                                 }
                                             });
                                         }
@@ -396,6 +460,19 @@
                                             });
                                         }
 
+                                        if (nameInput2) {
+                                            nameInput2.addEventListener('input', function () {
+                                                var nameValue = nameInput2.value;
+                                                if (!validateName(nameValue)) {
+                                                    nameError2.style.display = 'block';
+                                                    submitForm2.disabled = true;
+                                                } else {
+                                                    nameError2.style.display = 'none';
+                                                    submitForm2.disabled = false;
+                                                }
+                                            });
+                                        }
+
                                         if (dobInput) {
                                             dobInput.addEventListener('input', function () {
                                                 var dobValue = dobInput.value;
@@ -405,6 +482,19 @@
                                                 } else {
                                                     dobError.style.display = 'none';
                                                     submitForm.disabled = false;
+                                                }
+                                            });
+                                        }
+
+                                        if (dobInput2) {
+                                            dobInput2.addEventListener('input', function () {
+                                                var dobValue = dobInput2.value;
+                                                if (!validateBirthDate(dobValue)) {
+                                                    dobError2.style.display = 'block';
+                                                    submitForm2.disabled = true;
+                                                } else {
+                                                    dobError2.style.display = 'none';
+                                                    submitForm2.disabled = false;
                                                 }
                                             });
                                         }
