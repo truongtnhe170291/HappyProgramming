@@ -75,7 +75,7 @@ try {
         account.setPhone(phone);
         account.setRoleId(Integer.parseInt(role));
         account.setStatusId(1);
-        if (signUpDAO.isDuplicateAccount(userName)) {
+        if (signUpDAO.isDuplicateAccount(gmail, userName)) {
             request.setAttribute("error", "Email or Username already exists.");
             request.getRequestDispatcher("sign_up.jsp").forward(request, response);
             return;

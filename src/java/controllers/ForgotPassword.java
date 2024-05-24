@@ -26,12 +26,14 @@ import models.Account;
  */
 @WebServlet("/forgotPassword")
 public class ForgotPassword extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-                  request.getRequestDispatcher("forget-password.jsp").forward(request, response);
+        request.getRequestDispatcher("forget-password.jsp").forward(request, response);
     }
-        @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         RequestDispatcher dispatcher = null;
@@ -43,7 +45,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                 Random rand = new Random();
                 otpvalue = rand.nextInt(1255650);
 
-                String to = email; 
+                String to = email;
                 Properties props = new Properties();
                 props.put("mail.smtp.host", "smtp.gmail.com");
                 props.put("mail.smtp.socketFactory.port", "465");
@@ -53,13 +55,13 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                 Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("minhvqhe176726@fpt.edu.vn", "uwdu ufxk lpae tojc"); 
+                        return new PasswordAuthentication("minhvqhe176726@fpt.edu.vn", "uwdu ufxk lpae tojc");
                     }
                 });
 
                 try {
                     MimeMessage message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress("minhvqhe176726@fpt.edu.vn")); 
+                    message.setFrom(new InternetAddress("minhvqhe176726@fpt.edu.vn"));
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
                     message.setSubject("Hello");
                     message.setText("Your OTP is: " + otpvalue);
@@ -69,14 +71,14 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                     throw new RuntimeException(e);
                 }
                 long currentTime = System.currentTimeMillis();
-                long expiryTime = currentTime + 30 * 1000; 
+                long expiryTime = currentTime + 30 * 1000;
 
                 dispatcher = request.getRequestDispatcher("confirmOtp.jsp");
                 request.setAttribute("messages", "OTP is sent to your email id");
                 mySession.setAttribute("otps", otpvalue);
-                mySession.setAttribute("otps_expiry", expiryTime); 
-                mySession.setAttribute("emails", email);        
-                mySession.setAttribute("username_newpass", username);    
+                mySession.setAttribute("otps_expiry", expiryTime);
+                mySession.setAttribute("emails", email);
+                mySession.setAttribute("username_newpass", username);
                 dispatcher.forward(request, response);
             } else {
                 request.setAttribute("messages", "Username or Email does not exist");
@@ -85,7 +87,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             }
         } catch (Exception e) {
             request.setAttribute("messages", "Error: " + e.getMessage());
-            dispatcher = request.getRequestDispatcher("forget-password.jsp"); 
+            dispatcher = request.getRequestDispatcher("forget-password.jsp");
             dispatcher.forward(request, response);
         }
     }
