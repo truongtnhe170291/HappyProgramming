@@ -414,7 +414,6 @@
                                             });
                                         }
 
-
                                         if (emailInput) {
                                             emailInput.addEventListener('input', function () {
                                                 var emailValue = emailInput.value;

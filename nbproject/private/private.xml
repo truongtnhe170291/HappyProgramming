@@ -3,7 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/SignUpDAO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/dal/AccountDAO.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/ValidateOtp.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/SucessOtp.java</file>
             <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/UpdateAccountServlet.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/SignUpServlet.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/web/newPassword.jsp</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/ForgotPassword.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/NewPassword.java</file>
+            <file>file:/C:/Users/Admin/Desktop/HappyProgramming/src/java/controllers/sendnew.java</file>
         </group>
     </open-files>
 </project-private>

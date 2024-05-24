@@ -243,14 +243,14 @@
       const roleInput = document.getElementById("role");
       const roleDisplay = document.getElementById("roleDisplay");
       mentorBtn.addEventListener("click", function() {
-         roleInput.value = 2; // Thiết lập giá trị Role thành 2 khi nhấp vào nút Mentor
+         roleInput.value = 2; 
          roleDisplay.value = "Mentor";
          console.log(roleDisplay.value);
          console.log(roleInput.value);
       });
 
       menteeBtn.addEventListener("click", function() {
-         roleInput.value = 1; // Thiết lập giá trị Role thành 1 khi nhấp vào nút Mentee
+         roleInput.value = 1; 
          roleDisplay.value = "Mentee";
          console.log(roleDisplay.textContent);
       });

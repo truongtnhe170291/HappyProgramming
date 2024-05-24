@@ -73,6 +73,7 @@ public class ValidateOtp extends HttpServlet {
                 
                 if (success) {
                     request.setAttribute("email", request.getParameter("email"));
+                    request.setAttribute("messaget", "Success signup account.");
                     dispatcher = request.getRequestDispatcher("login.jsp");
                     dispatcher.forward(request, response);
                 } else {
