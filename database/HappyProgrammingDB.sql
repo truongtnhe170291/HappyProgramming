@@ -109,6 +109,7 @@ create table CV(
 	profession_intro nvarchar(1000),
 	achievement_description nvarchar(1000),
 	service_description nvarchar(1000),
+	avatar varchar(250)
 )
 GO
 create table CVSkills(
@@ -192,8 +193,8 @@ GO
 
 
 -- Insert into CV
-INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description)
-VALUES ('user3', 'user3@gmail.com', 'User Three', '1992-03-03', 1, '789 Oak St', 'Web Developer', 'Specializes in front-end development', 'Created numerous responsive websites', 'Available for web development projects');
+INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar)
+VALUES ('user3', 'user3@gmail.com', 'User Three', '1992-03-03', 1, '789 Oak St', 'Web Developer', 'Specializes in front-end development', 'Created numerous responsive websites', 'Available for web development projects', 'default_cv_img.jpg');
 GO
 
 -- Insert into CVSkills
