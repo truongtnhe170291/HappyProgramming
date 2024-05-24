@@ -213,8 +213,25 @@
                                                     <div class="user-tab-info-title mb-35 text-capitalize">
                                                         <h5 class="fw-500">CV Information</h5>
                                                     </div>
-                                                    <div class="edit-profile__body">
-                                                        <form action="cv" method="POST">
+                                                    <form action="cv" method="POST">
+                                                        <div class="account-profile d-flex align-items-center mb-4">
+                                                            <div class="ap-img pro_img_wrapper">
+                                                                <input id="file-upload" type="file" name="fileUpload" class="d-none" accept="image/*">
+                                                                <!-- Profile picture image -->
+                                                                <label for="file-upload" class="position-relative d-inline-block">
+                                                                    <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./img/${mentor.avatar}" alt="profile">
+                                                                    <span class="cross position-absolute" id="remove_pro_pic">
+                                                                        <img src="img/svg/camera.svg" alt="camera" class="svg">
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="account-profile__title">
+                                                                <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="edit-profile__body">
+
                                                             <c:set var="cv" value="${requestScope.cv}">
 
                                                             </c:set>
@@ -282,7 +299,7 @@
                                                                     <strong style="color: red">Oh no!</strong> Please input your Address.
                                                                 </div>
                                                             </div>
-                                                                
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
                                                                 <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
@@ -320,10 +337,8 @@
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
                                                                 <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
                                                             </div>
-                                                        </form>
-
-
-                                                    </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
