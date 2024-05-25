@@ -69,13 +69,11 @@
                 <input id="otp-button" name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Confirm" type="submit">
                 <br/>
             </div>
-            <div class="form-group">
-                ${massage}
-            </div>
+            
             <input type="hidden" class="hide" name="token" id="token" value="">
         </form>
       <a href="homes.jsp"> <input id="otp-button" name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Back To Home" type="submit"></a>
-
+     
     </div>
 </body>
 </html>

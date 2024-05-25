@@ -22,7 +22,7 @@ public class SignUpDAO {
     }
     
     public boolean signUp(Account account) {
-        if (isDuplicateAccount(account.getGmail(), account.getUserName())) {
+        if (isDuplicateAccount(account.getUserName())) {
             return false; 
         }
 
@@ -50,11 +50,10 @@ public class SignUpDAO {
     
 
   
-    public boolean isDuplicateAccount(String gmail, String userName) {
-        String query = "SELECT COUNT(*) FROM Accounts WHERE gmail = ? OR user_name = ?";
+    public boolean isDuplicateAccount( String userName) {
+        String query = "SELECT COUNT(*) FROM Accounts Where user_name = ?";
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
-            preparedStatement.setString(1, gmail);
-            preparedStatement.setString(2, userName);
+            preparedStatement.setString(1, userName);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {

@@ -67,11 +67,10 @@ public class sendnew extends HttpServlet {
                 session.setAttribute("otps_expiry", expiryTime); 
 
                 session.setAttribute("otps", otpvalue);
-                session.setAttribute("username_newpass", username);    
                 request.setAttribute("message", "New OTP sent to your email id");
                 request.getRequestDispatcher("confirmOtp.jsp").forward(request, response);
             } catch (MessagingException e) {
-                throw new RuntimeException(e);
+                request.getRequestDispatcher("confirmOtp.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("message", "Error: Gmail not found in session.");

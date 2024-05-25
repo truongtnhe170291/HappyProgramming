@@ -56,7 +56,6 @@
 						<div class="text-center">
 							
 							<h2 class="text-center">Enter OTP</h2>
-                                                        ${username_newpass}
 									<%
 		  			if(request.getAttribute("messages")!=null)
 		  			{
@@ -86,13 +85,16 @@
 											class="btn btn-lg btn-primary btn-block"
 											value="Reset Password" type="submit">
 									</div>
+                                                                    
 
 									<input type="hidden" class="hide" name="token" id="token"
 										value="">
 								</form>
                                                                   <a href="homes.jsp"> <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Back To Home" type="submit"></a>
 
-
+                                                           <div class="form-group">
+                ${message}
+            </div>
 							</div>
 						</div>
 					</div>
