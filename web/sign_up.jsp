@@ -96,7 +96,7 @@
                     <div class="form-group mb-20">
                         <label for="Dob">Date of Birth:</label>
                         <input type="date" class="form-control" id="Dob" name="Dob" required>
-                        <span class="error-message" id="error-message">Bạn phải đủ 12 tuổi.</span>
+                        <span class="error-message" id="error-message"></span>
                     </div>
                     <div class="form-group mb-20">
                         <label for="sex">Sex:</label>
@@ -223,9 +223,9 @@
             const dayDiff = today.getDate() - dobValue.getDate();
             const errorMessage = document.getElementById('error-message');
 
-            if (age < 12 || (age === 12 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+            if (age < 6 || (age === 6 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
                 errorMessage.style.display = 'block';
-                dobInput.setCustomValidity('Bạn phải đủ 12 tuổi.');
+                dobInput.setCustomValidity('Bạn phải đủ 6 tuổi.');
                 dobInput.reportValidity();
                 dobInput.focus();
             } else {

@@ -46,7 +46,6 @@
 							<h1>
 								<strong>Reset Password</strong>
 							</h1>
-                                                    ${username_newpass}
 						</div>
 						<div class="pt-3 pb-3">
 							<form class="form-horizontal" action="NewPassword" method="post">
@@ -73,6 +72,10 @@
 											class="btn btn-block btn-info">
 									</div>
 								</div>
+                                                                <div class="form-group row justify-content-center px-3">
+									${status}
+								</div>
+                                                                
 							</form>
 						</div>
 						<!-- Alternative Login -->
