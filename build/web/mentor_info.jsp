@@ -337,7 +337,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save</button>
+                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">OK</button>
                                                             </div>
                                                         </div>
                                                     </form>
