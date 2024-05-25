@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>FMASTER</title>
+        <title>Update CV of mentor</title>
         <style>
             .author_2{
                 transform: translate(750px,-87px);
@@ -213,11 +213,27 @@
                                                     <div class="user-tab-info-title mb-35 text-capitalize">
                                                         <h5 class="fw-500">CV Information</h5>
                                                     </div>
-                                                    <div class="edit-profile__body">
-                                                        <form action="cv" method="POST">
-                                                            <c:set var="cv" value="${requestScope.cv}">
+                                                    <form action="cv" method="POST" enctype="multipart/form-data">
+                                                        <c:set var="cv" value="${requestScope.cv}"/>
+                                                        <div class="account-profile d-flex align-items-center mb-4">
+                                                            <div class="ap-img pro_img_wrapper">
+                                                                <input id="file-uploadcv" type="file" name="uploadcv" class="d-none" accept="image/*">
+                                                                <!-- Profile picture image -->
+                                                                <label for="file-uploadcv" class="position-relative d-inline-block">
+                                                                    <img id="profile-imgcv" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./imgcv/${cv.imgcv}" alt="profile">
+                                                                    <span class="cross position-absolute" id="remove_pro_pic">
+                                                                        <img src="img/svg/camera.svg" alt="camera" class="svg">
+                                                                    </span>
+                                                                </label>
+                                                            </div>
 
-                                                            </c:set>
+                                                            <div class="account-profile__title">
+                                                                <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="edit-profile__body">
+
+
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name4">Full Name</label>
@@ -282,23 +298,26 @@
                                                                     <strong style="color: red">Oh no!</strong> Please input your Address.
                                                                 </div>
                                                             </div>
-                                                                
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
                                                                 <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession introduction</label>
-                                                                <input name="professionIntro" value="${cv.professionIntro}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
                                                             </div>
+                                                            
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
-                                                                <input name="achievementDescription" value="${cv.achievementDescription}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
                                                             </div>
+                                                            
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
-                                                                <input name="serviceDescription" value="${cv.serviceDescription}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
                                                             </div>
+
                                                             <div class="form-group mb-25 status-radio ">
                                                                 <label for="hiringDateCheckbox">Skill</label>
                                                                 <div class="d-flex">
@@ -318,12 +337,10 @@
                                                                 </div>
                                                             </div>
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save & Next</button>
+                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">Save</button>
                                                             </div>
-                                                        </form>
-
-
-                                                    </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -542,6 +559,19 @@
                                             reader.readAsDataURL(file);
                                         }
                                     });
+                                    
+
+                                        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                                            const file = event.target.files[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onload = function (e) {
+                                                    document.getElementById('profile-imgcv').src = e.target.result;
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        });
+ 
                                 </script>
                                 </body>
                                 </html>

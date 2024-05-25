@@ -45,7 +45,7 @@ public class CVDAO {
                 + "       [profession] = ?,\n"
                 + "       [profession_intro] = ?,\n"
                 + "       [achievement_description] = ?,\n"
-                + "       [service_description] = ?\n"
+                + "       [service_description] = ?,\n"
                 + "       [avatar] = ?\n"
                 + " WHERE [cv_id] = ?;";
         try {
@@ -164,9 +164,9 @@ public class CVDAO {
         return -1;
     }
 
-//    public static void main(String[] args) {
-//        CVDAO cvdao = new CVDAO();
-//        CV c = new CV();
+    public static void main(String[] args) {
+        CVDAO cvdao = new CVDAO();
+        CV c = new CV();
 //        c.setAddress("HN");
 //        //c.setDob(java.sql.Date.valueOf(LocalDate.now()));
 //        c.setFullName("abc");
@@ -179,15 +179,15 @@ public class CVDAO {
 //        c.setProfessionIntro("Intro");
 //        c.setSkills(new int[]{2, 5});
 //        c.setCvId(1);
-////        if(cvdao.addCV(c)){
-////            System.out.println("OK");
-////        }else{
-////            System.out.println("Not OK");
-////        }
-//        //cvdao.updateCV(c);
-//        c = cvdao.getCVByUserName("user2");
-//        System.out.println(c.getSkills()[0] +" "+c.getFullName());
-//    }
+//        if(cvdao.addCV(c)){
+//            System.out.println("OK");
+//        }else{
+//            System.out.println("Not OK");
+//        }
+        //cvdao.updateCV(c);
+        c = cvdao.getCVByUserName("user2");
+        System.out.println(c.getSkills()[0] +" "+c.getImgcv());
+    }
     public CV getCVByUserName(String userName) {
         String sql = "select * from CV c where c.mentor_name = ?";
         CV cv = null;

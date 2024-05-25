@@ -89,7 +89,7 @@ public class AccountDAO {
                             rs.getBoolean(6),
                             rs.getString(7),
                             rs.getString(8),
-rs.getString(9),
+                            rs.getString(9),
                             rs.getInt(10),
                             rs.getInt(11));
                 }
@@ -115,18 +115,20 @@ rs.getString(9),
         }
         return false;
     }
-   public static void main(String[] args) {
+
+    public static void main(String[] args) {
         AccountDAO dao = new AccountDAO();
         dao.updateAccount("user1", "pham hung son", "2003-12-2", "1", "Thanh hao 123", "2k3sonpham@gmail.com", "123", "01234266733");
         Account a = new Account();
         a.setUserName("tuantu123");
         a.setPassword("12341234");
-        if(dao.changePassWord(a)){
+        if (dao.changePassWord(a)) {
             System.out.println("thanh cong");
-        }else{
+        } else {
             System.out.println("that bai");
         }
     }
+
     public void updateAccount(String username, String fullname, String dob, String sex, String address,
             String gmail, String avatar, String phone) {
         try {
@@ -151,7 +153,7 @@ rs.getString(9),
             System.out.println("updateAccount: " + e.getMessage());
         }
     }
-    
+
     public boolean isUsermailAndEmailExists(String username, String gmail) {
         String query = "SELECT COUNT(*) FROM Accounts WHERE user_name = ? AND gmail = ?";
         try (PreparedStatement statement = con.prepareStatement(query)) {
@@ -167,7 +169,7 @@ rs.getString(9),
             e.printStackTrace();
             // Handle any exceptions here
         }
-return false;
+        return false;
     }
 
 }
