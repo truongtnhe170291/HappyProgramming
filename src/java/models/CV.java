@@ -17,15 +17,15 @@ public class CV {
     private boolean sex;
     private String address, profession, professionIntro, achievementDescription, serviceDescription;
     private int[] skills;
+    private String imgcv;
     
     public CV() {
     }
 
-    public CV(int cvId, Mentor mentor, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
+    public CV(int cvId, String userName, String gmail, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills, String imgcv) {
         this.cvId = cvId;
-        this.mentor = mentor;
-        this.gmail = gmail;
         this.userName = userName;
+        this.gmail = gmail;
         this.fullName = fullName;
         this.dob = dob;
         this.sex = sex;
@@ -35,22 +35,20 @@ public class CV {
         this.achievementDescription = achievementDescription;
         this.serviceDescription = serviceDescription;
         this.skills = skills;
+        this.imgcv = imgcv;
     }
 
-    public CV(int cvId, String gmail, String userName, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills) {
-        this.cvId = cvId;
-        this.gmail = gmail;
-        this.userName = userName;
-        this.fullName = fullName;
-        this.dob = dob;
-        this.sex = sex;
-        this.address = address;
-        this.profession = profession;
-        this.professionIntro = professionIntro;
-        this.achievementDescription = achievementDescription;
-        this.serviceDescription = serviceDescription;
-        this.skills = skills;
+   
+
+    public String getImgcv() {
+        return imgcv;
     }
+
+    public void setImgcv(String imgcv) {
+        this.imgcv = imgcv;
+    }
+    
+    
 
     public int[] getSkills() {
         return skills;

@@ -37,7 +37,7 @@ public class sendnew extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String gmail = (String) session.getAttribute("emails");
-
+        String username = (String) session.getAttribute("username");
         if (gmail != null && !gmail.isEmpty()) {
             int otpvalue = new Random().nextInt(1255650);
 
@@ -62,8 +62,12 @@ public class sendnew extends HttpServlet {
                 message.setText("Your new OTP is: " + otpvalue);
                 Transport.send(message);
                 System.out.println("New OTP sent successfully");
+                long currentTime = System.currentTimeMillis();
+                long expiryTime = currentTime + 30 * 1000; 
+                session.setAttribute("otps_expiry", expiryTime); 
 
-                session.setAttribute("otp", otpvalue);
+                session.setAttribute("otps", otpvalue);
+                session.setAttribute("username_newpass", username);    
                 request.setAttribute("message", "New OTP sent to your email id");
                 request.getRequestDispatcher("confirmOtp.jsp").forward(request, response);
             } catch (MessagingException e) {
