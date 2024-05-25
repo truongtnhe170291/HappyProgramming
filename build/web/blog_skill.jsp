@@ -50,24 +50,22 @@
                     <!-- end: Portfolio Filter -->
                     <!-- Blog -->
                     <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
-
-                        <c:forEach items="${requestScope.listSkill}" var="skill">
+                        <c:forEach items="${requestScope.listSkill}" var="skill" varStatus="status">
                             <a href="showmentor?id=${skill.skillID}">
                                 <div class="post-item border bc-general bc-music bc-economics">
                                     <div class="post-item-wrap">
                                         <div class="post-image">
-                                                <img alt="" src="./img/${skill.img}">
+                                            <img alt="" src="./img/${skill.img}">
                                             <span class="post-meta-category"><a href=""></a></span>
                                         </div>
                                         <div class="post-item-description">
-                                            <h2><a href="showmentor?id=${skill.skillID}">${skill.skillName}</a></h2>
+                                            <h2><a href="showmentor?id=${skill.skillID}">${status.index + 1}. ${skill.skillName}</a></h2>
                                             <p>${skill.description}</p>
                                         </div>
                                     </div>
                                 </div>
                             </a>
-                        </c:forEach>                   <!-- Post item-->
-
+                        </c:forEach>
 
 
                         <!-- end: Post item-->
