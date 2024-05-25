@@ -131,45 +131,57 @@ Author     : 84979
                 color:#fff;
 
             }
+            .label{
+                font-size: 24px;
+                color:#fff;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .title{
+                font-size: 40px;
+                color:#fff;
+                text-align: center;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
-    
-    <div class="login-box">
 
-        <form action="changepass" method="post">
-            <div class="author_anh"><img name="img_author" class="anh" src="img/tungche1.jpg" alt="alt"/></div>
-            <div class="fullname">${sessionScope.user.fullName}</div>
-            <div class="user-box">
-                <input type="text" name="opass" required>
-                <label>Old Password</label>
-            </div>
-            <div class="user-box">
-                <input type="text" name="pass" required>
-                <label>New Password</label>
-            </div>
-            <div class="user-box">
-                <input type="password" name="rpass" required>
-                <label>confirm New Password</label>
-            </div><center>
-                <h4 style="color: red">${requestScope.msg}</h4>
-                <button>
-                    change password
-                    <span></span>
-                </button>
-                <br/>
-                 <button>
-                      <a href="homes.jsp">
-            to home
-            <span></span>
-                </a>
-                  
-                    <span></span>
-                </button>
-               
-            </center>
-        </form>
+        <div class="login-box">
 
-    </div>
-</body>
+            <form action="changepass" method="post">
+                <div class="title">Change Password</div>
+                <div class="label">------Please enter your user name and password------</div>
+                <div class="user-box">
+                    <input type="text" name="opass" required>
+                    <label>Old Password</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="pass" required>
+                    <label>New Password</label>
+                </div>
+                <div class="user-box">
+                    <input type="password" name="rpass" required>
+                    <label>confirm New Password</label>
+                </div><center>
+                    <h4 style="color: red">${requestScope.msg}</h4>
+                    <button>
+                        change password
+                        <span></span>
+                    </button>
+                    <br/>
+                    <button>
+                        <a href="homes.jsp">
+                            to home
+                            <span></span>
+                        </a>
+
+                        <span></span>
+                    </button>
+
+                </center>
+            </form>
+
+        </div>
+    </body>
 </html> 
