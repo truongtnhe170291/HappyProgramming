@@ -109,6 +109,7 @@ create table CV(
 	profession_intro nvarchar(1000),
 	achievement_description nvarchar(1000),
 	service_description nvarchar(1000),
+	avatar varchar(250)
 )
 GO
 create table CVSkills(
@@ -135,10 +136,10 @@ GO
 
 -- Insert into Accounts
 INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES
- ('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'avatar1.jpg', 1, 1),
- ('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '0987654321', 'avatar2.jpg', 1, 1),
- ('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '1112223333', 'avatar3.jpg', 2, 1),
- ('user4', 'user4@gmail.com', 'User 4', 'password4', '2003-03-03', 1, '456 HN St', '0977333888', 'avatar4.jpg', 2, 1);
+ ('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
+ ('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
+ ('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
+ ('user4', 'user4@gmail.com', 'User 4', 'password4', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1);
 GO
 
 -- Insert into Mentees
@@ -158,9 +159,9 @@ GO
 
 -- Insert into Skills
 INSERT INTO Skills (skill_name,img, [description], [status]) VALUES 
-('Java Programming','default.jpg', 'Java development skills', 1),
-('Database Management','default.jpg', 'Database administration and management', 1),
-('Web Development','default.jpg', 'HTML, CSS, JavaScript skills', 1)
+('Java Programming','java.jpg', 'Java development skills', 1),
+('Database Management','database.jpg', 'Database administration and management', 1),
+('Web Development','web.jpg', 'HTML, CSS, JavaScript skills', 1)
 GO
 
 -- Insert into MentorSkills
@@ -192,8 +193,8 @@ GO
 
 
 -- Insert into CV
-INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description)
-VALUES ('user3', 'user3@gmail.com', 'User Three', '1992-03-03', 1, '789 Oak St', 'Web Developer', 'Specializes in front-end development', 'Created numerous responsive websites', 'Available for web development projects');
+INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar)
+VALUES ('user3', 'user3@gmail.com', 'User Three', '1992-03-03', 1, '789 Oak St', 'Web Developer', 'Specializes in front-end development', 'Created numerous responsive websites', 'Available for web development projects', 'default_cv_img.jpg');
 GO
 
 -- Insert into CVSkills

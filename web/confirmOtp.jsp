@@ -39,7 +39,7 @@
         }
 
         window.onload = function () {
-            let duration = 30; // 30 seconds
+            let duration = 40; 
             let display = document.querySelector('#time');
             startCountdown(duration, display);
         };
@@ -85,13 +85,16 @@
 											class="btn btn-lg btn-primary btn-block"
 											value="Reset Password" type="submit">
 									</div>
+                                                                    
 
 									<input type="hidden" class="hide" name="token" id="token"
 										value="">
 								</form>
                                                                   <a href="homes.jsp"> <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Back To Home" type="submit"></a>
 
-
+                                                           <div class="form-group">
+                ${message}
+            </div>
 							</div>
 						</div>
 					</div>

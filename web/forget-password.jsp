@@ -39,8 +39,12 @@
                         </div>
                         <div class="card-body">
                            <div class="edit-profile__body">
-                              <p>Enter the email address you used when you joined and we’ll send you instructions to reset your password.</p>
+                               <p style="text-align: center; font-size: 13px">------If you've forgotten your password, enter your account and email----</p>
                               <form action="forgotPassword" method="post">
+                                  <div class="form-group mb-20">
+                                 <label for="usernames">Username</label>
+                                 <input type="text" class="form-control"  placeholder="minh12313" name="username" required>
+                              </div>
                               <div class="form-group mb-20">
                                  <label for="email">Email Adress</label>
                                  <input type="text" class="form-control" id="email" placeholder="name@example.com" name="email" required>

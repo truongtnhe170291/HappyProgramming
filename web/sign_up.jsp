@@ -96,7 +96,7 @@
                     <div class="form-group mb-20">
                         <label for="Dob">Date of Birth:</label>
                         <input type="date" class="form-control" id="Dob" name="Dob" required>
-                        <span class="error-message" id="error-message">Bạn phải đủ 12 tuổi.</span>
+                        <span class="error-message" id="error-message"></span>
                     </div>
                     <div class="form-group mb-20">
                         <label for="sex">Sex:</label>
@@ -223,9 +223,9 @@
             const dayDiff = today.getDate() - dobValue.getDate();
             const errorMessage = document.getElementById('error-message');
 
-            if (age < 12 || (age === 12 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+            if (age < 6 || (age === 6 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
                 errorMessage.style.display = 'block';
-                dobInput.setCustomValidity('Bạn phải đủ 12 tuổi.');
+                dobInput.setCustomValidity('Bạn phải đủ 6 tuổi.');
                 dobInput.reportValidity();
                 dobInput.focus();
             } else {
@@ -243,14 +243,14 @@
       const roleInput = document.getElementById("role");
       const roleDisplay = document.getElementById("roleDisplay");
       mentorBtn.addEventListener("click", function() {
-         roleInput.value = 2; // Thiết lập giá trị Role thành 2 khi nhấp vào nút Mentor
+         roleInput.value = 2; 
          roleDisplay.value = "Mentor";
          console.log(roleDisplay.value);
          console.log(roleInput.value);
       });
 
       menteeBtn.addEventListener("click", function() {
-         roleInput.value = 1; // Thiết lập giá trị Role thành 1 khi nhấp vào nút Mentee
+         roleInput.value = 1; 
          roleDisplay.value = "Mentee";
          console.log(roleDisplay.textContent);
       });

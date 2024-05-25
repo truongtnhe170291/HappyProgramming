@@ -108,7 +108,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     
     public static void main(String[] args) throws SQLException {
       MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-        List<MentorProfile> mentors = mentorProfileDAO.getAllMentorBySkillID(1);
+        List<MentorProfile> mentors = mentorProfileDAO.getAllMentorBySkillID(3);
         for (MentorProfile mentor : mentors) {
             System.out.println(mentor.getFull_name());
         }

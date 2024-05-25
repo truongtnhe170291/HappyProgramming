@@ -31,14 +31,15 @@ public class ForgotPassword extends HttpServlet {
                   request.getRequestDispatcher("forget-password.jsp").forward(request, response);
     }
         @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
+        String username = request.getParameter("username");
         RequestDispatcher dispatcher = null;
         int otpvalue = 0;
         HttpSession mySession = request.getSession();
         AccountDAO ac = new AccountDAO();
         try {
-            if (email != null && !email.equals("") && ac.isEmailExists(email)) {
+            if (username!= null && email != null && !email.equals("") && ac.isUsermailAndEmailExists(username,email)) {
                 Random rand = new Random();
                 otpvalue = rand.nextInt(1255650);
 
@@ -67,14 +68,18 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                 } catch (MessagingException e) {
                     throw new RuntimeException(e);
                 }
+                long currentTime = System.currentTimeMillis();
+                long expiryTime = currentTime + 30 * 1000; 
 
                 dispatcher = request.getRequestDispatcher("confirmOtp.jsp");
                 request.setAttribute("messages", "OTP is sent to your email id");
                 mySession.setAttribute("otps", otpvalue);
-                mySession.setAttribute("emails", email);
+                mySession.setAttribute("otps_expiry", expiryTime); 
+                mySession.setAttribute("emails", email);        
+                mySession.setAttribute("username_newpass", username);    
                 dispatcher.forward(request, response);
             } else {
-                request.setAttribute("messages", "Email does not exist");
+                request.setAttribute("messages", "Username or Email does not exist");
                 dispatcher = request.getRequestDispatcher("forget-password.jsp");
                 dispatcher.forward(request, response);
             }

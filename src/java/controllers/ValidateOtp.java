@@ -36,7 +36,7 @@ public class ValidateOtp extends HttpServlet {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals("detail")) {
                         accountDetails = cookie.getValue();
-                       Cookie cookieToDelete = new Cookie("detail", "");
+                        Cookie cookieToDelete = new Cookie("detail", "");
                         cookieToDelete.setMaxAge(0);
                         response.addCookie(cookieToDelete);
                         break;
@@ -73,6 +73,7 @@ public class ValidateOtp extends HttpServlet {
                 
                 if (success) {
                     request.setAttribute("email", request.getParameter("email"));
+                    request.setAttribute("messaget", "Success signup account.");
                     dispatcher = request.getRequestDispatcher("login.jsp");
                     dispatcher.forward(request, response);
                 } else {

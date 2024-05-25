@@ -72,6 +72,10 @@
 											class="btn btn-block btn-info">
 									</div>
 								</div>
+                                                                <div class="form-group row justify-content-center px-3">
+									${status}
+								</div>
+                                                                
 							</form>
 						</div>
 						<!-- Alternative Login -->

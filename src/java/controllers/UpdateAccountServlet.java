@@ -18,18 +18,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
 import models.Account;
-import models.CV;
 import models.Skill;
 import services.CVService;
-import services.SkillService;
 
 /**
  *
@@ -118,17 +113,22 @@ public class UpdateAccountServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         Part filePart = request.getPart("fileUpload");
-        String upload = "C:\\Users\\Admin\\Desktop\\HappyProgramming\\web\\img\\";
+        
+        // C:\Users\Admin\Desktop\HappyProgramming\web\img
+        String upload = "D:\\TaiLieu\\HappyPrograming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
 
         String oldavata = curentAccount.getAvatar();
-
+        System.out.println(curentAccount.getFullName());
+        System.out.println(oldavata);
         // Lấy tên tệp
         String fileName = filePart.getSubmittedFileName();
+        System.out.println(fileName);
         if (!fileName.equals("") && !fileName.equals(oldavata)) {
             String uploadDirectory = upload + fileName;
             System.out.println(uploadDirectory);
+            System.out.println("sdfsdfsdjfsd");
             try (OutputStream out = new FileOutputStream(uploadDirectory)) {
                 InputStream in = filePart.getInputStream();
                 byte[] bytes = new byte[in.available()];
