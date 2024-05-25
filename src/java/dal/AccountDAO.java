@@ -89,7 +89,7 @@ public class AccountDAO {
                             rs.getBoolean(6),
                             rs.getString(7),
                             rs.getString(8),
-                            rs.getString(9),
+rs.getString(9),
                             rs.getInt(10),
                             rs.getInt(11));
                 }
@@ -115,7 +115,18 @@ public class AccountDAO {
         }
         return false;
     }
-
+   public static void main(String[] args) {
+        AccountDAO dao = new AccountDAO();
+        dao.updateAccount("user1", "pham hung son", "2003-12-2", "1", "Thanh hao 123", "2k3sonpham@gmail.com", "123", "01234266733");
+        Account a = new Account();
+        a.setUserName("tuantu123");
+        a.setPassword("12341234");
+        if(dao.changePassWord(a)){
+            System.out.println("thanh cong");
+        }else{
+            System.out.println("that bai");
+        }
+    }
     public void updateAccount(String username, String fullname, String dob, String sex, String address,
             String gmail, String avatar, String phone) {
         try {
@@ -141,27 +152,11 @@ public class AccountDAO {
         }
     }
     
-    public static void main(String[] args) {
-        AccountDAO dao = new AccountDAO();
-        dao.updateAccount("user1", "pham hung son", "2003-12-2", "1", "Thanh hao 123", "2k3sonpham@gmail.com", "123", "01234266733");
-    }
-
-    public void changePasswordByEmail(Account a) {
-        try {
-            String sql = "UPDATE Accounts SET pass_word = ? WHERE gmail = ?";
-            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-                pstmt.setString(1, a.getPassword());
-                pstmt.setString(2, a.getGmail());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isEmailExists(String email) {
-        String query = "SELECT COUNT(*) FROM Accounts WHERE gmail = ?";
+    public boolean isUsermailAndEmailExists(String username, String gmail) {
+        String query = "SELECT COUNT(*) FROM Accounts WHERE user_name = ? AND gmail = ?";
         try (PreparedStatement statement = con.prepareStatement(query)) {
-            statement.setString(1, email);
+            statement.setString(1, username);
+            statement.setString(2, gmail);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     int count = resultSet.getInt(1);
@@ -172,7 +167,7 @@ public class AccountDAO {
             e.printStackTrace();
             // Handle any exceptions here
         }
-        return false;
+return false;
     }
 
 }

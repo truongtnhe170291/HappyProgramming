@@ -73,6 +73,8 @@
                          <br/>
                        <div class="button-group align-items-center justify-content-center color-ruby">
                                     ${mess}
+                                    ${status}
+                                    ${messaget}
                            </div>
                         <div class="admin-topbar">
                            <p class="mb-0">

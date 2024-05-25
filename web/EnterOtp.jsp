@@ -54,34 +54,7 @@
             margin: 0;
         }
     </style>
-    <script>
-        let timer;
-        function startCountdown(duration, display) {
-            let time = duration;
-            display.textContent = time;
-            timer = setInterval(function () {
-                time--;
-                display.textContent = time;
-
-                if (time <= 0) {
-                    clearInterval(timer);
-                    document.getElementById('otp-button').value = 'Reset send OTP';
-                    document.getElementById('otp-button').onclick = sendNewOTP;
-                }
-            }, 1000);
-        }
-
-        function sendNewOTP() {
-            document.getElementById('register-form').action = 'SendNewOtp'; 
-            document.getElementById('register-form').submit();
-        }
-
-        window.onload = function () {
-            let duration = 30; // 30 seconds
-            let display = document.querySelector('#time');
-            startCountdown(duration, display);
-        };
-    </script>
+    
 </head>
 <body>
     <div class="panel-body">
@@ -93,13 +66,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <p>Time remaining: <span id="time">30</span> seconds</p>
-            </div>
-            <div class="form-group">
                 <input id="otp-button" name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Confirm" type="submit">
                 <br/>
             </div>
-
+            <div class="form-group">
+                ${massage}
+            </div>
             <input type="hidden" class="hide" name="token" id="token" value="">
         </form>
       <a href="homes.jsp"> <input id="otp-button" name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Back To Home" type="submit"></a>

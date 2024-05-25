@@ -46,6 +46,7 @@
 							<h1>
 								<strong>Reset Password</strong>
 							</h1>
+                                                    ${username_newpass}
 						</div>
 						<div class="pt-3 pb-3">
 							<form class="form-horizontal" action="NewPassword" method="post">
