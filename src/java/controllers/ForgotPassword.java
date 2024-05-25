@@ -41,7 +41,7 @@ public class ForgotPassword extends HttpServlet {
         HttpSession mySession = request.getSession();
         AccountDAO ac = new AccountDAO();
         try {
-            if (username!= null && email != null && !email.equals("") && ac.isUsermailAndEmailExists(username,email)) {
+            if (username != null && email != null && !email.equals("") && ac.isUsermailAndEmailExists(username, email)) {
                 Random rand = new Random();
                 otpvalue = rand.nextInt(1255650);
 
