@@ -77,42 +77,48 @@ public class CVServlet extends HttpServlet {
             }
             boolean sex;
             sex = _sex.equals("1");
-
             // insert anh save img file
-            Part filePart = request.getPart("fileUpload");
+            Part filePart = request.getPart("uploadcv");
 
             // C:\Users\Admin\Desktop\HappyProgramming\web\img
             String upload = "C:\\Users\\Admin\\Desktop\\HappyProgramming\\web\\imgcv\\";
 
-            Account curentAccount = (Account) request.getSession().getAttribute("user");
-
-            String oldavata = curentAccount.getAvatar();
-
             // Lấy tên tệp
             String fileName = filePart.getSubmittedFileName();
-            if (!fileName.equals("") && !fileName.equals(oldavata)) {
-                String uploadDirectory = upload + fileName;
-                System.out.println(uploadDirectory);
-                try (OutputStream out = new FileOutputStream(uploadDirectory)) {
-                    InputStream in = filePart.getInputStream();
-                    byte[] bytes = new byte[in.available()];
-                    in.read(bytes);
-                    out.write(bytes);
-                    out.close();
-                } catch (IOException e) {
-                    System.out.println(e);
-                    fileName = "default.jpg";
-                }
-            } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
-                fileName = oldavata;
-            } else {
-                fileName = "default.jpg";
-            }
-
-            // lấy từ session khi người dùng đăng nhập
+            System.out.println(fileName);
+            //Get CV by username
             Account acc = (Account) request.getSession().getAttribute("user");
+            // lấy từ session khi người dùng đăng nhập
             String username = acc.getUserName();
+            CVService service = CVService.getInstance();
+            CV cv = service.getCVByUserName(username);
+            String oldavata = "";
+            if (cv == null && fileName.equals("")) {
+                fileName = "default_cv_img.jpg";
+            } else {
+                if (cv != null) {
+                    oldavata = cv.getImgcv();
+                }
+                if (!fileName.equals("") && !fileName.equals(oldavata)) {
+                    String uploadDirectory = upload + fileName;
+                    System.out.println(uploadDirectory);
+                    try (OutputStream out = new FileOutputStream(uploadDirectory)) {
+                        InputStream in = filePart.getInputStream();
+                        byte[] bytes = new byte[in.available()];
+                        in.read(bytes);
+                        out.write(bytes);
+                        out.close();
+                    } catch (IOException e) {
+                        System.out.println(e);
+                        fileName = "default_cv_img.jpg";
+                    }
+                } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
+                    fileName = oldavata;
+                } else {
+                    fileName = "default_cv_img.jpg";
+                }
 
+            }
             // Lấy các Skill và profile
             AccountService accountService = AccountService.getInstance();
             // lấy account từ session
@@ -120,7 +126,7 @@ public class CVServlet extends HttpServlet {
             request.setAttribute("skills", skillService.getSkills());
             request.setAttribute("user", accountService.getAccount(acc.getUserName(), acc.getPassword()));
 
-            CV c = new CV(0, gmail, username, fullname, java.sql.Date.valueOf(dob), sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, fileName);
+            CV c = new CV(0, username, gmail, fullname, java.sql.Date.valueOf(dob), sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, fileName);
             CVService cvService = CVService.getInstance();
             CV newCv = cvService.createOrUpdateCV(c);
             if (newCv != null) {
