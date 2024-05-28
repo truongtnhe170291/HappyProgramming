@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controllers;
+package controller.common;
 
+
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,14 +14,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import models.Account;
+import java.util.List;
+import models.Skill;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="HomeMentee", urlPatterns={"/homementor"})
-public class HomeMentor extends HttpServlet {
+@WebServlet(name="SkillServlet", urlPatterns={"/skill"})
+public class SkillServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +39,10 @@ public class HomeMentor extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeMentee</title>");  
+            out.println("<title>Servlet SkillServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeMentee at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SkillServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,16 +59,10 @@ public class HomeMentor extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Account acc = (Account)request.getSession().getAttribute("user");
-        if(acc == null){
-            response.sendRedirect("login.jsp");
-            return;
-        }
-        if(acc.getRoleId() != 2){
-            response.sendRedirect("home");
-            return;
-        }
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        SkillDAO skillDAO = new SkillDAO();
+        List<Skill> list = skillDAO.getSkills();
+        request.setAttribute("listSkill", list);
+        request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
     } 
 
     /** 

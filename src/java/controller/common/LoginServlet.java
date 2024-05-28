@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package controller.common;
 
-package controllers;
-
-import dal.MentorProfileDAO;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,47 +12,47 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import models.MentorProfile;
-import models.MentorProfileDTO;
+import jakarta.servlet.http.HttpSession;
+import models.Account;
+import services.AccountService;
 
 /**
  *
- * @author Admin
+ * @author DIEN MAY XANH
  */
-@WebServlet(name="MentorProfileServlet", urlPatterns={"/MentorProfileServlet"})
-public class MentorProfileServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+public class LoginServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MentorProfileServlet</title>");  
+            out.println("<title>Servlet LoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MentorProfileServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,36 +60,53 @@ public class MentorProfileServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String mentorName = request.getParameter("mentorName");
-    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-    MentorProfileDTO mentor;
-        try {
-            mentor = mentorProfileDAO.getOneMentor(mentorName);
-            request.setAttribute("mentor", mentor);
-            request.getRequestDispatcher("Mentor.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-    } 
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-   
-}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter pr = response.getWriter();
+        HttpSession session = request.getSession();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        Account acc;
+        AccountService accountService = AccountService.getInstance();
+        acc = accountService.getAccount(username, password);
+        // 1: Mentee, 2: Mentor, 3: Manager, 4: Admin
+        try {
+            if (acc == null) {
+                request.setAttribute("mess", "Invalid username or password");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }  
+            session.setAttribute("user", acc);
+            if (acc.getRoleId() == 1) {
+                response.sendRedirect("homes.jsp");
+                return;
+            } 
+            if(acc.getRoleId() == 2){
+                response.sendRedirect("home");
+            }
+        } catch (Exception e) {
+            request.setAttribute("mess", "An error occurred while processing your request");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
 
+    }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
@@ -98,5 +114,4 @@ throws ServletException, IOException {
         return "Short description";
     }// </editor-fold>
 
-   
 }

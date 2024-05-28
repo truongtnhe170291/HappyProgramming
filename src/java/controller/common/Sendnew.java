@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controllers;
+package controller.common;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ import javax.mail.internet.MimeMessage;
  * @author 84979
  */
 @WebServlet(name="sendnew", urlPatterns={"/sendnew"})
-public class sendnew extends HttpServlet {
+public class Sendnew extends HttpServlet {
    
 
     private static final long serialVersionUID = 1L;

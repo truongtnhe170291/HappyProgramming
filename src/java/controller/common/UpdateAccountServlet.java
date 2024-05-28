@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers;
+package controller.common;
 
 import dal.AccountDAO;
 import dal.SkillDAO;
@@ -115,7 +115,7 @@ public class UpdateAccountServlet extends HttpServlet {
         Part filePart = request.getPart("fileUpload");
         
         // C:\Users\Admin\Desktop\HappyProgramming\web\img
-        String upload = "D:\\TaiLieu\\HappyPrograming\\web\\img\\";
+        String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
 

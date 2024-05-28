@@ -1,5 +1,6 @@
-package controllers;
+package controller.common;
 
+import controllers.*;
 import dal.SignUpDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
