@@ -48,7 +48,31 @@ public class SignUpDAO {
         }
     }
     
-
+    public boolean insertMentee(String account) {
+       String sql = "INSERT INTO Mentees (mentee_name) VALUES (?)";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, account);
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean insertMenter(String account) {
+       String sql = "INSERT INTO Mentors (mentor_name, rate) VALUES (?, 0)";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, account);
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
   
     public boolean isDuplicateAccount( String userName) {
         String query = "SELECT COUNT(*) FROM Accounts Where user_name = ?";
