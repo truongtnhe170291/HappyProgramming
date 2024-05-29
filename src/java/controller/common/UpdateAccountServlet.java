@@ -115,7 +115,7 @@ public class UpdateAccountServlet extends HttpServlet {
         Part filePart = request.getPart("fileUpload");
         
         // C:\Users\Admin\Desktop\HappyProgramming\web\img
-        String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\img\\";
+        String upload = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
 
