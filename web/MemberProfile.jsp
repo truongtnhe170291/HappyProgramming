@@ -253,7 +253,7 @@
                                         <ul class="dropdown-menu"> 
                                             <li>  <div class="nav-author__info">
                                                     <div class="author-img">
-                                                        <img src="./img/${sessionScope.user.avatar}" alt="" class="rounded-circle">
+                                                        <img src="./img/${user.avatar}" alt="" class="rounded-circle">
                                                     </div>
                                                     <div>
                                                         <span>UI Designer</span>

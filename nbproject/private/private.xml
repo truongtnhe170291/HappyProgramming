@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/dal/SignUpDAO.java</file>
             <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/dal/AccountDAO.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/ShowMentors_Servlet.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/web/mentor_info.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/models/Account.java</file>
             <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/UpdateAccountServlet.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/ForgotPassword.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/services/AccountService.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/LoginServlet.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/CVServlet.java</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/SignUpServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/web/header.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/web/MemberProfile.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controllers/Home.java</file>
         </group>
     </open-files>
 </project-private>

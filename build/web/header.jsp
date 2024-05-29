@@ -83,7 +83,7 @@
                                                     <li>
                                                         <div class="nav-author__info">
                                                             <div class="author-img">
-                                                                <img src="./img/${sessionScope.user.avatar}" alt=""
+                                                                <img src="./img/${user.avatar}" alt=""
                                                                     class="rounded-circle">
                                                             </div>
                                                             <div>
@@ -92,7 +92,7 @@
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <a href="UpdateAccountServlet?role=mentee">
+                                                        <a href="UpdateAccountServlet">
                                                             <i class="uil uil-user"></i> Profile</a>
                                                     </li>
                                                     <li>
