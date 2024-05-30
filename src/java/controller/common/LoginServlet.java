@@ -79,22 +79,38 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        Account acc;
-        AccountService accountService = AccountService.getInstance();
-        acc = accountService.getAccount(username, password);
-        // 1: Mentee, 2: Mentor, 3: Manager, 4: Admin
+
         try {
+            // Check for empty username or password
+            if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+                request.setAttribute("mess", "Please enter both username and password");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
+            AccountService accountService = AccountService.getInstance();
+            Account acc = accountService.getAccount(username, password); // Lấy thông tin tài khoản từ username
+
+            // Check if account exists
             if (acc == null) {
+                request.setAttribute("mess", "Incorrect username or password. Please check your credentials and try again");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
+            // Check if password matches
+            if (!acc.getPassword().equals(password)) {
                 request.setAttribute("mess", "Invalid username or password");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
-            }  
+            }
+
             session.setAttribute("user", acc);
+
+            // Redirect based on user role
             if (acc.getRoleId() == 1) {
                 response.sendRedirect("homes.jsp");
-                return;
-            } 
-            if(acc.getRoleId() == 2){
+            } else if (acc.getRoleId() == 2) {
                 response.sendRedirect("home");
             }
         } catch (Exception e) {
