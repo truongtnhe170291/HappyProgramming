@@ -41,15 +41,16 @@ public class MentorProfileDAO {
 
     public List<MentorProfile> getAllMentors() throws SQLException {
         // Tạo câu truy vấn SQL để lấy thông tin từ các bảng CV, Accounts và FeedBacks
-        String sql = "SELECT DISTINCT c.full_name, c.avatar, a.user_name, f.avg_star\n"
-                + "FROM dbo.CV c\n"
-                + "INNER JOIN dbo.Accounts a ON c.mentor_name = a.user_name\n"
-                + "LEFT JOIN (\n"
-                + "  SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star\n"
-                + "  FROM dbo.FeedBacks\n"
-                + "  GROUP BY mentor_name\n"
-                + ") f ON c.mentor_name = f.mentor_name\n"
-                + "ORDER BY f.avg_star DESC;";
+        String sql = "SELECT DISTINCT c.full_name, c.avatar, a.user_name, f.avg_star, c.cv_id\n" +
+"                FROM dbo.CV c\n" +
+"                INNER JOIN dbo.Accounts a ON c.mentor_name = a.user_name\n" +
+"                LEFT JOIN (\n" +
+"              SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star\n" +
+"              FROM dbo.FeedBacks\n" +
+"                 GROUP BY mentor_name)\n" +
+"               f ON c.mentor_name = f.mentor_name\n" +
+"			   where c.status_id =2\n" +
+"                ORDER BY f.avg_star DESC;";
 
         // Chuẩn bị câu truy vấn SQL
         PreparedStatement ps = con.prepareStatement(sql);
@@ -65,10 +66,11 @@ public class MentorProfileDAO {
             mentor.setAvatar(rs.getString("avatar"));
             mentor.setMentorName(rs.getString("user_name")); // Giả sử user_name đại diện cho tên mentor
             mentor.setStar(rs.getFloat("avg_star")); // Ép kiểu số sao trung bình thành float
+            mentor.setCv_id(rs.getInt("cv_id"));
             // Lấy danh sách kỹ năng của mentor
-            List<Skill> skills = fetchSkills(rs.getString("user_name"), con);
+            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
             mentor.setListSkills(skills);
-           
+
             // Thêm mentor vào danh sách
             mentors.add(mentor);
         }
@@ -77,24 +79,23 @@ public class MentorProfileDAO {
         return mentors;
     }
 
-   public List<MentorProfile> getAllMentorBySkillID(int skillID) throws SQLException {
-    // Lấy danh sách tất cả các mentor
-    List<MentorProfile> allMentors = getAllMentors();
+    public List<MentorProfile> getAllMentorBySkillID(int skillID) throws SQLException {
+        // Lấy danh sách tất cả các mentor
+        List<MentorProfile> allMentors = getAllMentors();
 
-    // Tạo danh sách để lưu trữ các mentor có kỹ năng cần tìm
-    List<MentorProfile> mentorsWithSkill = new ArrayList<>();
-    for (MentorProfile mentor : allMentors) {
-        // Kiểm tra xem mentor có kỹ năng cần tìm không
-        if (mentor.getListSkills().stream().anyMatch(skill -> skill.getSkillID() == skillID)) {
-            // Nếu có, thêm mentor vào danh sách
-            mentorsWithSkill.add(mentor);
+        // Tạo danh sách để lưu trữ các mentor có kỹ năng cần tìm
+        List<MentorProfile> mentorsWithSkill = new ArrayList<>();
+        for (MentorProfile mentor : allMentors) {
+            // Kiểm tra xem mentor có kỹ năng cần tìm không
+            if (mentor.getListSkills().stream().anyMatch(skill -> skill.getSkillID() == skillID)) {
+                // Nếu có, thêm mentor vào danh sách
+                mentorsWithSkill.add(mentor);
+            }
         }
+
+        // Trả về danh sách mentor có kỹ năng cần tìm
+        return mentorsWithSkill;
     }
-
-    // Trả về danh sách mentor có kỹ năng cần tìm
-    return mentorsWithSkill;
-}
-
 
     public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
         String sql = "SELECT c.*, a.phone, m.rate FROM CV c JOIN Accounts a ON c.mentor_name = a.user_name\n"
@@ -124,7 +125,7 @@ public class MentorProfileDAO {
             mentor.setService_description(rs.getString("service_description"));
 
             // Fetch skills for this mentor
-            List<Skill> skills = fetchSkills(mentorName, con);
+            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
             mentor.setListSkills(skills);
 
             // Fetch feedbacks for this mentor
@@ -135,14 +136,13 @@ public class MentorProfileDAO {
         return mentor;
     }
 
-    private List<Skill> fetchSkills(String mentorName, Connection con) throws SQLException {
-        String sql = "SELECT s.* "
-                + "FROM MentorSkills mts, Skills s "
-                + "WHERE mts.mentor_name = ? "
-                + "AND s.skill_id = mts.skill_id";
+    private List<Skill> fetchSkills(int cvID, Connection con) throws SQLException {
+        String sql = "select s.* from CVSkills cvs Join Skills s on cvs.skill_id = s.skill_id\n"
+                + "join cv c on c.cv_id = cvs.cv_id\n"
+                + "where c.status_id = 2 and cvs.cv_id = ?";
 
         PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, mentorName); // Set the mentorName parameter
+        ps.setInt(1, cvID); // Set the mentorName parameter
 
         ResultSet rs = ps.executeQuery();
 

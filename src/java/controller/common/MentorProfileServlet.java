@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers;
+package controller.common;
 
-import dal.AccountDAO;
+import dal.MentorProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,16 +12,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import models.Account;
-import services.AccountService;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import models.MentorProfileDTO;
 
 /**
  *
- * @author DIEN MAY XANH
+ * @author Admin
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "MentorProfileServlet", urlPatterns = {"/MentorProfileServlet"})
+public class MentorProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +41,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet MentorProfileServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MentorProfileServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,7 +62,17 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String mentorName = request.getParameter("mentorName");
+        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+        MentorProfileDTO mentor;
+        try {
+            mentor = mentorProfileDAO.getOneMentor(mentorName);
+            request.setAttribute("mentor", mentor);
+            request.getRequestDispatcher("Mentor.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -75,32 +86,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter pr = response.getWriter();
-        HttpSession session = request.getSession();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        Account acc;
-        AccountService accountService = AccountService.getInstance();
-        acc = accountService.getAccount(username, password);
-        // 1: Mentee, 2: Mentor, 3: Manager, 4: Admin
-        try {
-            if (acc == null) {
-                request.setAttribute("mess", "Invalid username or password");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                return;
-            }  
-            session.setAttribute("user", acc);
-            if (acc.getRoleId() == 1) {
-                response.sendRedirect("homes.jsp");
-                return;
-            } 
-            if(acc.getRoleId() == 2){
-                response.sendRedirect("home");
-            }
-        } catch (Exception e) {
-            request.setAttribute("mess", "An error occurred while processing your request");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
 
     }
 

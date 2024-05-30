@@ -3,10 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controllers;
+package controller.common;
 
-
-import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import models.Skill;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="SkillServlet", urlPatterns={"/skill"})
-public class SkillServlet extends HttpServlet {
+@WebServlet(name="Signout_Servlet", urlPatterns={"/signout"})
+public class Signout_Servlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,10 +35,10 @@ public class SkillServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SkillServlet</title>");  
+            out.println("<title>Servlet Signout_Servlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SkillServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Signout_Servlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,10 +55,8 @@ public class SkillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        SkillDAO skillDAO = new SkillDAO();
-        List<Skill> list = skillDAO.getSkills();
-        request.setAttribute("listSkill", list);
-        request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
+        request.getSession().removeAttribute("user");
+        response.sendRedirect("login.jsp");
     } 
 
     /** 

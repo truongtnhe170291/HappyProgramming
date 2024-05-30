@@ -1,4 +1,4 @@
-package controllers;
+package controller.common;
 
 import dal.AccountDAO;
 import jakarta.servlet.ServletException;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers;
+package controller.mentor;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -81,7 +81,7 @@ public class CVServlet extends HttpServlet {
             Part filePart = request.getPart("uploadcv");
 
             // C:\Users\Admin\Desktop\HappyProgramming\web\img
-            String upload = "C:\\Users\\Admin\\Desktop\\HappyProgramming\\web\\imgcv\\";
+            String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgcv\\";
 
             // Lấy tên tệp
             String fileName = filePart.getSubmittedFileName();

@@ -1,5 +1,6 @@
-package controllers;
+package controller.common;
 
+import controllers.*;
 import dal.SignUpDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -16,19 +17,21 @@ import models.Account;
 
 @WebServlet("/ValidateOtp")
 public class ValidateOtp extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-        
-     public static String decodeString(String encodedValue) {
+
+    private static final long serialVersionUID = 1L;
+
+    public static String decodeString(String encodedValue) {
         byte[] decodedBytes = Base64.getDecoder().decode(encodedValue);
         return new String(decodedBytes);
     }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int value = Integer.parseInt(request.getParameter("otp"));
         HttpSession session = request.getSession();
         int otp = (int) session.getAttribute("otp");
         RequestDispatcher dispatcher = null;
-        
+
         if (value == otp) {
             String accountDetails = null;
             Cookie[] cookies = request.getCookies();
@@ -51,7 +54,7 @@ public class ValidateOtp extends HttpServlet {
                 String fullName = decodeString(details[2]);
                 String password = details[3];
                 Date dob = Date.valueOf(details[4]);
-                boolean sex = "female".equalsIgnoreCase(details[5]); 
+                boolean sex = "female".equalsIgnoreCase(details[5]);
                 String address = decodeString(details[6]);
                 String phone = details[7];
                 int roleId = Integer.parseInt(details[8]);
@@ -66,11 +69,21 @@ public class ValidateOtp extends HttpServlet {
                 account.setAddress(address);
                 account.setPhone(phone);
                 account.setRoleId(roleId);
-                account.setStatusId(1); 
+                account.setStatusId(1);
 
                 SignUpDAO signUpDAO = new SignUpDAO();
-                boolean success = signUpDAO.signUp(account);
-                
+                boolean success = false;
+                if (signUpDAO.signUp(account)) {
+                    success = true;
+                    if (account.getRoleId() == 1) {
+                        signUpDAO.insertMentee(account.getUserName());
+                        success = true;
+                    } else if (account.getRoleId() == 2) {
+                        signUpDAO.insertMenter(account.getUserName());
+                        success = true;
+                    }
+                }
+
                 if (success) {
                     request.setAttribute("email", request.getParameter("email"));
                     request.setAttribute("messaget", "Success signup account.");

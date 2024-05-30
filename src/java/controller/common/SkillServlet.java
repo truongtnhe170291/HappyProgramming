@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controllers;
+package controller.common;
 
-import dal.MentorProfileDAO;
+
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,19 +14,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import models.MentorProfile;
-import models.MentorProfileDTO;
+import models.Skill;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="MentorProfileServlet", urlPatterns={"/MentorProfileServlet"})
-public class MentorProfileServlet extends HttpServlet {
+@WebServlet(name="SkillServlet", urlPatterns={"/skill"})
+public class SkillServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +39,10 @@ public class MentorProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MentorProfileServlet</title>");  
+            out.println("<title>Servlet SkillServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MentorProfileServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SkillServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,17 +59,10 @@ public class MentorProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String mentorName = request.getParameter("mentorName");
-    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-    MentorProfileDTO mentor;
-        try {
-            mentor = mentorProfileDAO.getOneMentor(mentorName);
-            request.setAttribute("mentor", mentor);
-            request.getRequestDispatcher("Mentor.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
+        SkillDAO skillDAO = new SkillDAO();
+        List<Skill> list = skillDAO.getSkills();
+        request.setAttribute("listSkill", list);
+        request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
     } 
 
     /** 
@@ -83,11 +73,10 @@ public class MentorProfileServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-   
-}
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
     /** 
      * Returns a short description of the servlet.
@@ -98,5 +87,4 @@ throws ServletException, IOException {
         return "Short description";
     }// </editor-fold>
 
-   
 }
