@@ -126,7 +126,7 @@ public class CVServlet extends HttpServlet {
             request.setAttribute("skills", skillService.getSkills());
             request.setAttribute("user", accountService.getAccount(acc.getUserName(), acc.getPassword()));
 
-            CV c = new CV(0, username, gmail, fullname, java.sql.Date.valueOf(dob), sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, fileName);
+            CV c = new CV(0, username, gmail, fullname, java.sql.Date.valueOf(dob), sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, fileName, 0);
             CVService cvService = CVService.getInstance();
             CV newCv = cvService.createOrUpdateCV(c);
             if (newCv != null) {
