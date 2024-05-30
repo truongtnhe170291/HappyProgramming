@@ -1,127 +1,210 @@
-﻿USE master;
+﻿
+USE master;
 GO
 
 -- Drop the database
 DROP DATABASE HappyProgrammingDB;
 GO
 
-Create database HappyProgrammingDB
-GO
-use HappyProgrammingDB
-
-GO
-create table AccountStatuses(
-	status_id int identity(1,1) primary key,
-	status_name varchar(100)
-)
-GO
-create table Roles(
-	role_id int identity(1,1) primary key,
-	role_name varchar(100)
-)
-GO
-create table Accounts(
-	[user_name] varchar(200) primary key,
-	gmail nvarchar(200) not null,
-	full_name nvarchar(100),
-	[pass_word] varchar(200) not null,
-	dob date,
-	sex bit,
-	[address] nvarchar(200),
-	phone varchar(100),
-	avatar varchar(250),
-	role_id int foreign key references Roles(role_id),
-	status_id int foreign key references AccountStatuses(status_id)
-)
-GO
-create table Mentees(
-	mentee_name varchar(200) foreign key references Accounts([user_name]),
-	primary key (mentee_name)
-)
-GO
-create table Mentors(
-	mentor_name varchar(200) foreign key references Accounts([user_name]),
-	rate float,
-	primary key (mentor_name)
-)
-GO
-create table Managers(
-	manager_name varchar(200) foreign key references Accounts([user_name]),
-	primary key (manager_name)
-)
-GO
-create table Skills(
-	skill_id int identity(1,1) primary key,
-	skill_name nvarchar(200) not null,
-	img nvarchar(300),
-	[description] nvarchar(600),
-	[status] bit
-)
-GO
-create table MentorSkills(
-	mentor_name varchar(200) foreign key references Mentors(mentor_name),
-	skill_id int foreign key references Skills(skill_id),
-	primary key (mentor_name, skill_id)
-)
-GO
-create table FeedBacks(
-	mentor_name varchar(200) foreign key references Mentors(mentor_name),
-	mentee_name varchar(200) foreign key references Mentees(mentee_name),
-	star int,
-	comment nvarchar(1000),
-	time_feedback date,
-	primary key (mentor_name, mentee_name)
-)
-GO
-create table RequestStatuses(
-	status_id int identity(1,1) primary key,
-	status_name varchar(100)
-)
-GO
-create table RequestsFormMentee(
-	request_id int identity(1,1) primary key,
-	mentor_name varchar(200) foreign key references Mentors(mentor_name),
-	mentee_name varchar(200) foreign key references Mentees(mentee_name),
-	deadline_date date,
-	title nvarchar(200),
-	[description] nvarchar(200),
-	status_id int foreign key references RequestStatuses(status_id),
-	deadline_hour time,
-)
+-- Create the database
+CREATE DATABASE HappyProgrammingDB;
 GO
 
-create table RequestSkills(
-	skill_id int foreign key references Skills(skill_id),
-	request_id int foreign key references RequestsFormMentee(request_id)
-	primary key (skill_id, request_id)
-)
-GO
-
-create table CV(
-	cv_id int identity(1,1) primary key,
-	mentor_name varchar(200) foreign key references Mentors(mentor_name),
-	gmail varchar(200) not null,
-	full_name nvarchar(100),
-	dob date,
-	sex bit,
-	[address] nvarchar(200),
-	profession nvarchar(200),
-	profession_intro nvarchar(1000),
-	achievement_description nvarchar(1000),
-	service_description nvarchar(1000),
-	avatar varchar(250)
-)
-GO
-create table CVSkills(
-	skill_id int foreign key references Skills(skill_id),
-	cv_id int foreign key references CV(cv_id),
-	primary key (cv_id, skill_id)
-)
-
-GO
 USE HappyProgrammingDB;
 GO
 
+-- Create AccountStatuses table
+CREATE TABLE AccountStatuses(
+    status_id INT IDENTITY(1,1) PRIMARY KEY,
+    status_name VARCHAR(100)
+);
+GO
+
+-- Create Roles table
+CREATE TABLE Roles(
+    role_id INT IDENTITY(1,1) PRIMARY KEY,
+    role_name VARCHAR(100)
+);
+GO
+
+-- Create Accounts table
+CREATE TABLE Accounts(
+    [user_name] VARCHAR(200) PRIMARY KEY,
+    gmail NVARCHAR(200) NOT NULL,
+    full_name NVARCHAR(100),
+    [pass_word] VARCHAR(200) NOT NULL,
+    dob DATE,
+    sex BIT,
+    [address] NVARCHAR(200),
+    phone VARCHAR(100),
+    avatar VARCHAR(250),
+    role_id INT FOREIGN KEY REFERENCES Roles(role_id),
+    status_id INT FOREIGN KEY REFERENCES AccountStatuses(status_id)
+);
+GO
+
+-- Create Mentees table
+CREATE TABLE Mentees(
+    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    PRIMARY KEY (mentee_name)
+);
+GO
+
+-- Create Mentors table
+CREATE TABLE Mentors(
+    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    rate FLOAT,
+    PRIMARY KEY (mentor_name)
+);
+GO
+
+-- Create Managers table
+CREATE TABLE Managers(
+    manager_name VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    PRIMARY KEY (manager_name)
+);
+GO
+
+-- Create Skills table
+CREATE TABLE Skills(
+    skill_id INT IDENTITY(1,1) PRIMARY KEY,
+    skill_name NVARCHAR(200) NOT NULL,
+    img NVARCHAR(300),
+    [description] NVARCHAR(600),
+    [status] BIT
+);
+GO
+
+CREATE TABLE CVStatus(
+	status_id INT IDENTITY(1,1) PRIMARY KEY,
+    status_name VARCHAR(100)
+)
+GO
+-- Create CV table
+CREATE TABLE CV(
+    cv_id INT IDENTITY(1,1) PRIMARY KEY,
+    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    gmail VARCHAR(200) NOT NULL,
+    full_name NVARCHAR(100),
+    dob DATE,
+    sex BIT,
+    [address] NVARCHAR(200),
+    profession NVARCHAR(200),
+    profession_intro NVARCHAR(1000),
+    achievement_description NVARCHAR(1000),
+    service_description NVARCHAR(1000),
+    avatar VARCHAR(250),
+	status_id INT FOREIGN KEY REFERENCES CVStatus(status_id)
+);
+GO
+
+-- Create CVSkills table
+CREATE TABLE CVSkills(
+    skill_id INT FOREIGN KEY REFERENCES Skills(skill_id),
+    cv_id INT FOREIGN KEY REFERENCES CV(cv_id),
+    PRIMARY KEY (cv_id, skill_id)
+);
+
+GO
+
+-- Create Slots table
+CREATE TABLE Slots(
+    slot_id VARCHAR(50) PRIMARY KEY,
+    slot_name NVARCHAR(100)
+);
+GO
+
+-- Create Cycle table
+CREATE TABLE Cycle(
+    cycle_id INT IDENTITY(1,1) PRIMARY KEY,
+	start_time DATETIME,
+	end_time DATETIME
+);
+GO
+
+-- Create Status_Selected table
+CREATE TABLE Status_Selected(
+	status_id INT IDENTITY(1,1) PRIMARY KEY,
+    status_name VARCHAR(50)
+);
+GO
+
+-- Create Selected_Slot table
+CREATE TABLE Selected_Slot(
+    selected_id INT IDENTITY(1,1) PRIMARY KEY,
+    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    slot_id VARCHAR(50) FOREIGN KEY REFERENCES Slots(slot_id),
+    cycle_id INT FOREIGN KEY REFERENCES Cycle(cycle_id),
+	day_of_slot DATE,
+    status_id INT FOREIGN KEY REFERENCES Status_Selected(status_id),
+	UNIQUE(mentor_name, day_of_slot, slot_id, cycle_id)
+);
+GO
+
+
+-- Create RequestStatuses table
+CREATE TABLE RequestStatuses(
+    status_id INT IDENTITY(1,1) PRIMARY KEY,
+    status_name VARCHAR(100)
+);
+GO
+
+-- Create RequestsFormMentee table
+CREATE TABLE RequestsFormMentee(
+    request_id INT IDENTITY(1,1) PRIMARY KEY,
+    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
+    deadline_date DATE,
+    deadline_hour TIME,
+    title NVARCHAR(200),
+    [description] NVARCHAR(200),
+    status_id INT FOREIGN KEY REFERENCES RequestStatuses(status_id),
+);
+GO 
+CREATE TABLE RquestSelectedSlot(
+	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
+	selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id)
+)
+
+GO
+
+-- Create RequestSkills table
+CREATE TABLE RequestSkills(
+    skill_id INT FOREIGN KEY REFERENCES Skills(skill_id),
+    request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
+    PRIMARY KEY (skill_id, request_id)
+);
+
+GO
+CREATE TABLE ScheduleStatuses(
+	status_id INT IDENTITY(1,1) PRIMARY KEY,
+    status_name VARCHAR(100)
+)
+GO
+CREATE TABLE Schedule(
+	schedule_id INT IDENTITY(1,1) PRIMARY KEY,
+	mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
+	selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id),
+	status_id INT FOREIGN KEY REFERENCES ScheduleStatuses(status_id)
+)
+GO
+CREATE TABLE ScheduleSkills(
+	schedule_id INT FOREIGN KEY REFERENCES Schedule(schedule_id),
+	skill_id INT FOREIGN KEY REFERENCES Skills(skill_id),
+	PRIMARY KEY (schedule_id, skill_id)
+)
+GO
+-- Create FeedBacks table
+CREATE TABLE FeedBacks(
+    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
+    star INT,
+    comment NVARCHAR(1000),
+    time_feedback DATE,
+    PRIMARY KEY (mentor_name, mentee_name)
+);
+GO
 -- Insert into AccountStatuses
 INSERT INTO AccountStatuses (status_name) VALUES ('Active');
 INSERT INTO AccountStatuses (status_name) VALUES ('Inactive');
@@ -131,77 +214,83 @@ GO
 -- Insert into Roles
 INSERT INTO Roles (role_name) VALUES ('Mentee');
 INSERT INTO Roles (role_name) VALUES ('Mentor');
-INSERT INTO Roles (role_name) VALUES ('Admin');
+INSERT INTO Roles (role_name) VALUES ('Manager');
 GO
 
 -- Insert into Accounts
 INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES
- ('user1', 'user1@gmail.com', 'User One', 'password1', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
- ('user2', 'user2@gmail.com', 'User Two', 'password2', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
- ('user3', 'user3@gmail.com', 'User Three', 'password3', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
- ('user4', 'user4@gmail.com', 'User 4', 'password4', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1);
+ ('truong', 'truongtnhe170291@fpt.edu.vn', 'Tran Nam Truong', '1', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
+ ('hieu', 'hieuvq@fpt.edu.vn', 'Vu Quang Hieu', '1', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
+ ('minh', 'minhvq@fpt.edu.vn', 'Vu Quang Minh', '1', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
+ ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1);
 GO
 
 -- Insert into Mentees
 INSERT INTO Mentees (mentee_name) VALUES 
-('user1'),
-('user2');
+('truong'),
+('hieu');
 GO
 
 -- Insert into Mentors
 INSERT INTO Mentors (mentor_name, rate) VALUES 
-('user3', 3.5),
-('user4', 5.0);
+('minh', 3.5),
+('son', 5.0);
 GO
-
--- Insert into Managers
-
 
 -- Insert into Skills
-INSERT INTO Skills (skill_name,img, [description], [status]) VALUES 
+INSERT INTO Skills (skill_name, img, [description], [status]) VALUES 
 ('Java Programming','java.jpg', 'Java development skills', 1),
 ('Database Management','database.jpg', 'Database administration and management', 1),
-('Web Development','web.jpg', 'HTML, CSS, JavaScript skills', 1)
+('Web Development','web.jpg', 'HTML, CSS, JavaScript skills', 1);
 GO
 
--- Insert into MentorSkills
-INSERT INTO MentorSkills (mentor_name, skill_id) VALUES 
-('user3', 1),
-('user3', 2),
-('user3', 3),
-('user4', 3),
-('user4', 1);
-GO
+INSERT INTO CVStatus (status_name) VALUES ('Pending');
+INSERT INTO CVStatus (status_name) VALUES ('Approved');
+INSERT INTO CVStatus (status_name) VALUES ('Rejected');
 
+GO
 -- Insert into FeedBacks
 INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
-('user3', 'user1', 5, 'Excellent mentor', '2024-05-01'),
-('user3', 'user2', 4, 'Very helpful', '2024-05-02'),
-('user4', 'user2', 4, 'GOOD', '2024-05-02');
+('minh', 'truong', 5, 'Excellent mentor', '2024-05-01'),
+('son', 'hieu', 4, 'Very helpful', '2024-05-02'),
+('son', 'truong', 4, 'GOOD', '2024-05-02');
 GO
 
 -- Insert into RequestStatuses
 INSERT INTO RequestStatuses (status_name) VALUES ('Pending');
 INSERT INTO RequestStatuses (status_name) VALUES ('Approved');
 INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
+INSERT INTO RequestStatuses (status_name) VALUES ('Overdue');
 GO
 
--- Insert into RequestsFormMentee
+INSERT INTO CV (
+    mentor_name, 
+    gmail, 
+    full_name, 
+    dob, 
+    sex, 
+    [address], 
+    profession, 
+    profession_intro, 
+    achievement_description, 
+    service_description, 
+    avatar, 
+    status_id
+) VALUES 
+('minh', 'example1@gmail.com', 'John Doe', '1985-01-15', 1, '123 Main St', 'Software Engineer', 'Experienced in Java and Python', 'Created a successful app', 'Offering software development services', 'avatar1.jpg', 1),
+('son', 'example2@gmail.com', 'Jane Smith', '1990-02-20', 0, '456 Elm St', 'Graphic Designer', 'Expert in Adobe Suite', 'Designed award-winning logos', 'Providing graphic design services', 'avatar2.jpg', 2)
 
-
-
-
-
--- Insert into CV
-INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar)
-VALUES ('user3', 'user3@gmail.com', 'User Three', '1992-03-03', 1, '789 Oak St', 'Web Developer', 'Specializes in front-end development', 'Created numerous responsive websites', 'Available for web development projects', 'default_cv_img.jpg');
 GO
 
 -- Insert into CVSkills
 INSERT INTO CVSkills (skill_id, cv_id) VALUES (1, 1);
 INSERT INTO CVSkills (skill_id, cv_id) VALUES (2, 1);
 INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 1);
+INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 2);
+
 GO
-
-
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT01', '7h00 - 9h00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT02', '9h00 - 11h00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT03', '1h00 - 3h00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT04', '3h00 - 5h00');
 
