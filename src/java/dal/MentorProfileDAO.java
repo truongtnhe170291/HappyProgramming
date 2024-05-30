@@ -66,7 +66,7 @@ public class MentorProfileDAO {
             mentor.setMentorName(rs.getString("user_name")); // Giả sử user_name đại diện cho tên mentor
             mentor.setStar(rs.getFloat("avg_star")); // Ép kiểu số sao trung bình thành float
             // Lấy danh sách kỹ năng của mentor
-            List<Skill> skills = fetchSkills(rs.getString("user_name"), con);
+            List<Skill> skills = fetchSkills(rs.getInt ("cv_id"), con);
             mentor.setListSkills(skills);
            
             // Thêm mentor vào danh sách
@@ -124,7 +124,7 @@ public class MentorProfileDAO {
             mentor.setService_description(rs.getString("service_description"));
 
             // Fetch skills for this mentor
-            List<Skill> skills = fetchSkills(mentorName, con);
+            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
             mentor.setListSkills(skills);
 
             // Fetch feedbacks for this mentor
@@ -135,14 +135,14 @@ public class MentorProfileDAO {
         return mentor;
     }
 
-    private List<Skill> fetchSkills(String mentorName, Connection con) throws SQLException {
-        String sql = "SELECT s.* "
-                + "FROM MentorSkills mts, Skills s "
-                + "WHERE mts.mentor_name = ? "
-                + "AND s.skill_id = mts.skill_id";
+    private List<Skill> fetchSkills(int CVid, Connection con) throws SQLException {
+        String sql = "SELECT [skill_id]\n" +
+"      ,[cv_id]\n" +
+"  FROM [dbo].[CVSkills]\n" +
+"  where cv_id = ?";
 
         PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, mentorName); // Set the mentorName parameter
+        ps.setInt(1, CVid); // Set the mentorName parameter
 
         ResultSet rs = ps.executeQuery();
 
