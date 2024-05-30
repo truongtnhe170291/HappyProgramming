@@ -64,42 +64,59 @@ public class AccountDAO {
     }
 
     // Get account by username and password
-    public Account getAccount(String username, String password) {
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
-            return null;
-        }
+  public Account getAccount(String username, String password) {
+    if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+        return null;
+    }
 
-        String sql = "SELECT * FROM Accounts WHERE user_name = ? AND pass_word = ?";
-        Account acc = null;
+    String sql = "SELECT * FROM Accounts WHERE user_name = ? AND pass_word = ?";
+    Account acc = null;
 
-        try (PreparedStatement pre = con.prepareStatement(sql)) {
-            // Set the username and password as parameters for the query
-            pre.setString(1, username);
-            pre.setString(2, password);
+    try (PreparedStatement pre = con.prepareStatement(sql)) {
+        // Set the username and password as parameters for the query
+        pre.setString(1, username);
+        pre.setString(2, password);
 
-            try (ResultSet rs = pre.executeQuery()) {
-                if (rs.next()) {
-                    // Map the result set to an Account object
-                    acc = new Account(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            rs.getDate(5),
-                            rs.getBoolean(6),
-                            rs.getString(7),
-                            rs.getString(8),
-                            rs.getString(9),
-                            rs.getInt(10),
-                            rs.getInt(11));
+        try (ResultSet rs = pre.executeQuery()) {
+            if (rs.next()) {
+                // Retrieve the username from the database
+                String dbUsername = rs.getString("user_name");
+
+                // Check if the lengths of the usernames are equal
+                if (username.length() == dbUsername.length()) {
+                    // Compare characters one by one
+                    boolean isEqual = true;
+                    for (int i = 0; i < username.length(); i++) {
+                        if (username.charAt(i) != dbUsername.charAt(i)) {
+                            isEqual = false;
+                            break;
+                        }
+                    }
+
+                    if (isEqual) {
+                        // Username matches, create the Account object
+                        acc = new Account(
+                                rs.getString(1),
+                                rs.getString(2),
+                                rs.getString(3),
+                                rs.getString(4),
+                                rs.getDate(5),
+                                rs.getBoolean(6),
+                                rs.getString(7),
+                                rs.getString(8),
+                                rs.getString(9),
+                                rs.getInt(10),
+                                rs.getInt(11));
+                    }
                 }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, "An error occurred while getting account", ex);
         }
-
-        return acc;
+    } catch (SQLException ex) {
+        Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, "An error occurred while getting account", ex);
     }
+
+    return acc;
+}
 
     public boolean changePassWord(Account a) {
         String sql = "update Accounts set pass_word=? where user_name=?";
