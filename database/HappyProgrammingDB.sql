@@ -117,8 +117,8 @@ GO
 -- Create Cycle table
 CREATE TABLE Cycle(
     cycle_id INT IDENTITY(1,1) PRIMARY KEY,
-	start_time DATETIME,
-	end_time DATETIME
+	start_time DATE,
+	end_time DATE
 );
 GO
 
@@ -247,6 +247,7 @@ GO
 INSERT INTO CVStatus (status_name) VALUES ('Pending');
 INSERT INTO CVStatus (status_name) VALUES ('Approved');
 INSERT INTO CVStatus (status_name) VALUES ('Rejected');
+INSERT INTO CVStatus (status_name) VALUES ('Saveed');
 
 GO
 -- Insert into FeedBacks
@@ -256,27 +257,10 @@ INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) V
 ('son', 'truong', 4, 'GOOD', '2024-05-02');
 GO
 
--- Insert into RequestStatuses
-INSERT INTO RequestStatuses (status_name) VALUES ('Pending');
-INSERT INTO RequestStatuses (status_name) VALUES ('Approved');
-INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
-INSERT INTO RequestStatuses (status_name) VALUES ('Overdue');
-GO
 
-INSERT INTO CV (
-    mentor_name, 
-    gmail, 
-    full_name, 
-    dob, 
-    sex, 
-    [address], 
-    profession, 
-    profession_intro, 
-    achievement_description, 
-    service_description, 
-    avatar, 
-    status_id
-) VALUES 
+
+INSERT INTO CV (mentor_name,gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar, status_id) 
+VALUES 
 ('minh', 'example1@gmail.com', 'John Doe', '1985-01-15', 1, '123 Main St', 'Software Engineer', 'Experienced in Java and Python', 'Created a successful app', 'Offering software development services', 'avatar1.jpg', 1),
 ('son', 'example2@gmail.com', 'Jane Smith', '1990-02-20', 0, '456 Elm St', 'Graphic Designer', 'Expert in Adobe Suite', 'Designed award-winning logos', 'Providing graphic design services', 'avatar2.jpg', 2)
 
@@ -294,3 +278,66 @@ INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT02', '9h00 - 11h00');
 INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT03', '1h00 - 3h00');
 INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT04', '3h00 - 5h00');
 
+GO
+
+INSERT INTO Status_Selected(status_name) VALUES 
+('Pending'),
+('Approved'),
+('Rejected'),
+('Selected')
+
+GO
+INSERT INTO Cycle(start_time, end_time) VALUES
+('2024-05-27', '2024-06-02'),
+('2024-06-03', '2024-06-09'),
+('2024-06-10', '2024-06-16')
+
+GO
+
+INSERT INTO Selected_Slot(mentor_name, slot_id, cycle_id, day_of_slot, status_id)
+VALUES 
+('son', 'SLOT01', 1, '2024-05-30', 1),
+('son', 'SLOT02', 1, '2024-05-28', 1),
+('son', 'SLOT01', 2, '2024-06-05', 2),
+('son', 'SLOT02', 2, '2024-06-05', 4),
+('son', 'SLOT04', 2, '2024-06-06', 2),
+('son', 'SLOT01', 3, '2024-06-11', 2),
+('minh', 'SLOT03', 2, '2024-06-07', 1),
+('minh', 'SLOT02', 2, '2024-06-07', 1),
+('minh', 'SLOT01', 1, '2024-05-30', 2),
+('minh', 'SLOT04', 1, '2024-05-30', 2)
+
+GO
+-- Insert into RequestStatuses
+INSERT INTO RequestStatuses (status_name) VALUES ('Open');
+INSERT INTO RequestStatuses (status_name) VALUES ('Processing');
+INSERT INTO RequestStatuses (status_name) VALUES ('Cancel');
+INSERT INTO RequestStatuses (status_name) VALUES ('Closed');
+GO
+
+INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id)
+VALUES 
+('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 1),
+('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 2),
+('son', 'hieu', '2024-06-10', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 2),
+('son', 'hieu', '2024-06-11', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 1)
+
+GO
+INSERT INTO RquestSelectedSlot(request_id, selected_id)
+VALUES 
+(1, 3), -- Example values, replace with actual data
+(1, 5),
+(2, 5),
+(3, 3),
+(4, 5);
+
+GO
+-- Insert data into RequestSkills table
+INSERT INTO RequestSkills (skill_id, request_id)
+VALUES 
+(1, 1), -- Example values, replace with actual data
+(1, 2),
+(2, 3),
+(3, 2),
+(3, 3),
+(4, 1)

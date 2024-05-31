@@ -39,4 +39,8 @@ public class CVService {
         }
         return null;
     }
+
+    public boolean updateStatusCV(String userName, int status) {
+        return cvDao.updateStatusCV(userName, status);
+    }
 }
