@@ -3,7 +3,7 @@
     Created on : May 30, 2024, 11:12:26 PM
     Author     : ADMIN
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,16 +22,18 @@
                 <th> Actions</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <button class="btn btn-info">Approve</button>
-                            <button class="btn btn-danger" style="margin-left: 10px;">Reject</button>
-                            <a href="CVDetails.jsp"><button class="btn btn-info" style="margin-left: 10px;">View CV</button></a>
-                        </td>
-                    </tr>
+                    <c:forEach items="${requestScope.cvList}" var="cv">
+                        <tr>
+                            <td>${cv.cvId}</td>
+                            <td>${cv.fullName}</td>
+                            <td>PENDING</td>
+                            <td>
+                                <a href="ChangeCVStatusServlet?cvId=${cv.cvId}&status=2"><button class="btn btn-info">Approve</button></a>
+                                <a href="ChangeCVStatusServlet?cvId=${cv.cvId}&status=3"><button class="btn btn-danger" style="margin-left: 10px;">Reject</button></a>
+                                <a href="CVDetailServlet?cvId=${cv.cvId}"><button class="btn btn-info" style="margin-left: 10px;">View CV</button></a>
+                            </td>
+                        </tr>
+                    </c:forEach>    
                 </tbody>
             </table>
         </div>
