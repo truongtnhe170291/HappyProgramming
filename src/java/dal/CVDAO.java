@@ -315,6 +315,7 @@ public class CVDAO {
                 cv = new CV();
                 cv.setCvId(rs.getInt("cv_id"));
                 cv.setFullName(rs.getString("mentor_name"));
+                cv.setUserName(rs.getString("mentor_name"));
                 cv.setStattusId(rs.getInt("status_id"));
                 cvList.add(cv);
             }

@@ -5,6 +5,7 @@
 package controller.manager;
 
 import dal.CVDAO;
+import dal.MentorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -37,7 +38,7 @@ public class ChangeCVStatusServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangeCVStatusServlet</title>");            
+            out.println("<title>Servlet ChangeCVStatusServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ChangeCVStatusServlet at " + request.getContextPath() + "</h1>");
@@ -60,10 +61,19 @@ public class ChangeCVStatusServlet extends HttpServlet {
             throws ServletException, IOException {
         int cvId = Integer.parseInt(request.getParameter("cvId"));
         int statusId = Integer.parseInt(request.getParameter("status"));
+        if (statusId == 2) {
+            String mentorName = request.getParameter("mentorName");
+            request.setAttribute("cvId", cvId);
+            request.setAttribute("statusId", statusId);
+            request.setAttribute("mentorName", mentorName);
+
+            request.getRequestDispatcher("CVConfirm.jsp").forward(request, response);
+        }
          
         CVDAO dao = new CVDAO();
         dao.changeCVStatus(cvId, statusId);
         response.sendRedirect("ListCVController");
+
     }
 
     /**
@@ -77,7 +87,18 @@ public class ChangeCVStatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int cvId = Integer.parseInt(request.getParameter("cvId"));
+        int statusId = Integer.parseInt(request.getParameter("statusId"));
+        double rate = Double.parseDouble(request.getParameter("rate"));
+        String mentorName = request.getParameter("mentorName");
+        
+        MentorDAO mDAO = new MentorDAO();
+        mDAO.changeMentorRate(mentorName, rate);
+        
+        CVDAO dao = new CVDAO();
+        dao.changeCVStatus(cvId, statusId);
+        response.sendRedirect("ListCVController");
+        
     }
 
     /**
