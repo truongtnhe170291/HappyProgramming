@@ -19,7 +19,7 @@ Author     : 84979
                 width: 600px;
                 padding: 40px;
                 transform: translate(-50%, -50%);
-                background: rgba(24, 20, 20, 0.987);
+                background: rgba(245, 245, 245, 0.987);
                 box-sizing: border-box;
                 box-shadow: 0 15px 25px rgba(0,0,0,.6);
                 border-radius: 10px;
@@ -33,10 +33,10 @@ Author     : 84979
                 width: 100%;
                 padding: 10px 0;
                 font-size: 16px;
-                color: #fff;
+                color: rgba(24, 20, 20, 0.987);;
                 margin-bottom: 30px;
                 border: none;
-                border-bottom: 1px solid #fff;
+                border-bottom: 1px solid rgba(24, 20, 20, 0.987);
                 outline: none;
                 background: transparent;
             }
@@ -47,7 +47,7 @@ Author     : 84979
                 left: 0;
                 padding: 10px 0;
                 font-size: 16px;
-                color: #fff;
+                color: rgba(24, 20, 20, 0.987);;
                 pointer-events: none;
                 transition: .5s;
             }
@@ -66,7 +66,7 @@ Author     : 84979
                 display: inline-block;
                 padding: 10px 20px;
                 font-size: 16px;
-                color: #fff;
+                color: rgba(24, 20, 20, 0.987);;
                 text-decoration: none;
                 text-transform: uppercase;
                 overflow: hidden;
@@ -77,7 +77,7 @@ Author     : 84979
 
             .login-box button:hover {
                 background: #03f40f;
-                color: #fff;
+                color: rgba(24, 20, 20, 0.987);;
                 border-radius: 5px;
                 box-shadow: 0 0 5px #03f40f,
                     0 0 25px #03f40f,
@@ -102,7 +102,7 @@ Author     : 84979
             a{
                 text-decoration: none;
                 font-weight: bold;
-                color:#fff;
+                color:rgba(24, 20, 20, 0.987);
             }
             .login-box button span:nth-child(2) {
                 bottom: 2px;
@@ -128,18 +128,18 @@ Author     : 84979
                 width: 100%;
                 text-align: center;
                 font-size: 30px;
-                color:#fff;
+                color:rgba(24, 20, 20, 0.987);;
 
             }
             .label{
                 font-size: 24px;
-                color:#fff;
+                color:rgba(24, 20, 20, 0.987);;
                 text-align: center;
                 margin-bottom: 10px;
             }
             .title{
                 font-size: 40px;
-                color:#fff;
+                color:rgba(24, 20, 20, 0.987);;
                 text-align: center;
                 margin-bottom: 10px;
             }
