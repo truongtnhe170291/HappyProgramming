@@ -44,6 +44,7 @@
                         <span class="menu-text">Calendar</span>
                      </a>
                   </li>
+                  
                   <li class="has-child">
                      <a href="#" class="ch">
                         <span class="nav-icon uil uil-users-alt"></span>
@@ -56,13 +57,33 @@
                         </li>
                      </ul>
                   </li>
+                  <li class="has-child">
+                     <a href="#" class="ch">
+                        <span class="nav-icon uil uil-users-alt"></span>
+                        <span class="menu-text">CV</span>
+                        <span class="toggle-icon"></span>
+                     </a>
+                     <ul class="toggle">
+                        <li class="">
+                           <a href="ApplyCV.jsp">Apply CV</a>
+                        </li>
+                     </ul>
+                  </li>
                    <li class="has-child">
                      <a href="listCV.jsp" class="ch">
                         <span class="nav-icon uil uil-users-alt"></span>
                         <span class="menu-text">List CV</span>
-                        <span class="toggle-icon"></span>
-                     </a>
-
+                        <span class="toggle-icon">
+                            
+                        </span>
+                            </a>
+                        <ul class="toggle">
+                        <li class="">
+                           <a href="listCV.jsp">All CV</a>
+                        </li>
+                     </ul>
+                 
+                    
                   </li>
                </ul>
             </div>

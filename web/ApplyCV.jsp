@@ -24,7 +24,26 @@
                 margin-top: 20px;
             }
 
-
+            .fl{
+                margin-top: 12px;
+                line-height: 100px;
+                width: 100px;
+                height: 40px;
+             background-color: #ccc;
+            margin-left: auto;
+            margin-right: 0;
+         outline: none;
+         text-align: center;
+         
+            }
+            .cliick{
+                
+                background-color: #8231D3;
+               margin: 5px 5px;
+                width: 100%;
+                height: 100%;
+                border:none;
+            }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -60,31 +79,36 @@
                         <div class="col-lg-12">
                             <div class="user-info-tab w-100 bg-white global-shadow radius-xl mb-50">
                                 <div class="ap-tab-wrapper border-bottom ">
-                                    <ul class="nav px-30 ap-tab-main text-capitalize" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                             
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home" role="tab" aria-selected="true">
-                                                <img src="img/svg/user.svg" alt="user" class="svg">personal info</a>
+                                            <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
+                                                <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
                                         </li>
-                                    
+                                     <li class="nav-item fl ">
+                                        
+                                            <input value="Send CV" class="nav-link cliick" id="v-pills-profile-tab" data-bs-toggle="pill" type="submit"/>                            
+                                        </li>
                                    
                                     </ul>
                                 </div>
                                 <div class="tab-content" id="v-pills-tabContent">
-                                    <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                  
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
-                                                <form id ="myForm" action="UpdateAccountServlet" method="post" enctype="multipart/form-data">
-                                                    <c:set var="mentor" value="${requestScope.user}"/>
-                                                    <div class="mt-sm-40 mb-sm-50 mt-20 mb-20">
-                                                        <div class="user-tab-info-title mb-sm-40 mb-20 text-capitalize">
-                                                            <h5 class="fw-500">Personal Information</h5>
-                                                        </div>
+                                                <div class="mt-40 mb-50">
+                                                    <div class="user-tab-info-title mb-35 text-capitalize">
+                                                        <h5 class="fw-500">CV Information</h5>
+                                                    </div>
+                                                    <form action="cv" method="POST" enctype="multipart/form-data">
+                                                        <c:set var="cv" value="${requestScope.cv}"/>
                                                         <div class="account-profile d-flex align-items-center mb-4">
                                                             <div class="ap-img pro_img_wrapper">
-                                                                <input id="file-upload" type="file" name="fileUpload" class="d-none" accept="image/*">
+                                                                <input id="file-uploadcv" type="file" name="uploadcv" class="d-none" accept="image/*">
                                                                 <!-- Profile picture image -->
-                                                                <label for="file-upload" class="position-relative d-inline-block">
-                                                                    <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./img/${mentor.avatar}" alt="profile">
+                                                                <label for="file-uploadcv" class="position-relative d-inline-block">
+                                                                    <img id="profile-imgcv" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./imgcv/${cv.imgcv}" alt="profile">
                                                                     <span class="cross position-absolute" id="remove_pro_pic">
                                                                         <img src="img/svg/camera.svg" alt="camera" class="svg">
                                                                     </span>
@@ -95,100 +119,117 @@
                                                                 <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
                                                             </div>
                                                         </div>
-
                                                         <div class="edit-profile__body">
-                                                            <div style="margin-bottom: 15px">
-                                                                <div class="form-group mb-25">
-                                                                    <label for="name1">User name</label>
-                                                                    <input type="text" class="form-control" id="name1" name="username" value="${mentor.userName}" placeholder="${mentor.userName}" readonly>
-                                                                </div>
-                                                            </div>
+
 
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
-                                                                    <label for="name1">Full Name</label>
-                                                                    <input type="text" class="form-control" id="fullname" name="fullname" value="${mentor.fullName}" placeholder="Your name...">
+                                                                    <label for="name4">Full Name</label>
+                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Duran Clayton">
                                                                 </div>
-                                                                <div style="display: none" id="nameError" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Your name is not valid.
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group mb-25">
-                                                                <div class="sexOption">
-                                                                    <label for="sexOption">
-                                                                        Sex
-                                                                    </label>
-                                                                    <select class="js-example-basic-single js-states form-control" id="sexOption" name="sex">
-                                                                        <option value="1" ${mentor.sex == '1' ? 'selected' : '1'}>Male</option>
-                                                                        <option value="0" ${mentor.sex == '0' ? 'selected' : '0'}>Female</option>>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div style="margin-bottom: 15px"> 
-                                                                <div class="form-group mb-25">
-                                                                    <label for="name2">Email</label>
-                                                                    <input readonly type="email" class="form-control" id="name2" name="gmail" value="${mentor.gmail}" placeholder="${mentor.gmail}">
+                                                                <div style="display: none" id="nameError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your name is invalid.
                                                                 </div>
                                                             </div>
 
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
-                                                                    <label for="dob">Date of birth</label>
-                                                                    <input id="dob" type="date" class="form-control" name="dob" value="${mentor.dob}">
+                                                                    <label for="phoneNumber1">Mail</label>
+                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="Design">
                                                                 </div>
-                                                                <div style="display: none" id="dobError" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <div style="display: none" id="emailError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Your email is invalid.
+                                                                </div>
+                                                            </div>
+
+                                                            <div style="margin-bottom: 15px">
+                                                                <div class="form-group mb-25 form-group">
+                                                                    <label for="datepicker">Date of birth</label>
+                                                                    <div class="position-relative">
+                                                                        <input id="dob2" name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
+                                                                    </div>
+                                                                </div>
+                                                                <div style="display: none" id="dobError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your date of birth is invalid.
                                                                 </div>
                                                             </div>
-
-                                                            <div style="margin-bottom: 15px">
-                                                                <div class="form-group mb-25">
-                                                                    <label for="phoneNumber5">phone number</label>
-                                                                    <input id="phoneNumber" type="tel" class="form-control" id="phoneNumber" name="phone" value="${mentor.phone}" placeholder="Your phone number...">
-                                                                </div>
-                                                                <div style="display: none" id="phoneError" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Your phone number is not valid.
-                                                                </div>
+                                                            <div style="display: none" id="dobvcErr" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <strong style="color: red">Oh no!</strong> your birthday is invalid.
                                                             </div>
-
-                                                            <div style="margin-bottom: 15px">
-                                                                <div class="form-group mb-25">
-                                                                    <label for="address">Address</label>
-                                                                    <input type="text" class="form-control" id="address" name="address" value="${mentor.address}" placeholder="Your address...">
-                                                                </div>
-                                                                <div style="display: none" id="addressError" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Please input your Address.
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="button-group d-flex pt-sm-25 justify-content-md-end justify-content-start ">
-                                                                <button id="submitForm" type="button" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                                    Save
-                                                                </button>
-                                                            </div>
-                                                            <!-- Modal -->
-                                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Notification</h1>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber">Sex</label>
+                                                                <div class="d-flex">
+                                                                    <div class="radio-horizontal-list d-flex flex-wrap">
+                                                                        <div class="radio-theme-default custom-radio ">
+                                                                            <input name="sex" ${cv.sex ? "checked": ""} class="radio" type="radio"  value="1" id="radio-hl1">
+                                                                            <label for="radio-hl1">
+                                                                                <span class="radio-text">Male</span>
+                                                                            </label>
                                                                         </div>
-                                                                        <div class="modal-body">
-                                                                            This will change your information!
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        <div class="radio-theme-default custom-radio ">
+                                                                            <input name="sex" ${cv.sex ? "": "checked"} class="radio" type="radio"  value="0" id="radio-hl2">
+                                                                            <label for="radio-hl2">
+                                                                                <span class="radio-text">Female</span>
+                                                                            </label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <div style="margin-bottom: 15px">
+
+                                                                <div class="form-group mb-25">
+                                                                    <label for="phoneNumber1">Address</label>
+                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Design">
+                                                                </div>
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your Address.
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Profession</label>
+                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                            </div>
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Profession introduction</label>
+                                                                <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
+                                                            </div>
+                                                            
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Achievement Description</label>
+                                                                <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
+                                                            </div>
+                                                            
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Service Description</label>
+                                                                <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group mb-25 status-radio ">
+                                                                <label for="hiringDateCheckbox">Skill</label>
+                                                                <div class="d-flex">
+                                                                    <c:forEach items="${requestScope.skills}" var="skill">
+                                                                        <c:set var="isChecked" value="false"/>
+                                                                        <c:forEach items="${cv.skills}" var="cvskill">
+                                                                            <c:if test="${skill.skillID == cvskill}">
+                                                                                <c:set var="isChecked" value="true"/>
+                                                                            </c:if>
+                                                                        </c:forEach>
+                                                                        <div class="form-check">
+                                                                            <input name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox">
+                                                                            <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
+                                                                        </div>
+
+                                                                    </c:forEach>
+                                                                </div>
+                                                            </div>
+                                                            <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
+                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">SAVE</button>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
