@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import models.CV;
@@ -36,7 +37,8 @@ public class RequestServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             CVDAO cvdao = new CVDAO();
-            int cvId = Integer.parseInt(request.getParameter("cvId"));
+            //int cvId = Integer.parseInt(request.getParameter("cvId"));
+            int cvId = 2;
             SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
             request.setAttribute("skills", list);
@@ -48,7 +50,9 @@ public class RequestServlet extends HttpServlet {
             LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
             
             //get user_name of Mentor  by cvid
+            //String userName = cvdao.getCVByCVId(cvId).getUserName();
             String userName = cvdao.getCVByCVId(cvId).getUserName();
+            System.out.println(userName);
             request.setAttribute("userNameMentor", userName);
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
@@ -58,8 +62,15 @@ public class RequestServlet extends HttpServlet {
             // set attribute CV
             CV cv = cvdao.getCVByCVId(cvId);
             request.setAttribute("cv", cv);
-            request.getRequestDispatcher("request.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
+            request.getRequestDispatcher("Mentor_calendar.jsp").forward(request, response);
+            
+            
+            
+            
+            for(SchedulePublic s : listSchedule){
+                
+            }
+        } catch (NumberFormatException e) {
         }
     }
 

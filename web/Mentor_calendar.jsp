@@ -1,9 +1,3 @@
-<%-- 
-    Document   : Mentor_calendar
-    Created on : May 31, 2024, 6:44:14 PM
-    Author     : 84979
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -23,9 +17,35 @@
         <!-- Stylesheets & Fonts -->
         <link href="css/plugins.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
+        <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <style>
+            .btn-light.active {
+
+                background-color: #2250fc;
+                color: #ccc;
+            }
+            .btn-light{
+                line-height: 50px;
+                margin-left: 60px;
+            }
+            input[type="checkbox"] {
+                display: none;
+            }
+            .status {
+                line-height: 50px;
+                margin-left: 60px;
+                font-size: 16px;
+                margin-top: 10px;
+                color: #333;
+                font-weight: bold;
+            }
+
+
+        </style>
     </head>
 
     <body>
+        <c:set var="listschedule" value="${requestScope.listSchedule}"/>
         <!-- Body Inner -->
         <div class="body-inner">
             <!-- Header -->
@@ -63,71 +83,7 @@
                     <!-- end: Calendar -->
                 </div>
             </section>
-            <!-- end: Page Content -->
-            <!-- Footer -->
-            <footer id="footer">
-                <div class="footer-content">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <div class="widget">
-                                    <div class="widget-title">Fmaster</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <div class="widget">
-                                            <div class="widget-title">Discover</div>
-                                            <ul class="list">
-                                                <li><a href="#">Features</a></li>
-                                                <li><a href="#">Layouts</a></li>
-                                                <li><a href="#">Corporate</a></li>
-                                                <li><a href="#">Updates</a></li>
-                                                <li><a href="#">Pricing</a></li>
-                                                <li><a href="#">Customers</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="widget">
-                                            <div class="widget-title">Features</div>
-                                            <ul class="list">
-                                                <li><a href="#">Layouts</a></li>
-                                                <li><a href="#">Headers</a></li>
-                                                <li><a href="#">Widgets</a></li>
-                                                <li><a href="#">Footers</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="widget">
-                                            <div class="widget-title">Pages</div>
-                                            <ul class="list">
-                                                <li><a href="#">Portfolio</a></li>
-                                                <li><a href="#">Blog</a></li>
-                                                <li><a href="#">Shop</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="widget">
-                                            <div class="widget-title">Support</div>
-                                            <ul class="list">
-                                                <li><a href="#">Help Desk</a></li>
-                                                <li><a href="#">Documentation</a></li>
-                                                <li><a href="#">Contact Us</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-            </footer>
-            <!-- end: Footer -->
         </div>
         <!-- end: Body Inner -->
         <!-- Scroll top -->
@@ -156,60 +112,32 @@
                         }
                     },
                     defaultView: 'listWeek',
-                    defaultDate: '2024-06-3',
+                    defaultDate: '${listschedule.get(0).getStartTime()}',
                     navLinks: true,
                     editable: true,
                     eventLimit: true,
-                    events: [{
-                            title: 'Slot 1: 7:00 - 9:00',
-                            start: '2024-06-03T16:00',
-                        }, {
-                            title: 'Slot 2: 9h00 - 11h00',
-                            start: '2024-06-03',
-//                            end: '2021-01-10',
-                            className: 'fc-event-primary'
-                        }, {
-                            id: 1,
-                            title: 'Repeating Event',
-                            start: '2021-01-09T16:00:00'
-                        }, {
-                            id: 2,
-                            title: 'Repeating Event',
-                            start: '2021-01-16T16:00:00'
-                        }, {
-                            title: 'Conference',
-                            start: '2021-01-11',
-                            end: '2021-01-13',
-                            className: 'fc-event-warning',
-                        }, {
-                            title: 'Meeting',
-                            start: '2021-01-12T10:30:00',
-                            end: '2021-01-12T12:30:00',
-                            className: 'fc-event-success'
-                        }, {
-                            title: 'Lunch',
-                            start: '2021-01-12T12:00:00'
-                        }, {
-                            title: 'Meeting',
-                            start: '2021-01-12T14:30:00',
-                            className: 'fc-event-info'
-                        }, {
-                            title: 'Happy Hour',
-                            start: '2021-01-12T17:30:00'
-                        }, {
-                            title: 'Dinner',
-                            start: '2021-01-12T20:00:00',
-                            className: 'fc-event-success'
-                        }, {
-                            title: 'Birthday Party',
-                            start: '2021-01-13T07:00:00',
-                            className: 'fc-event-danger'
-                        }, {
-                            title: 'Click for Google',
-                            url: 'http://google.com/',
-                            start: '2021-01-28',
-                            className: 'fc-event-info'
-                        }]
+                    events: [
+            <c:forEach items="${listschedule}" var="schedule">
+                        {
+                            title: '${schedule.slotId}',
+                            start: '${schedule.dayOfSlot}T${schedule.start_slot}',
+                            end: '${schedule.dayOfSlot}T${schedule.end_slot}',
+                            status: 'Available'
+                        },
+            </c:forEach>
+                    ],
+                    eventRender: function (event, element) {
+                        if (event.status !== 'Full' && event.status == 'Available') {
+                            event.status === '';
+                            element.append("<label class='btn btn-light'>Regis" + "<input type='checkbox' name='position' " + "</label>");
+
+                            element.find('input[type="checkbox"]').on('click', function () {
+                                $(this).closest('.btn').toggleClass('active');
+                            });
+                        } else {
+                            element.append("<div class='status'>" + event.status + "</div>");
+                        }
+                    }
                 });
             });
         </script>
