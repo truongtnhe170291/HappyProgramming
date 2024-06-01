@@ -20,33 +20,31 @@ public class RequestDAO {
     Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
-    private String status = "OK";
 
     public RequestDAO() {
         try {
             con = new DBContext().connection;
         } catch (Exception e) {
-            e.printStackTrace();
-            status = "Error";
+            System.out.println(e);
         }
     }
 
-    public boolean insertRequest(Request request, List<Integer> skills) {
-        String query = "INSERT INTO [dbo].[RequestsFormMentee]\n"
-                + "           ([mentor_name]\n"
-                + "           ,[mentee_name]\n"
-                + "           ,[deadline_date]\n"
-                + "           ,[title]\n"
-                + "           ,[description]\n"
-                + "           ,[status_id]\n"
-                + "           ,[deadline_hour])\n"
-                + "     VALUES\n"
-                + "           (?\n"
-                + "           ,?\n"
-                + "           ,?\n"
-                + "           ,?\n"
-                + "           ,?\n"
-                + "           ,?\n"
+    public boolean insertRequest(Request request, List<Integer> skills, List<Integer> listSelectSlot) {
+        String query = "INSERT INTO [dbo].[RequestsFormMentee]"
+                + "           ([mentor_name]"
+                + "           ,[mentee_name]"
+                + "           ,[deadline_date]"
+                + "           ,[title]"
+                + "           ,[description]"
+                + "           ,[status_id]"
+                + "           ,[deadline_hour])"
+                + "     VALUES"
+                + "           (?"
+                + "           ,?"
+                + "           ,?"
+                + "           ,?"
+                + "           ,?"
+                + "           ,?"
                 + "           ,?)";
 
         try {
@@ -60,30 +58,48 @@ public class RequestDAO {
             ps.setTime(7, Time.valueOf(request.getDeadlineHour()));
             int result = ps.executeUpdate();
 
-            if (true) {
-                // Lấy ra CV mới nhất
+            if (result == 1) {
+                // Lấy ra request mới nhất
                 rs = ps.getGeneratedKeys();
                 int requestId = rs.getInt(1);
 
                 for (Integer skill : skills) {
                     insertRequestSkills(requestId, skill);
                 }
+                
+                for(Integer selectedId: listSelectSlot){
+                    insertRquestSelectedSlot(requestId, selectedId);
+                }
                 return true;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
 
         return false;
     }
 
+    public void insertRquestSelectedSlot(int requestId, int selectedId) {
+        try {
+            String sql = "INSERT INTO RquestSelectedSlot(request_id, selected_id)"
+                    + "VALUES"
+                    + "(?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, requestId);
+            ps.setInt(2, selectedId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void insertRequestSkills(int requestId, int skillId) {
         try {
-            String query = "INSERT INTO [dbo].[RequestSkills]\n"
-                    + "           ([skill_id]\n"
-                    + "           ,[request_id])\n"
-                    + "     VALUES\n"
-                    + "           (?\n"
+            String query = "INSERT INTO [dbo].[RequestSkills]"
+                    + "           ([skill_id]"
+                    + "           ,[request_id])"
+                    + "     VALUES"
+                    + "           (?"
                     + "           ,?)";
             ps = con.prepareStatement(query);
 

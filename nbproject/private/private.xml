@@ -3,18 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Mentor.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/common/MentorProfileServlet.java</file>
             <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentee/RequestServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/dal/CVDAO.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/models/Request.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/mentor_info.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/dal/ScheduleDAO.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentor/ApplyCVServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/blog_skill.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/test/Testing.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/services/CVService.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/models/SchedulePublic.java</file>
+            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/dal/RequestDAO.java</file>
         </group>
     </open-files>
 </project-private>

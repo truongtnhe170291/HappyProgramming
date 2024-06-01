@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import models.CV;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
@@ -48,11 +49,15 @@ public class RequestServlet extends HttpServlet {
             
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-            
+            request.setAttribute("userNameMentor", userName);
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             List<SchedulePublic> listSchedule = scheduleDAO.GetListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            request.setAttribute("listSchedule", listSchedule);
             
+            // set attribute CV
+            CV cv = cvdao.getCVByCVId(cvId);
+            request.setAttribute("cv", cv);
             request.getRequestDispatcher("request.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
         }
@@ -88,17 +93,17 @@ public class RequestServlet extends HttpServlet {
         String rawDescription = request.getParameter("description");
 
         RequestDAO dao = new RequestDAO();
-        boolean rs = dao.insertRequest(new Request(
-                1,
-                rawMentorName,
-                rawMenteeName,
-                dateLineDate,
-                rawTitle,
-                rawDescription,
-                1,
-                time), skills);
+//        boolean rs = dao.insertRequest(new Request(
+//                1,
+//                rawMentorName,
+//                rawMenteeName,
+//                dateLineDate,
+//                rawTitle,
+//                rawDescription,
+//                1,
+//                time), skills);
 
-        response.sendRedirect("http://localhost:8080/happyprogramming/RequestController?isTrue=" + rs);
+        response.sendRedirect("http://localhost:8080/happyprogramming/RequestController?isTrue=");
 
     }
 
