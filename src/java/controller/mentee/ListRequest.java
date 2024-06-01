@@ -61,7 +61,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
     try {
         // Lấy tham số menteeName từ request
-        String menteeName = request.getParameter("menteeName");
+        String menteeName = request.getParameter("mentee_name");
         RequestDAO rdao = new RequestDAO();
         // Gọi hàm getAllRequests để lấy danh sách các yêu cầu
         List<RequestSkill> requests = rdao.getAllRequests(menteeName);

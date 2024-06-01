@@ -33,7 +33,7 @@ public class RequestSkill extends  Request{
 
     @Override
     public String toString() {
-        return "RequestSkill{" + "listSkills=" + listSkills + '}';
+        return "RequestSkill{" +"requestId=" + requestId + ", mentorName=" + mentorName + ", menteeName=" + menteeName + ", deadlineDate=" + deadlineDate + ", title=" + title + ", description=" + description + ", statusId=" + statusId + ", deadlineHour=" + deadlineHour +  "listSkills=" + listSkills + '}';
     }
      
      

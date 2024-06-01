@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,20 +13,25 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <div>CV Id: </div><br>
-        <div>Avatar: </div><br>
-        <div>Mentor Name: </div><br>
-        <div>Email: </div><br>
-        <div>Full name: </div><br>
-        <div>DoB: </div><br>
-        <div>Gender: </div><br>
-        <div>Address: </div><br>
-        <div>Profession: </div><br>
-        <div>Profession Introduction: </div><br>
-        <div>Achievement Description: </div><br>
-        <div>Service Description: </div><br>
-        <div>Skills: </div><br>
-        <div>Status: </div><br>
+        <div>CV Id: ${requestScope.cv.cvId}</div><br>
+        <div>Avatar: ${requestScope.cv.imgcv}</div><br>
+        <div>Mentor Name: ${requestScope.cv.userName}</div><br>
+        <div>Email: ${requestScope.cv.gmail}</div><br>
+        <div>Full name: ${requestScope.cv.fullName}</div><br>
+        <div>DoB: ${requestScope.cv.dob.toString()}</div><br>
+        <div>Gender: ${requestScope.cv.sex}</div><br>
+        <div>Address: ${requestScope.cv.address}</div><br>
+        <div>Profession: ${requestScope.cv.profession}</div><br>
+        <div>Profession Introduction: ${requestScope.cv.professionIntro}</div><br>
+        <div>Achievement Description: ${requestScope.cv.achievementDescription}</div><br>
+        <div>Service Description: ${requestScope.cv.serviceDescription}</div><br>
+        <div>Skills: 
+            <c:forEach items="${requestScope.skills}" var="s">
+                <p>${s.skillName}</p>
+            </c:forEach>
+            
+        </div><br>
+        <div>Status: ${requestScope.cv.stattusId}</div><br>
     </body>
 </html>
 

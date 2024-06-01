@@ -46,7 +46,7 @@
             <nav class="navbar navbar-light">
                 <div class="navbar-left">
                     <div class="logo-area">
-                              <a class="navbar-brand" href="home.jsp">
+                              <a class="navbar-brand" href="mentor_info.jsp">
                             <input id="dark" class="dark" type="submit" value="F_Master"/>
                             <input id="dark" class="light" type="submit" value="F_Master"/>
                         </a>
@@ -67,7 +67,92 @@
                                 <span class="search-icon uil uil-search"></span>
                                 <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
                             </form>
-                        </li>
+                            <li class="nav-notification">
+                  <div class="dropdown-custom">
+                     <a href="javascript:;" class="nav-item-toggle icon-active">
+                        <img class="svg" src="img/svg/alarm.svg" alt="img">
+                     </a>
+                     <div class="dropdown-parent-wrapper">
+                        <div class="dropdown-wrapper">
+                           <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ms-1">4</span></h2>
+                           <ul>
+                              <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                 <div class="nav-notification__type nav-notification__type--primary">
+                                    <img class="svg" src="img/svg/inbox.svg" alt="inbox">
+                                 </div>
+                                 <div class="nav-notification__details">
+                                    <p>
+                                       <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                       <span>sent you a message</span>
+                                    </p>
+                                    <p>
+                                       <span class="time-posted">5 hours ago</span>
+                                    </p>
+                                 </div>
+                              </li>
+                              <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                 <div class="nav-notification__type nav-notification__type--secondary">
+                                    <img class="svg" src="img/svg/upload.svg" alt="upload">
+                                 </div>
+                                 <div class="nav-notification__details">
+                                    <p>
+                                       <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                       <span>sent you a message</span>
+                                    </p>
+                                    <p>
+                                       <span class="time-posted">5 hours ago</span>
+                                    </p>
+                                 </div>
+                              </li>
+                              <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                 <div class="nav-notification__type nav-notification__type--success">
+                                    <img class="svg" src="img/svg/log-in.svg" alt="log-in">
+                                 </div>
+                                 <div class="nav-notification__details">
+                                    <p>
+                                       <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                       <span>sent you a message</span>
+                                    </p>
+                                    <p>
+                                       <span class="time-posted">5 hours ago</span>
+                                    </p>
+                                 </div>
+                              </li>
+                              <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
+                                 <div class="nav-notification__type nav-notification__type--info">
+                                    <img class="svg" src="img/svg/at-sign.svg" alt="at-sign">
+                                 </div>
+                                 <div class="nav-notification__details">
+                                    <p>
+                                       <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                       <span>sent you a message</span>
+                                    </p>
+                                    <p>
+                                       <span class="time-posted">5 hours ago</span>
+                                    </p>
+                                 </div>
+                              </li>
+                              <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
+                                 <div class="nav-notification__type nav-notification__type--danger">
+                                    <img src="img/svg/heart.svg" alt="heart" class="svg">
+                                 </div>
+                                 <div class="nav-notification__details">
+                                    <p>
+                                       <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                       <span>sent you a message</span>
+                                    </p>
+                                    <p>
+                                       <span class="time-posted">5 hours ago</span>
+                                    </p>
+                                 </div>
+                              </li>
+                           </ul>
+                           <a href="" class="dropdown-wrapper__more">See all incoming activity</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+                       
                         <li class="nav-author">
                             <div class="dropdown-custom">
                                 <a href="javascript:;" class="nav-item-toggle"><img src="img/author-nav.jpg" alt="" class="rounded-circle">
@@ -129,7 +214,6 @@
                 </div>
             </nav>
         </header>
-          <jsp:include page="style/linkJS.jsp" />
     </body>
           
 

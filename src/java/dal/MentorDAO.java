@@ -56,12 +56,32 @@ public class MentorDAO {
 //        }
 //        return list;
 //    }
-
 //    public static void main(String[] args) {
 //        MentorDAO md = new MentorDAO();
 //        for (Mentor m : md.getMentors()) {
 //            System.out.println(m.getUserName());
 //        }
 //    }
+    public boolean changeMentorRate(String mentorName, double rate) {
+        String sql = "UPDATE [dbo].[Mentors]\n"
+                + "SET [rate] = ?\n"
+                + "WHERE mentor_name = ?";
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setDouble(1, rate);
+            ps.setString(2, mentorName);
+
+            int row = ps.executeUpdate();
+            if (row != 1) {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return true;
+
+    }
 
 }
