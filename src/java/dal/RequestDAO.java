@@ -160,7 +160,7 @@ public class RequestDAO {
     }
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
-        List <RequestSkill> rList = rdao.getAllRequests("hieu");
+        List <RequestSkill> rList = rdao.getAllRequests("son");
         System.out.println(rList);
     }
 

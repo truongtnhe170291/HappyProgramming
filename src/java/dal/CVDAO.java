@@ -35,18 +35,19 @@ public class CVDAO {
 
     // update cv đã có
     public boolean updateCV(CV cv, int cvId) {
-        String sql = "UPDATE [dbo].[CV] \n"
-                + "   SET [mentor_name] = ?,\n"
-                + "       [gmail] = ?,\n"
-                + "       [full_name] = ?,\n"
-                + "       [dob] = ?,\n"
-                + "       [sex] = ?,\n"
-                + "       [address] = ?,\n"
-                + "       [profession] = ?,\n"
-                + "       [profession_intro] = ?,\n"
-                + "       [achievement_description] = ?,\n"
-                + "       [service_description] = ?,\n"
-                + "       [avatar] = ?\n"
+        String sql = "UPDATE [dbo].[CV]\n"
+                + "   SET [mentor_name] = ?\n"
+                + "      ,[gmail] = ?\n"
+                + "      ,[full_name] = ?\n"
+                + "      ,[dob] = ?\n"
+                + "      ,[sex] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[profession] = ?\n"
+                + "      ,[profession_intro] = ?\n"
+                + "      ,[achievement_description] = ?\n"
+                + "      ,[service_description] = ?\n"
+                + "      ,[avatar] = ?\n"
+                + "      ,[status_id] = ?"
                 + " WHERE [cv_id] = ?;";
         try {
             ps = con.prepareStatement(sql);
@@ -61,7 +62,8 @@ public class CVDAO {
             ps.setString(9, cv.getAchievementDescription());
             ps.setString(10, cv.getServiceDescription());
             ps.setString(11, cv.getImgcv());
-            ps.setInt(12, cvId);
+            ps.setInt(12, cv.getStattusId());
+            ps.setInt(13, cvId);
             int result = ps.executeUpdate();
             if (result == 1) {
                 if (removeCVSkills(cvId)) {
@@ -98,8 +100,9 @@ public class CVDAO {
 
     // Thêm CV vào database 
     public boolean addCV(CV cv) {
-        String sql = "INSERT INTO CV (mentor_name, gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar) VALUES"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO CV (mentor_name,gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar, status_id) \n"
+                + "VALUES"
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, cv.getUserName());
@@ -113,7 +116,7 @@ public class CVDAO {
             ps.setString(9, cv.getAchievementDescription());
             ps.setString(10, cv.getServiceDescription());
             ps.setString(11, cv.getImgcv());
-
+            ps.setNull(12, cv.getStattusId());
             int result = ps.executeUpdate();
             if (result == 1) {
                 // Lấy ra CV mới nhất
@@ -164,6 +167,21 @@ public class CVDAO {
         return -1;
     }
 
+    public boolean updateStatusCV(String username, int statusid) {
+        String sql = "UPDATE [dbo].[CV] SET [status_id] = ? WHERE [mentor_name] = ?;";
+        try {
+            ps.setInt(1, statusid);
+            ps.setString(2, username);
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         CVDAO cvdao = new CVDAO();
         CV c = new CV();
@@ -186,8 +204,9 @@ public class CVDAO {
 //        }
         //cvdao.updateCV(c);
         c = cvdao.getCVByUserName("user2");
-        System.out.println(c.getSkills()[0] +" "+c.getImgcv());
+        System.out.println(c.getSkills()[0] + " " + c.getImgcv());
     }
+
     public CV getCVByUserName(String userName) {
         String sql = "select * from CV c where c.mentor_name = ?";
         CV cv = null;
@@ -209,7 +228,8 @@ public class CVDAO {
                 String serviceDescription = rs.getString(11);
                 String avatar = rs.getString(12);
                 int[] skills = getSkillsByCvId(cvId);
-                cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar);
+                int statusId = rs.getInt(13);
+                cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId);
                 return cv;
             }
         } catch (SQLException e) {
@@ -218,6 +238,37 @@ public class CVDAO {
         return cv;
     }
 
+    public CV getCVByCVId(int cv_Id) {
+        String sql = "select * from CV c WHERE cv_id = ?";
+        CV cv = null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cv_Id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int cvId = rs.getInt(1);
+                String username = rs.getString(2);
+                String gmail = rs.getString(3);
+                String fullname = rs.getString(4);
+                Date dob = rs.getDate(5);
+                boolean sex = rs.getBoolean(6);
+                String address = rs.getString(7);
+                String profession = rs.getString(8);
+                String professionIntro = rs.getString(9);
+                String achievementDescription = rs.getString(10);
+                String serviceDescription = rs.getString(11);
+                String avatar = rs.getString(12);
+                int[] skills = getSkillsByCvId(cvId);
+                int statusId = rs.getInt(13);
+                cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId);
+                return cv;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return cv;
+    }
+    
     public int[] getSkillsByCvId(int cvId) {
         String sql = "SELECT skill_id FROM CVSkills WHERE cv_id = ?";
         List<Integer> skillsList = new ArrayList<>();
