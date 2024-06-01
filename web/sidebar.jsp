@@ -84,7 +84,7 @@
                   </li>
      
                   <li>
-                     <a href="calendar.html" class="">
+                     <a href="CalendarBookingServlet" class="">
                         <span class="nav-icon uil uil-calendar-alt"></span>
                         <span class="menu-text">Calendar</span>
                      </a>

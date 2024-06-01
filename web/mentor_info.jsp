@@ -307,12 +307,12 @@
                                                                 <label for="phoneNumber1">Profession introduction</label>
                                                                 <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
                                                             </div>
-                                                            
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
                                                                 <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
                                                             </div>
-                                                            
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
                                                                 <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
@@ -559,19 +559,19 @@
                                             reader.readAsDataURL(file);
                                         }
                                     });
-                                    
 
-                                        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
-                                            const file = event.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    document.getElementById('profile-imgcv').src = e.target.result;
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        });
- 
+
+                                    document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-imgcv').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+
                                 </script>
                                 </body>
                                 </html>

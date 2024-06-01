@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import java.util.Date;
+import models.Calendar;
 import models.Mentor;
 
 /**
@@ -36,32 +37,20 @@ public class MentorDAO {
         }
     }
 
-//    public List<Mentor> getMentors() {
-//        String sql = "select * from mentors m join Accounts a on m.mentor_name = a.user_name";
-//        List<Mentor> list = new ArrayList<>();
-//        try {
-//            ps = con.prepareStatement(sql);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Mentor m = new Mentor(rs.getString("avatar"), rs.getString("user_name"),
-//                        rs.getString("gmail"), rs.getString("full_name"),
-//                        rs.getString("pass_word"), rs.getDate("dob"),
-//                        rs.getBoolean("sex"), rs.getString("address"),
-//                        rs.getString("phone"), rs.getInt("role_id"),
-//                        rs.getInt("status_id"));
-//                list.add(m);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//        }
-//        return list;
-//    }
-
-//    public static void main(String[] args) {
-//        MentorDAO md = new MentorDAO();
-//        for (Mentor m : md.getMentors()) {
-//            System.out.println(m.getUserName());
-//        }
-//    }
+    public ArrayList<Calendar> listSlots() {
+        ArrayList<Calendar> list = new ArrayList<>();
+        try {
+            String query = "select * from [Slots]";
+            con = new DBContext().connection;//mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Calendar(rs.getString(1), rs.getString(2)));
+            }
+        } catch (SQLException e) {
+            System.out.println("listSlots: " + e.getMessage());
+        }
+        return list;
+    }
 
 }
