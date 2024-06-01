@@ -23,14 +23,7 @@
                 margin-left: 500px;
                 margin-top: 20px;
             }
-            .fcontent{
-                background-color: #01B81A26;
-                color: #01B81A;
-            }
-            .tcontent{
-                background-color: #FF0F0F26;
-                color: #FF0F0F;
-            }
+
 
         </style>
 
@@ -76,11 +69,7 @@
                                             <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
                                                 <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <div class="cards">                                        
-                                                <span class="text_ct">Active</span>                          
-                                            </div>
-                                        </li>
+                                   
                                     </ul>
                                 </div>
                                 <div class="tab-content" id="v-pills-tabContent">
@@ -337,7 +326,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">OK</button>
+                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">SEND</button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -361,22 +350,7 @@
                                 </div>
                                 <div class="overlay-dark-sidebar"></div>
                                 <div class="customizer-overlay"></div>
-                                <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
-                                <jsp:include page="style/linkJS.jsp" />
-                                <script>
-                                    const text = document.querySelector(".text_ct");
-                                    const card = document.querySelector(".cards");
-                                    card.classList.add("fcontent");
-                                    const two = document.querySelectorAll("#edit_oki");
-                                    two.forEach((editButton) => {
-                                        editButton.addEventListener("click", (event) => {
-                                            text.textContent = "change";
-                                            card.classList.remove("fcontent");
-                                            card.classList.add("tcontent");
-                                        });
-                                    });
 
-                                </script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var emailInput = document.getElementById('email');
