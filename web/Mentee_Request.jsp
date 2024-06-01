@@ -1,10 +1,5 @@
-<%-- 
-    Document   : Mentee_Request
-    Created on : May 31, 2024, 11:17:11 PM
-    Author     : 84979
---%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+ <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +16,62 @@
     <link href="css/plugins.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <style>
-             
+             .calendar {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .header button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .day {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .day-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .event {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .event-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        
                     .wrapper {
                 display: flex;
                 flex-direction: column;
@@ -90,6 +140,25 @@
         .content, .col-lg-8, .col-lg-4{
             width:100%;
         }
+                .event {
+            display: flex;
+            align-items: center;
+        }
+
+        .event-dot {
+            margin-right: 10px;
+        }
+
+        .event-content {
+            display: flex;
+            flex-grow: 1;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rights {
+            margin-left: auto;
+        }
     </style>
 </head>
 
@@ -141,44 +210,93 @@
                               </div>
                               <div class="row">
                                   <div class="col-lg-12">
-                                      <div id="calendar"></div>
+                                 <div class="calendar">
+        <div class="header">
+            <h2>Jan 10 - 16, 2021</h2>
+            <div>
+                <button>List Day</button>
+                <button>List Week</button>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-header">Monday</div>
+            <div class="event">
+                <div class="event-dot" style="background-color: yellow;"></div>
+                <div>Conference</div>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-header">Tuesday</div>
+            <div class="event">
+                <div class="event-dot" style="background-color: yellow;"></div>
+                <div>Conference</div>
+                <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+            <div class="event">
+                <div class="event-dot" style="background-color: green;"></div>
+                <div>10:30am - 12:30pm Meeting</div>
+                <input type="checkbox" class="event-checkbox" value="test"/>
+                <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+            <div class="event">
+                <div class="event-dot" style="background-color: black;"></div>
+                <div>12:00pm Lunch</div>
+               <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+            <div class="event">
+                <div class="event-dot" style="background-color: turquoise;"></div>
+                <div>2:30pm Meeting</div>
+               <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+            <div class="event">
+                <div class="event-dot" style="background-color: black;"></div>
+                <div>5:30pm Happy Hour</div>
+                 <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+            <div class="event">
+                <div class="event-dot" style="background-color: green;"></div>
+                <div>8:00pm Dinner</div>
+                <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-header" >Wednesday</div>
+            <div class="event">
+                <div class="event-dot" style="background-color: red;"></div>
+                <div>7:00am Birthday Party</div>
+                <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-header">Saturday</div>
+            <div class="event">
+                <div class="event-dot" style="background-color: black;"></div>
+                <div>4:00pm Repeating Event</div>
+                <label class="btn btn-light rights">  Regis <input  type="checkbox" name="position" value="top-right" autocomplete="off"> </label>
+            </div>
+        </div>
+    </div>
                                   </div>
                               </div>
                               <!-- end: Calendar -->
                           </div>
                       </section>
                                 <div class="col-lg-4">
-                                    <div class="form-group btn-group-toggle" id="notify_position" data-toggle="buttons">
-                                        <label>study time</label>
-                                        <div class="btn-group">
-                                                                                <label class="btn btn-light">
-                                          oke
-                                          <input  type="checkbox" name="position" value="top-left" autocomplete="off">
-                                      </label>
-                                                                                 <label class="btn btn-light">
-                                          oke
-                                          <input type="checkbox" name="position" value="top-left" autocomplete="off">
-                                      </label>
-                                                                                 <label class="btn btn-light">
-                                          oke
-                                          <input type="checkbox" name="position" value="top-left" autocomplete="off">
-                                      </label>
-                                                                              </div>
-                                    </div>
+                                   
                                      <div class="form-group btn-group-toggle" id="notify_position" data-toggle="buttons">
                                         <label>skill</label>
                                         <div class="btn-group">
                                                                                 <label class="btn btn-light">
-                                          oke
-                                          <input  type="checkbox" name="position" value="top-left" autocomplete="off">
+                                          Regis
+                                          <input  type="checkbox" name="skill" value="top-left" autocomplete="off">
                                       </label>
                                                                                  <label class="btn btn-light">
-                                          oke
-                                          <input type="checkbox" name="position" value="top-left" autocomplete="off">
+                                          Regis
+                                          <input type="checkbox" name="skill" value="top-left" autocomplete="off">
                                       </label>
                                                                                  <label class="btn btn-light">
-                                          oke
-                                          <input type="checkbox" name="position" value="top-left" autocomplete="off">
+                                          Regis
+                                          <input type="checkbox" name="skill" value="top-left" autocomplete="off">
                                       </label>
                                                                               </div>
                                     </div>
@@ -218,93 +336,9 @@
         });
     });
 </script>
- <script>
-        $(document).ready(function() {
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'title',
-                    right: 'listDay,listWeek'
-                  
-                },
-                views: {
-                    listDay: {
-                        buttonText: 'list day'
-                    },
-                    listWeek: {
-                        buttonText: 'list week'
-                    }
-                },
-                defaultView: 'listWeek',
-                defaultDate: '2021-01-12',
-                navLinks: true, 
-                editable: true,
-                eventLimit: true, 
-                events: [{
-                    title: 'All Day Event',
-                    start: '2021-01-01'
-                     
-                }, {
-                    title: 'Long Event',
-                    start: '2021-01-07',
-                    end: '2021-01-10',
-                    className: 'fc-event-primary'
-                     
-                }, {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2021-01-09T16:00:00'
-                     
-                }, {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2021-01-16T16:00:00'
-                     
-                }, {
-                    title: 'Conference',
-                    start: '2021-01-11',
-                    end: '2021-01-13',
-                    className: 'fc-event-warning'
-                    
-                }, {
-                    title: 'Meeting',
-                    start: '2021-01-12T10:30:00',
-                    end: '2021-01-12T12:30:00',
-                    className: 'fc-event-success'
-                     
-                }, {
-                    title: 'Lunch',
-                    start: '2021-01-12T12:00:00'
-                    
-                }, {
-                    title: 'Meeting',
-                    start: '2021-01-12T14:30:00',
-                    className: 'fc-event-info'
-                     
-                }, {
-                    title: 'Happy Hour',
-                    start: '2021-01-12T17:30:00'
-                     
-                }, {
-                    title: 'Dinner',
-                    start: '2021-01-12T20:00:00',
-                    className: 'fc-event-success'
-                     
-                }, {
-                    title: 'Birthday Party',
-                    start: '2021-01-13T07:00:00',
-                    className: 'fc-event-danger'
-                     
-                }, {
-                    title: 'Click for Google',
-                    url: 'http://google.com/',
-                    start: '2021-01-28',
-                    className: 'fc-event-info'
-                     
-                }]
-            });
-        });
-    </script>
+ 
     
 </body>
 
 </html>
+    
