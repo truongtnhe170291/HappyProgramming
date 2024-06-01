@@ -18,11 +18,12 @@ public class CV {
     private String address, profession, professionIntro, achievementDescription, serviceDescription;
     private int[] skills;
     private String imgcv;
+    private int stattusId;
     
     public CV() {
     }
 
-    public CV(int cvId, String userName, String gmail, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills, String imgcv) {
+    public CV(int cvId, String userName, String gmail, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills, String imgcv, int stattusId) {
         this.cvId = cvId;
         this.userName = userName;
         this.gmail = gmail;
@@ -36,9 +37,16 @@ public class CV {
         this.serviceDescription = serviceDescription;
         this.skills = skills;
         this.imgcv = imgcv;
+        this.stattusId = stattusId;
     }
 
-   
+    public int getStattusId() {
+        return stattusId;
+    }
+
+    public void setStattusId(int stattusId) {
+        this.stattusId = stattusId;
+    }
 
     public String getImgcv() {
         return imgcv;
@@ -152,6 +160,11 @@ public class CV {
 
     public void setServiceDescription(String serviceDescription) {
         this.serviceDescription = serviceDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "CV{" + "cvId=" + cvId + ", userName=" + userName + ", mentor=" + mentor + ", gmail=" + gmail + ", fullName=" + fullName + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", profession=" + profession + ", professionIntro=" + professionIntro + ", achievementDescription=" + achievementDescription + ", serviceDescription=" + serviceDescription + ", skills=" + skills + ", imgcv=" + imgcv + ", stattusId=" + stattusId + '}';
     }
     
     

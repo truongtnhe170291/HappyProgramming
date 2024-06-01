@@ -4,42 +4,58 @@
  */
 package controller.mentee;
 
+import dal.CVDAO;
 import dal.RequestDAO;
+import dal.ScheduleDAO;
 import dal.SkillDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import models.Request;
+import models.SchedulePublic;
 import models.Skill;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "RequestController", urlPatterns = {"/RequestController"})
-public class RequestController extends HttpServlet {
+@WebServlet(name = "RequestServlet", urlPatterns = {"/request"})
+public class RequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SkillDAO skillDAO = new SkillDAO();
-        List<Skill> list = skillDAO.getSkillByUserName("user2");
-        request.setAttribute("skills", list);
-        request.getRequestDispatcher("request.jsp").forward(request, response);
+        try {
+            CVDAO cvdao = new CVDAO();
+            int cvId = Integer.parseInt(request.getParameter("cvId"));
+            SkillDAO skillDAO = new SkillDAO();
+            List<Skill> list = skillDAO.getSkillByCVId(cvId);
+            request.setAttribute("skills", list);
+
+            LocalDate today = LocalDate.now();
+            // Tìm ngày tiếp theo có thể là thứ 2
+            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+            // Tìm ngày Chủ Nhật của tuần tiếp theo
+            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+            
+            //get user_name of Mentor  by cvid
+            String userName = cvdao.getCVByCVId(cvId).getUserName();
+            
+            // get Schedule public by user mentor name
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+            List<SchedulePublic> listSchedule = scheduleDAO.GetListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            
+            request.getRequestDispatcher("request.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+        }
     }
 
     /**
@@ -58,8 +74,9 @@ public class RequestController extends HttpServlet {
         for (String paramValue : paramValues) {
             skills.add(Integer.parseInt(paramValue));
         }
-        if(paramValues == null)
+        if (paramValues == null) {
             response.sendRedirect("http://localhost:8080/happyprogramming/RequestController");
+        }
         String rawMentorName = request.getParameter("mentorName");
         String rawMenteeName = request.getParameter("menteeName");
         String rawDatelineDate = request.getParameter("deadlineDate");
@@ -69,7 +86,7 @@ public class RequestController extends HttpServlet {
         String rawTitle = request.getParameter("deadlineHour");
         //description
         String rawDescription = request.getParameter("description");
-        
+
         RequestDAO dao = new RequestDAO();
         boolean rs = dao.insertRequest(new Request(
                 1,
@@ -80,13 +97,13 @@ public class RequestController extends HttpServlet {
                 rawDescription,
                 1,
                 time), skills);
-        
+
         response.sendRedirect("http://localhost:8080/happyprogramming/RequestController?isTrue=" + rs);
-        
+
     }
-    
+
     /*
-    <form action="RequestController" method="post">
+    <form action="RequestServlet" method="post">
         <label for="mentorName">Mentor Name:</label>
         <input type="text" id="mentorName" name="mentorName" value="user2" required><br>
         
@@ -113,6 +130,4 @@ public class RequestController extends HttpServlet {
         
         <input type="submit" value="Submit">
     </form>*/
-
-
 }
