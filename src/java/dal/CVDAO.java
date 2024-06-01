@@ -12,6 +12,8 @@ import models.CV;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import models.Mentor;
+import models.Skill;
 
 /**
  *
@@ -268,7 +270,7 @@ public class CVDAO {
         }
         return cv;
     }
-    
+
     public int[] getSkillsByCvId(int cvId) {
         String sql = "SELECT skill_id FROM CVSkills WHERE cv_id = ?";
         List<Integer> skillsList = new ArrayList<>();
@@ -293,6 +295,122 @@ public class CVDAO {
         }
 
         return skillsArray;
+    }
+
+    public List<CV> getCVByStatus(int status) {
+        String sql = "SELECT [cv_id]\n"
+                + "      ,[mentor_name]\n"
+                + "      ,[status_id]\n"
+                + "  FROM [HappyProgrammingDB].[dbo].[CV]\n"
+                + "  WHERE status_id = ?";
+        List<CV> cvList = new ArrayList<>();
+        CV cv = new CV();
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, status);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                cv = new CV();
+                cv.setCvId(rs.getInt("cv_id"));
+                cv.setFullName(rs.getString("mentor_name"));
+                cv.setUserName(rs.getString("mentor_name"));
+                cv.setStattusId(rs.getInt("status_id"));
+                cvList.add(cv);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+        return cvList;
+    }
+
+    public boolean changeCVStatus(int cvId, int status) {
+        String sql = "UPDATE [dbo].[CV]\n"
+                + "   SET \n"
+                + "      [status_id] = ?\n"
+                + " WHERE [cv_id] = ?";
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, status);
+            ps.setInt(2, cvId);
+
+            int row = ps.executeUpdate();
+            if (row != 1) {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return true;
+
+    }
+
+    public CV getCVById(int cv_Id) {
+        String sql = "SELECT [cv_id]\n"
+                + "      ,[mentor_name]\n"
+                + "      ,[gmail]\n"
+                + "      ,[full_name]\n"
+                + "      ,[dob]\n"
+                + "      ,[sex]\n"
+                + "      ,[address]\n"
+                + "      ,[profession]\n"
+                + "      ,[profession_intro]\n"
+                + "      ,[achievement_description]\n"
+                + "      ,[service_description]\n"
+                + "      ,[avatar]\n"
+                + "      ,[status_id]\n"
+                + "  FROM [dbo].[CV]\n"
+                + "  WHERE [cv_id] = ?";
+        CV cv = new CV();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cv_Id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                cv.setCvId(rs.getInt("cv_id"));
+                cv.setUserName(rs.getString("mentor_name"));
+                cv.setGmail(rs.getString("gmail"));
+                cv.setFullName(rs.getString("full_name"));
+                cv.setDob(rs.getDate("dob"));
+                cv.setSex(rs.getBoolean("sex"));
+                cv.setAddress(rs.getString("address"));
+                cv.setProfession(rs.getString("profession"));
+                cv.setProfessionIntro(rs.getString("profession_intro"));
+                cv.setAchievementDescription(rs.getString("achievement_description"));
+                cv.setServiceDescription(rs.getString("service_description"));
+                cv.setImgcv(rs.getString("avatar"));
+                cv.setStattusId(rs.getInt("status_id"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return cv;
+    }
+
+    public List<Skill> getSkillsByCVId(int cvId) {
+        String sql = "SELECT s.[skill_id], s.[skill_name], s.[description] FROM CVSkills cs JOIN Skills s ON cs.skill_id = s.skill_id\n"
+                + "Where cs.cv_id = ?";
+        List<Skill> skills = new ArrayList<>();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cvId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill();
+                s.setSkillID(rs.getInt("skill_id"));
+                s.setSkillName(rs.getString("skill_name"));
+                s.setDescription(rs.getString("description"));
+                skills.add(s);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return skills;
     }
 
 }
