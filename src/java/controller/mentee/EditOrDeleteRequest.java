@@ -13,19 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import models.RequestDTO;
-import models.RequestSkill;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="ListRequest", urlPatterns={"/ListRequest"})
-public class ListRequest extends HttpServlet {
+@WebServlet(name="EditOrDeleteRequest", urlPatterns={"/EditOrDeleteRequest"})
+public class EditOrDeleteRequest extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +36,10 @@ public class ListRequest extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListRequest</title>");  
+            out.println("<title>Servlet EditOrDeleteRequest</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListRequest at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet EditOrDeleteRequest at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,26 +53,11 @@ public class ListRequest extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-    try {
-        // Lấy tham số menteeName từ request
-        String menteeName = request.getParameter("mentee_name");
-        RequestDAO rdao = new RequestDAO();
-        // Gọi hàm getAllRequests để lấy danh sách các yêu cầu
-        List<RequestSkill> requests = rdao.getAllRequests(menteeName);
-
-
-        request.setAttribute("requests", requests);
-
-        // Chuyển hướng đến trang ListRequest.jsp
-        request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-    } catch (SQLException e) {
-        throw new ServletException(e);
-    }
-}
-
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request, response);
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -87,20 +66,22 @@ throws ServletException, IOException {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-       int  requestId = Integer.parseInt(request.getParameter("requestId"));
-       RequestDAO requestDAO = new RequestDAO();
-        try {
-            List<RequestDTO> rdto = requestDAO.getRequestDetails(requestId);
-             request.setAttribute("rdto", rdto);
-             request.getRequestDispatcher("RequestDetails.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }
+   @Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+
+    int requestId = Integer.parseInt(request.getParameter("requestId"));
+
+  
+    RequestDAO requestDAO = new RequestDAO();
+
+    
+    requestDAO.deleteRequest(requestId);
+
+ 
+    response.sendRedirect("ListRequest");
+}
+
 
     /** 
      * Returns a short description of the servlet.

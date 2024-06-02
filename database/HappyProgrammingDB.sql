@@ -110,7 +110,8 @@ GO
 -- Create Slots table
 CREATE TABLE Slots(
     slot_id VARCHAR(50) PRIMARY KEY,
-    slot_name NVARCHAR(100)
+    start_slot TIME,
+	end_slot TIME
 );
 GO
 
@@ -273,10 +274,10 @@ INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 1);
 INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 2);
 
 GO
-INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT01', '7h00 - 9h00');
-INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT02', '9h00 - 11h00');
-INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT03', '1h00 - 3h00');
-INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT04', '3h00 - 5h00');
+INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT01', '7:00', '9:00');
+INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT02', '9:00', '11:00');
+INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT03', '13:00', '15:00');
+INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT04', '15:00', '17:00');
 
 GO
 
