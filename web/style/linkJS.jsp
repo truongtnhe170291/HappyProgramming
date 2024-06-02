@@ -45,7 +45,6 @@
 <script src="assets/theme_assets/js/charts.js"></script>
 <script src="assets/theme_assets/js/drag-drop.js"></script>
 <script src="assets/theme_assets/js/footable.js"></script>
-<script src="assets/theme_assets/js/full-calendar.js"></script>
 <script src="assets/theme_assets/js/googlemap-init.js"></script>
 <script src="assets/theme_assets/js/icon-loader.js"></script>
 <script src="assets/theme_assets/js/jvectormap-init.js"></script>

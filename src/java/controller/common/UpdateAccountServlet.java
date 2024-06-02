@@ -75,6 +75,10 @@ public class UpdateAccountServlet extends HttpServlet {
         AccountDAO dao = new AccountDAO();
         HttpSession session = request.getSession();
         Account curentAccount = (Account) session.getAttribute("user");
+        if(curentAccount == null){
+            response.sendRedirect("Login.jsp");
+            return;
+        }
         Account acc = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
         if (acc.getRoleId() == 1) {
             request.setAttribute("user", acc);
@@ -83,11 +87,6 @@ public class UpdateAccountServlet extends HttpServlet {
         }
         if (acc.getRoleId() == 2) {
             request.setAttribute("user", acc);
-            SkillDAO skillDAO = new SkillDAO();
-            CVService cVService = CVService.getInstance();
-            request.setAttribute("cv", cVService.getCVByUserName(acc.getUserName()));
-            List<Skill> list = skillDAO.getSkills();
-            request.setAttribute("skills", list);
             request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
         }
 
@@ -114,8 +113,8 @@ public class UpdateAccountServlet extends HttpServlet {
         String address = request.getParameter("address");
         Part filePart = request.getPart("fileUpload");
         
-        // C:\Users\Admin\Desktop\HappyProgramming\web\img
-        String upload = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\web\\img\\";
+        // D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgcv\\
+        String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
 
