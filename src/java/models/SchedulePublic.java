@@ -4,6 +4,7 @@
  */
 package models;
 import java.sql.Date;
+import java.time.DayOfWeek;
 /**
  *
  * @author Admin
@@ -14,24 +15,30 @@ public class SchedulePublic {
     private String slotId;
     private Date startTime;
     private Date endTime;
-    private String start_slot;
-    private String end_slot;
+    private String slot_name;
+    private DayOfWeek nameOfDay;
 
     public SchedulePublic() {
     }
 
-    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String start_slot, String end_slot) {
+    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name) {
         this.selectedId = selectedId;
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.start_slot = start_slot;
-        this.end_slot = end_slot;
+        this.slot_name = slot_name;
+    }
+
+    public DayOfWeek getNameOfDay() {
+        return nameOfDay;
+    }
+
+    public void setNameOfDay(DayOfWeek nameOfDay) {
+        this.nameOfDay = nameOfDay;
     }
 
     
-
     public int getSelectedId() {
         return selectedId;
     }
@@ -72,20 +79,13 @@ public class SchedulePublic {
         this.endTime = endTime;
     }
 
-    public String getStart_slot() {
-        return start_slot;
+    public String getSlot_name() {
+        return slot_name;
     }
 
-    public void setStart_slot(String start_slot) {
-        this.start_slot = start_slot;
+    public void setSlot_name(String slot_name) {
+        this.slot_name = slot_name;
     }
 
-    public String getEnd_slot() {
-        return end_slot;
-    }
-
-    public void setEnd_slot(String end_slot) {
-        this.end_slot = end_slot;
-    }
 
 }

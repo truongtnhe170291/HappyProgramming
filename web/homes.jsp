@@ -204,7 +204,7 @@
                                     <span class="post-meta-date"><i class="fa fa-calendar-o"></i>Jan 21, 2024</span>
                                     <span class="post-meta-comments"><a href=""><i class="fa fa-comments-o"></i>33
                                             Comments</a></span>
-                                    <h2><a href="ListRequest?mentee_name=${sessionScope.user.userName}">Ultimate C# Masterclass for 2024
+                                    <h2><a href="ListRequest">Ultimate C# Masterclass for 2024
                                         </a></h2>
                                     <p>In-depth .NET programming course from basics to advanced. Focus on clean code, performance and practice.</p>
                                     <a href="#" class="item-link">Read More <i class="icon-chevron-right"></i></a>

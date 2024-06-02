@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -32,6 +33,7 @@ public class RequestDAO {
             System.out.println(e);
         }
     }
+
 
     public List<RequestSkill> getAllRequests(String menteeName) throws SQLException {
         // Tạo câu truy vấn SQL để lấy thông tin từ bảng RequestsFormMentee
@@ -115,6 +117,21 @@ public class RequestDAO {
         // Trả về danh sách request
         return requests;
     }
+    public int getRequestId() {
+        String sql = "select TOP 1 r.request_id from RequestsFormMentee r order by r.request_id desc";
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int req = rs.getInt(1);
+                return req;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+
+    }
 
     public boolean insertRequest(Request request, List<Integer> skills, List<Integer> listSelectSlot) {
         String query = "INSERT INTO [dbo].[RequestsFormMentee]"
@@ -134,8 +151,7 @@ public class RequestDAO {
                 + "           ,?"
                 + "           ,?)";
 
-        try {
-            ps = con.prepareStatement(query);
+        try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, request.getMentorName());
             ps.setString(2, request.getMenteeName());
             ps.setDate(3, Date.valueOf(request.getDeadlineDate()));
@@ -147,9 +163,7 @@ public class RequestDAO {
 
             if (result == 1) {
                 // Lấy ra request mới nhất
-                rs = ps.getGeneratedKeys();
-                int requestId = rs.getInt(1);
-
+                int requestId = getRequestId();
                 for (Integer skill : skills) {
                     insertRequestSkills(requestId, skill);
                 }
