@@ -65,7 +65,7 @@
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="ApplyCV.jsp">Apply CV</a>
+                           <a href="cv">Apply CV</a>
                         </li>
                      </ul>
                   </li>

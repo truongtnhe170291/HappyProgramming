@@ -78,6 +78,10 @@ public class UpdateAccountServlet extends HttpServlet {
         AccountDAO dao = new AccountDAO();
         HttpSession session = request.getSession();
         Account curentAccount = (Account) session.getAttribute("user");
+        if(curentAccount == null){
+            response.sendRedirect("Login.jsp");
+            return;
+        }
         Account acc = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
         if (acc.getRoleId() == 1) {
             request.setAttribute("user", acc);
@@ -89,11 +93,6 @@ public class UpdateAccountServlet extends HttpServlet {
             ArrayList<Calendar> listSlots = mentorDao.listSlots();
             request.setAttribute("slot", listSlots);
             request.setAttribute("user", acc);
-            SkillDAO skillDAO = new SkillDAO();
-            CVService cVService = CVService.getInstance();
-            request.setAttribute("cv", cVService.getCVByUserName(acc.getUserName()));
-            List<Skill> list = skillDAO.getSkills();
-            request.setAttribute("skills", list);
             request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
         }
 
