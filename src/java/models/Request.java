@@ -34,6 +34,16 @@ public class Request {
         this.deadlineHour = deadlineHour;
     }
 
+    public Request(String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
+        this.mentorName = mentorName;
+        this.menteeName = menteeName;
+        this.deadlineDate = deadlineDate;
+        this.title = title;
+        this.description = description;
+        this.statusId = statusId;
+        this.deadlineHour = deadlineHour;
+    }
+
     public int getRequestId() {
         return requestId;
     }
