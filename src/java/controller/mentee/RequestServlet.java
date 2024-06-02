@@ -17,8 +17,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import models.Account;
+import models.CV;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
@@ -34,8 +37,14 @@ public class RequestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            Account acc = (Account) request.getSession().getAttribute("user");
+            if (acc == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
             CVDAO cvdao = new CVDAO();
-            int cvId = Integer.parseInt(request.getParameter("cvId"));
+            //int cvId = Integer.parseInt(request.getParameter("cvId"));
+            int cvId = 2;
             SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
             request.setAttribute("skills", list);
@@ -45,16 +54,25 @@ public class RequestServlet extends HttpServlet {
             LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
             // Tìm ngày Chủ Nhật của tuần tiếp theo
             LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-            
+
             //get user_name of Mentor  by cvid
+            //String userName = cvdao.getCVByCVId(cvId).getUserName();
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-            
+            request.setAttribute("userNameMentor", userName);
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             List<SchedulePublic> listSchedule = scheduleDAO.GetListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-            
-            request.getRequestDispatcher("request.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
+            for (SchedulePublic s : listSchedule) {
+                DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
+                s.setNameOfDay(nameOfDay);
+            }
+            request.setAttribute("listSchedule", listSchedule);
+            // set attribute CV
+            CV cv = cvdao.getCVByCVId(cvId);
+            request.setAttribute("cv", cv);
+            request.getRequestDispatcher("Mentee_Request.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
         }
     }
 
@@ -69,36 +87,55 @@ public class RequestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] paramValues = request.getParameterValues("skills");
-        List<Integer> skills = new ArrayList<>();
-        for (String paramValue : paramValues) {
-            skills.add(Integer.parseInt(paramValue));
-        }
-        if (paramValues == null) {
-            response.sendRedirect("http://localhost:8080/happyprogramming/RequestController");
-        }
-        String rawMentorName = request.getParameter("mentorName");
-        String rawMenteeName = request.getParameter("menteeName");
-        String rawDatelineDate = request.getParameter("deadlineDate");
-        LocalDate dateLineDate = LocalDate.parse(rawDatelineDate);
-        String rawTime = request.getParameter("deadlineHour");
-        LocalTime time = LocalTime.parse(rawTime);
-        String rawTitle = request.getParameter("deadlineHour");
-        //description
-        String rawDescription = request.getParameter("description");
+        try {
+            String[] _skills = request.getParameterValues("skills");
+            List<Integer> skills = new ArrayList<>();
+            if (_skills != null) {
+                for (String paramValue : _skills) {
+                    skills.add(Integer.valueOf(paramValue));
+                }
+                System.out.println("tim ra skill");
+            }
 
-        RequestDAO dao = new RequestDAO();
-        boolean rs = dao.insertRequest(new Request(
-                1,
-                rawMentorName,
-                rawMenteeName,
-                dateLineDate,
-                rawTitle,
-                rawDescription,
-                1,
-                time), skills);
+            String mentorName = request.getParameter("mentorname");
+            Account acc = (Account) request.getSession().getAttribute("user");
+            if (acc == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            String menteeName = acc.getUserName();
+            String title = request.getParameter("title");
+            String rawDatelineDate = request.getParameter("deadlineDate");
+            LocalDate dateLineDate = LocalDate.parse(rawDatelineDate);
+            String rawTime = request.getParameter("deadlineHour");
+            LocalTime deadlineHour = LocalTime.parse(rawTime);
+            String description = request.getParameter("description");
+            //get selected Slot
+            String[] selectedSlots = request.getParameterValues("schedule");
+            List<Integer> listSelected = new ArrayList<>();
+            for (String paramValue : selectedSlots) {
+                listSelected.add(Integer.valueOf(paramValue));
+            }
 
-        response.sendRedirect("http://localhost:8080/happyprogramming/RequestController?isTrue=" + rs);
+            RequestDAO dao = new RequestDAO();
+            if (dao.insertRequest(new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour), skills, listSelected)) {
+                System.out.println("Insert thành công");
+            } else {
+                System.out.println("insert fails");
+            }
+        } catch (NumberFormatException e) {
+        }
+
+//        boolean rs = dao.insertRequest(new Request(
+//                1,
+//                rawMentorName,
+//                rawMenteeName,
+//                dateLineDate,
+//                rawTitle,
+//                rawDescription,
+//                1,
+//                time), skills);
+        response.sendRedirect("http://localhost:8080/happyprogramming/RequestController?isTrue=");
 
     }
 

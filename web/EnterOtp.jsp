@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
      <style>
         body {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+
             display: flex;
             justify-content: center;
             align-items: center;

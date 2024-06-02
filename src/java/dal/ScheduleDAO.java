@@ -51,5 +51,9 @@ public class ScheduleDAO {
         }
         return list;
     }
-
+    
+    public static void main(String[] args) {
+        ScheduleDAO aO = new ScheduleDAO();
+        List<SchedulePublic> list = aO.GetListSchedulePublicByMentorName("son", java.sql.Date.valueOf("2024-06-03"), java.sql.Date.valueOf("2024-06-09"));
+    }
 }

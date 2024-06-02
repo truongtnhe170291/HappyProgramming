@@ -4,6 +4,7 @@
  */
 package models;
 import java.sql.Date;
+import java.time.DayOfWeek;
 /**
  *
  * @author Admin
@@ -14,20 +15,30 @@ public class SchedulePublic {
     private String slotId;
     private Date startTime;
     private Date endTime;
-    private String slotName;
+    private String slot_name;
+    private DayOfWeek nameOfDay;
 
     public SchedulePublic() {
     }
 
-    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slotName) {
+    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name) {
         this.selectedId = selectedId;
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.slotName = slotName;
+        this.slot_name = slot_name;
     }
 
+    public DayOfWeek getNameOfDay() {
+        return nameOfDay;
+    }
+
+    public void setNameOfDay(DayOfWeek nameOfDay) {
+        this.nameOfDay = nameOfDay;
+    }
+
+    
     public int getSelectedId() {
         return selectedId;
     }
@@ -68,13 +79,13 @@ public class SchedulePublic {
         this.endTime = endTime;
     }
 
-    public String getSlotName() {
-        return slotName;
+    public String getSlot_name() {
+        return slot_name;
     }
 
-    public void setSlotName(String slotName) {
-        this.slotName = slotName;
+    public void setSlot_name(String slot_name) {
+        this.slot_name = slot_name;
     }
-    
-    
+
+
 }
