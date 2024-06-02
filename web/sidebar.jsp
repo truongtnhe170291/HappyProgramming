@@ -84,7 +84,7 @@
                   </li>
      
                   <li>
-                     <a href="CalendarBookingServlet" class="">
+                      <a href="CalendarBookingServlet?userName=${sessionScope.user.userName}" class="">
                         <span class="nav-icon uil uil-calendar-alt"></span>
                         <span class="menu-text">Calendar</span>
                      </a>

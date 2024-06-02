@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Update CV of mentor</title>
+
         <style>
             .author_2{
                 transform: translate(750px,-87px);
@@ -31,7 +32,45 @@
                 background-color: #FF0F0F26;
                 color: #FF0F0F;
             }
+            table {
+                width: 80%;
+                border-collapse: collapse;
+                background-color: #fff;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                margin: 20px auto;
+            }
 
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            td {
+                position: relative;
+            }
+
+            td span {
+                display: block;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            td hr {
+                border: none;
+                border-top: 1px solid #ddd;
+                margin: 5px 0;
+            }
+
+            td input[type="checkbox"] {
+                transform: scale(1.2);
+            }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -76,6 +115,29 @@
                                             <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
                                                 <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a onclick="checkCVStatus(${cv.stattusId})" class="nav-link" id="v-pills-calendar-tab" data-bs-toggle="pill" href="#v-pills-calendar" role="tab" aria-selected="false">
+                                                <img src="img/svg/calendar.svg" alt="calendar" class="svg">Calendar Booking</a>
+                                        </li>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Warning !!!</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Your CV status is not Approved!
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <li class="nav-item">
                                             <div class="cards">                                        
                                                 <span class="text_ct">Active</span>                          
@@ -345,7 +407,58 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="tab-pane fade" id="v-pills-calendar" role="tabpanel" aria-labelledby="v-pills-calendar-tab">
+                                        <div class="row justify-content-center">
+                                            <div class="col-xxl-4 col-10">
+                                                <div class="mt-40 mb-50">
+                                                    <div class="user-tab-info-title mb-35 text-capitalize">
+                                                        <h5 class="fw-500">Calendar Booking</h5>
+                                                    </div>
+                                                    <form action="CalendarBookingServlet" method="POST">
+                                                        <c:set var="cv" value="${requestScope.cv}"/>
+                                                        <div class="edit-profile__body">
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Slot</th>
+                                                                        <th>Monday</th>
+                                                                        <th>Tuesday</th>
+                                                                        <th>Wednesday</th>
+                                                                        <th>Thursday</th>
+                                                                        <th>Friday</th>
+                                                                        <th>Saturday</th>
+                                                                        <th>Sunday</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <c:forEach items="${slot}" var="s">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <span>${s.slot_id}</span>
+                                                                                <hr>
+                                                                                <span>${s.slot_name}</span>
+                                                                            </td>
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + mo"></td>
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + tu"></td>
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + we"></td>
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + th"></td>
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + fr"></td> 
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + sa"></td>
+                                                                            <td><input type="checkbox" name="booking" value="${s.slot_id} + su"></td>
+                                                                        </tr>
+                                                                    </c:forEach>
+                                                                    <!-- Add more rows as needed -->
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
+                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">OK</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 </main>
@@ -364,17 +477,17 @@
                                 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
                                 <jsp:include page="style/linkJS.jsp" />
                                 <script>
-                                    const text = document.querySelector(".text_ct");
-                                    const card = document.querySelector(".cards");
-                                    card.classList.add("fcontent");
-                                    const two = document.querySelectorAll("#edit_oki");
-                                    two.forEach((editButton) => {
-                                        editButton.addEventListener("click", (event) => {
-                                            text.textContent = "change";
-                                            card.classList.remove("fcontent");
-                                            card.classList.add("tcontent");
-                                        });
-                                    });
+                                                const text = document.querySelector(".text_ct");
+                                                const card = document.querySelector(".cards");
+                                                card.classList.add("fcontent");
+                                                const two = document.querySelectorAll("#edit_oki");
+                                                two.forEach((editButton) => {
+                                                    editButton.addEventListener("click", (event) => {
+                                                        text.textContent = "change";
+                                                        card.classList.remove("fcontent");
+                                                        card.classList.add("tcontent");
+                                                    });
+                                                });
 
                                 </script>
                                 <script>
@@ -571,6 +684,17 @@
                                             reader.readAsDataURL(file);
                                         }
                                     });
+
+                                </script>
+                                <script>
+                                    function checkCVStatus(cvStatus) {
+                                        if (cvStatus !== 2) {
+                                            $('#exampleModal2').modal('show');
+                                            $('#exampleModal2').on('hidden.bs.modal', function (e) {
+                                                location.reload();
+                                            });
+                                        }
+                                    }
 
                                 </script>
                                 </body>

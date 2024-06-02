@@ -4,6 +4,7 @@
  */
 package controller.mentor;
 
+import dal.CVDAO;
 import dal.MentorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import models.CV;
 import models.Calendar;
 
 /**
@@ -64,6 +66,7 @@ public class CalendarBookingServlet extends HttpServlet {
         ArrayList<Calendar> listSlots = dao.listSlots();
         request.setAttribute("slot", listSlots);
         request.getRequestDispatcher("calendar_booking.jsp").forward(request, response);
+
     }
 
     /**
@@ -78,17 +81,17 @@ public class CalendarBookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String booking[] = request.getParameterValues("booking");
-        
+
         String array = "";
-        
+
         for (int i = 0; i < booking.length; i++) {
             array += booking[i];
-            if(i == booking.length - 1){
+            if (i == booking.length - 1) {
                 break;
             }
             array += ",  ";
         }
-        
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
