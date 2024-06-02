@@ -11,14 +11,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Request {
-    private int requestId;
-    private String mentorName;
-    private String menteeName;
-    private LocalDate deadlineDate;
-    private String title;
-    private String description;
-    private int statusId;
-    private java.time.LocalTime deadlineHour;
+    int requestId;
+    String mentorName;
+    String menteeName;
+    LocalDate deadlineDate;
+    String title;
+    String description;
+    int statusId;
+    java.time.LocalTime deadlineHour;
 
     // Default constructor
     public Request() {}
@@ -108,11 +108,13 @@ public class Request {
         this.deadlineHour = deadlineHour;
     }
 
-    
-
     @Override
     public String toString() {
         return "Request{" + "requestId=" + requestId + ", mentorName=" + mentorName + ", menteeName=" + menteeName + ", deadlineDate=" + deadlineDate + ", title=" + title + ", description=" + description + ", statusId=" + statusId + ", deadlineHour=" + deadlineHour + '}';
     }
+
+    
+
+   
 
 }
