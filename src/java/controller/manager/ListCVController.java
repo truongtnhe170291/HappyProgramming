@@ -5,6 +5,7 @@
 package controller.manager;
 
 import dal.CVDAO;
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import models.CV;
+import models.CVDTO;
+import models.Skill;
 
 /**
  *
@@ -39,7 +42,7 @@ public class ListCVController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListCVController</title>");            
+            out.println("<title>Servlet ListCVController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ListCVController at " + request.getContextPath() + "</h1>");
@@ -61,7 +64,8 @@ public class ListCVController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CVDAO dao = new CVDAO();
-        List<CV> list = dao.getCVByStatus(1);
+        List<CVDTO> list = dao.getCVByStatus(1);
+
         request.setAttribute("cvList", list);
         request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }
@@ -77,7 +81,11 @@ public class ListCVController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CVDAO dao = new CVDAO();
+        List<CVDTO> list = dao.getCVByStatus(1);
+
+        request.setAttribute("cvList", list);
+        request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }
 
     /**

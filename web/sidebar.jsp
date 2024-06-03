@@ -79,7 +79,7 @@
                             </a>
                         <ul class="toggle">
                         <li class="">
-                           <a href="listCV.jsp">All CV</a>
+                           <a href="listCV">All CV</a>
                         </li>
                      </ul>
                  

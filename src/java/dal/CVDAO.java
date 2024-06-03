@@ -12,6 +12,7 @@ import models.CV;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import models.CVDTO;
 import models.Mentor;
 import models.Skill;
 import models.Status;
@@ -303,32 +304,39 @@ public class CVDAO {
         return skillsArray;
     }
 
-    public List<CV> getCVByStatus(int status_Id) {
-        String sql = "select * from CV c where c.status_id = ?";
-        List<CV> cvList = new ArrayList<>();
+    public List<CVDTO> getCVByStatus(int status_Id) {
+        String sql = "select c.*, m.rate from CV c join Mentors m on c.mentor_name = m.mentor_name where c.status_id = ?";
+        List<CVDTO> cvList = new ArrayList<>();
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, status_Id);
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                int cvId = rs.getInt(1);
-                String username = rs.getString(2);
-                String gmail = rs.getString(3);
-                String fullname = rs.getString(4);
-                Date dob = rs.getDate(5);
-                boolean sex = rs.getBoolean(6);
-                String address = rs.getString(7);
-                String profession = rs.getString(8);
-                String professionIntro = rs.getString(9);
-                String achievementDescription = rs.getString(10);
-                String serviceDescription = rs.getString(11);
-                String avatar = rs.getString(12);
-                int statusId = rs.getInt(13);
-                int[] skills = getSkillsByCvId(cvId);
-                Status status = getStatusById(statusId);
-                CV cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId, status);
+                CVDTO cv = new CVDTO();
+                cv.setCvId(rs.getInt(1));
+                cv.setUserName(rs.getString("mentor_name"));
+                cv.setAddress(rs.getString("address"));
+                cv.setGmail(rs.getString("gmail"));
+                cv.setFullName(rs.getString("full_name"));
+                cv.setDob(rs.getDate("dob"));
+                cv.setSex(rs.getBoolean("sex"));
+                cv.setProfession(rs.getString("profession"));
+                cv.setProfessionIntro(rs.getString("profession_intro"));
+                cv.setAchievementDescription(rs.getString("achievement_description"));
+                cv.setServiceDescription(rs.getString("service_description"));
+                cv.setImgcv(rs.getString("avatar"));
+                int statusId = rs.getInt("status_id");
+                cv.setRate(rs.getDouble("rate"));
+                cv.setStattusId(statusId);
                 cvList.add(cv);
+            }
+            if(cvList.isEmpty()){
+                return cvList;
+            }
+            for(CVDTO cv : cvList){
+                cv.setStatus(getStatusById(cv.getStattusId()));
+                cv.setListSkill(getSkillsByCVId(cv.getCvId()));
             }
         } catch (SQLException e) {
             System.out.println(e);

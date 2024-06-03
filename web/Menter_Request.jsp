@@ -204,7 +204,7 @@
                                                             <div class="row">
                                                                 <div class="col-lg-12">
                                                                     <div class="calendar">
-                                                                        <div class="header" style="display: flex, justify-content: center">
+                                                                        <div class="header" style="display: flex; justify-content: center">
                                                                             <h2>${SundayMonday}</h2>
                                                                         </div>
                                                                         <c:forEach items="${period}" var="schedule">
