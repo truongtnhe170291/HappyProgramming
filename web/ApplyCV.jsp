@@ -13,6 +13,27 @@
                 .author_2 {
                     transform: translate(750px, -87px);
                 }
+            .fl{
+                margin-top: 12px;
+                line-height: 100px;
+                width: 100px;
+                height: 40px;
+                background-color: #ccc;
+                margin-left: auto;
+                margin-right: 0;
+                outline: none;
+                text-align: center;
+
+            }
+            .cliick{
+
+                background-color: #8231D3;
+                margin: 5px 5px;
+                width: 100%;
+                height: 100%;
+                border:none;
+            }
+        </style>
 
                 .author_1 {
                     transform: translate(770px, -35px);
@@ -129,12 +150,59 @@
                                 </div>
                             </div>
                         </div>
+<<<<<<< HEAD
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="user-info-tab w-100 bg-white global-shadow radius-xl mb-50">
                                     <div class="ap-tab-wrapper border-bottom ">
                                         <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab"
                                             role="tablist" aria-orientation="vertical">
+=======
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="user-info-tab w-100 bg-white global-shadow radius-xl mb-50">
+                                <div class="ap-tab-wrapper border-bottom ">
+                                    <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
+                                                <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
+                                        </li>
+                                        <li class="nav-item fl ">
+                                            <h4>${requestScope.cv.status.statusName}</h4>
+                                        </li>
+                                        <li class="nav-item fl ">
+                                            <form action="apply" method="POST">
+                                                <input value="Send CV" class="nav-link cliick" id="v-pills-profile-tab" data-bs-toggle="pill" type="submit"/>                            
+                                            </form>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                        <div class="row justify-content-center">
+                                            <div class="col-xxl-4 col-10">
+                                                <div class="mt-40 mb-50">
+                                                    <div class="user-tab-info-title mb-35 text-capitalize">
+                                                        <h5 class="fw-500">CV Information</h5>
+                                                    </div>
+                                                    <form action="cv" method="POST" enctype="multipart/form-data">
+                                                        <c:set var="cv" value="${requestScope.cv}"/>
+                                                        <div class="account-profile d-flex align-items-center mb-4">
+                                                            <div class="ap-img pro_img_wrapper">
+                                                                <input id="file-uploadcv" type="file" name="uploadcv" class="d-none" accept="image/*">
+                                                                <!-- Profile picture image -->
+                                                                <label for="file-uploadcv" class="position-relative d-inline-block">
+                                                                    <img id="profile-imgcv" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./imgcv/${cv.imgcv}" alt="profile">
+                                                                    <span class="cross position-absolute" id="remove_pro_pic">
+                                                                        <img src="img/svg/camera.svg" alt="camera" class="svg">
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+>>>>>>> ab312de59d801916d53b223789b335dd6bce0118
 
                                             <li class="nav-item">
                                                 <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
@@ -300,6 +368,7 @@
                                                                         id="phoneNumber1">${cv.professionIntro}</textarea>
                                                                 </div>
 
+<<<<<<< HEAD
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber1">Achievement
                                                                         Description</label>
@@ -340,6 +409,26 @@
                                                                                 <label class="form-check-label"
                                                                                     for="hiringDateCheckbox">${skill.skillName}</label>
                                                                             </div>
+=======
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Profession</label>
+                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                            </div>
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Profession introduction</label>
+                                                                <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Achievement Description</label>
+                                                                <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group mb-25">
+                                                                <label for="phoneNumber1">Service Description</label>
+                                                                <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
+                                                            </div>
+>>>>>>> ab312de59d801916d53b223789b335dd6bce0118
 
                                                                         </c:forEach>
                                                                     </div>
@@ -628,6 +717,7 @@
                                         }
                                     });
 
+<<<<<<< HEAD
                         document.getElementById('file-upload').addEventListener('change', function (event) {
                                         const file = event.target.files[0];
                         if (file) {
@@ -655,3 +745,22 @@
         </body>
 
         </html>
+=======
+
+
+
+                                    document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-imgcv').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+
+                                </script>
+                                </body>
+                                </html>
+>>>>>>> ab312de59d801916d53b223789b335dd6bce0118

@@ -376,7 +376,7 @@
                             id: "2",
                             start: "2024-06-02" + "T09:00",
                             end: "2024-06-02" + "T10:30",
-                            title: "HexaDash Calendar App",
+                            title: "Demo",
                         },
                     ],
                     className: "warning",

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Mentor;
 import models.Skill;
+import models.Status;
 
 /**
  *
@@ -172,6 +173,7 @@ public class CVDAO {
     public boolean updateStatusCV(String username, int statusid) {
         String sql = "UPDATE [dbo].[CV] SET [status_id] = ? WHERE [mentor_name] = ?;";
         try {
+            ps = con.prepareStatement(sql);
             ps.setInt(1, statusid);
             ps.setString(2, username);
             int result = ps.executeUpdate();
@@ -179,7 +181,7 @@ public class CVDAO {
                 return true;
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Update status"+e.getMessage());
         }
         return false;
     }
@@ -229,8 +231,11 @@ public class CVDAO {
                 cv.setAchievementDescription(rs.getString("achievement_description"));
                 cv.setServiceDescription(rs.getString("service_description"));
                 cv.setImgcv(rs.getString("avatar"));
-                cv.setStattusId(rs.getInt("status_id"));
+                int statusId = rs.getInt("status_id");
+                cv.setStattusId(statusId);
                 cv.setSkills(getSkillsByCvId(cvId));
+                Status status = getStatusById(statusId);
+                cv.setStatus(status);
                 return cv;
             }
         } catch (SQLException e) {
@@ -262,7 +267,8 @@ public class CVDAO {
                 String avatar = rs.getString(12);
                 int statusId = rs.getInt(13);
                 int[] skills = getSkillsByCvId(cvId);
-                cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId);
+                Status status = getStatusById(statusId);
+                cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId, status);
                 return cv;
             }
         } catch (SQLException e) {
@@ -411,6 +417,21 @@ public class CVDAO {
             System.out.println(e);
         }
         return skills;
+    }
+
+    private Status getStatusById(int statusId) {
+        String sql = "select * from CVStatus c where c.status_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, statusId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Status(statusId, rs.getString(2));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
 }

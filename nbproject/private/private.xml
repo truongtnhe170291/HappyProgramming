@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/src/java/controller/mentor/MentorRequest.java</file>
             <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyProgramming/web/Menter_Request.jsp</file>
+=======
+            <file>file:/D:/TaiLieu/HappyProgramming/web/login.jsp</file>
+            <file>file:/D:/TaiLieu/HappyProgramming/web/Manager.jsp</file>
+            <file>file:/D:/TaiLieu/HappyProgramming/src/java/controller/manager/LoginManager.java</file>
+            <file>file:/D:/TaiLieu/HappyProgramming/src/java/dal/AccountDAO.java</file>
+            <file>file:/D:/TaiLieu/HappyProgramming/web/loginManager.jsp</file>
+>>>>>>> ab312de59d801916d53b223789b335dd6bce0118
         </group>
     </open-files>
 </project-private>

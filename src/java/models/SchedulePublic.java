@@ -22,6 +22,15 @@ public class SchedulePublic {
     public SchedulePublic() {
     }
 
+    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name) {
+        this.selectedId = selectedId;
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.slot_name = slot_name;
+    }
+
     public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
         this.mentorName = mentorName;
         this.selectedId = selectedId;
@@ -96,5 +105,6 @@ public class SchedulePublic {
     public void setSlot_name(String slot_name) {
         this.slot_name = slot_name;
     }
+
 
 }
