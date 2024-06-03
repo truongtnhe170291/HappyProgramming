@@ -69,7 +69,7 @@ public class ListRequest extends HttpServlet {
         try {
             Account a = (Account) request.getSession().getAttribute("user");
             if (a == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("Login.jsp");
                 return;
             }
             // Lấy tham số menteeName từ request
@@ -103,7 +103,7 @@ public class ListRequest extends HttpServlet {
         try {
             List<RequestDTO> rdto = requestDAO.getRequestDetails(requestId);
             request.setAttribute("rdto", rdto);
-            request.getRequestDispatcher("RequestDetails.jsp").forward(request, response);
+            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
