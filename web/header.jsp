@@ -96,9 +96,9 @@
                                                             <i class="uil uil-user"></i> Profile</a>
                                                     </li>
                                                     <li>
-                                                        <a href="">
+                                                        <a href="ListRequest">
                                                             <i class="uil uil-setting"></i>
-                                                            Settings</a>
+                                                            History Request</a>
                                                     </li>
                                                     <li>
                                                         <a href="changepass">
