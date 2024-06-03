@@ -172,7 +172,7 @@
                     </div>
                     <div class="breadcrumb">
                         <ul>
-                            <li><a href="homes.jsp">Home</a> </li>
+                            <li><a href="home.jsp">Home</a> </li>
                             <li class="active"><a href="Menter_Request.jsp">Mentor Request</a> </li>
                         </ul>
                     </div>
@@ -192,7 +192,6 @@
                                             <!-- form -->
                                             <c:set value="${requestScope.listSchedule}" var="listSchedule"/>
                                             <form action="MentorRequest" method="post">
-                                                <input type="hidden" name="mentorname" value="${cv.userName}"/>
                                                 <div class="row">
                                                     <section id="page-content" class="no-sidebar">
                                                         <div class="container">
@@ -214,7 +213,7 @@
                                                                                     <div class="event">
                                                                                         <div class="event-dot" style="background-color: red;"></div>
                                                                                     <div>${s.slot_id} : ${s.slot_name}</div>
-                                                                                    <input type="checkbox" name="schedule" value="${s.slot_id} ${schedule}" autocomplete="off">
+                                                                                    <input type="checkbox" name="schedule" value="${s.slot_id} ${schedule} ${s.slot_name}" autocomplete="off">
                                                                                 </div>
                                                                             </c:forEach>
                                                                         </div>

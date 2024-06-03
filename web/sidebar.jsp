@@ -36,13 +36,21 @@
                         </li>
                      </ul>
                   </li>
-
-     
-                  <li>
-                     <a href="Mentor_Mentee_calendar.jsp" class="">
+                  
+                  <li class="has-child">
+                     <a href="#" class="ch">
                         <span class="nav-icon uil uil-calendar-alt"></span>
                         <span class="menu-text">Calendar</span>
+                        <span class="toggle-icon"></span>
                      </a>
+                     <ul class="toggle">
+                        <li class="l_sidebar">
+                           <a href="MentorRequest">Booking Calendar</a>
+                        </li>
+                        <li class="l_sidebar">
+                           <a href="Mentor_Mentee_calendar.jsp">View Schedule</a>
+                        </li>
+                     </ul>
                   </li>
                   
                   <li class="has-child">
