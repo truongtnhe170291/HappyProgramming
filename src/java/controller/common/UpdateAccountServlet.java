@@ -5,6 +5,7 @@
 package controller.common;
 
 import dal.AccountDAO;
+import dal.MentorDAO;
 import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.Part;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.Skill;
@@ -86,6 +88,7 @@ public class UpdateAccountServlet extends HttpServlet {
             return;
         }
         if (acc.getRoleId() == 2) {
+            MentorDAO mentorDao = new MentorDAO();
             request.setAttribute("user", acc);
             request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
         }
@@ -112,9 +115,9 @@ public class UpdateAccountServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         Part filePart = request.getPart("fileUpload");
-        
-        // D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgcv\\
-        String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\img\\";
+
+        // C:\Users\Admin\Desktop\HappyProgramming\web\img
+        String upload = "C:\\Users\\2k3so\\OneDrive\\Desktop\\HappyProgramming\\web\\img\\";
 
         Account curentAccount = (Account) request.getSession().getAttribute("user");
 
@@ -140,7 +143,7 @@ public class UpdateAccountServlet extends HttpServlet {
             }
         } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
             fileName = oldavata;
-        }else {
+        } else {
             fileName = "default.jpg";
         }
         AccountDAO dao = new AccountDAO();
