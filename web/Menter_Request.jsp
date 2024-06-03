@@ -114,7 +114,7 @@
                     margin-left: 60px;
                 }
                 input[type="checkbox"] {
-/*                    display: none;*/
+                    /*                    display: none;*/
                 }
                 .status {
                     line-height: 50px;
@@ -131,7 +131,7 @@
                 }
 
                 input[type="checkbox"] {
-/*                    display: none;*/
+                    /*                    display: none;*/
                 }
                 #calendar{
                     width: 150%;
@@ -168,108 +168,68 @@
             <section id="page-title">
                 <div class="container">
                     <div class="page-title">
-                        <h1>Mentee Request</h1>
+                        <h1>Mentor Request</h1>
                     </div>
                     <div class="breadcrumb">
                         <ul>
                             <li><a href="homes.jsp">Home</a> </li>
-                            <li class="active"><a href="Mentee_Request.jsp">Mentee Request</a> </li>
+                            <li class="active"><a href="Menter_Request.jsp">Mentor Request</a> </li>
                         </ul>
                     </div>
                 </div>
             </section>
             <div class="wrapper">
-                <c:set value="${requestScope.cv}" var="cv"/>
                 <div class="content-box">
                     <div class="">
-                        <img src="./img/${cv.imgcv}" alt="Mentor Image" class="mentor-image">
-                        <h5>${cv.fullName}</h5>
                         <section id="page-content">
                             <div class="container">
-                                <div class="row">
-                                    <!-- content -->
-                                    <div class="content col-lg-9" >
-                                        <!-- form -->
-                                        <c:set value="${requestScope.listSchedule}" var="listSchedule"/>
-                                        <form action="request" method="post">
-                                            <input type="hidden" name="mentorname" value="${cv.userName}"/>
-                                            <div class="row">
-                                                <div class="col-lg-8">
-                                                    <div class="form-group">
-                                                        <label>Title</label>
-                                                        <input name="title" type="text" id="notify_title" value="" class="form-control notification-message" required="">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Description</label>
-                                                        <textarea name="description" id="notify_message" class="form-control notification-message" placeholder="Type your message here..." required="" rows="5"></textarea>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Deadline Date</label>
-                                                        <input name="deadlineDate" id="notify_message" type="date" class="form-control notification-message" placeholder="" required="" rows="5" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Deadline Hour</label>
-                                                        <input name="deadlineHour" id="notify_message" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
-                                                    </div>
-                                                </div>
-                                                <section id="page-content" class="no-sidebar">
-                                                    <div class="container">
-                                                        <!-- Calendar -->
-                                                        <div class="row mb-5">
-                                                            <div class="col-lg-6">
+                                <div style="text-align: center">
+                                        <h4 style="color: #ffbf00">${error}</h4>
+                                    </div>
+                                    <div class="row">
+                                        <!-- content -->
+                                        <div class="content col-lg-9">
+                                            <!-- form -->
+                                            <c:set value="${requestScope.listSchedule}" var="listSchedule"/>
+                                            <form action="MentorRequest" method="post">
+                                                <input type="hidden" name="mentorname" value="${cv.userName}"/>
+                                                <div class="row">
+                                                    <section id="page-content" class="no-sidebar">
+                                                        <div class="container">
+                                                            <!-- Calendar -->
+                                                            <div class="row mb-5">
+                                                                <div class="col-lg-6">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div class="calendar">
-                                                                    <div class="header">
-                                                                        <h2>${listSchedule.get(0).startTime} - ${listSchedule.get(0).endTime}</h2>
-                                                                    </div>
-
-                                                                    <c:forEach items="${listSchedule}" var="schedule">
-                                                                        <div class="day">
-                                                                            <div class="day-header" >${schedule.nameOfDay}</div>
-                                                                            <div class="event">
-                                                                                <div class="event-dot" style="background-color: red;"></div>
-                                                                                <div>${schedule.slotId}: ${schedule.slot_name}</div>
-                                                                                <!--<label class="btn btn-light rights">  Regis <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off"> </label>-->
-                                                                                <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off">
-                                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="calendar">
+                                                                        <div class="header" style="display: flex, justify-content: center">
+                                                                            <h2>${SundayMonday}</h2>
+                                                                        </div>
+                                                                        <c:forEach items="${period}" var="schedule">
+                                                                            <div class="day">
+                                                                                <div class="day-header">${schedule}</div>
+                                                                                <c:forEach items="${listSlots}" var="s">
+                                                                                    <div class="event">
+                                                                                        <div class="event-dot" style="background-color: red;"></div>
+                                                                                    <div>${s.slot_id} : ${s.slot_name}</div>
+                                                                                    <input type="checkbox" name="schedule" value="${s.slot_id} ${schedule}" autocomplete="off">
+                                                                                </div>
+                                                                            </c:forEach>
                                                                         </div>
                                                                     </c:forEach>
-
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <!-- end: Calendar -->
                                                     </div>
                                                 </section>
-                                                <div class="col-lg-4">
-
-                                                    <div class="form-group mb-25 status-radio ">
-                                                        <label for="hiringDateCheckbox">Skill</label>
-                                                        <div class="d-flex">
-                                                            <c:forEach items="${requestScope.skills}" var="skill">
-                                                                <div class="form-check text-center">
-                                                                    <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
-                                                                    <label class="btn btn-light">
-                                                                        Regis
-                                                                        <input  type="checkbox" name="skills"  <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}"  autocomplete="off">
-                                                                    </label>
-                                                                </div>
-
-                                                            </c:forEach>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="row mt-5">
                                                 <div class="col-lg-9">
-                                                    <button type="submit" id="notify_btn" class="btn btn-primary">
-                                                        Send Request</button>
-                                                    <button type="reset" class="btn btn-primary">
-                                                        Reset
-                                                    </button>
+                                                    <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
+                                                    <button type="reset" class="btn btn-primary">Reset</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -279,6 +239,7 @@
                         </section>
                     </div>
                 </div>
+
             </div>
             <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
             <!--Plugins-->
@@ -288,6 +249,18 @@
             <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
             <script src='plugins/moment/moment.min.js'></script>
             <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var error = "${error}";
+                    var notifyBtn = document.getElementById("notify_btn");
+
+                    if (error && error.trim() !== "") {
+                        notifyBtn.disabled = true;
+                    } else {
+                        notifyBtn.disabled = false;
+                    }
+                });
+            </script>
             <script>
                 document.querySelectorAll('.btn.btn-light').forEach(function (label) {
                     label.addEventListener('click', function () {

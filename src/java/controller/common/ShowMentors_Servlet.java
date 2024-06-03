@@ -76,7 +76,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         // Forward to the courseListSkillDetail.jsp
         request.getRequestDispatcher("courseListSkillDetail.jsp").forward(request, response);
     } catch (SQLException ex) {
-            Logger.getLogger(ShowMentors_Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ShowMentors_Servlet.class.getName()).log(Level.SEVERE, null, ex);    
     }
 }
 

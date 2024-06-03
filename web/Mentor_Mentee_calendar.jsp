@@ -71,33 +71,36 @@
                                             <div class="draggable-events" id="draggable-events">
                                                 <div class="draggable-events__top d-flex justify-content-between">
                                                     <h6>My Calendars</h6>
+                                                    <!--I think we should leave this token-->
                                                     <a href="#">
-                                                        <img class="svg" src="img/svg/plus.svg" alt=""></a>
+                                                        <img class="svg" src="img/svg/plus.svg" alt="">
+                                                    </a>
                                                 </div>
+                                                <!--This will show the student have booking this menter-->
                                                 <ul class="draggable-event-list">
                                                     <li class="draggable-event-list__single d-flex align-items-center" data-class="primary">
                                                         <span class="badge-dot badge-primary"></span>
-                                                        <span class="event-text">Family Events</span>
+                                                        <span class="event-text">Adam</span>
                                                     </li>
                                                     <!-- ends: .draggable-event-list__single -->
                                                     <li class="draggable-event-list__single d-flex align-items-center" data-class="secondary">
                                                         <span class="badge-dot badge-secondary"></span>
-                                                        <span class="event-text">Product Launch</span>
+                                                        <span class="event-text">Son Pham</span>
                                                     </li>
                                                     <!-- ends: .draggable-event-list__single -->
                                                     <li class="draggable-event-list__single d-flex align-items-center" data-class="success">
                                                         <span class="badge-dot badge-success"></span>
-                                                        <span class="event-text">Team Meeting</span>
+                                                        <span class="event-text">Alexandra</span>
                                                     </li>
                                                     <!-- ends: .draggable-event-list__single -->
                                                     <li class="draggable-event-list__single d-flex align-items-center" data-class="primary">
                                                         <span class="badge-dot badge-primary"></span>
-                                                        <span class="event-text">UI/UX Tasks</span>
+                                                        <span class="event-text">Minh Do</span>
                                                     </li>
                                                     <!-- ends: .draggable-event-list__single -->
                                                     <li class="draggable-event-list__single d-flex align-items-center" data-class="warning">
                                                         <span class="badge-dot badge-warning"></span>
-                                                        <span class="event-text">Project Update</span>
+                                                        <span class="event-text">Eva</span>
                                                     </li>
                                                     <!-- ends: .draggable-event-list__single -->
                                                 </ul>

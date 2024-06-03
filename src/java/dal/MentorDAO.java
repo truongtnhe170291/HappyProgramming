@@ -13,6 +13,7 @@ import java.util.List;
 import models.Account;
 import java.util.Date;
 import models.Mentor;
+import models.Slot;
 
 /**
  *
@@ -36,6 +37,21 @@ public class MentorDAO {
         }
     }
 
+    public ArrayList<Slot> listSlots() {
+        ArrayList<Slot> list = new ArrayList<>();
+        try {
+            String query = "select * from [Slots]";
+            con = new DBContext().connection;//mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Slot(rs.getString(1), rs.getString(2)));
+            }
+        } catch (SQLException e) {
+            System.out.println("listSlots: " + e.getMessage());
+        }
+        return list;
+    }
 //    public List<Mentor> getMentors() {
 //        String sql = "select * from mentors m join Accounts a on m.mentor_name = a.user_name";
 //        List<Mentor> list = new ArrayList<>();

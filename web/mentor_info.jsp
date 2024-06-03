@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Update CV of mentor</title>
+
         <style>
             .author_2{
                 transform: translate(750px,-87px);
@@ -25,6 +26,37 @@
             }
         
 
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            td {
+                position: relative;
+            }
+
+            td span {
+                display: block;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            td hr {
+                border: none;
+                border-top: 1px solid #ddd;
+                margin: 5px 0;
+            }
+
+            td input[type="checkbox"] {
+                transform: scale(1.2);
+            }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -192,7 +224,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 </main>
@@ -391,19 +422,30 @@
                                             reader.readAsDataURL(file);
                                         }
                                     });
-                                    
 
-                                        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
-                                            const file = event.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    document.getElementById('profile-imgcv').src = e.target.result;
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        });
- 
+
+                                    document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-imgcv').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+
+                                </script>
+                                <script>
+                                    function checkCVStatus(cvStatus) {
+                                        if (cvStatus !== 2) {
+                                            $('#exampleModal2').modal('show');
+                                            $('#exampleModal2').on('hidden.bs.modal', function (e) {
+                                                location.reload();
+                                            });
+                                        }
+                                    }
+
                                 </script>
                                 </body>
                                 </html>
