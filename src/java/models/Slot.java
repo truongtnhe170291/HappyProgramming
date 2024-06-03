@@ -8,13 +8,13 @@ package models;
  *
  * @author 2k3so
  */
-public class Calendar {
-    private String slot_id, slot_name;
+public class Slot {
+    String slot_id, slot_name;
 
-    public Calendar() {
+    public Slot() {
     }
 
-    public Calendar(String slot_id, String slot_name) {
+    public Slot(String slot_id, String slot_name) {
         this.slot_id = slot_id;
         this.slot_name = slot_name;
     }

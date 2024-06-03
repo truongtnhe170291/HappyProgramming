@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import java.util.Date;
-import models.Calendar;
 import models.Mentor;
+import models.Slot;
 
 /**
  *
@@ -37,15 +37,15 @@ public class MentorDAO {
         }
     }
 
-    public ArrayList<Calendar> listSlots() {
-        ArrayList<Calendar> list = new ArrayList<>();
+    public ArrayList<Slot> listSlots() {
+        ArrayList<Slot> list = new ArrayList<>();
         try {
             String query = "select * from [Slots]";
             con = new DBContext().connection;//mo ket noi voi sql
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Calendar(rs.getString(1), rs.getString(2)));
+                list.add(new Slot(rs.getString(1), rs.getString(2)));
             }
         } catch (SQLException e) {
             System.out.println("listSlots: " + e.getMessage());

@@ -10,6 +10,7 @@ import java.time.DayOfWeek;
  * @author Admin
  */
 public class SchedulePublic {
+    private String mentorName;
     private int selectedId;
     private Date dayOfSlot;
     private String slotId;
@@ -21,13 +22,15 @@ public class SchedulePublic {
     public SchedulePublic() {
     }
 
-    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name) {
+    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
+        this.mentorName = mentorName;
         this.selectedId = selectedId;
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.slot_name = slot_name;
+        this.nameOfDay = nameOfDay;
     }
 
     public DayOfWeek getNameOfDay() {
@@ -38,7 +41,14 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
     }
 
-    
+    public String getMentorName() {
+        return mentorName;
+    }
+
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
+    }
+
     public int getSelectedId() {
         return selectedId;
     }
@@ -86,6 +96,5 @@ public class SchedulePublic {
     public void setSlot_name(String slot_name) {
         this.slot_name = slot_name;
     }
-
 
 }

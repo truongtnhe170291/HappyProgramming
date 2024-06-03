@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
-import models.Calendar;
 import models.Skill;
 import services.CVService;
 
@@ -90,8 +89,6 @@ public class UpdateAccountServlet extends HttpServlet {
         }
         if (acc.getRoleId() == 2) {
             MentorDAO mentorDao = new MentorDAO();
-            ArrayList<Calendar> listSlots = mentorDao.listSlots();
-            request.setAttribute("slot", listSlots);
             request.setAttribute("user", acc);
             request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
         }
