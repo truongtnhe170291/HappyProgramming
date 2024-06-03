@@ -29,17 +29,17 @@
                 line-height: 100px;
                 width: 100px;
                 height: 40px;
-             background-color: #ccc;
-            margin-left: auto;
-            margin-right: 0;
-         outline: none;
-         text-align: center;
-         
+                background-color: #ccc;
+                margin-left: auto;
+                margin-right: 0;
+                outline: none;
+                text-align: center;
+
             }
             .cliick{
-                
+
                 background-color: #8231D3;
-               margin: 5px 5px;
+                margin: 5px 5px;
                 width: 100%;
                 height: 100%;
                 border:none;
@@ -80,20 +80,24 @@
                             <div class="user-info-tab w-100 bg-white global-shadow radius-xl mb-50">
                                 <div class="ap-tab-wrapper border-bottom ">
                                     <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                             
+
                                         <li class="nav-item">
                                             <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
                                                 <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
                                         </li>
-                                     <li class="nav-item fl ">
-                                        
-                                            <input value="Send CV" class="nav-link cliick" id="v-pills-profile-tab" data-bs-toggle="pill" type="submit"/>                            
+                                        <li class="nav-item fl ">
+                                            <h4>${requestScope.cv.status.statusName}</h4>
                                         </li>
-                                   
+                                        <li class="nav-item fl ">
+                                            <form action="apply" method="POST">
+                                                <input value="Send CV" class="nav-link cliick" id="v-pills-profile-tab" data-bs-toggle="pill" type="submit"/>                            
+                                            </form>
+                                        </li>
+
                                     </ul>
                                 </div>
                                 <div class="tab-content" id="v-pills-tabContent">
-                  
+
                                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
@@ -195,12 +199,12 @@
                                                                 <label for="phoneNumber1">Profession introduction</label>
                                                                 <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
                                                             </div>
-                                                            
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
                                                                 <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
                                                             </div>
-                                                            
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
                                                                 <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
@@ -422,20 +426,20 @@
                                         }
                                     });
 
-                                    
-                                    
 
-                                        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
-                                            const file = event.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    document.getElementById('profile-imgcv').src = e.target.result;
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        });
- 
+
+
+                                    document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-imgcv').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+
                                 </script>
                                 </body>
                                 </html>

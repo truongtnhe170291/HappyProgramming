@@ -154,7 +154,7 @@ public class CVServlet extends HttpServlet {
             } else {
                 String msg = "Create or Update Fail";
                 request.setAttribute("msg", msg);
-                request.getRequestDispatcher("ApplyCV.jsp.jsp").forward(request, response);
+                request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
             }
 
         } catch (ServletException | IOException | NumberFormatException e) {
