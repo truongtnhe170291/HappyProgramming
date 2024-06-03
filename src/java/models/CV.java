@@ -19,8 +19,27 @@ public class CV {
     private int[] skills;
     private String imgcv;
     private int stattusId;
+    private Status status;
     
     public CV() {
+    }
+
+    public CV(int cvId, String userName, String gmail, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills, String imgcv, int stattusId, Status status) {
+        this.cvId = cvId;
+        this.userName = userName;
+        this.gmail = gmail;
+        this.fullName = fullName;
+        this.dob = dob;
+        this.sex = sex;
+        this.address = address;
+        this.profession = profession;
+        this.professionIntro = professionIntro;
+        this.achievementDescription = achievementDescription;
+        this.serviceDescription = serviceDescription;
+        this.skills = skills;
+        this.imgcv = imgcv;
+        this.stattusId = stattusId;
+        this.status = status;
     }
 
     public CV(int cvId, String userName, String gmail, String fullName, Date dob, boolean sex, String address, String profession, String professionIntro, String achievementDescription, String serviceDescription, int[] skills, String imgcv, int stattusId) {
@@ -38,6 +57,14 @@ public class CV {
         this.skills = skills;
         this.imgcv = imgcv;
         this.stattusId = stattusId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getStattusId() {

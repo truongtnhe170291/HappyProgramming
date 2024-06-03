@@ -110,8 +110,7 @@ GO
 -- Create Slots table
 CREATE TABLE Slots(
     slot_id VARCHAR(50) PRIMARY KEY,
-    start_slot TIME,
-	end_slot TIME
+    slot_name NVARCHAR(100)
 );
 GO
 
@@ -177,25 +176,6 @@ CREATE TABLE RequestSkills(
 );
 
 GO
-CREATE TABLE ScheduleStatuses(
-	status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name VARCHAR(100)
-)
-GO
-CREATE TABLE Schedule(
-	schedule_id INT IDENTITY(1,1) PRIMARY KEY,
-	mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
-	selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id),
-	status_id INT FOREIGN KEY REFERENCES ScheduleStatuses(status_id)
-)
-GO
-CREATE TABLE ScheduleSkills(
-	schedule_id INT FOREIGN KEY REFERENCES Schedule(schedule_id),
-	skill_id INT FOREIGN KEY REFERENCES Skills(skill_id),
-	PRIMARY KEY (schedule_id, skill_id)
-)
-GO
 -- Create FeedBacks table
 CREATE TABLE FeedBacks(
     mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
@@ -223,7 +203,8 @@ INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [add
  ('truong', 'truongtnhe170291@fpt.edu.vn', 'Tran Nam Truong', '1', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
  ('hieu', 'hieuvq@fpt.edu.vn', 'Vu Quang Hieu', '1', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
  ('minh', 'minhvq@fpt.edu.vn', 'Vu Quang Minh', '1', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
- ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1);
+ ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
+ ('manager', 'manager@fpt.edu.vn', 'Manager', '1', '2002-03-03', 1, '456 HN St', '0977333888', 'manager.jpg', 3, 1);
 GO
 
 -- Insert into Mentees
@@ -237,7 +218,9 @@ INSERT INTO Mentors (mentor_name, rate) VALUES
 ('minh', 3.5),
 ('son', 5.0);
 GO
-
+INSERT INTO Managers (manager_name) VALUES 
+('manager');
+GO
 -- Insert into Skills
 INSERT INTO Skills (skill_name, img, [description], [status]) VALUES 
 ('Java Programming','java.jpg', 'Java development skills', 1),
@@ -274,10 +257,10 @@ INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 1);
 INSERT INTO CVSkills (skill_id, cv_id) VALUES (3, 2);
 
 GO
-INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT01', '7:00', '9:00');
-INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT02', '9:00', '11:00');
-INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT03', '13:00', '15:00');
-INSERT INTO Slots (slot_id, start_slot, end_slot) VALUES ('SLOT04', '15:00', '17:00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT01', '7:00 - 9:00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT02', '9:00 - 11:00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT03', '13:00 - 15:00');
+INSERT INTO Slots (slot_id, slot_name) VALUES ('SLOT04', '15:00 - 17:00');
 
 GO
 
@@ -341,4 +324,4 @@ VALUES
 (2, 3),
 (3, 2),
 (3, 3),
-(4, 1)
+(2, 1)

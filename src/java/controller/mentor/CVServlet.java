@@ -4,6 +4,7 @@
  */
 package controller.mentor;
 
+import dal.SkillDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -15,10 +16,12 @@ import jakarta.servlet.http.Part;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import models.CV;
 import services.CVService;
 import services.SkillService;
 import models.Account;
+import models.Skill;
 import services.AccountService;
 
 /**
@@ -41,6 +44,20 @@ public class CVServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            Account curentAccount = (Account) request.getSession().getAttribute("user");
+            if (curentAccount == null) {
+                response.sendRedirect("Login.jsp");
+                return;
+            }
+            SkillDAO skillDAO = new SkillDAO();
+            CVService cVService = CVService.getInstance();
+            request.setAttribute("cv", cVService.getCVByUserName(curentAccount.getUserName()));
+            List<Skill> list = skillDAO.getSkills();
+            request.setAttribute("skills", list);
+            request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
+        } catch (IOException e) {
+        }
     }
 
     /**
@@ -88,6 +105,9 @@ public class CVServlet extends HttpServlet {
             System.out.println(fileName);
             //Get CV by username
             Account acc = (Account) request.getSession().getAttribute("user");
+            if(acc == null){
+                response.sendRedirect("Login.jsp");
+            }
             // lấy từ session khi người dùng đăng nhập
             String username = acc.getUserName();
             CVService service = CVService.getInstance();
@@ -130,11 +150,11 @@ public class CVServlet extends HttpServlet {
             CV newCv = cvService.createOrUpdateCV(c);
             if (newCv != null) {
                 request.setAttribute("cv", newCv);
-                request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
+                request.getRequestDispatcher("ApplyCV.jsp.jsp").forward(request, response);
             } else {
                 String msg = "Create or Update Fail";
                 request.setAttribute("msg", msg);
-                request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
+                request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
             }
 
         } catch (ServletException | IOException | NumberFormatException e) {
