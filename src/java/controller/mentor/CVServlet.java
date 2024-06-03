@@ -150,7 +150,7 @@ public class CVServlet extends HttpServlet {
             CV newCv = cvService.createOrUpdateCV(c);
             if (newCv != null) {
                 request.setAttribute("cv", newCv);
-                request.getRequestDispatcher("ApplyCV.jsp.jsp").forward(request, response);
+                request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
             } else {
                 String msg = "Create or Update Fail";
                 request.setAttribute("msg", msg);

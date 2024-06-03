@@ -53,7 +53,7 @@
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="ListRequest_Mentor.jsp">Mentee List</a>
+                           <a href="ListRequestMentor">List Request</a>
                         </li>
                      </ul>
                   </li>

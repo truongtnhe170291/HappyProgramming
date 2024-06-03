@@ -106,5 +106,12 @@ public class SchedulePublic {
         this.slot_name = slot_name;
     }
 
+    @Override
+    public String toString() {
+        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", nameOfDay=" + nameOfDay + '}';
+    }
+    
+    
+
 
 }

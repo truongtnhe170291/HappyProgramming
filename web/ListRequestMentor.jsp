@@ -63,9 +63,19 @@ button:hover {
 }
     </style>
     </head>
-    
-    <body>
-        <jsp:include page="header.jsp" />
+        <body class="layout-light side-menu">
+   <div class="mobile-search">
+      <form action="/" class="search-form">
+         <img src="img/svg/search.svg" alt="search" class="svg">
+         <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+      </form>
+   </div>
+   <div class="mobile-author-actions"></div>
+    <jsp:include page="control_nav.jsp" />
+
+        <main class="main-content">
+
+            <jsp:include page="sidebar.jsp" />
         <div class="contents">
         <h1>List of Requests</h1>
         <div class="userDatatable userDatatable--ticket mt-1">
@@ -98,10 +108,10 @@ button:hover {
                                     </tr>
                                  </thead>
                                  
-            <c:forEach var="request" items="${requests}">
+            <c:forEach var="request" items="${requestsMentor}">
                 <tr>
                     <td>${request.title}</td>
-                    <td>${request.mentorName}</td>
+                    <td>${request.menteeName}</td>
                     <td>${request.deadlineDate}</td>
                     <td>${request.deadlineHour}</td>
                     <td>

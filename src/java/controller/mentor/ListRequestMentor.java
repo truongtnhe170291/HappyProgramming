@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.mentee;
 
+package controller.mentor;
+
+import controller.mentee.ListRequest;
 import dal.RequestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,66 +24,52 @@ import models.RequestSkill;
 
 /**
  *
- * @author Admin
+ * @author 84979
  */
-@WebServlet(name = "ListRequest", urlPatterns = {"/ListRequest"})
-public class ListRequest extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+@WebServlet(name="ListRequestMentor", urlPatterns={"/ListRequestMentor"})
+public class ListRequestMentor extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListRequest</title>");
+            out.println("<title>Servlet ListRequestMentor</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListRequest at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ListRequestMentor at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
+   @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         try {
             Account a = (Account) request.getSession().getAttribute("user");
             if (a == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("Login.jsp");
                 return;
             }
-            // Lấy tham số menteeName từ request
-            String menteeName = a.getUserName();
+            String mentor = a.getUserName();
             RequestDAO rdao = new RequestDAO();
-            // Gọi hàm getAllRequests để lấy danh sách các yêu cầu
-            List<RequestSkill> requests = rdao.getAllRequests(menteeName);
+            List<RequestSkill> requests = rdao.getAllRequestsMentor(mentor);
 
-            request.setAttribute("requests", requests);
+            request.setAttribute("requestsMentor", requests);
 
-            // Chuyển hướng đến trang ListRequest.jsp
-            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+            request.getRequestDispatcher("ListRequestMentor.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -102,17 +90,15 @@ public class ListRequest extends HttpServlet {
         RequestDAO requestDAO = new RequestDAO();
         try {
             List<RequestDTO> rdto = requestDAO.getRequestDetails(requestId);
-            request.setAttribute("rdto", rdto);
-            request.getRequestDispatcher("RequestDetails.jsp").forward(request, response);
+            request.setAttribute("rdtos", rdto);
+            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
