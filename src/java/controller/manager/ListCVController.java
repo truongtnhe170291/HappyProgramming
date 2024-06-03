@@ -19,7 +19,7 @@ import models.CV;
  *
  * @author ADMIN
  */
-@WebServlet(name = "ListCVController", urlPatterns = {"/ListCVController"})
+@WebServlet(name = "ListCVController", urlPatterns = {"/listCV"})
 public class ListCVController extends HttpServlet {
 
     /**
@@ -63,7 +63,7 @@ public class ListCVController extends HttpServlet {
         CVDAO dao = new CVDAO();
         List<CV> list = dao.getCVByStatus(1);
         request.setAttribute("cvList", list);
-        request.getRequestDispatcher("ListCV.jsp").forward(request, response);
+        request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }
 
     /**

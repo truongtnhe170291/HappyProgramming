@@ -303,26 +303,31 @@ public class CVDAO {
         return skillsArray;
     }
 
-    public List<CV> getCVByStatus(int status) {
-        String sql = "SELECT [cv_id]\n"
-                + "      ,[mentor_name]\n"
-                + "      ,[status_id]\n"
-                + "  FROM [HappyProgrammingDB].[dbo].[CV]\n"
-                + "  WHERE status_id = ?";
+    public List<CV> getCVByStatus(int status_Id) {
+        String sql = "select * from CV c where c.status_id = ?";
         List<CV> cvList = new ArrayList<>();
-        CV cv = new CV();
-
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, status);
+            ps.setInt(1, status_Id);
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                cv = new CV();
-                cv.setCvId(rs.getInt("cv_id"));
-                cv.setFullName(rs.getString("mentor_name"));
-                cv.setUserName(rs.getString("mentor_name"));
-                cv.setStattusId(rs.getInt("status_id"));
+                int cvId = rs.getInt(1);
+                String username = rs.getString(2);
+                String gmail = rs.getString(3);
+                String fullname = rs.getString(4);
+                Date dob = rs.getDate(5);
+                boolean sex = rs.getBoolean(6);
+                String address = rs.getString(7);
+                String profession = rs.getString(8);
+                String professionIntro = rs.getString(9);
+                String achievementDescription = rs.getString(10);
+                String serviceDescription = rs.getString(11);
+                String avatar = rs.getString(12);
+                int statusId = rs.getInt(13);
+                int[] skills = getSkillsByCvId(cvId);
+                Status status = getStatusById(statusId);
+                CV cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId, status);
                 cvList.add(cv);
             }
         } catch (SQLException e) {
@@ -356,47 +361,6 @@ public class CVDAO {
 
     }
 
-    public CV getCVById(int cv_Id) {
-        String sql = "SELECT [cv_id]\n"
-                + "      ,[mentor_name]\n"
-                + "      ,[gmail]\n"
-                + "      ,[full_name]\n"
-                + "      ,[dob]\n"
-                + "      ,[sex]\n"
-                + "      ,[address]\n"
-                + "      ,[profession]\n"
-                + "      ,[profession_intro]\n"
-                + "      ,[achievement_description]\n"
-                + "      ,[service_description]\n"
-                + "      ,[avatar]\n"
-                + "      ,[status_id]\n"
-                + "  FROM [dbo].[CV]\n"
-                + "  WHERE [cv_id] = ?";
-        CV cv = new CV();
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, cv_Id);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                cv.setCvId(rs.getInt("cv_id"));
-                cv.setUserName(rs.getString("mentor_name"));
-                cv.setGmail(rs.getString("gmail"));
-                cv.setFullName(rs.getString("full_name"));
-                cv.setDob(rs.getDate("dob"));
-                cv.setSex(rs.getBoolean("sex"));
-                cv.setAddress(rs.getString("address"));
-                cv.setProfession(rs.getString("profession"));
-                cv.setProfessionIntro(rs.getString("profession_intro"));
-                cv.setAchievementDescription(rs.getString("achievement_description"));
-                cv.setServiceDescription(rs.getString("service_description"));
-                cv.setImgcv(rs.getString("avatar"));
-                cv.setStattusId(rs.getInt("status_id"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return cv;
-    }
 
     public List<Skill> getSkillsByCVId(int cvId) {
         String sql = "SELECT s.[skill_id], s.[skill_name], s.[description] FROM CVSkills cs JOIN Skills s ON cs.skill_id = s.skill_id\n"

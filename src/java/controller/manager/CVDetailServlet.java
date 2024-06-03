@@ -63,7 +63,7 @@ public class CVDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         int cvId = Integer.parseInt(request.getParameter("cvId"));
         CVDAO dao = new CVDAO();
-        CV cv = dao.getCVById(cvId);
+        CV cv = dao.getCVByCVId(cvId);
         List<Skill> list = dao.getSkillsByCVId(cvId);
         
         request.setAttribute("cv", cv);
