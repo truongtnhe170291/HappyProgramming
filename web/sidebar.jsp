@@ -61,7 +61,7 @@
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="ListRequest_Mentor.jsp">Mentee List</a>
+                           <a href="HandleSlotMentor">Mentee List</a>
                         </li>
                      </ul>
                   </li>
