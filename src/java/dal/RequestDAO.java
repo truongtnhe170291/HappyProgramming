@@ -68,6 +68,40 @@ public class RequestDAO {
         // Trả về danh sách request
         return requests;
     }
+    
+        public List<RequestSkill> getAllRequestsMentor(String mentorName) throws SQLException {
+        // Tạo câu truy vấn SQL để lấy thông tin từ bảng RequestsFormMentee
+        String sql = "  SELECT rfm.*, STRING_AGG(s.skill_name, ', ') AS skills FROM RequestsFormMentee rfm JOIN RequestSkills rs ON rfm.request_id = rs.request_id JOIN Skills s ON rs.skill_id = s.skill_id WHERE mentor_name = ? and rfm.status_id=1 GROUP BY rfm.request_id, rfm.mentor_name, rfm.mentee_name, rfm.deadline_date, rfm.deadline_hour, rfm.title, rfm.description, rfm.status_id;";
+
+        // Chuẩn bị câu truy vấn SQL
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName); // Đặt giá trị cho tham số trong câu truy vấn SQL
+
+        // Thực hiện câu truy vấn và lấy kết quả
+        ResultSet rs = ps.executeQuery();
+
+        // Tạo danh sách để lưu trữ thông tin của các request
+        List<RequestSkill> requests = new ArrayList<>();
+        while (rs.next()) {
+            // Tạo một đối tượng RequestSkill mới và đặt các thuộc tính cho nó
+            RequestSkill request = new RequestSkill();
+            request.setRequestId(rs.getInt("request_id"));
+            request.setMentorName(rs.getString("mentor_name"));
+            request.setMenteeName(rs.getString("mentee_name"));
+            request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+            request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+            request.setTitle(rs.getString("title"));
+            request.setDescription(rs.getString("description"));
+            request.setStatusId(rs.getInt("status_id"));
+            List<Skill> skills = fetchRequestSkills(rs.getInt("request_id"), con);
+            request.setListSkills(skills);
+            // Thêm request vào danh sách
+            requests.add(request);
+        }
+
+        // Trả về danh sách request
+        return requests;
+    }
 
     public List<RequestDTO> getRequestDetails(int requestId) throws SQLException {
         // Tạo câu truy vấn SQL để lấy thông tin từ bảng RequestsFormMentee
