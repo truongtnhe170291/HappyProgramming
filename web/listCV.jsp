@@ -83,12 +83,14 @@
                                                 </thead>
                                                 <tbody>
                                                     <c:forEach items="${requestScope.cvList}" var="cv">
+                                                    <form >
+
                                                         <tr>
                                                             <td>${cv.cvId}</td>
                                                             <td>
                                                                 <div class="d-flex">
                                                                     <div class="userDatatable__imgWrapper d-flex align-items-center">
-                                                                        <a href="#" class="profile-image rounded-circle d-block m-0" style="background-image:url('img/tm6.png'); background-size: cover;"></a>
+                                                                        <a href="#" class="profile-image rounded-circle d-block m-0" style="background-image:url('./imgcv/${cv.imgcv}'); background-size: cover;"></a>
                                                                     </div>
                                                                     <div class="userDatatable-inline-title">
                                                                         <a href="#" class="text-dark fw-500">
@@ -101,19 +103,20 @@
 
                                                             <td>
                                                                 <div class="userDatatable-content d-inline-block">
-                                                                    <span class="bg-opacity-warning color-warning userDatatable-content-status">Pending</span>
+                                                                    <span class="bg-opacity-warning color-warning userDatatable-content-status">${cv.status.statusName}</span>
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <input class="userDatatable-content--date" type="text" />                                       
+                                                                <input id="rate" required name="rate" value="${cv.rate}" class="userDatatable-content--date" type="text" />                                       
                                                             </td>
                                                             <td>
                                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                                     <li>
                                                                         <div class="action-btn">
-                                                                            <a href="#" class="btn btn-primary centaxs" data-bs-toggle="modal" data-bs-target="#ticket_modal" style="background-color: #fff; border: none;">
-                                                                                <i class="uil uil-eye"></i></a>
-                                                                            <div class="modal fade ticket_modal" id="ticket_modal" role="dialog" tabindex="-1" aria-hidden="true">
+                                                                            <a href="#" class="btn btn-primary centaxs" data-bs-toggle="modal" data-bs-target="#${cv.userName}" style="background-color: #fff; border: none;">
+                                                                                <i class="uil uil-eye"></i>
+                                                                            </a>
+                                                                            <div class="modal fade ticket_modal" id="${cv.userName}" role="dialog" tabindex="-1" aria-hidden="true">
                                                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                                                     <div class="modal-content  radius-xl">
                                                                                         <div class="modal-body pb-sm-50 pb-30">
@@ -126,25 +129,21 @@
                                                                                                 </button>
                                                                                             </div>
                                                                                             <div class="ticket_modal-modal">
-                                                                                                <form>
-                                                                                                    <div>CV Id: ${requestScope.cv.cvId}</div><br>
-                                                                                                    <div>Mentor Name: ${requestScope.cv.userName}</div><br>
-                                                                                                    <div>Email: ${requestScope.cv.gmail}</div><br>
-                                                                                                    <div>Full name: ${requestScope.cv.fullName}</div><br>
-                                                                                                    <div>DoB: ${requestScope.cv.dob.toString()}</div><br>
-                                                                                                    <div>Gender: ${requestScope.cv.sex}</div><br>
-                                                                                                    <div>Address: ${requestScope.cv.address}</div><br>
-                                                                                                    <div>Profession: ${requestScope.cv.profession}</div><br>
-                                                                                                    <div>Profession Introduction: ${requestScope.cv.professionIntro}</div><br>
-                                                                                                    <div>Achievement Description: ${requestScope.cv.achievementDescription}</div><br>
-                                                                                                    <div>Service Description: ${requestScope.cv.serviceDescription}</div><br>
-                                                                                                    <div>Skills: 
-                                                                                                        <c:forEach items="${requestScope.skills}" var="s">
-                                                                                                            <p>${s.skillName}</p>
-                                                                                                        </c:forEach>
-                                                                                                    </div><br>
-                                                                                                    <div>Status: ${requestScope.cv.stattusId}</div><br>
-                                                                                                </form>
+                                                                                                <div>Mentor Name: ${cv.userName}</div><br>
+                                                                                                <div>Email: ${cv.gmail}</div><br>
+                                                                                                <div>Full name: ${cv.fullName}</div><br>
+                                                                                                <div>DoB: ${cv.dob}</div><br>
+                                                                                                <div>Gender: ${cv.sex ? "Male" : "Female"}</div><br>
+                                                                                                <div>Address: ${cv.address}</div><br>
+                                                                                                <div>Profession: ${cv.profession}</div><br>
+                                                                                                <div>Profession Introduction: ${cv.professionIntro}</div><br>
+                                                                                                <div>Achievement Description: ${cv.achievementDescription}</div><br>
+                                                                                                <div>Service Description: ${cv.serviceDescription}</div><br>
+                                                                                                <div>Skills: 
+                                                                                                    <c:forEach items="${cv.listSkill}" var="skill">
+                                                                                                        <p>${skill.skillName}</p>
+                                                                                                    </c:forEach>
+                                                                                                </div><br>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -156,19 +155,22 @@
 
                                                                     </li>
                                                                     <li>
-                                                                        <a href="ChangeCVStatusServlet?cvId=${cv.cvId}&status=2&mentorName=${cv.userName}" class="edit">
+                                                                        <button class="edit" id="edit" >
                                                                             <i class="uil uil-check"></i>
-                                                                        </a>
+                                                                        </button>
+
                                                                     </li>
+
                                                                     <li>
-                                                                        <a href="ChangeCVStatusServlet?cvId=${cv.cvId}&status=3" class="remove">
+                                                                        <a href="changeStatus?cvId=${cv.cvId}&status=3" class="remove">
                                                                             <i class="uil uil-times"></i>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
                                                             </td>
                                                         </tr>
-                                                    </c:forEach>
+                                                    </form>
+                                                </c:forEach>
 
                                                 </tbody>
                                             </table>
@@ -219,6 +221,25 @@
         </div>
         <div class="overlay-dark-sidebar"></div>
         <div class="customizer-overlay"></div>
+        <form id="myForm">
+
+        </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', (e) => {
+                e.preventDefault();
+                const edit = document.getElementById('edit');
+                const rate = document.getElementById('rate').value;
+                const form = document.getElementById('myForm');
+                edit.addEventListener('click', function (event) {
+                    // Thi?t l?p giá tr? c?a href
+                    form.action = 'changeStatus?cvId=${cv.cvId}&status=2&rate=' + rate;
+                    form.method = 'get';  
+                    // G?i form
+                    form.submit();
+                });
+            });
+        </script>
+
     </body>
 
 </html>
