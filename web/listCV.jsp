@@ -171,7 +171,6 @@
                                                         </tr>
                                                     </form>
                                                 </c:forEach>
-
                                                 </tbody>
                                             </table>
                                         </div>
