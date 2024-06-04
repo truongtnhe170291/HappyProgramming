@@ -81,6 +81,7 @@ public class MentorRequest extends HttpServlet {
             }
 
             MentorDAO mentorDao = new MentorDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
             ArrayList<Slot> listSlots = mentorDao.listSlots();
 
             LocalDate today = LocalDate.now();
@@ -89,28 +90,30 @@ public class MentorRequest extends HttpServlet {
             LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
             // Tìm ngày Chủ Nhật của tuần tiếp theo
             LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-
             // Mảng để lưu trữ tên các thứ trong tuần
             String[] periodName = new String[7];
             LocalDate currentDay = nextMonday;
 
             for (int i = 0; i < 7; i++) {
-//                periodName[i] = "" + currentDay;
                 periodName[i] = "" + currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " " + currentDay;
                 currentDay = currentDay.plusDays(1);
             }
 
             String SundayMonday = nextMonday + " - " + nextSunday;
 
-            if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
-                String error = "You cannot send request this time! Please try again in next week";
+            if (mentorDao.getNextMonSunByUserName(acc.getUserName()).equalsIgnoreCase(SundayMonday)) {
+                String error = "You already send request! Please try again in next week";
                 request.setAttribute("error", error);
+            } else {
+                if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
+                    String error = "You cannot send request this time! Please try again in next week";
+                    request.setAttribute("error", error);
+                }
+                if (request.getParameter("error") != null) {
+                    String error = "You have booking a schedule for this week";
+                    request.setAttribute("error", error);
+                }
             }
-            if(request.getParameter("error") != null){
-                String error = "You have booking a schedule for this week";
-                request.setAttribute("error", error);
-            }
-
             request.setAttribute("period", periodName);
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("SundayMonday", SundayMonday);
@@ -153,7 +156,7 @@ public class MentorRequest extends HttpServlet {
             mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
             String error = "You cannot send request this time! Please try again in next week";
         }
-        
+
         response.sendRedirect("MentorRequest?error=check");
 
     }

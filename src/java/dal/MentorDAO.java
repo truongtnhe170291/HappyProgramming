@@ -136,4 +136,30 @@ public class MentorDAO {
         }
     }
 
+    public String getNextMonSunByUserName(String userName) {
+        String monSun = "";
+        try {
+            String query = "SELECT TOP(1) * \n"
+                    + "FROM [Selected_Slot] \n"
+                    + "JOIN [Cycle] ON [Selected_Slot].cycle_id = [Cycle].cycle_id\n"
+                    + "WHERE [Selected_Slot].mentor_name = ? \n"
+                    + "ORDER BY [Selected_Slot].cycle_id DESC";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, userName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                monSun += "" + rs.getString(8) + " - " + rs.getString(9);
+            }
+        } catch (Exception e) {
+            System.out.println("getNextMonSunByUserName: " + e.getMessage());
+        }
+        return monSun;
+    }
+
+//    public static void main(String[] args) {
+//        MentorDAO dao = new MentorDAO();
+//        System.out.println(dao.getNextMonSunByUserName("son"));
+//    }
+
 }

@@ -61,7 +61,7 @@
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="HandleSlotMentor">Mentee List</a>
+                           <a href="#">Mentee List</a>
                         </li>
                      </ul>
                   </li>

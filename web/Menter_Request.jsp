@@ -203,12 +203,14 @@
                                                             <div class="row">
                                                                 <div class="col-lg-12">
                                                                     <div class="calendar">
-                                                                        <div class="header" style="display: flex; justify-content: center">
+                                                                        <div class="header" style="display: flex;
+                                                                        justify-content: center">
                                                                             <h2>${SundayMonday}</h2>
                                                                         </div>
                                                                         <c:forEach items="${period}" var="schedule">
                                                                             <div class="day">
                                                                                 <div class="day-header">${schedule}</div>
+
                                                                                 <c:forEach items="${listSlots}" var="s">
                                                                                     <div class="event">
                                                                                         <div class="event-dot" style="background-color: red;"></div>
@@ -216,6 +218,8 @@
                                                                                     <input type="checkbox" name="schedule" value="${s.slot_id} ${schedule} ${s.slot_name}" autocomplete="off">
                                                                                 </div>
                                                                             </c:forEach>
+
+
                                                                         </div>
                                                                     </c:forEach>
                                                                 </div>

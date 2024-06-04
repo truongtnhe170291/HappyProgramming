@@ -41,7 +41,7 @@ public class SchedulePublic {
         this.slot_name = slot_name;
         this.nameOfDay = nameOfDay;
     }
-
+   
     public DayOfWeek getNameOfDay() {
         return nameOfDay;
     }
@@ -112,6 +112,4 @@ public class SchedulePublic {
     }
     
     
-
-
 }

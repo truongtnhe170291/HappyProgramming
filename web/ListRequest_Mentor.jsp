@@ -55,11 +55,7 @@
                                     <table class="table mb-0 table-borderless">
                                         <thead>
                                             <tr class="userDatatable-header">
-                                                <th><span class="userDatatable-title">Mentor Name</span></th>
-                                                <th><span class="userDatatable-title">Slot ID</span></th>
-                                                <th><span class="userDatatable-title">Slot Name</span></th>
-                                                <th><span class="userDatatable-title">Day of Slot</span></th>
-                                                <th><span class="userDatatable-title">Day of Week</span></th>
+                                                <th><span class="userDatatable-title">User Name</span></th>
                                                 <th><span class="userDatatable-title">Start Time</span></th>
                                                 <th><span class="userDatatable-title">End Time</span></th>
                                                 <th><span class="userDatatable-title">Action</span></th>
@@ -69,14 +65,10 @@
                                             <c:forEach var="slot" items="${listSlot}">
                                                 <tr>
                                                     <td><div class="userDatatable-content">${slot.mentorName}</div></td>
-                                                    <td><div class="userDatatable-content">${slot.slotId}</div></td>
-                                                    <td><div class="userDatatable-content">${slot.slot_name}</div></td>
-                                                    <td><div class="userDatatable-content">${slot.dayOfSlot}</div></td>
-                                                    <td><div class="userDatatable-content">${slot.nameOfDay}</div></td>
                                                     <td><div class="userDatatable-content">${slot.startTime}</div></td>
                                                     <td><div class="userDatatable-content">${slot.endTime}</div></td>
                                                     <td>
-                                                        <form action="HandleSlotMentor method="post">
+                                                        <form action="HandleSlotMentor" method="post">
                                                             <input type="hidden" name="selectedId" value="${slot.selectedId}" />
                                                             <button type="submit" name="action" value="2">Approve</button>
                                                             <button type="submit" name="action" value="3">Reject</button>
