@@ -17,7 +17,7 @@ import services.CVService;
  *
  * @author Admin
  */
-@WebServlet(name = "ApplyCVServlet", urlPatterns = {"/apply"})
+@WebServlet(name = "ApplyCVServlet", urlPatterns = {"/aplly"})
 public class ApplyCVServlet extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

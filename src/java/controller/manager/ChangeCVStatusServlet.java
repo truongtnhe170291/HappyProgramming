@@ -73,7 +73,7 @@ public class ChangeCVStatusServlet extends HttpServlet {
                 dao.changeCVStatus(cvId, statusId);
             }
             response.sendRedirect("listCV");
-        } catch (IOException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
         }
 
     }
