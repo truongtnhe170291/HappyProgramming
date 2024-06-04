@@ -57,9 +57,11 @@
                 border: none;
                 cursor: pointer;
             }
-
             button:hover {
                 background-color: #45a049;
+            }
+            .contents{
+                padding : 0px !important;
             }
         </style>
     </head>

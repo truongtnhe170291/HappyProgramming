@@ -357,8 +357,8 @@
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
                                                 <div class="statusol">
-                                                    <span class="bg-opacity-success color-success userDatatable-content-status" style="display:none;font-size: 15px;">open</span>
-                                                    <span class="bg-opacity-danger color-danger userDatatable-content-status" style="display:none;font-size: 15px;">remove</span>
+                                                    <span class="bg-opacity-success color-success userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
+                                                    <span class="bg-opacity-danger color-danger userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
                                                     <span class="bg-opacity-warning color-warning userDatatable-content-status" style="font-size: 15px;">${requestScope.cv.status.statusName}</span>
                                                 </div>
                                                 <div class="mt-40 mb-50">
@@ -548,7 +548,6 @@
                                         var send = document.querySelector('.sets');
 
                                         send.addEventListener('click', (e) => {
-                                            e.preventDefault();
                                             danger.style.display = 'none';
                                             sucess.style.display = 'block';
                                             warning.style.display = 'none';
