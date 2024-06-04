@@ -86,15 +86,15 @@ public class ListRequestMentor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int requestId = Integer.parseInt(request.getParameter("requestId"));
-        RequestDAO requestDAO = new RequestDAO();
-        try {
-            List<RequestDTO> rdto = requestDAO.getRequestDetails(requestId);
-            request.setAttribute("rdtos", rdto);
-            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        int requestId = Integer.parseInt(request.getParameter("requestId"));
+//        RequestDAO requestDAO = new RequestDAO();
+//        try {
+//            List<RequestDTO> rdto = requestDAO.getRequestDetails(requestId);
+//            request.setAttribute("rdtos", rdto);
+//            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
     /** 

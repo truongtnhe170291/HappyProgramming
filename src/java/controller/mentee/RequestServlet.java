@@ -43,8 +43,7 @@ public class RequestServlet extends HttpServlet {
                 return;
             }
             CVDAO cvdao = new CVDAO();
-            //int cvId = Integer.parseInt(request.getParameter("cvId"));
-            int cvId = 2;
+            int cvId = Integer.parseInt(request.getParameter("cvId"));
             SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
             request.setAttribute("skills", list);
@@ -61,7 +60,7 @@ public class RequestServlet extends HttpServlet {
             request.setAttribute("userNameMentor", userName);
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule = scheduleDAO.GetListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
             for (SchedulePublic s : listSchedule) {
                 DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
                 s.setNameOfDay(nameOfDay);

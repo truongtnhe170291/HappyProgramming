@@ -27,41 +27,7 @@ import models.RequestSkill;
 @WebServlet(name = "ListRequest", urlPatterns = {"/ListRequest"})
 public class ListRequest extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ListRequest</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ListRequest at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,14 +35,14 @@ public class ListRequest extends HttpServlet {
         try {
             Account a = (Account) request.getSession().getAttribute("user");
             if (a == null) {
-                response.sendRedirect("Login.jsp");
+                response.sendRedirect("login.jsp");
                 return;
             }
             // Lấy tham số menteeName từ request
             String menteeName = a.getUserName();
             RequestDAO rdao = new RequestDAO();
             // Gọi hàm getAllRequests để lấy danh sách các yêu cầu
-            List<RequestSkill> requests = rdao.getAllRequests(menteeName);
+            List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(2,menteeName);
 
             request.setAttribute("requests", requests);
 
@@ -87,28 +53,21 @@ public class ListRequest extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int requestId = Integer.parseInt(request.getParameter("requestId"));
-        RequestDAO requestDAO = new RequestDAO();
-        try {
-            List<RequestDTO> rdto = requestDAO.getRequestDetails(requestId);
-            request.setAttribute("rdto", rdto);
-            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        int requestId = Integer.parseInt(request.getParameter("requestId"));
+//        RequestDAO requestDAO = new RequestDAO();
+//        try {
+//            List<RequestDTO> requests = requestDAO.getRequestDetails(requestId);
+//            request.setAttribute("requests", requests);
+//            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ListRequest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 
     /**
      * Returns a short description of the servlet.

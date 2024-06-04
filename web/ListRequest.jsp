@@ -1,7 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List of Requests</title>
@@ -23,7 +24,8 @@
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
 
-            th, td {
+            th,
+            td {
                 padding: 10px;
                 text-align: left;
                 border-bottom: 1px solid #ddd;
@@ -57,11 +59,13 @@
                 border: none;
                 cursor: pointer;
             }
+
             button:hover {
                 background-color: #45a049;
             }
-            .contents{
-                padding : 0px !important;
+
+            .contents {
+                padding: 0px !important;
             }
         </style>
     </head>
@@ -91,10 +95,10 @@
                                 <th>
                                     <span class="userDatatable-title">Skills</span>
                                 </th>
+
+
                                 <th>
-                                    <span class="userDatatable-title">Description</span>
-                                </th>
-                                <th class="actions">
+
                                     <span class="userDatatable-title">Actions</span>
                                 </th>
                             </tr>
@@ -113,47 +117,75 @@
                                             </c:forEach>
                                     </ul>
                                 </td>
-                                <td>${request.description}</td>
-                                <td class="d-flex" style="margin-top:12px;"> <!-- Thêm các nút hành động vào cột mới -->
+
+
+
+                                <td class="d-flex" style="margin-top:12px;">
+                                    <!-- Thêm các nút hành động vào cột mới -->
                                     <form method="POST" action="ListRequest">
                                         <input type="hidden" name="requestId" value="${request.requestId}" />
-                                        <div class="action-btn">      
-                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#ticket_modal" style="background-color: #fff; border: none;">
+                                        <div class="action-btn">
+                                            <a href="#" class="btn btn-primary align-center centaxs"
+                                               data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}"
+                                               style="background-color: #fff; border: none;">
 
-                                                <i class="uil uil-eye  align-center" style="color: blue;"></i> </a> 
-                                            <div class="modal fade ticket_modal" id="ticket_modal" role="dialog" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                <i class="uil uil-eye  align-center" style="color: blue;"></i> </a>
+
+                                            <div class="modal fade ticket_modal" id="${request.menteeName}${request.requestId}" role="dialog"
+                                                 tabindex="-1" aria-hidden="true">
+
+                                                <div
+                                                    class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                     <div class="modal-content  radius-xl">
                                                         <div class="modal-body pb-sm-50 pb-30">
                                                             <div class="modal-header">
-                                                                <h1>
-                                                                    Detail
-                                                                </h1>
-                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
                                                                     <img src="img/svg/x.svg" alt="x" class="svg">
                                                                 </button>
                                                             </div>
                                                             <div class="ticket_modal-modal">
-                                                                <form>
-                                                                    <div>CV Id: ${requestScope.cv.cvId}</div><br>
-                                                                    <div>Avatar: ${requestScope.cv.imgcv}</div><br>
-                                                                    <div>Mentor Name: ${requestScope.cv.userName}</div><br>
-                                                                    <div>Email: ${requestScope.cv.gmail}</div><br>
-                                                                    <div>Full name: ${requestScope.cv.fullName}</div><br>
-                                                                    <div>DoB: ${requestScope.cv.dob.toString()}</div><br>
-                                                                    <div>Gender: ${requestScope.cv.sex}</div><br>
-                                                                    <div>Address: ${requestScope.cv.address}</div><br>
-                                                                    <div>Profession: ${requestScope.cv.profession}</div><br>
-                                                                    <div>Profession Introduction: ${requestScope.cv.professionIntro}</div><br>
-                                                                    <div>Achievement Description: ${requestScope.cv.achievementDescription}</div><br>
-                                                                    <div>Service Description: ${requestScope.cv.serviceDescription}</div><br>
-                                                                    <div>Skills: 
-                                                                        <c:forEach items="${requestScope.skills}" var="s">
-                                                                            <p>${s.skillName}</p>
-                                                                        </c:forEach>
-                                                                    </div><br>
-                                                                    <div>Status: ${requestScope.cv.stattusId}</div><br>
-                                                                </form>
+                                                                <h1>Request Details</h1>
+                                                                <div>Title: ${request.title}</div><br>
+                                                                <div>Mentor Name: ${request.mentorName}</div><br>
+                                                                <div>Description: ${request.description}</div><br>
+                                                                <div>Deadline Date: ${request.deadlineDate}</div><br>
+                                                                <div>Deadline Hour ${request.deadlineHour}</div><br>
+                                                                <section id="page-content" class="no-sidebar">
+                                                                    <div class="container">
+                                                                        <!-- Calendar -->
+                                                                        <div class="row mb-5">
+                                                                            <div class="col-lg-6">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                                <div class="calendar">
+                                                                                    <div class="header">
+                                                                                        <h2>${request.listSchedule.get(0).startTime} - ${request.listSchedule.get(0).endTime}</h2>
+                                                                                    </div>
+
+                                                                                    <c:forEach items="${request.listSchedule}" var="schedule">
+                                                                                        <div class="day">
+                                                                                            <div class="day-header" >${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
+                                                                                            <div class="event">
+                                                                                                <div class="event-dot" style="background-color: red;"></div>
+                                                                                                <div>${schedule.slotId}: ${schedule.slot_name}</div>
+                                                                                                <!--<label class="btn btn-light rights">  Regis <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off"> </label>-->
+<!--                                                                                                <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off">-->
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </c:forEach>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- end: Calendar -->
+                                                                    </div>
+                                                                </section>
+                                                                <c:forEach items="${request.listSkills}" var="skill">
+                                                                    <div><label>${skill.skillName}</label></div> <br/>
+                                                                    </c:forEach>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -162,19 +194,28 @@
                                         </div>
 
                                     </form>
-                                    <button style="margin-bottom: 6px; border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;" onclick="editRequest(${request.requestId})"><li>
+
+                                    <button
+                                        style="margin-bottom: 6px; border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
+                                        onclick="editRequest(${request.requestId})">
+                                        <li>
                                             <a href="#" class="edit">
                                                 <i class="uil uil-check"></i>
                                             </a>
-                                        </li></button>
+                                        </li>
+                                    </button>
 
-                                    <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                                    <form method="POST" action="EditOrDeleteRequest"
+                                          onsubmit="return confirm('Are you sure you want to delete this request?');">
                                         <input type="hidden" name="requestId" value="${request.requestId}" />
-                                        <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;" type="submit"> <li>
+                                        <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
+                                                type="submit">
+                                            <li>
                                                 <a href="#" class="remove">
                                                     <i class="uil uil-times"></i>
                                                 </a>
-                                            </li></button>
+                                            </li>
+                                        </button>
                                     </form>
 
 

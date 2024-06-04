@@ -17,7 +17,7 @@
                 <p><strong>Description:</strong> ${request.description}</p>
                 <p><strong>Deadline Date:</strong> ${request.deadlineDate}</p>
                 <p><strong>Deadline Hour:</strong> ${request.deadlineHour}</p>
-                <p><strong>Day of Slot:</strong> ${request.dayOfSlot}</p>
+
                 <p><strong>Start Time:</strong> ${request.startTime}</p>
                 <p><strong>End Time:</strong> ${request.endTime}</p>
                 <p><strong>Status ID:</strong> ${request.statusId}</p>
@@ -25,10 +25,11 @@
                 <ul>
                     <c:forEach var="skill" items="${request.listSkills}">
                         <li>${skill.skillName}</li>
-                    </c:forEach>
+                        </c:forEach>
                 </ul>
                 <c:set var="currentRequestId" value="${request.requestId}" />
             </c:if>
+            <p><strong>Day of Slot:</strong> ${request.dayOfSlot}</p>
             <p><strong>Slot Name:</strong> ${request.slotName}</p>
             <p><strong>Slot ID:</strong> ${request.slotID}</p>
         </c:forEach>
