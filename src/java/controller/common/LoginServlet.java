@@ -113,9 +113,13 @@ public class LoginServlet extends HttpServlet {
             } else if (acc.getRoleId() == 2) {
                 response.sendRedirect("home");
             }
+            if (acc.getRoleId() == 3) {
+            request.setAttribute("mess", "Người dùng không đủ quyền truy cập trang này");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            //request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     }

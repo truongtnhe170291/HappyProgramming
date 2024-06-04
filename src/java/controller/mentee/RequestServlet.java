@@ -43,8 +43,7 @@ public class RequestServlet extends HttpServlet {
                 return;
             }
             CVDAO cvdao = new CVDAO();
-            //int cvId = Integer.parseInt(request.getParameter("cvId"));
-            int cvId = 2;
+            int cvId = Integer.parseInt(request.getParameter("cvId"));
             SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
             request.setAttribute("skills", list);
@@ -61,7 +60,7 @@ public class RequestServlet extends HttpServlet {
             request.setAttribute("userNameMentor", userName);
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule = scheduleDAO.GetListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
             for (SchedulePublic s : listSchedule) {
                 DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
                 s.setNameOfDay(nameOfDay);
@@ -88,21 +87,21 @@ public class RequestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String[] _skills = request.getParameterValues("skills");
-            List<Integer> skills = new ArrayList<>();
-            if (_skills != null) {
-                for (String paramValue : _skills) {
-                    skills.add(Integer.valueOf(paramValue));
-                }
-                System.out.println("tim ra skill");
-            }
-
-            String mentorName = request.getParameter("mentorname");
             Account acc = (Account) request.getSession().getAttribute("user");
             if (acc == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
+            String[] _skills = request.getParameterValues("skills");
+            List<Integer> skills = new ArrayList<>();
+            if (_skills != null) {
+                for (String paramValue : _skills) {
+                    skills.add(Integer.valueOf(paramValue));
+                    System.out.println(paramValue);
+                }
+            }
+
+            String mentorName = request.getParameter("mentorname");
             String menteeName = acc.getUserName();
             String title = request.getParameter("title");
             String rawDatelineDate = request.getParameter("deadlineDate");
@@ -120,22 +119,12 @@ public class RequestServlet extends HttpServlet {
             RequestDAO dao = new RequestDAO();
             if (dao.insertRequest(new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour), skills, listSelected)) {
                 System.out.println("Insert thành công");
+                response.sendRedirect("ListRequest");
             } else {
                 System.out.println("insert fails");
             }
         } catch (NumberFormatException e) {
         }
-
-//        boolean rs = dao.insertRequest(new Request(
-//                1,
-//                rawMentorName,
-//                rawMenteeName,
-//                dateLineDate,
-//                rawTitle,
-//                rawDescription,
-//                1,
-//                time), skills);
-        response.sendRedirect("http://localhost:8080/happyprogramming/RequestController?isTrue=");
 
     }
 

@@ -12,73 +12,37 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public class RequestDTO extends RequestSkill{
+public class RequestDTO extends Request{
     
-    private LocalDate dayOfSlot;
-    private LocalDate startTime;
-    private LocalDate endTime;
-    private String slotName;
-    private String slotID;
-
+    private List<Skill> listSkills;
+    private List<SchedulePublic> listSchedule;
+    private Status status;
     public RequestDTO() {
     }
-    
-    
-    public RequestDTO(LocalDate dayOfSlot, LocalDate startTime, LocalDate endTime, String slotName, String slotID, List<Skill> listSkills, int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
-        super(listSkills, requestId, mentorName, menteeName, deadlineDate, title, description, statusId, deadlineHour);
-        this.dayOfSlot = dayOfSlot;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.slotName = slotName;
-        this.slotID = slotID;
+
+    public Status getStatus() {
+        return status;
     }
 
-    public LocalDate getDayOfSlot() {
-        return dayOfSlot;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public void setDayOfSlot(LocalDate dayOfSlot) {
-        this.dayOfSlot = dayOfSlot;
+    public List<Skill> getListSkills() {
+        return listSkills;
     }
 
-    public LocalDate getStartTime() {
-        return startTime;
+    public void setListSkills(List<Skill> listSkills) {
+        this.listSkills = listSkills;
     }
 
-    public void setStartTime(LocalDate startTime) {
-        this.startTime = startTime;
+    public List<SchedulePublic> getListSchedule() {
+        return listSchedule;
     }
 
-    public LocalDate getEndTime() {
-        return endTime;
+    public void setListSchedule(List<SchedulePublic> listSchedule) {
+        this.listSchedule = listSchedule;
     }
-
-    public void setEndTime(LocalDate endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getSlotName() {
-        return slotName;
-    }
-
-    public void setSlotName(String slotName) {
-        this.slotName = slotName;
-    }
-
-    public String getSlotID() {
-        return slotID;
-    }
-
-    public void setSlotID(String slotID) {
-        this.slotID = slotID;
-    }
-
-    @Override
-    public String toString() {
-        return "RequestDTO{" + super.toString() +"dayOfSlot=" + dayOfSlot + ", startTime=" + startTime + ", endTime=" + endTime + ", slotName=" + slotName + ", slotID=" + slotID + '}';
-    }
-    
-    
     
     
     

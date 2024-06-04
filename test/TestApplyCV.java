@@ -1,4 +1,7 @@
 
+import dal.CVDAO;
+import java.util.List;
+import models.CV;
 import services.CVService;
 
 /*
@@ -12,12 +15,15 @@ import services.CVService;
  */
 public class TestApplyCV {
     public static void main(String[] args) {
-        CVService cv_service = CVService.getInstance();
-        String userName = "son";
-        if (cv_service.updateStatusCV(userName, 1)) {
-            System.out.println("Ok");
-        }else{
-            System.out.println("Not ok");
-        }
+//        CVService cv_service = CVService.getInstance();
+//        String userName = "son";
+//        if (cv_service.updateStatusCV(userName, 1)) {
+//            System.out.println("Ok");
+//        }else{
+//            System.out.println("Not ok");
+//        }
+//    CVDAO dao = new CVDAO();
+//        List<CV> list = dao.getCVByStatus(1);
+//        System.out.println(list.size());
     }
 }

@@ -61,7 +61,7 @@
                      </a>
                      <ul class="toggle">
                         <li class="">
-                           <a href="#">Mentee List</a>
+                           <a href="ListRequestMentor">List Request</a>
                         </li>
                      </ul>
                   </li>
@@ -87,7 +87,7 @@
                             </a>
                         <ul class="toggle">
                         <li class="">
-                           <a href="listCV.jsp">All CV</a>
+                           <a href="listCV">All CV</a>
                         </li>
                      </ul>
                  

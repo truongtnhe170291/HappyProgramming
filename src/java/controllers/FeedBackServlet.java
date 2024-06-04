@@ -13,14 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import models.Account;
 import models.FeedBack;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="FeedBackServlet", urlPatterns={"/FeedBackServlet"})
+@WebServlet(name = "FeedBackServlet", urlPatterns = {"/feedback"})
 public class FeedBackServlet extends HttpServlet {
    
     /** 
@@ -58,10 +60,10 @@ public class FeedBackServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       FeedBackDAO feedBackDAO = new FeedBackDAO();
-        ArrayList<FeedBack> list = feedBackDAO.listFeedBacks();
-        request.setAttribute("listFeedBack", list);
-        request.getRequestDispatcher("ListFeedBack.jsp").forward(request, response);
+//       FeedBackDAO feedBackDAO = new FeedBackDAO();
+//        ArrayList<FeedBack> list = feedBackDAO.listFeedBacks();
+//        request.setAttribute("listFeedBack", list);
+//        request.getRequestDispatcher("ListFeedBack.jsp").forward(request, response);
     } 
 
 
@@ -75,37 +77,36 @@ public class FeedBackServlet extends HttpServlet {
 @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    try {
-        // Get data from form
-      
-        String mentorName = request.getParameter("mentorName");
-        String menteeName = request.getParameter("menteeName");
-        int star = Integer.parseInt(request.getParameter("star"));
-        String comment = request.getParameter("comment");
+   try {
+            HttpSession session = request.getSession();
+            //kiểm tra đã login chx
+            Account account = (Account) session.getAttribute("user");
+            
+            if (account != null) {
+                //lấy thông tin đã nhập từ jsp
+                int star = Integer.parseInt(request.getParameter("rate"));
+                String comment = request.getParameter("comment");
+                String mentorName = request.getParameter("mentorname");
+                java.util.Date utilDate = new java.util.Date(); // Current date
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Convert to java.sql.Date
 
-        // Create new FeedBack object
-        FeedBack feedBack = new FeedBack(mentorName, menteeName, star, comment, new java.sql.Date(System.currentTimeMillis()));
+                FeedBack feedBack = new FeedBack(mentorName, account.getUserName(), star, comment, sqlDate);
 
-        // Save to database
-        FeedBackDAO feedBackDAO = new FeedBackDAO();
-        String status = feedBackDAO.addFeedBack(mentorName, menteeName, star, comment);
+                FeedBackDAO feedBackDAO = new FeedBackDAO();
+                String status = feedBackDAO.addFeedBack(feedBack);
 
-        // Redirect or forward based on status
-        if ("OK".equals(status)) {
-            // If successful, redirect to a success page or reload the page
-            doGet(request, response);
-        } else {
-            // If there was an error, forward back to the form page and display an error message
-            request.setAttribute("error", "There was an error submitting your feedback. Please try again.");
-            request.getRequestDispatcher("FeedBackForm.jsp").forward(request, response);
+                if ("OK".equals(status)) {
+                    response.getWriter().write("thanh cong "); // Redirect on success
+                } else {
+                    response.getWriter().write("fail to insert: " + status); // Chi tiết lỗi// Redirect on failure
+                }
+            } else {
+                response.sendRedirect("login.jsp?error=You must be logged in to submit feedback.");
+            }
+        } catch (Exception e) {     
+            e.printStackTrace();
+            response.getWriter().write("Lỗi hệ thống ");
         }
-    } catch (Exception e) {
-        // Handle any exceptions (e.g., invalid input, database connection issues)
-        e.printStackTrace();
-        // Forward back to the form page and display an error message
-        request.setAttribute("error", "An unexpected error occurred. Please try again later.");
-        request.getRequestDispatcher("feedbackForm.jsp").forward(request, response);
-    }
 }
 
     /** 

@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-@WebServlet(name = "ChangeCVStatusServlet", urlPatterns = {"/ChangeCVStatusServlet"})
+@WebServlet(name = "ChangeCVStatusServlet", urlPatterns = {"/changeStatus"})
 public class ChangeCVStatusServlet extends HttpServlet {
 
     /**
@@ -59,20 +59,22 @@ public class ChangeCVStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int cvId = Integer.parseInt(request.getParameter("cvId"));
-        int statusId = Integer.parseInt(request.getParameter("status"));
-        if (statusId == 2) {
-            String mentorName = request.getParameter("mentorName");
-            request.setAttribute("cvId", cvId);
-            request.setAttribute("statusId", statusId);
-            request.setAttribute("mentorName", mentorName);
-
-            request.getRequestDispatcher("CVConfirm.jsp").forward(request, response);
+        try {
+            int cvId = Integer.parseInt(request.getParameter("cvId"));
+            int statusId = Integer.parseInt(request.getParameter("status"));
+            CVDAO dao = new CVDAO();
+            if (statusId == 3) {
+                dao.changeCVStatus(cvId, statusId);
+            } else {
+                double rate = Double.parseDouble(request.getParameter("rate"));
+                String mentorName = request.getParameter("mentorName");
+                MentorDAO mDAO = new MentorDAO();
+                mDAO.changeMentorRate(mentorName, rate);
+                dao.changeCVStatus(cvId, statusId);
+            }
+            response.sendRedirect("listCV");
+        } catch (NumberFormatException e) {
         }
-         
-        CVDAO dao = new CVDAO();
-        dao.changeCVStatus(cvId, statusId);
-        response.sendRedirect("ListCVController");
 
     }
 
@@ -87,18 +89,7 @@ public class ChangeCVStatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int cvId = Integer.parseInt(request.getParameter("cvId"));
-        int statusId = Integer.parseInt(request.getParameter("statusId"));
-        double rate = Double.parseDouble(request.getParameter("rate"));
-        String mentorName = request.getParameter("mentorName");
-        
-        MentorDAO mDAO = new MentorDAO();
-        mDAO.changeMentorRate(mentorName, rate);
-        
-        CVDAO dao = new CVDAO();
-        dao.changeCVStatus(cvId, statusId);
-        response.sendRedirect("ListCVController");
-        
+       
     }
 
     /**
