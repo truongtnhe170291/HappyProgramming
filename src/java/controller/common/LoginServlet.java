@@ -119,7 +119,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            //request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     }

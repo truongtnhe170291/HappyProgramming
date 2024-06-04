@@ -82,7 +82,7 @@
                 background-color: #f2f2f2;
 
                 .mentor-image {
-                    transform: translateX(300%);
+                    transform: translateX(150%);
                     border-radius: 50%;
                     width: 200px;
                     height: 200px;
@@ -114,7 +114,7 @@
                     margin-left: 60px;
                 }
                 input[type="checkbox"] {
-/*                    display: none;*/
+                    /*                    display: none;*/
                 }
                 .status {
                     line-height: 50px;
@@ -131,7 +131,7 @@
                 }
 
                 input[type="checkbox"] {
-/*                    display: none;*/
+                    /*                    display: none;*/
                 }
                 #calendar{
                     width: 150%;
@@ -159,6 +159,11 @@
 
                 .rights {
                     margin-left: auto;
+                }
+                .event{
+                    display: flex;
+                    justify-content: space-between;
+
                 }
             </style>
         </head>
@@ -230,10 +235,9 @@
                                                                         <div class="day">
                                                                             <div class="day-header" >${schedule.nameOfDay}</div>
                                                                             <div class="event">
-                                                                                <div class="event-dot" style="background-color: red;"></div>
+
                                                                                 <div>${schedule.slotId}: ${schedule.slot_name}</div>
-                                                                                <!--<label class="btn btn-light rights">  Regis <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off"> </label>-->
-                                                                                <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off">
+                                                                                <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off" >
                                                                             </div>
                                                                         </div>
                                                                     </c:forEach>
@@ -251,12 +255,10 @@
                                                         <div class="d-flex">
                                                             <c:forEach items="${requestScope.skills}" var="skill">
                                                                 <div class="form-check text-center">
-                                                                    <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
-                                                                    <label class="btn btn-light">
-                                                                        Regis
-                                                                        <input  type="checkbox" name="skills"  <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}"  autocomplete="off">
-                                                                    </label>
-                                                                </div>
+                                                                    <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>       
+
+                                                                    <input  type="checkbox" name="skills" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
+                                                                    </div>
 
                                                             </c:forEach>
                                                         </div>
