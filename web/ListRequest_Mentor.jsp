@@ -69,13 +69,16 @@
                                                     <td><div class="userDatatable-content">${slot.endTime}</div></td>
                                                     <td>
                                                         <form action="HandleSlotMentor" method="post">
-                                                            <input type="hidden" name="selectedId" value="${slot.selectedId}" />
+                                                            <input type="hidden" name="mentorName" value="${slot.mentorName}" />
+                                                            <input type="hidden" name="cycleID" value="${slot.cycleID}" />
                                                             <button type="submit" name="action" value="2">Approve</button>
                                                             <button type="submit" name="action" value="3">Reject</button>
                                                         </form>
+
                                                     </td>
                                                 </tr>
                                             </c:forEach>
+
                                         </tbody>
                                     </table>
                                 </div>

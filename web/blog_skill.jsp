@@ -9,6 +9,57 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<style>
+    .search-form {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-form img {
+        margin-right: 10px; /* Adjust as needed */
+    }
+    .svg{
+        margin-bottom: 40px
+    }
+    .search-form input {
+        margin-bottom: 40px; /* Adjust as needed */
+    }
+ 
+    .bu1 {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 40px;
+}
+
+.bu1:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.bu1:focus, .bu1.focus {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+   
+    
+</style>
+
     <head>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,6 +84,13 @@
             <!-- Content -->
             <section id="page-content">
                 <div class="container">
+                    <form action="SearchSkill" method="post" class="search-form">
+                        <img src="img/svg/search.svg" alt="search" class="svg">
+                        <input class="form-control me-sm-2 box-shadow-none" type="search" name="searchTerm" placeholder="Search..." aria-label="Search">
+                        <button type="submit" class="bu1">Search</button>
+                    </form>
+
+
                     <!-- post content -->
                     <!-- Portfolio Filter -->
                     <nav class="grid-filter gf-outline" data-layout="#blog">
@@ -45,8 +103,7 @@
                             <li><a href="#" data-category=".bc-sport">Sport</a></li>
                             <li><a href="#" data-category=".bc-science">Science</a></li>
                         </ul>
-                        <div class="grid-active-title">Show All</div>
-                    </nav>
+                    </nav> 
                     <!-- end: Portfolio Filter -->
                     <!-- Blog -->
                     <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
