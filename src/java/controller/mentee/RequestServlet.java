@@ -61,6 +61,10 @@ public class RequestServlet extends HttpServlet {
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            if(listSchedule.isEmpty()){
+                response.sendRedirect("homes.jsp");
+                return;
+            }
             for (SchedulePublic s : listSchedule) {
                 DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
                 s.setNameOfDay(nameOfDay);
