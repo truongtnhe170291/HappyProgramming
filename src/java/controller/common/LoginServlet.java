@@ -4,7 +4,7 @@
  */
 package controller.common;
 
-import dal.AccountDAO;
+import dal.MD_5;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -88,8 +88,12 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
+            // Hash the input password
+            MD_5 md5 = new MD_5();
+            String hashedPassword = md5.getMd5(password);
+
             AccountService accountService = AccountService.getInstance();
-            Account acc = accountService.getAccount(username, password); // Lấy thông tin tài khoản từ username
+            Account acc = accountService.getAccount(username, hashedPassword); // Retrieve account info using username and hashed password
 
             // Check if account exists
             if (acc == null) {
@@ -98,8 +102,8 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // Check if password matches
-            if (!acc.getPassword().equals(password)) {
+            // Check if password matches (hashed password)
+            if (!acc.getPassword().equals(hashedPassword)) {
                 request.setAttribute("mess", "Invalid username or password");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
@@ -113,13 +117,9 @@ public class LoginServlet extends HttpServlet {
             } else if (acc.getRoleId() == 2) {
                 response.sendRedirect("home");
             }
-            if (acc.getRoleId() == 3) {
-            request.setAttribute("mess", "Người dùng không đủ quyền truy cập trang này");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");
-            //request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     }
