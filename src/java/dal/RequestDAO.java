@@ -21,6 +21,7 @@ import models.RequestDTO;
 import models.RequestSkill;
 import models.SchedulePublic;
 import models.Skill;
+import models.Status;
 
 public class RequestDAO {
 
@@ -75,39 +76,7 @@ public class RequestDAO {
 //        // Trả về danh sách request
 //        return requests;
 //    }
-    public List<RequestSkill> getAllRequestsMentor(String mentorName) throws SQLException {
-        // Tạo câu truy vấn SQL để lấy thông tin từ bảng RequestsFormMentee
-        String sql = "  SELECT rfm.*, STRING_AGG(s.skill_name, ', ') AS skills FROM RequestsFormMentee rfm JOIN RequestSkills rs ON rfm.request_id = rs.request_id JOIN Skills s ON rs.skill_id = s.skill_id WHERE mentor_name = ? and rfm.status_id=1 GROUP BY rfm.request_id, rfm.mentor_name, rfm.mentee_name, rfm.deadline_date, rfm.deadline_hour, rfm.title, rfm.description, rfm.status_id;";
 
-        // Chuẩn bị câu truy vấn SQL
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, mentorName); // Đặt giá trị cho tham số trong câu truy vấn SQL
-
-        // Thực hiện câu truy vấn và lấy kết quả
-        ResultSet rs = ps.executeQuery();
-
-        // Tạo danh sách để lưu trữ thông tin của các request
-        List<RequestSkill> requests = new ArrayList<>();
-        while (rs.next()) {
-            // Tạo một đối tượng RequestSkill mới và đặt các thuộc tính cho nó
-            RequestSkill request = new RequestSkill();
-            request.setRequestId(rs.getInt("request_id"));
-            request.setMentorName(rs.getString("mentor_name"));
-            request.setMenteeName(rs.getString("mentee_name"));
-            request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
-            request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
-            request.setTitle(rs.getString("title"));
-            request.setDescription(rs.getString("description"));
-            request.setStatusId(rs.getInt("status_id"));
-            List<Skill> skills = fetchRequestSkills(rs.getInt("request_id"), con);
-            request.setListSkills(skills);
-            // Thêm request vào danh sách
-            requests.add(request);
-        }
-
-        // Trả về danh sách request
-        return requests;
-    }
 
     public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(int statusId, String menteeName) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
@@ -145,6 +114,51 @@ public class RequestDAO {
 
         return requests;
     }
+
+    
+     public List<RequestDTO> getRequestOfMentorInDeadlineByStatus(String mentorName) throws SQLException {
+    List<RequestDTO> requests = new ArrayList<>();
+    try {
+        String sql = "SELECT r.*, rs.status_name \n" +
+                     "FROM RequestsFormMentee r \n" +
+                     "JOIN RequestStatuses rs ON r.status_id = rs.status_id \n" +
+                     "WHERE CONVERT(DATETIME, r.deadline_date) + CAST(r.deadline_hour AS DATETIME) > GETDATE() \n" +
+                     " AND r.mentor_name = ?";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            RequestDTO request = new RequestDTO();
+            request.setRequestId(rs.getInt("request_id"));
+            request.setMentorName(rs.getString("mentor_name"));
+            request.setMenteeName(rs.getString("mentee_name"));
+            request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+            request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+            request.setDescription(rs.getString("description"));
+            request.setTitle(rs.getString("title"));
+            
+            int status_id = rs.getInt("status_id");
+            String status_name = rs.getString("status_name");
+            Status status = new Status(status_id, status_name);
+            request.setStatus(status);
+            
+            requests.add(request);
+        }
+        for (RequestDTO requ : requests) {
+            List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+            requ.setListSkills(skills);
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+            List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+            requ.setListSchedule(listSchedule);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("getRequestOfMentorInDeadlineByStatus: " + e.getMessage());
+    }
+
+    return requests;
+}
+
 
     public int getRequestId() {
         String sql = "select TOP 1 r.request_id from RequestsFormMentee r order by r.request_id desc";
@@ -191,7 +205,6 @@ public class RequestDAO {
             int result = ps.executeUpdate();
 
             if (result == 1) {
-                // Lấy ra request mới nhất
                 int requestId = getRequestId();
                 for (Integer skill : skills) {
                     insertRequestSkills(requestId, skill);
@@ -287,7 +300,28 @@ public class RequestDAO {
             System.out.println(e.getMessage());
         }
     }
+   
+    
+    public boolean updateStatus(int requestId, int statusId) throws SQLException {
+        String sql = "UPDATE RequestsFormMentee SET status_id = ? WHERE request_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, statusId);
+            ps.setInt(2, requestId);
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        }
+    }
 
+    public void checkAndUpdateOverdueStatus() throws SQLException {
+        String sql = "UPDATE RequestsFormMentee " +
+                     "SET status_id = 4 " +
+                     "WHERE CONVERT(DATETIME, deadline_date) + CAST(deadline_hour AS DATETIME) < GETDATE() " +
+                     "AND status_id != 4";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.executeUpdate();
+        }
+    }
+        
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
         List<RequestDTO> rList = rdao.getRequestOfMenteeInDeadlineByStatus(2, "truong");
