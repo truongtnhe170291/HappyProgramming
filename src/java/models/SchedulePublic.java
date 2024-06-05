@@ -18,6 +18,7 @@ public class SchedulePublic {
     private Date endTime;
     private String slot_name;
     private DayOfWeek nameOfDay;
+    private int cycleID;
 
     public SchedulePublic() {
     }
@@ -30,6 +31,17 @@ public class SchedulePublic {
         this.endTime = endTime;
         this.slot_name = slot_name;
     }
+    
+    public SchedulePublic(String mentorName, Date dayOfSlot, String slotId, Date startTime, Date endTime, int cycleID) {
+        this.mentorName = mentorName;
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.cycleID = cycleID;
+    }
+    
+    
 
     public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
         this.selectedId = selectedId;
@@ -52,6 +64,15 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
     }
 
+    public int getCycleID() {
+        return cycleID;
+    }
+
+    public void setCycleID(int cycleID) {
+        this.cycleID = cycleID;
+    }
+   
+    
     public DayOfWeek getNameOfDay() {
         return nameOfDay;
     }
@@ -122,6 +143,4 @@ public class SchedulePublic {
     }
     
     
-
-
 }

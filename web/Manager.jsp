@@ -26,7 +26,87 @@
    <div class="mobile-author-actions"></div>
  <jsp:include page="control_nav.jsp" />
         <main class="main-content">
-            <jsp:include page="sidebar.jsp" />
+            <div class="sidebar-wrapper">
+         <div class="sidebar sidebar-collapse" id="sidebar">
+            <div class="sidebar__menu-group">
+               <ul class="sidebar_nav">
+                  <li class="has-child">
+                     <a href="#" class="ch">
+                        <span class="nav-icon uil uil-window-section"></span>
+                        <span class="menu-text">Layouts</span>
+                        <span class="toggle-icon"></span>
+                     </a>
+                     <ul class="toggle">
+                        <li class="l_sidebar">
+                           <a href="#" data-layout="light">Light Mode</a>
+                        </li>
+                        <li class="l_sidebar">
+                           <a href="#" data-layout="dark">Dark Mode</a>
+                        </li>
+                     </ul>
+                  </li>
+                  
+                  <li class="has-child">
+                     <a href="#" class="ch">
+                        <span class="nav-icon uil uil-calendar-alt"></span>
+                        <span class="menu-text">Calendar</span>
+                        <span class="toggle-icon"></span>
+                     </a>
+                     <ul class="toggle">
+                        <li class="l_sidebar">
+                           <a href="MentorRequest">Booking Calendar</a>
+                        </li>
+                        <li class="l_sidebar">
+                           <a href="Mentor_Mentee_calendar.jsp">View Schedule</a>
+                        </li>
+                     </ul>
+                  </li>
+                  
+                  <li class="has-child">
+                     <a href="#" class="ch">
+                        <span class="nav-icon uil uil-users-alt"></span>
+                        <span class="menu-text">Menter </span>
+                        <span class="toggle-icon"></span>
+                     </a>
+                     <ul class="toggle">
+                        <li class="">
+                           <a href="HandleSlotMentor">Menter Request</a>
+                        </li>
+                     </ul>
+                  </li>
+                  <li class="has-child">
+                     <a href="#" class="ch">
+                        <span class="nav-icon uil uil-users-alt"></span>
+                        <span class="menu-text">CV</span>
+                        <span class="toggle-icon"></span>
+                     </a>
+                     <ul class="toggle">
+                        <li class="">
+                           <a href="cv">Apply CV</a>
+                        </li>
+                     </ul>
+                  </li>
+                   <li class="has-child">
+                     <a href="listCV.jsp" class="ch">
+                        <span class="nav-icon uil uil-users-alt"></span>
+                        <span class="menu-text">List CV</span>
+                        <span class="toggle-icon">
+                            
+                        </span>
+                            </a>
+                        <ul class="toggle">
+                        <li class="">
+                           <a href="listCV.jsp">All CV</a>
+                        </li>
+                     </ul>
+                 
+                    
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+                <jsp:include page="style/linkJS.jsp" />
       <div class="contents">
 
          <div class="container-fluid">

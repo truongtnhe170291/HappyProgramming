@@ -78,6 +78,7 @@ public class MentorDAO {
 //            System.out.println(m.getUserName());
 //        }
 //    }
+
     public boolean changeMentorRate(String mentorName, double rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
                 + "SET [rate] = ?\n"
@@ -99,5 +100,66 @@ public class MentorDAO {
         return true;
 
     }
+
+    public int getCycleIdByStart_End(String start, String end) {
+        int cycleId = 0;
+        try {
+            String query = "SELECT * FROM Cycle Where start_time = ? and end_time = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, start);
+            ps.setString(2, end);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                cycleId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println("getCycleIdByStart_End: " + e.getMessage());
+        }
+        return cycleId;
+    }
+
+    public void insertSchedulePublic(String mentor_name, String slot_id, int cycle_id, String day_of_slot, int status_id) {
+        try {
+            String query = "INSERT INTO Selected_Slot(mentor_name, slot_id, cycle_id, day_of_slot, status_id) VALUES (?, ?, ?, ?, ?)";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, mentor_name);
+            ps.setString(2, slot_id);
+            ps.setInt(3, cycle_id);
+            ps.setString(4, day_of_slot);
+            ps.setInt(5, status_id);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("insertSchedulePublic: " + e.getMessage());
+        }
+    }
+
+    public String getNextMonSunByUserName(String userName) {
+        String monSun = "";
+        try {
+            String query = "SELECT TOP(1) * \n"
+                    + "FROM [Selected_Slot] \n"
+                    + "JOIN [Cycle] ON [Selected_Slot].cycle_id = [Cycle].cycle_id\n"
+                    + "WHERE [Selected_Slot].mentor_name = ? \n"
+                    + "ORDER BY [Selected_Slot].cycle_id DESC";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, userName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                monSun += "" + rs.getString(8) + " - " + rs.getString(9);
+            }
+        } catch (Exception e) {
+            System.out.println("getNextMonSunByUserName: " + e.getMessage());
+        }
+        return monSun;
+    }
+
+//    public static void main(String[] args) {
+//        MentorDAO dao = new MentorDAO();
+//        System.out.println(dao.getNextMonSunByUserName("son"));
+//    }
 
 }

@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.manager;
+package controller.common;
 
-import dal.ScheduleDAO;
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import models.SchedulePublic;
+import models.Skill;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="HandleSlotMentor", urlPatterns={"/HandleSlotMentor"})
-public class HandleRequestMentor extends HttpServlet {
+@WebServlet(name="SearchSkill", urlPatterns={"/SearchSkill"})
+public class SearchSkill extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +38,10 @@ public class HandleRequestMentor extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HandleRequestMentor</title>");  
+            out.println("<title>Servlet SearchSkill</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HandleRequestMentor at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SearchSkill at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,11 +58,7 @@ public class HandleRequestMentor extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ScheduleDAO scheduleDAO = new ScheduleDAO();
-        List<SchedulePublic> list = scheduleDAO.getRequestByMentor();
-        request.setAttribute("listSlot", list);
-        request.getRequestDispatcher("ListRequest_Mentor.jsp").forward(request, response);
-        
+        processRequest(request, response);
     } 
 
     /** 
@@ -72,27 +68,24 @@ public class HandleRequestMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-@Override
+  @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
-    ScheduleDAO scheduleDAO = new ScheduleDAO();
-    
-    // Lấy mentorName, cycleId và action từ request
-    String mentorName = request.getParameter("mentorName");
-    int cycleId = Integer.parseInt(request.getParameter("cycleID"));
-    int action = Integer.parseInt(request.getParameter("action"));
+    // Tạo một đối tượng của SkillDAO
+    SkillDAO skillDAO = new SkillDAO();
 
-    // Kiểm tra action và gọi hàm tương ứng
-    if (action == 2) {
-        scheduleDAO.approveRequest(mentorName, cycleId);
-    } else if (action == 3) {
-        scheduleDAO.rejectRequest(mentorName, cycleId);
-    }
+    // Lấy từ khóa tìm kiếm từ request
+    String searchTerm = request.getParameter("searchTerm");
 
-    // Chuyển hướng người dùng về trang mong muốn sau khi xử lý
-    response.sendRedirect("HandleSlotMentor");
+    // Gọi hàm searchSkills để tìm kiếm kỹ năng theo từ khóa
+    List<Skill> skills = skillDAO.searchSkills(searchTerm);
+
+    // Lưu danh sách kỹ năng tìm được vào request
+       request.setAttribute("listSkill", skills);
+
+    // Chuyển tiếp request và response đến trang JSP hiển thị kết quả
+    request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
 }
-
 
     /** 
      * Returns a short description of the servlet.

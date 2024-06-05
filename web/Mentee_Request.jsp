@@ -165,10 +165,14 @@
                     justify-content: space-between;
 
                 }
+
             </style>
+            <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" rel="stylesheet">
+
         </head>
 
         <body>
+
             <jsp:include page="header.jsp" />
             <section id="page-title">
                 <div class="container">
@@ -233,7 +237,7 @@
 
                                                                     <c:forEach items="${listSchedule}" var="schedule">
                                                                         <div class="day">
-                                                                            <div class="day-header" >${schedule.nameOfDay}</div>
+                                                                            <div class="day-header" >${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
                                                                             <div class="event">
 
                                                                                 <div>${schedule.slotId}: ${schedule.slot_name}</div>
@@ -254,11 +258,11 @@
                                                         <label for="hiringDateCheckbox">Skill</label>
                                                         <div class="d-flex">
                                                             <c:forEach items="${requestScope.skills}" var="skill">
-                                                                <div class="form-check text-center">
+                                                                <div class="form-check text-center m-3">
                                                                     <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>       
 
                                                                     <input  type="checkbox" name="skills" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
-                                                                    </div>
+                                                                </div>
 
                                                             </c:forEach>
                                                         </div>
@@ -290,14 +294,86 @@
             <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
             <script src='plugins/moment/moment.min.js'></script>
             <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+            <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
             <script>
-                document.querySelectorAll('.btn.btn-light').forEach(function (label) {
-                    label.addEventListener('click', function () {
-                        const checkbox = this.querySelector('input[type="checkbox"]');
-                        this.classList.toggle('active');
-                        checkbox.remove();
-                    });
-                });
+                function getSundayOfWeek() {
+                    const currentDate = new Date();
+
+                    const dayOfWeek = currentDate.getDay();
+                    const daysUntilSunday = (7 - dayOfWeek) % 7;
+                    const sundayDate = new Date(currentDate);
+                    sundayDate.setDate(currentDate.getDate() + daysUntilSunday);
+
+                    const formattedSunday = sundayDate.getFullYear() + "-"
+                            + ('0' + (sundayDate.getMonth() + 1)).slice(-2) + "-"
+                            + ('0' + sundayDate.getDate()).slice(-2);
+
+                    return formattedSunday;
+                }
+                const sundayOfWeek = getSundayOfWeek();
+                console.log(sundayOfWeek);
+
+                function validateForm(e) {
+                    e.preventDefault();
+
+
+                    const deadlineDate = document.getElementById("notify_message").value;
+                    const deadlineHour = document.getElementById("notify_message").value;
+
+                    if (deadlineDate === "" || deadlineHour === "") {
+                        Toastify({
+                            text: "Please select both deadline date and deadline hour.",
+                            duration: 5000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    const cycleEndTime = new Date("2024-06-15");
+                    const selectedDeadline = new Date(deadlineDate);
+
+                    if (selectedDeadline > cycleEndTime) {
+                        Toastify({
+                            text: "Deadline date cannot exceed the end time of the cycle.",
+                            duration: 5000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    const selectedSlots = document.querySelectorAll('input[name="schedule"]:checked');
+
+                    if (selectedSlots.length === 0) {
+                        Toastify({
+                            text: "Please select at least one slot.",
+                            duration: 5000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    const selectedSkills = document.querySelectorAll('input[name="skills"]:checked');
+
+                    if (selectedSkills.length < 1 || selectedSkills.length > 3) {
+                        Toastify({
+                            text: "Please select between 1 and 3 skills.",
+                            duration: 3000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    return true;
+                }
+
             </script>
 
 

@@ -81,6 +81,7 @@ public class MentorRequest extends HttpServlet {
             }
 
             MentorDAO mentorDao = new MentorDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
             ArrayList<Slot> listSlots = mentorDao.listSlots();
 
             LocalDate today = LocalDate.now();
@@ -89,24 +90,30 @@ public class MentorRequest extends HttpServlet {
             LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
             // Tìm ngày Chủ Nhật của tuần tiếp theo
             LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-
             // Mảng để lưu trữ tên các thứ trong tuần
             String[] periodName = new String[7];
             LocalDate currentDay = nextMonday;
 
             for (int i = 0; i < 7; i++) {
-//                periodName[i] = "" + currentDay;
-                periodName[i] = "" + currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+                periodName[i] = "" + currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " " + currentDay;
                 currentDay = currentDay.plusDays(1);
             }
 
             String SundayMonday = nextMonday + " - " + nextSunday;
 
-            if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
-                String error = "You cannot send request this time! Please try again in next week";
+            if (mentorDao.getNextMonSunByUserName(acc.getUserName()).equalsIgnoreCase(SundayMonday)) {
+                String error = "You already send request! Please try again in next week";
                 request.setAttribute("error", error);
+            } else {
+                if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
+                    String error = "You cannot send request this time! Please try again in next week";
+                    request.setAttribute("error", error);
+                }
+                if (request.getParameter("error") != null) {
+                    String error = "You have booking a schedule for this week";
+                    request.setAttribute("error", error);
+                }
             }
-
             request.setAttribute("period", periodName);
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("SundayMonday", SundayMonday);
@@ -127,24 +134,31 @@ public class MentorRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        MentorDAO mentorDao = new MentorDAO();
+        Account acc = (Account) request.getSession().getAttribute("user");
         String[] schedule = request.getParameterValues("schedule");
-        String outLine = "";
+
+        LocalDate today = LocalDate.now();
+        String todayName = "" + today.getDayOfWeek();
+        // Tìm ngày tiếp theo có thể là thứ 2
+        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+        // Tìm ngày Chủ Nhật của tuần tiếp theo
+        LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+        String SundayMonday = nextMonday + " " + nextSunday;
+
         for (String string : schedule) {
-            outLine += string;
+            String userName = acc.getUserName();
+            String slotId = string.split(" ")[0];
+            String slotDate = string.split(" ")[2];
+            String startTime = SundayMonday.split(" ")[0];
+            String endTime = SundayMonday.split(" ")[1];
+            int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
+            mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+            String error = "You cannot send request this time! Please try again in next week";
         }
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MentorRequest</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>" + outLine + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+
+        response.sendRedirect("MentorRequest?error=check");
+
     }
 
     /**
