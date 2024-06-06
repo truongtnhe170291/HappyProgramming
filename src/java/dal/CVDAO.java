@@ -208,8 +208,8 @@ public class CVDAO {
 //            System.out.println("Not OK");
 //        }
         //cvdao.updateCV(c);
-        c = cvdao.getCVByCVId(2);
-        System.out.println(c.getAddress());
+        List<CVDTO> list = cvdao.getCVByStatus(1);
+        System.out.println(list.get(1).getRate());
     }
 
     public CV getCVByCVId(int cvId) {
