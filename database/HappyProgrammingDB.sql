@@ -200,11 +200,11 @@ GO
 
 -- Insert into Accounts
 INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES
- ('truong', 'truongtnhe170291@fpt.edu.vn', 'Tran Nam Truong', '1', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
- ('hieu', 'hieuvq@fpt.edu.vn', 'Vu Quang Hieu', '1', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
- ('minh', 'minhvq@fpt.edu.vn', 'Vu Quang Minh', '1', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
- ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
- ('manager', 'manager@fpt.edu.vn', 'Manager', '1', '2002-03-03', 1, '456 HN St', '0977333888', 'manager.jpg', 3, 1);
+ ('truong', 'truongtnhe170291@fpt.edu.vn', 'Tran Nam Truong', 'c4ca4238a0b923820dcc509a6f75849b', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),-- pass:1
+ ('hieu', 'hieuvq@fpt.edu.vn', 'Vu Quang Hieu', 'c4ca4238a0b923820dcc509a6f75849b', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),-- pass:1
+ ('minh', 'minhvq@fpt.edu.vn', 'Vu Quang Minh', 'c4ca4238a0b923820dcc509a6f75849b', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),-- pass:1
+ ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', 'c4ca4238a0b923820dcc509a6f75849b', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),-- pass:1
+ ('manager', 'manager@fpt.edu.vn', 'Manager', 'c4ca4238a0b923820dcc509a6f75849b', '2002-03-03', 1, '456 HN St', '0977333888', 'manager.jpg', 3, 1);-- pass:1
 GO
 
 -- Insert into Mentees
