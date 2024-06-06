@@ -62,17 +62,11 @@ public class ChangeCVStatusServlet extends HttpServlet {
         try {
             int cvId = Integer.parseInt(request.getParameter("cvId"));
             int statusId = Integer.parseInt(request.getParameter("status"));
+            String note = request.getParameter("note");
             CVDAO dao = new CVDAO();
-            if (statusId == 3) {
-                dao.changeCVStatus(cvId, statusId);
-            } else {
-                double rate = Double.parseDouble(request.getParameter("rate"));
-                String mentorName = request.getParameter("mentorName");
-                MentorDAO mDAO = new MentorDAO();
-                mDAO.changeMentorRate(mentorName, rate);
-                dao.changeCVStatus(cvId, statusId);
+            if (dao.updateStatusCV(cvId, statusId) && dao.updateNoteCV(cvId, note)) {
+                response.sendRedirect("listCV");
             }
-            response.sendRedirect("listCV");
         } catch (NumberFormatException e) {
         }
 
@@ -89,7 +83,7 @@ public class ChangeCVStatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
     }
 
     /**

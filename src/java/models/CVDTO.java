@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class CVDTO extends CV{
     private List<Skill> listSkill;
-    private double rate;
+    private int rate;
 
     public List<Skill> getListSkill() {
         return listSkill;
@@ -22,11 +22,11 @@ public class CVDTO extends CV{
         this.listSkill = listSkill;
     }
 
-    public double getRate() {
+    public int getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(int rate) {
         this.rate = rate;
     }
     

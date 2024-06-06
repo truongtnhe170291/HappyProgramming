@@ -20,6 +20,7 @@ public class CV {
     private String imgcv;
     private int stattusId;
     private Status status;
+    private String note;
     
     public CV() {
     }
@@ -57,6 +58,14 @@ public class CV {
         this.skills = skills;
         this.imgcv = imgcv;
         this.stattusId = stattusId;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Status getStatus() {

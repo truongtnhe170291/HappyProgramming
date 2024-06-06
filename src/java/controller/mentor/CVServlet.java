@@ -53,6 +53,7 @@ public class CVServlet extends HttpServlet {
             SkillDAO skillDAO = new SkillDAO();
             CVService cVService = CVService.getInstance();
             request.setAttribute("cv", cVService.getCVByUserName(curentAccount.getUserName()));
+            
             List<Skill> list = skillDAO.getSkills();
             request.setAttribute("skills", list);
             request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
@@ -107,6 +108,7 @@ public class CVServlet extends HttpServlet {
             Account acc = (Account) request.getSession().getAttribute("user");
             if(acc == null){
                 response.sendRedirect("Login.jsp");
+                return;
             }
             // lấy từ session khi người dùng đăng nhập
             String username = acc.getUserName();
