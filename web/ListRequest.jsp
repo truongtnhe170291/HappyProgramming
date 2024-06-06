@@ -8,140 +8,140 @@
         <title>List of Requests</title>
         <style>
             body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+            }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
 
 
 
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
+            ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
 
-        li {
-            align-items: center;
-            list-style: none;
-            margin-bottom: 5px;
-        }
+            li {
+                align-items: center;
+                list-style: none;
+                margin-bottom: 5px;
+            }
 
-        button {
-            border-radius: 40%;
-            width: 60px;
-            height: 41px;
-            background-color: #fff;
-            margin-right: 5px;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+            button {
+                border-radius: 40%;
+                width: 60px;
+                height: 41px;
+                background-color: #fff;
+                margin-right: 5px;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
 
-        button:hover {
-            background-color: #45a049;
-        }
-        .modal-content.radius-xl {
-            border-radius: 15px;
-            padding: 20px;
-            background-color: #fff;
-        }
+            button:hover {
+                background-color: #45a049;
+            }
+            .modal-content.radius-xl {
+                border-radius: 15px;
+                padding: 20px;
+                background-color: #fff;
+            }
 
-        .modal-body.pb-sm-50.pb-30 {
-            padding-bottom: 50px;
-        }
+            .modal-body.pb-sm-50.pb-30 {
+                padding-bottom: 50px;
+            }
 
-        .ticket_modal-modal h1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+            .ticket_modal-modal h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
 
-        .ticket_modal-modal div {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
+            .ticket_modal-modal div {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
 
-        .ticket_modal-modal section {
-            margin-top: 20px;
-        }
+            .ticket_modal-modal section {
+                margin-top: 20px;
+            }
 
-        .calendar .header {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-        }
+            .calendar .header {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                text-align: center;
+            }
 
-        .calendar .day {
-            border-bottom: 1px solid #ccc;
-            padding: 10px 0;
-        }
+            .calendar .day {
+                border-bottom: 1px solid #ccc;
+                padding: 10px 0;
+            }
 
-        .calendar .day-header {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+            .calendar .day-header {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
 
-        .calendar .event {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
+            .calendar .event {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
 
-        .calendar .event-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
+            .calendar .event-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
 
-        .ticket_modal-modal label {
-            font-weight: bold;
-        }
-                .status-open {
-                    width: 100px !important;
-           height: 50px !important;
-          color: greenyellow !important;
-      }
+            .ticket_modal-modal label {
+                font-weight: bold;
+            }
+            .status-open {
+                width: 100px !important;
+                height: 50px !important;
+                color: greenyellow !important;
+            }
 
-      .status-processing {
-           width: 100px !important;
-          height: 50px !important;
-          color: yellow !important;
-      }
+            .status-processing {
+                width: 100px !important;
+                height: 50px !important;
+                color: yellow !important;
+            }
 
-      .status-cancel, .status-closed {
-           width: 100px !important;
-           height: 50px !important;
-          color: red !important;
-      }
-      .contents{
-          padding: 0 !important;
-      }
-    </style>
+            .status-cancel, .status-closed {
+                width: 100px !important;
+                height: 50px !important;
+                color: red !important;
+            }
+            .contents{
+                padding: 0 !important;
+            }
+        </style>
     </head>
 
     <body>
@@ -169,10 +169,11 @@
                                 <th>
                                     <span class="userDatatable-title">Skills</span>
                                 </th>
-
+                                <th>
+                                    <span class="userDatatable-title">Price</span>
+                                </th>
 
                                 <th>
-
                                     <span class="userDatatable-title">Actions</span>
                                 </th>
                             </tr>
@@ -185,13 +186,11 @@
                                 <td>${request.deadlineDate}</td>
                                 <td>${request.deadlineHour}</td>
                                 <td>
-                                    <ul>
-                                        <c:forEach var="skill" items="${request.listSkills}">
-                                            <li>${skill.skillName}</li>
-                                            </c:forEach>
-                                    </ul>
+                                    <c:forEach var="skill" items="${request.listSkills}">
+                                        ${skill.skillName}
+                                    </c:forEach>
                                 </td>
-
+                                <td>${request.price}</td>
 
 
                                 <td class="d-flex" style="margin-top:12px;">
@@ -211,51 +210,51 @@
                                                 <div
                                                     class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                     <div class="modal-content radius-xl">
-                                            <div class="modal-body pb-sm-50 pb-30">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                        <img src="img/svg/x.svg" alt="x" class="svg">
-                                                    </button>
-                                                </div>
-                                                <div class="ticket_modal-modal">
-                                                    <h1>Request Details</h1>
-                                                    <div>Title: ${request.title}</div><br>
-                                                    <div>Mentor Name: ${request.mentorName}</div><br>
-                                                    <div>Description: ${request.description}</div><br>
-                                                    <div>Deadline Date: ${request.deadlineDate}</div><br>
-                                                    <div>Deadline Hour: ${request.deadlineHour}</div><br>
-                                                    <section id="page-content" class="no-sidebar">
-                                                        <div class="container">
-                                                            <div class="row mb-5">
-                                                                <div class="col-lg-6">
-                                                                </div>
+                                                        <div class="modal-body pb-sm-50 pb-30">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                    <img src="img/svg/x.svg" alt="x" class="svg">
+                                                                </button>
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="calendar">
-                                                                        <div class="header">
-                                                                            <h2>${request.listSchedule.get(0).startTime} - ${request.listSchedule.get(0).endTime}</h2>
+                                                            <div class="ticket_modal-modal">
+                                                                <h1>Request Details</h1>
+                                                                <div>Title: ${request.title}</div><br>
+                                                                <div>Mentor Name: ${request.mentorName}</div><br>
+                                                                <div>Description: ${request.description}</div><br>
+                                                                <div>Deadline Date: ${request.deadlineDate}</div><br>
+                                                                <div>Deadline Hour: ${request.deadlineHour}</div><br>
+                                                                <section id="page-content" class="no-sidebar">
+                                                                    <div class="container">
+                                                                        <div class="row mb-5">
+                                                                            <div class="col-lg-6">
+                                                                            </div>
                                                                         </div>
-                                                                        <c:forEach items="${request.listSchedule}" var="schedule">
-                                                                            <div class="day">
-                                                                                <div class="day-header">${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
-                                                                                <div class="event">
-                                                                                    <div class="event-dot" style="background-color: red;"></div>
-                                                                                    <div>${schedule.slotId}: ${schedule.slot_name}</div>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                                <div class="calendar">
+                                                                                    <div class="header">
+                                                                                        <h2>${request.listSchedule.get(0).startTime} - ${request.listSchedule.get(0).endTime}</h2>
+                                                                                    </div>
+                                                                                    <c:forEach items="${request.listSchedule}" var="schedule">
+                                                                                        <div class="day">
+                                                                                            <div class="day-header">${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
+                                                                                            <div class="event">
+                                                                                                <div class="event-dot" style="background-color: red;"></div>
+                                                                                                <div>${schedule.slotId}: ${schedule.slot_name}</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </c:forEach>
                                                                                 </div>
                                                                             </div>
-                                                                        </c:forEach>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                </section>
+                                                                <c:forEach items="${request.listSkills}" var="skill">
+                                                                    <div><label>${skill.skillName}</label></div><br/>
+                                                                </c:forEach>
                                                             </div>
                                                         </div>
-                                                    </section>
-                                                    <c:forEach items="${request.listSkills}" var="skill">
-                                                        <div><label>${skill.skillName}</label></div><br/>
-                                                    </c:forEach>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                    </div>
 
                                                 </div>
                                             </div>

@@ -220,6 +220,12 @@
                                                         <label>Deadline Hour</label>
                                                         <input name="deadlineHour" id="notify_message" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label>Price/Slot: </label>
+                                                        <label id="notify_message" class="form-control notification-message" rows="5" >
+                                                            ${rate}
+                                                        </label>
+                                                    </div>
                                                 </div>
                                                 <section id="page-content" class="no-sidebar">
                                                     <div class="container">
@@ -250,6 +256,10 @@
                                                             </div>
                                                         </div>
                                                         <!-- end: Calendar -->
+                                                        <div class="header mt-2 text-end" style="display: flex; justify-content: flex-end;">
+                                                            <h4 id="totalPrice">Total Price: </h4>
+                                                        </div>
+                                                        <input type="hidden" id="totalPriceInput" name="totalPrice" value=""/>
                                                     </div>
                                                 </section>
                                                 <div class="col-lg-4">
@@ -261,7 +271,7 @@
                                                                 <div class="form-check text-center m-3">
                                                                     <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>       
 
-                                                                    <input  type="checkbox" name="skills" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
+                                                                    <input  type="radio" name="skill" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
                                                                 </div>
 
                                                             </c:forEach>
@@ -374,8 +384,37 @@
                     return true;
                 }
 
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="schedule"]');
+                    const totalPriceInput = document.getElementById("totalPriceInput");
+                    // Function to count checked checkboxes
+                    function countChecked() {
+                        let checkedCount = 0;
+                        checkboxes.forEach((checkbox) => {
+                            if (checkbox.checked) {
+                                checkedCount++;
+                            }
+                        });
+                        return checkedCount;
+                    }
+                    const totalPrice = document.getElementById("totalPrice");
+                    if (countChecked() === 0) {
+                        totalPrice.innerHTML = "";
+                    }
+                    // Add event listener to each checkbox
+                    checkboxes.forEach((checkbox) => {
+                        checkbox.addEventListener('change', () => {
+                            let countnumcheck = countChecked();
+                            let total = countnumcheck * ${rate};
+                            if (countnumcheck === 0) {
+                                totalPrice.innerHTML = 'Total Price: 0';
+                            }
+                            totalPriceInput.value = total;
+                            totalPrice.innerHTML = 'Total Price: ' + total;
+                        });
+                    });
+                });
             </script>
-
 
         </body>
 

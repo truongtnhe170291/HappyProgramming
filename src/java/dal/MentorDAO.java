@@ -9,10 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import models.Account;
-import java.util.Date;
-import models.Mentor;
 import models.Slot;
 
 /**
@@ -79,14 +75,14 @@ public class MentorDAO {
 //        }
 //    }
 
-    public boolean changeMentorRate(String mentorName, double rate) {
+    public boolean changeMentorRate(String mentorName, int rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
                 + "SET [rate] = ?\n"
                 + "WHERE mentor_name = ?";
 
         try {
             ps = con.prepareStatement(sql);
-            ps.setDouble(1, rate);
+            ps.setInt(1, rate);
             ps.setString(2, mentorName);
 
             int row = ps.executeUpdate();
@@ -98,6 +94,24 @@ public class MentorDAO {
             System.out.println(e);
         }
         return true;
+
+    }
+    
+    public int getRateOfMentor(String mentorName) {
+        String sql = "SELECT * FROM [dbo].[Mentors]"
+                + "WHERE mentor_name = ?";
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                return rs.getInt("rate");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return -1;
 
     }
 
