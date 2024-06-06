@@ -95,86 +95,52 @@
                  position: absolute;
                  display: block;
                }
+              button {
+        width: 10em;
+        position: relative;
+        height: 3.5em;
+        border: 3px ridge #149CEA;
+        outline: none;
+        background-color: transparent;
+        color: white;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
 
-               .login-box a span:nth-child(1) {
-                 top: 0;
-                 left: -100%;
-                 width: 100%;
-                 height: 2px;
-                 background: linear-gradient(90deg, transparent, #fff);
-                 animation: btn-anim1 1.5s linear infinite;
-               }
+      button::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: #212121;
+        transition: 0.5s;
+        transform-origin: center;
+      }
 
-               @keyframes btn-anim1 {
-                 0% {
-                   left: -100%;
-                 }
+      button::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: #212121;
+        transition: 0.5s;
+      }
 
-                 50%,100% {
-                   left: 100%;
-                 }
-               }
+      button:hover::before, button:hover::after {
+        transform: scale(0)
+      }
 
-               .login-box a span:nth-child(2) {
-                 top: -100%;
-                 right: 0;
-                 width: 2px;
-                 height: 100%;
-                 background: linear-gradient(180deg, transparent, #fff);
-                 animation: btn-anim2 1.5s linear infinite;
-                 animation-delay: .375s
-               }
-
-               @keyframes btn-anim2 {
-                 0% {
-                   top: -100%;
-                 }
-
-                 50%,100% {
-                   top: 100%;
-                 }
-               }
-
-               .login-box a span:nth-child(3) {
-                 bottom: 0;
-                 right: -100%;
-                 width: 100%;
-                 height: 2px;
-                 background: linear-gradient(270deg, transparent, #fff);
-                 animation: btn-anim3 1.5s linear infinite;
-                 animation-delay: .75s
-               }
-
-               @keyframes btn-anim3 {
-                 0% {
-                   right: -100%;
-                 }
-
-                 50%,100% {
-                   right: 100%;
-                 }
-               }
-
-               .login-box a span:nth-child(4) {
-                 bottom: -100%;
-                 left: 0;
-                 width: 2px;
-                 height: 100%;
-                 background: linear-gradient(360deg, transparent, #fff);
-                 animation: btn-anim4 1.5s linear infinite;
-                 animation-delay: 1.125s
-               }
-
-               @keyframes btn-anim4 {
-                 0% {
-                   bottom: -100%;
-                 }
-
-                 50%,100% {
-                   bottom: 100%;
-                 }
-               }
-
+      button:hover {
+        box-shadow: inset 0px 0px 25px #1479EA;
+      }
                .login-box p:last-child {
                  color: #aaa;
                  font-size: 14px;
@@ -196,24 +162,24 @@
     <body>
                 <div class="login-box">
   <p>Login</p>
-  <form>
+<form action="LoginManager" method="post" >  
     <div class="user-box">
-      <input required="" name="" type="text">
-      <label>Email</label>
+      <input required name="username" type="text">
+      <label>Username</label>
     </div>
     <div class="user-box">
-      <input required="" name="" type="password">
+      <input required name="password" type="password">
       <label>Password</label>
     </div>
-    <a href="#">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Submit
-    </a>
+    <button type="submit">
+    Login
+</button>
   </form>
-  <p>Don't have an account? <a href="" class="a2">Sign up!</a></p>
 </div>
+         <div class="button-group align-items-center justify-content-center color-ruby">
+                                    ${mess}
+                                    ${status}
+                                    ${messaget}
+                           </div>
     </body>
 </html>
