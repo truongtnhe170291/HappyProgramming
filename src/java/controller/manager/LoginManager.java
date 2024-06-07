@@ -81,7 +81,7 @@ throws ServletException, IOException {
         // Check for empty username or password
         if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             request.setAttribute("mess", "Vui lòng nhập cả tên đăng nhập và mật khẩu");
-            request.getRequestDispatcher("loginManager.jsp").forward(request, response);
+            request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
             return;
         }
 
@@ -91,14 +91,14 @@ throws ServletException, IOException {
         // Check if account exists
         if (acc == null) {
             request.setAttribute("mess", "Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại thông tin và thử lại");
-            request.getRequestDispatcher("loginManager.jsp").forward(request, response);
+            request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
             return;
         }
 
         // Check if password matches
         if (!acc.getPassword().equals(password)) {
             request.setAttribute("mess", "Tên đăng nhập hoặc mật khẩu không hợp lệ");
-            request.getRequestDispatcher("loginManager.jsp").forward(request, response);
+            request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
             return;
         }
 
@@ -107,9 +107,9 @@ throws ServletException, IOException {
         // Redirect based on user role
         if (acc.getRoleId() == 1 || acc.getRoleId() == 2) {
             request.setAttribute("mess", "Người dùng không đủ quyền truy cập trang này");
-            request.getRequestDispatcher("loginManager.jsp").forward(request, response);
+            request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
         } else if (acc.getRoleId() == 3) {
-            response.sendRedirect("Manager.jsp");
+            response.sendRedirect("Homes_manager.jsp");
             // Phân quyền manager cho trang này
             // ...
         }

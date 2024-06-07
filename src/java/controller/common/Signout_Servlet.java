@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name="Signout_Servlet", urlPatterns={"/signout"})
+@WebServlet(name="Signout_Servlet", urlPatterns={"/Signout_Servlet"})
 public class Signout_Servlet extends HttpServlet {
    
     /** 
