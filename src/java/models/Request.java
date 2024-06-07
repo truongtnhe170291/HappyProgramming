@@ -23,6 +23,14 @@ public class Request {
     // Default constructor
     public Request() {}
 
+    public Request(String mentorName, LocalDate deadlineDate, String title, LocalTime deadlineHour) {
+        this.mentorName = mentorName;
+        this.deadlineDate = deadlineDate;
+        this.title = title;
+        this.deadlineHour = deadlineHour;
+    }
+    
+
     public Request(int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
         this.requestId = requestId;
         this.mentorName = mentorName;
