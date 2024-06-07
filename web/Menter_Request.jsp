@@ -304,7 +304,11 @@
                                                                                     <td>${slot.slot_name}</td>
                                                                                     <c:forEach var="day" items="${listDays}">
                                                                                         <td>
-                                                                                            <input type="checkbox" class="slot-checkbox" name="schedule" value="${slot.slot_id} ${day.dateName} ${day.dateValue}">
+                                                                                            <input type="checkbox" class="slot-checkbox" name="schedule" 
+                                                                                                   <c:forEach items="${listSchedule}" var="shedule">
+                                                                                                       <c:if test="${shedule.slotId eq slot.slot_id && shedule.getdayOfSlotString() eq day.dateValue}">checked</c:if>
+                                                                                                   </c:forEach>
+                                                                                                   value="${slot.slot_id} ${day.dateName} ${day.dateValue}">
                                                                                         </td>
                                                                                     </c:forEach>
                                                                                 </tr>
@@ -375,7 +379,7 @@
                         var notifyBtn = document.getElementById("notify_btn");
 
                         if (error && error.trim() !== "") {
-                            notifyBtn.disabled = true;
+                            notifyBtn.disabled = false;
                         } else {
                             notifyBtn.disabled = false;
                         }

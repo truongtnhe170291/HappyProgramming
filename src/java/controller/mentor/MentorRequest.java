@@ -103,14 +103,17 @@ public class MentorRequest extends HttpServlet {
                 if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
                     String error = "You cannot send request this time! Please try again in next week";
                     request.setAttribute("error", error);
+                    if (status.equalsIgnoreCase("Approved")) {
+                        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+                        request.setAttribute("listSchedule", listSchedule);
+                    }
                 }
                 if (status.equalsIgnoreCase("Pending")) {
                     String error = "You have booking a schedule for this week";
                     request.setAttribute("error", error);
+                    List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+                    request.setAttribute("listSchedule", listSchedule);
                 }
-
-//                List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-//                request.setAttribute("listSchedule", listSchedule);
             }
 
             request.setAttribute("listSlots", listSlots);
@@ -136,7 +139,6 @@ public class MentorRequest extends HttpServlet {
         MentorDAO mentorDao = new MentorDAO();
         Account acc = (Account) request.getSession().getAttribute("user");
         String[] schedule = request.getParameterValues("schedule");
-//        String scheduleString = "";
 
         LocalDate today = LocalDate.now();
         String todayName = "" + today.getDayOfWeek();
@@ -146,35 +148,30 @@ public class MentorRequest extends HttpServlet {
         LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
         String SundayMonday = nextMonday + " " + nextSunday;
 
-//        for (String string : schedule) {
-//            scheduleString += string + " ";
-//        }
-        
-        for (String string : schedule) {
-            String userName = acc.getUserName();
-            String slotId = string.split(" ")[0];
-            String slotDate = string.split(" ")[2];
-            String startTime = SundayMonday.split(" ")[0];
-            String endTime = SundayMonday.split(" ")[1];
-            int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
-            mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+        if (request.getParameter("isUpdate") != null) {
+            for (String string : schedule) {
+                String userName = acc.getUserName();
+                String slotId = string.split(" ")[0];
+                String slotDate = string.split(" ")[2];
+                String startTime = SundayMonday.split(" ")[0];
+                String endTime = SundayMonday.split(" ")[1];
+                int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
+                mentorDao.deleteSchedulePublic(userName, cycleID);
+                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+            }
+        } else {
+            for (String string : schedule) {
+                String userName = acc.getUserName();
+                String slotId = string.split(" ")[0];
+                String slotDate = string.split(" ")[2];
+                String startTime = SundayMonday.split(" ")[0];
+                String endTime = SundayMonday.split(" ")[1];
+                int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
+                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+            }
         }
 
         response.sendRedirect("MentorRequest");
-        
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet MentorRequest</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>" + scheduleString + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
 
     }
 

@@ -3,13 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package models;
+
 import java.sql.Date;
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 /**
  *
  * @author Admin
  */
 public class SchedulePublic {
+
     private String mentorName;
     private int selectedId;
     private Date dayOfSlot;
@@ -32,7 +37,7 @@ public class SchedulePublic {
         this.endTime = endTime;
         this.slot_name = slot_name;
     }
-    
+
     public SchedulePublic(String mentorName, Date dayOfSlot, String slotId, Date startTime, Date endTime, int cycleID) {
         this.mentorName = mentorName;
         this.dayOfSlot = dayOfSlot;
@@ -41,8 +46,6 @@ public class SchedulePublic {
         this.endTime = endTime;
         this.cycleID = cycleID;
     }
-    
-    
 
     public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
         this.selectedId = selectedId;
@@ -76,6 +79,18 @@ public class SchedulePublic {
         this.status = status;
     }
 
+    public String getdayOfSlotString() {
+        String inputDateString = "" + this.dayOfSlot;
+
+        String[] parts = inputDateString.split("-");
+        String day = parts[0];
+        String month = parts[1];
+        String year = parts[2];
+
+        String outputDateString = day + "/" + month + "/" + year;
+        return outputDateString;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -83,6 +98,7 @@ public class SchedulePublic {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public int getCycleID() {
         return cycleID;
     }
@@ -90,8 +106,7 @@ public class SchedulePublic {
     public void setCycleID(int cycleID) {
         this.cycleID = cycleID;
     }
-   
-    
+
     public DayOfWeek getNameOfDay() {
         return nameOfDay;
     }
@@ -160,6 +175,5 @@ public class SchedulePublic {
     public String toString() {
         return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", nameOfDay=" + nameOfDay + '}';
     }
-    
-    
+
 }

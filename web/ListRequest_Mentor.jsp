@@ -7,7 +7,6 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Fmaster</title>
         <jsp:include page="style/linkcss.jsp" />
-
     </head>
 
     <body class="layout-light side-menu">
@@ -56,8 +55,7 @@
                                         <thead>
                                             <tr class="userDatatable-header">
                                                 <th><span class="userDatatable-title">User Name</span></th>
-                                                <th><span class="userDatatable-title">Start Time</span></th>
-                                                <th><span class="userDatatable-title">End Time</span></th>
+                                                <th><span class="userDatatable-title">Total Booking Slots</span></th>
                                                 <th><span class="userDatatable-title">Action</span></th>
                                             </tr>
                                         </thead>
@@ -65,30 +63,51 @@
                                             <c:forEach var="slot" items="${listSlot}">
                                                 <tr>
                                                     <td><div class="userDatatable-content">${slot.mentorName}</div></td>
-                                                    <td><div class="userDatatable-content">${slot.startTime}</div></td>
                                                     <td><div class="userDatatable-content">${slot.endTime}</div></td>
                                                     <td>
                                                         <form action="HandleSlotMentor" method="post">
                                                             <input type="hidden" name="mentorName" value="${slot.mentorName}" />
                                                             <input type="hidden" name="cycleID" value="${slot.cycleID}" />
-                                                            <button type="submit" name="action" value="2">Approve</button>
-                                                            <button type="submit" name="action" value="3">Reject</button>
+                                                            <!-- Button trigger modal -->
+                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal${slot.mentorName}">
+                                                                View Detail
+                                                            </button>
+                                                            <!-- Button set action -->
+                                                            <button type="submit" name="action" value="Approve">Approve</button>
+                                                            <button type="submit" name="action" value="Reject">Reject</button>
                                                         </form>
 
                                                     </td>
                                                 </tr>
-                                            </c:forEach>
+
+                                                <!--<div class="modal-dialog modal-xl">...</div>-->
+                                                
+                                                <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal${slot.mentorName}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </c:forEach>
 
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <div id="detail-modal" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close-button" onclick="closeDetail()">&times;</span>
-                                        <p>Detail Content</p>
-                                    </div>
-                                </div>
+
+
                                 <div class="d-flex justify-content-end pt-30">
 
                                     <nav class="dm-page ">
@@ -125,4 +144,5 @@
 
     </body>
 
+    
 </html>

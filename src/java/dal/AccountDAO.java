@@ -135,15 +135,8 @@ public class AccountDAO {
 
     public static void main(String[] args) {
         AccountDAO dao = new AccountDAO();
-        dao.updateAccount("user1", "pham hung son", "2003-12-2", "1", "Thanh hao 123", "2k3sonpham@gmail.com", "123", "01234266733");
-        Account a = new Account();
-        a.setUserName("tuantu123");
-        a.setPassword("12341234");
-        if (dao.changePassWord(a)) {
-            System.out.println("thanh cong");
-        } else {
-            System.out.println("that bai");
-        }
+        
+        System.out.println(dao.getAccount("son", "c4ca4238a0b923820dcc509a6f75849b"));
     }
 
     public void updateAccount(String username, String fullname, String dob, String sex, String address,

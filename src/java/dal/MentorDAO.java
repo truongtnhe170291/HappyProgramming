@@ -47,7 +47,7 @@ public class MentorDAO {
         ArrayList<Slot> list = new ArrayList<>();
         try {
             String query = "select * from [Slots]";
-            con = new DBContext().connection;//mo ket noi voi sql
+            con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -58,32 +58,33 @@ public class MentorDAO {
         }
         return list;
     }
-//    public List<Mentor> getMentors() {
-//        String sql = "select * from mentors m join Accounts a on m.mentor_name = a.user_name";
-//        List<Mentor> list = new ArrayList<>();
-//        try {
-//            ps = con.prepareStatement(sql);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Mentor m = new Mentor(rs.getString("avatar"), rs.getString("user_name"),
-//                        rs.getString("gmail"), rs.getString("full_name"),
-//                        rs.getString("pass_word"), rs.getDate("dob"),
-//                        rs.getBoolean("sex"), rs.getString("address"),
-//                        rs.getString("phone"), rs.getInt("role_id"),
-//                        rs.getInt("status_id"));
-//                list.add(m);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//        }
-//        return list;
-//    }
-//    public static void main(String[] args) {
-//        MentorDAO md = new MentorDAO();
-//        for (Mentor m : md.getMentors()) {
-//            System.out.println(m.getUserName());
-//        }
-//    }
+    // public List<Mentor> getMentors() {
+    // String sql = "select * from mentors m join Accounts a on m.mentor_name =
+    // a.user_name";
+    // List<Mentor> list = new ArrayList<>();
+    // try {
+    // ps = con.prepareStatement(sql);
+    // rs = ps.executeQuery();
+    // while (rs.next()) {
+    // Mentor m = new Mentor(rs.getString("avatar"), rs.getString("user_name"),
+    // rs.getString("gmail"), rs.getString("full_name"),
+    // rs.getString("pass_word"), rs.getDate("dob"),
+    // rs.getBoolean("sex"), rs.getString("address"),
+    // rs.getString("phone"), rs.getInt("role_id"),
+    // rs.getInt("status_id"));
+    // list.add(m);
+    // }
+    // } catch (SQLException e) {
+    // System.out.println(e);
+    // }
+    // return list;
+    // }
+    // public static void main(String[] args) {
+    // MentorDAO md = new MentorDAO();
+    // for (Mentor m : md.getMentors()) {
+    // System.out.println(m.getUserName());
+    // }
+    // }
 
     public boolean changeMentorRate(String mentorName, int rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
@@ -106,7 +107,7 @@ public class MentorDAO {
         return true;
 
     }
-    
+
     public int getRateOfMentor(String mentorName) {
         String sql = "SELECT * FROM [dbo].[Mentors]"
                 + "WHERE mentor_name = ?";
@@ -115,7 +116,7 @@ public class MentorDAO {
             ps = con.prepareStatement(sql);
             ps.setString(1, mentorName);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 return rs.getInt("rate");
             }
         } catch (SQLException e) {
@@ -143,7 +144,8 @@ public class MentorDAO {
         return cycleId;
     }
 
-    public void insertSchedulePublic(String mentor_name, String slot_id, int cycle_id, String day_of_slot, int status_id) {
+    public void insertSchedulePublic(String mentor_name, String slot_id, int cycle_id, String day_of_slot,
+            int status_id) {
         try {
             String query = "INSERT INTO Selected_Slot(mentor_name, slot_id, cycle_id, day_of_slot, status_id) VALUES (?, ?, ?, ?, ?)";
             con = new DBContext().connection;// mo ket noi voi sql
@@ -180,7 +182,6 @@ public class MentorDAO {
         }
         return monSun;
     }
-    
 
     public ArrayList<Day> listDays() {
         ArrayList<Day> list = new ArrayList<>();
@@ -203,7 +204,8 @@ public class MentorDAO {
                 String year = parts[2];
 
                 String outputDateString = day + "/" + month + "/" + year;
-                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH), outputDateString));
+                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                        outputDateString));
                 currentDay = currentDay.plusDays(1);
             }
 
@@ -219,6 +221,20 @@ public class MentorDAO {
         String SundayMonday = list.get(0).getDateName() + " - " + list.get(6).getDateName();
         for (Day day : list) {
             System.out.println(day);
+        }
+    }
+
+    public void deleteSchedulePublic(String userName, int cycleID) {
+        try {
+            String query = "DELETE FROM Selected_Slot\n" + //
+                    "WHERE mentor_name = ? AND cycle_id = ? AND status_id = 1";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, userName);
+            ps.setInt(2, cycleID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("deleteSchedulePublic: " + e.getMessage());
         }
     }
 }
