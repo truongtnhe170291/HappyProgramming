@@ -21,6 +21,7 @@ import models.RequestDTO;
 import models.RequestSkill;
 import models.SchedulePublic;
 import models.Skill;
+import models.StaticMentee;
 import models.Status;
 
 public class RequestDAO {
@@ -113,6 +114,49 @@ public class RequestDAO {
 
         return requests;
     }
+    public StaticMentee getStaticRequest(String menteeName) {
+    String sql = "SELECT COUNT(DISTINCT request_id) AS TotalRequests, " +
+                 "SUM(DATEDIFF(HOUR, '00:00:00', deadline_hour)) AS TotalHour, " +
+                 "COUNT(DISTINCT mentor_name) AS TotalMentors " +
+                 "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] where mentee_name = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, menteeName);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            int totalRequest = rs.getInt("TotalRequests");
+            int totalHour = rs.getInt("TotalHour");
+            int totalMentor = rs.getInt("TotalMentors");
+            return new StaticMentee(totalRequest, totalHour, totalMentor);
+        }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return null;
+}
+    public List<RequestDTO> getRequestList(String menteeName) {
+    String sql = "SELECT request_id, mentor_name, title, deadline_date, deadline_hour " +
+                 "FROM RequestsFormMentee rfm " +
+                 "WHERE [mentee_name] = ?";
+    List<RequestDTO> requestList = new ArrayList<>();
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, menteeName);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int requestId = rs.getInt("request_id");
+            String mentorName = rs.getString("mentor_name");
+            String title = rs.getString("title");
+            LocalDate deadlineDate = rs.getDate("deadline_date").toLocalDate();
+            LocalTime deadlineHour = rs.getTime("deadline_hour").toLocalTime();
+            List<Skill> listSkills = fetchRequestSkills(requestId, con);
+            requestList.add(new RequestDTO(listSkills, mentorName, deadlineDate, title, deadlineHour));
+        }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return requestList;
+}
 
     public List<RequestDTO> getRequestOfMentorInDeadlineByStatus(String mentorName) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();

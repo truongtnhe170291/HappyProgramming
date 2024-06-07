@@ -19,6 +19,11 @@ public class RequestDTO extends Request{
     private Status status;
     public RequestDTO() {
     }
+     public RequestDTO(List<Skill> listSkills, String mentorName, LocalDate deadlineDate, String title, LocalTime deadlineHour) {
+        super(mentorName, deadlineDate, title, deadlineHour);
+        this.listSkills = listSkills;
+    }
+    
 
     public Status getStatus() {
         return status;
