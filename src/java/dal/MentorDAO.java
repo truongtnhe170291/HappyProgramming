@@ -8,10 +8,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import java.util.Date;
+import java.util.Locale;
+import models.Day;
 import models.Mentor;
 import models.Slot;
 
@@ -156,10 +162,45 @@ public class MentorDAO {
         }
         return monSun;
     }
+    
 
-//    public static void main(String[] args) {
-//        MentorDAO dao = new MentorDAO();
-//        System.out.println(dao.getNextMonSunByUserName("son"));
-//    }
+    public ArrayList<Day> listDays() {
+        ArrayList<Day> list = new ArrayList<>();
+        try {
+            LocalDate today = LocalDate.now();
+            String todayName = "" + today.getDayOfWeek();
+            // Tìm ngày tiếp theo có thể là thứ 2
+            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+            // Tìm ngày Chủ Nhật của tuần tiếp theo
+            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+            // Mảng để lưu trữ tên các thứ trong tuần
+            LocalDate currentDay = nextMonday;
 
+            for (int i = 0; i < 7; i++) {
+                String inputDateString = "" + currentDay;
+
+                String[] parts = inputDateString.split("-");
+                String day = parts[0];
+                String month = parts[1];
+                String year = parts[2];
+
+                String outputDateString = day + "/" + month + "/" + year;
+                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH), outputDateString));
+                currentDay = currentDay.plusDays(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("listDays: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        MentorDAO dao = new MentorDAO();
+        ArrayList<Day> list = dao.listDays();
+        String SundayMonday = list.get(0).getDateName() + " - " + list.get(6).getDateName();
+        for (Day day : list) {
+            System.out.println(day);
+        }
+    }
 }

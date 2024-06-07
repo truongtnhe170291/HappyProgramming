@@ -1,5 +1,6 @@
 
 import dal.AccountDAO;
+import dal.MentorDAO;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
@@ -18,7 +19,7 @@ import models.Account;
 public class Testing {
 
     public static void main(String[] args) {
-
+        MentorDAO mentorDao = new MentorDAO();
         LocalDate today = LocalDate.now();
         // Tìm ngày tiếp theo có thể là thứ 2
         LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
@@ -39,6 +40,8 @@ public class Testing {
         }
         
         System.out.println(today.getDayOfWeek());
+        
+        System.out.println(mentorDao.getNextMonSunByUserName("son"));
         
     }
 }

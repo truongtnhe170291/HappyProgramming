@@ -18,6 +18,7 @@ public class SchedulePublic {
     private Date endTime;
     private String slot_name;
     private DayOfWeek nameOfDay;
+    private String status;
 
     public SchedulePublic() {
     }
@@ -51,7 +52,26 @@ public class SchedulePublic {
         this.slot_name = slot_name;
         this.nameOfDay = nameOfDay;
     }
-   
+
+    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, String status) {
+        this.mentorName = mentorName;
+        this.selectedId = selectedId;
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.slot_name = slot_name;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     public DayOfWeek getNameOfDay() {
         return nameOfDay;
     }
