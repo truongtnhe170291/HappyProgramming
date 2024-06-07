@@ -229,6 +229,7 @@
                                         <li class="nav-item hes">
 
                                             <form action="aplly" method="post">
+                                                <input type="hidden" name="cvId" value="${cv.cvId}"/>
                                                 <button type="submit" class="sets">
                                                     Send
                                                     <div class="star-1">
@@ -498,9 +499,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                <div><strong>Feedback From Manager:</strong>  ${cv.note}</div>
 
                                 </div>
-
                                 </main>
                                 <div id="overlayer">
                                     <div class="loader-overlay">
@@ -702,18 +703,6 @@
                                             return true;
                                         }
                                     });
-
-                                    document.getElementById('file-upload').addEventListener('change', function (event) {
-                                        const file = event.target.files[0];
-                                        if (file) {
-                                            const reader = new FileReader();
-                                            reader.onload = function (e) {
-                                                document.getElementById('profile-img').src = e.target.result;
-                                            };
-                                            reader.readAsDataURL(file);
-                                        }
-                                    });
-
 
                                     document.getElementById('file-uploadcv').addEventListener('change', function (event) {
                                         const file = event.target.files[0];

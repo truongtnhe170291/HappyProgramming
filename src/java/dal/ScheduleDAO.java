@@ -35,30 +35,27 @@ public class ScheduleDAO {
     }
 
     public List<SchedulePublic> getRequestByMentor() {
-        String sql = "SELECT ss.selected_id, ss.mentor_name, s.slot_id, s.slot_name, ss.day_of_slot,"
-                + " (DATEPART(weekday, ss.day_of_slot) + 5) % 7 + 1 as DayOfWeek,"
-                + " c.start_time, c.end_time "
-                + "FROM Selected_Slot ss "
-                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
-                + "JOIN Slots s ON s.slot_id = ss.slot_id "
-                + "WHERE ss.status_id = 1";
+        String sql = "SELECT ss.mentor_name, \n"
+                + "       STRING_AGG(s.slot_id , ',') as slot_id, \n"
+                + "       STRING_AGG(ss.day_of_slot, ',') as day_of_slot,c.cycle_id,\n"
+                + "       c.start_time, c.end_time \n"
+                + "FROM Selected_Slot ss \n"
+                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id \n"
+                + "JOIN Slots s ON s.slot_id = ss.slot_id \n"
+                + "WHERE ss.status_id = 1\n"
+                + "GROUP BY ss.mentor_name, c.start_time, c.end_time,c.cycle_id";
         List<SchedulePublic> list = new ArrayList<>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int selectedId = rs.getInt("selected_id");
                 String mentorName = rs.getString("mentor_name");
                 String slotId = rs.getString("slot_id");
-                String slotName = rs.getString("slot_name");
-                Date dayOfSlot = rs.getDate("day_of_slot");
-                int dayOfWeekValue = rs.getInt("DayOfWeek");
-                DayOfWeek nameOfDay = DayOfWeek.of(dayOfWeekValue);
+                String dayOfSlot = rs.getString("day_of_slot");
                 Date startTime = rs.getDate("start_time");
                 Date endTime = rs.getDate("end_time");
-
-                SchedulePublic request = new SchedulePublic(mentorName, selectedId, dayOfSlot, slotId, startTime,
-                        endTime, slotName, nameOfDay);
+                int cycleID = rs.getInt("cycle_id");
+                SchedulePublic request = new SchedulePublic(mentorName, endTime, slotId, startTime, endTime, cycleID);
                 list.add(request);
             }
         } catch (SQLException e) {
@@ -67,41 +64,44 @@ public class ScheduleDAO {
         return list;
     }
 
-    public boolean approveRequest(int selectedId) {
-        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE selected_id = ?";
+   public boolean approveRequest(String mentorName, int cycleId) {
+    String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE cycle_id = ? and mentor_name = ?";
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, selectedId);
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, cycleId);
+        ps.setString(2, mentorName);
 
-            int row = ps.executeUpdate();
-            if (row != 1) {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
+        int row = ps.executeUpdate();
+        if (row != 1) {
+            return false;
         }
-        return true;
+
+    } catch (SQLException e) {
+        System.out.println(e);
     }
+    return true;
+}
 
-    public boolean rejectRequest(int selectedId) {
-        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE selected_id = ?";
+public boolean rejectRequest(String mentorName, int cycleId) {
+    String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ? and mentor_name = ?";
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, selectedId);
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, cycleId);
+        ps.setString(2, mentorName);
 
-            int row = ps.executeUpdate();
-            if (row != 1) {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
+        int row = ps.executeUpdate();
+        if (row != 1) {
+            return false;
         }
-        return true;
+
+    } catch (SQLException e) {
+        System.out.println(e);
     }
+    return true;
+}
+
 
     public List<SchedulePublic> getListSchedulePublicByMentorName(String userName, java.sql.Date startTime,
             java.sql.Date endTime) {
@@ -182,7 +182,7 @@ public class ScheduleDAO {
         }
     }
 
-    List<SchedulePublic> getScheduleByRequestId(int requestId) {
+    public List<SchedulePublic> getScheduleByRequestId(int requestId) {
         List<SchedulePublic> list = new ArrayList<>();
         try {
             String sql = "select * from Selected_Slot ss join RquestSelectedSlot rs on rs.selected_id = ss.selected_id join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id where rs.request_id = ?";

@@ -77,18 +77,7 @@
                         </li>
                      </ul>
                   </li>
-                   <li class="has-child">
-                     <a href="listCV.jsp" class="ch">
-                        <span class="nav-icon uil uil-users-alt"></span>
-                        <span class="menu-text">List CV</span>
-                        <span class="toggle-icon">
-                            
-                        </span>
-                            </a>
-                        <ul class="toggle">
-                        <li class="">
-                           <a href="listCV">All CV</a>
-                        </li>
+                  
                      </ul>
                  
                     

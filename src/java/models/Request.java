@@ -11,15 +11,15 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Request {
-    int requestId;
-    String mentorName;
-    String menteeName;
-    LocalDate deadlineDate;
-    String title;
-    String description;
-    int statusId;
-    java.time.LocalTime deadlineHour;
-
+    private int requestId;
+    private String mentorName;
+    private String menteeName;
+    private LocalDate deadlineDate;
+    private String title;
+    private String description;
+    private int statusId;
+    private java.time.LocalTime deadlineHour;
+    private int price;
     // Default constructor
     public Request() {}
 
@@ -42,6 +42,14 @@ public class Request {
         this.description = description;
         this.statusId = statusId;
         this.deadlineHour = deadlineHour;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getRequestId() {

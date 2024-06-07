@@ -5,6 +5,7 @@
 package controller.mentee;
 
 import dal.CVDAO;
+import dal.MentorDAO;
 import dal.RequestDAO;
 import dal.ScheduleDAO;
 import dal.SkillDAO;
@@ -55,12 +56,20 @@ public class RequestServlet extends HttpServlet {
             LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
 
             //get user_name of Mentor  by cvid
-            //String userName = cvdao.getCVByCVId(cvId).getUserName();
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-            request.setAttribute("userNameMentor", userName);
+            
+            //get rate of mentor
+            MentorDAO mentorDAO = new MentorDAO();
+            int rate = mentorDAO.getRateOfMentor(userName);
+            request.setAttribute("rate", rate);
+            
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            if(listSchedule.isEmpty()){
+                response.sendRedirect("homes.jsp");
+                return;
+            }
             for (SchedulePublic s : listSchedule) {
                 DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
                 s.setNameOfDay(nameOfDay);
@@ -92,15 +101,9 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            String[] _skills = request.getParameterValues("skills");
+            int skill = Integer.parseInt(request.getParameter("skill"));
             List<Integer> skills = new ArrayList<>();
-            if (_skills != null) {
-                for (String paramValue : _skills) {
-                    skills.add(Integer.valueOf(paramValue));
-                    System.out.println(paramValue);
-                }
-            }
-
+            skills.add(skill);
             String mentorName = request.getParameter("mentorname");
             String menteeName = acc.getUserName();
             String title = request.getParameter("title");
@@ -115,9 +118,12 @@ public class RequestServlet extends HttpServlet {
             for (String paramValue : selectedSlots) {
                 listSelected.add(Integer.valueOf(paramValue));
             }
-
+            int price = Integer.parseInt(request.getParameter("totalPrice"));
+            Request re = new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour);
+            re.setPrice(price);
             RequestDAO dao = new RequestDAO();
-            if (dao.insertRequest(new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour), skills, listSelected)) {
+            System.out.println("ok");
+            if (dao.insertRequest(re, skills, listSelected)) {
                 System.out.println("Insert thành công");
                 response.sendRedirect("ListRequest");
             } else {

@@ -46,6 +46,24 @@ public class SkillDAO{
         return list;
     }
     
+    public List<Skill> searchSkills(String searchTerm){
+    String sql = "SELECT * FROM Skills WHERE skill_name LIKE ?";
+    List<Skill> list = new ArrayList<>();
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, "%" + searchTerm + "%"); // Adding wildcards to search term
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getBoolean(5));
+            list.add(s);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+    
     public static void main(String[] args) {
         SkillDAO sd = new SkillDAO();
         for(Skill s : sd.getSkillByCVId(1)){

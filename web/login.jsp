@@ -86,13 +86,6 @@
                                  Sign up
                               </a>
                            </p>
-                           
-                           <p class="mb-0 p-3">
-                              You are 
-                              <a href="Login_manager.jsp" class="color-primary">
-                                 Admin or Manager ?
-                              </a>
-                           </p>
                         </div><!-- End: .admin-topbar  -->
                      </div><!-- End: .card -->
                   </div><!-- End: .edit-profile -->

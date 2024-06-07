@@ -165,10 +165,14 @@
                     justify-content: space-between;
 
                 }
+
             </style>
+            <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" rel="stylesheet">
+
         </head>
 
         <body>
+
             <jsp:include page="header.jsp" />
             <section id="page-title">
                 <div class="container">
@@ -216,6 +220,12 @@
                                                         <label>Deadline Hour</label>
                                                         <input name="deadlineHour" id="notify_message" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label>Price/Slot: </label>
+                                                        <label id="notify_message" class="form-control notification-message" rows="5" >
+                                                            ${rate}
+                                                        </label>
+                                                    </div>
                                                 </div>
                                                 <section id="page-content" class="no-sidebar">
                                                     <div class="container">
@@ -233,7 +243,7 @@
 
                                                                     <c:forEach items="${listSchedule}" var="schedule">
                                                                         <div class="day">
-                                                                            <div class="day-header" >${schedule.nameOfDay}</div>
+                                                                            <div class="day-header" >${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
                                                                             <div class="event">
 
                                                                                 <div>${schedule.slotId}: ${schedule.slot_name}</div>
@@ -246,6 +256,10 @@
                                                             </div>
                                                         </div>
                                                         <!-- end: Calendar -->
+                                                        <div class="header mt-2 text-end" style="display: flex; justify-content: flex-end;">
+                                                            <h4 id="totalPrice">Total Price: </h4>
+                                                        </div>
+                                                        <input type="hidden" id="totalPriceInput" name="totalPrice" value=""/>
                                                     </div>
                                                 </section>
                                                 <div class="col-lg-4">
@@ -254,11 +268,11 @@
                                                         <label for="hiringDateCheckbox">Skill</label>
                                                         <div class="d-flex">
                                                             <c:forEach items="${requestScope.skills}" var="skill">
-                                                                <div class="form-check text-center">
+                                                                <div class="form-check text-center m-3">
                                                                     <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>       
 
-                                                                    <input  type="checkbox" name="skills" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
-                                                                    </div>
+                                                                    <input  type="radio" name="skill" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
+                                                                </div>
 
                                                             </c:forEach>
                                                         </div>
@@ -290,16 +304,117 @@
             <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
             <script src='plugins/moment/moment.min.js'></script>
             <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+            <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
             <script>
-                document.querySelectorAll('.btn.btn-light').forEach(function (label) {
-                    label.addEventListener('click', function () {
-                        const checkbox = this.querySelector('input[type="checkbox"]');
-                        this.classList.toggle('active');
-                        checkbox.remove();
+                function getSundayOfWeek() {
+                    const currentDate = new Date();
+
+                    const dayOfWeek = currentDate.getDay();
+                    const daysUntilSunday = (7 - dayOfWeek) % 7;
+                    const sundayDate = new Date(currentDate);
+                    sundayDate.setDate(currentDate.getDate() + daysUntilSunday);
+
+                    const formattedSunday = sundayDate.getFullYear() + "-"
+                            + ('0' + (sundayDate.getMonth() + 1)).slice(-2) + "-"
+                            + ('0' + sundayDate.getDate()).slice(-2);
+
+                    return formattedSunday;
+                }
+                const sundayOfWeek = getSundayOfWeek();
+                console.log(sundayOfWeek);
+
+                function validateForm(e) {
+                    e.preventDefault();
+
+
+                    const deadlineDate = document.getElementById("notify_message").value;
+                    const deadlineHour = document.getElementById("notify_message").value;
+
+                    if (deadlineDate === "" || deadlineHour === "") {
+                        Toastify({
+                            text: "Please select both deadline date and deadline hour.",
+                            duration: 5000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    const cycleEndTime = new Date("2024-06-15");
+                    const selectedDeadline = new Date(deadlineDate);
+
+                    if (selectedDeadline > cycleEndTime) {
+                        Toastify({
+                            text: "Deadline date cannot exceed the end time of the cycle.",
+                            duration: 5000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    const selectedSlots = document.querySelectorAll('input[name="schedule"]:checked');
+
+                    if (selectedSlots.length === 0) {
+                        Toastify({
+                            text: "Please select at least one slot.",
+                            duration: 5000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    const selectedSkills = document.querySelectorAll('input[name="skills"]:checked');
+
+                    if (selectedSkills.length < 1 || selectedSkills.length > 3) {
+                        Toastify({
+                            text: "Please select between 1 and 3 skills.",
+                            duration: 3000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="schedule"]');
+                    const totalPriceInput = document.getElementById("totalPriceInput");
+                    // Function to count checked checkboxes
+                    function countChecked() {
+                        let checkedCount = 0;
+                        checkboxes.forEach((checkbox) => {
+                            if (checkbox.checked) {
+                                checkedCount++;
+                            }
+                        });
+                        return checkedCount;
+                    }
+                    const totalPrice = document.getElementById("totalPrice");
+                    if (countChecked() === 0) {
+                        totalPrice.innerHTML = "";
+                    }
+                    // Add event listener to each checkbox
+                    checkboxes.forEach((checkbox) => {
+                        checkbox.addEventListener('change', () => {
+                            let countnumcheck = countChecked();
+                            let total = countnumcheck * ${rate};
+                            if (countnumcheck === 0) {
+                                totalPrice.innerHTML = 'Total Price: 0';
+                            }
+                            totalPriceInput.value = total;
+                            totalPrice.innerHTML = 'Total Price: ' + total;
+                        });
                     });
                 });
             </script>
-
 
         </body>
 

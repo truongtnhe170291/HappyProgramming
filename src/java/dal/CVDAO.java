@@ -171,18 +171,18 @@ public class CVDAO {
         return -1;
     }
 
-    public boolean updateStatusCV(String username, int statusid) {
-        String sql = "UPDATE [dbo].[CV] SET [status_id] = ? WHERE [mentor_name] = ?;";
+    public boolean updateStatusCV(int cvId, int statusid) {
+        String sql = "UPDATE [dbo].[CV] SET [status_id] = ? WHERE [cv_id] = ?;";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, statusid);
-            ps.setString(2, username);
+            ps.setInt(2, cvId);
             int result = ps.executeUpdate();
             if (result == 1) {
                 return true;
             }
         } catch (SQLException e) {
-            System.out.println("Update status"+e.getMessage());
+            System.out.println("Update status" + e.getMessage());
         }
         return false;
     }
@@ -208,8 +208,8 @@ public class CVDAO {
 //            System.out.println("Not OK");
 //        }
         //cvdao.updateCV(c);
-        c = cvdao.getCVByCVId(2);
-        System.out.println(c.getAddress());
+        List<CVDTO> list = cvdao.getCVByStatus(1);
+        System.out.println(list.get(1).getRate());
     }
 
     public CV getCVByCVId(int cvId) {
@@ -267,9 +267,11 @@ public class CVDAO {
                 String serviceDescription = rs.getString(11);
                 String avatar = rs.getString(12);
                 int statusId = rs.getInt(13);
+                String note = rs.getString("note");
                 int[] skills = getSkillsByCvId(cvId);
                 Status status = getStatusById(statusId);
                 cv = new CV(cvId, username, gmail, fullname, dob, sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, avatar, statusId, status);
+                cv.setNote(note);
                 return cv;
             }
         } catch (SQLException e) {
@@ -327,14 +329,14 @@ public class CVDAO {
                 cv.setServiceDescription(rs.getString("service_description"));
                 cv.setImgcv(rs.getString("avatar"));
                 int statusId = rs.getInt("status_id");
-                cv.setRate(rs.getDouble("rate"));
+                cv.setRate(rs.getInt("rate"));
                 cv.setStattusId(statusId);
                 cvList.add(cv);
             }
-            if(cvList.isEmpty()){
+            if (cvList.isEmpty()) {
                 return cvList;
             }
-            for(CVDTO cv : cvList){
+            for (CVDTO cv : cvList) {
                 cv.setStatus(getStatusById(cv.getStattusId()));
                 cv.setListSkill(getSkillsByCVId(cv.getCvId()));
             }
@@ -344,31 +346,6 @@ public class CVDAO {
         }
         return cvList;
     }
-
-    public boolean changeCVStatus(int cvId, int status) {
-        String sql = "UPDATE [dbo].[CV]\n"
-                + "   SET \n"
-                + "      [status_id] = ?\n"
-                + " WHERE [cv_id] = ?";
-
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, status);
-            ps.setInt(2, cvId);
-
-            int row = ps.executeUpdate();
-            if (row != 1) {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        return true;
-
-    }
-
 
     public List<Skill> getSkillsByCVId(int cvId) {
         String sql = "SELECT s.[skill_id], s.[skill_name], s.[description] FROM CVSkills cs JOIN Skills s ON cs.skill_id = s.skill_id\n"
@@ -406,4 +383,29 @@ public class CVDAO {
         return null;
     }
 
+    public boolean updateNoteCV(int cvId, String note) {
+        try {
+            String sql = "UPDATE [dbo].[CV]\n"
+                    + "   SET \n"
+                    + "      [note] = ?\n"
+                    + " WHERE [cv_id] = ?";
+            ps = con.prepareStatement(sql);
+//            if (note != null) {
+//                ps.setString(1, note);
+//            }
+//            else{
+//                ps.setN
+//            }
+            ps.setString(1, note);
+            ps.setInt(2, cvId);
+
+            int row = ps.executeUpdate();
+            if (row != 1) {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("setNoteCV: "+ e.getMessage());
+        }
+        return true;
+    }
 }

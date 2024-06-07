@@ -40,7 +40,7 @@ public class CVService {
         return null;
     }
 
-    public boolean updateStatusCV(String userName, int status) {
-        return cvDao.updateStatusCV(userName, status);
+    public boolean updateStatusCV(int cvId, int status) {
+        return cvDao.updateStatusCV(cvId, status);
     }
 }

@@ -4,6 +4,7 @@
  */
 package controller.mentor;
 
+import dal.CVDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -46,15 +47,19 @@ public class ApplyCVServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account acc = (Account) request.getSession().getAttribute("user");
-        if (acc == null) {
-            response.sendRedirect("Login.jsp");
-            return;
-        }
-        CVService cv_service = CVService.getInstance();
-        String userName = acc.getUserName();
-        if (cv_service.updateStatusCV(userName, 1)) {
-            response.sendRedirect("cv");
+        try {
+            Account acc = (Account) request.getSession().getAttribute("user");
+            if (acc == null) {
+                response.sendRedirect("Login.jsp");
+                return;
+            }
+            CVDAO dao = new CVDAO();
+            int cvId = Integer.parseInt(request.getParameter("cvId"));
+            if (dao.updateStatusCV(cvId, 1) && dao.updateNoteCV(cvId, null)) {
+                response.sendRedirect("cv");
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 

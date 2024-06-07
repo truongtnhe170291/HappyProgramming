@@ -72,20 +72,21 @@ public class HandleRequestMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+@Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
     ScheduleDAO scheduleDAO = new ScheduleDAO();
     
-    // Lấy selectedId và action từ request
-    int selectedId = Integer.parseInt(request.getParameter("selectedId"));
+    // Lấy mentorName, cycleId và action từ request
+    String mentorName = request.getParameter("mentorName");
+    int cycleId = Integer.parseInt(request.getParameter("cycleID"));
     int action = Integer.parseInt(request.getParameter("action"));
 
     // Kiểm tra action và gọi hàm tương ứng
     if (action == 2) {
-        scheduleDAO.approveRequest(selectedId);
+        scheduleDAO.approveRequest(mentorName, cycleId);
     } else if (action == 3) {
-        scheduleDAO.rejectRequest(selectedId);
+        scheduleDAO.rejectRequest(mentorName, cycleId);
     }
 
     // Chuyển hướng người dùng về trang mong muốn sau khi xử lý
