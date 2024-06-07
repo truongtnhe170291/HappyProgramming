@@ -13,7 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
+import models.ScheduleDTO;
 import models.SchedulePublic;
 
 /**
@@ -59,9 +62,15 @@ public class HandleRequestMentor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
-        List<SchedulePublic> list = scheduleDAO.getRequestByMentor();
+         LocalDate today = LocalDate.now();
+            // Tìm ngày tiếp theo có thể là thứ 2
+            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+            // Tìm ngày Chủ Nhật của tuần tiếp theo
+            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+
+        List<ScheduleDTO> list = scheduleDAO.getRequestByMentor(java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
         request.setAttribute("listSlot", list);
-        request.getRequestDispatcher("ListRequest_Mentor.jsp").forward(request, response);
+        request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
         
     } 
 

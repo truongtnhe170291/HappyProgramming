@@ -23,6 +23,28 @@ public class SchedulePublic {
     public SchedulePublic() {
     }
 
+    public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, String slot_name, DayOfWeek nameOfDay, int cycleID) {
+        this.selectedId = selectedId;
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.slot_name = slot_name;
+        this.nameOfDay = nameOfDay;
+        this.cycleID = cycleID;
+    }
+
+    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay, int cycleID) {
+        this.mentorName = mentorName;
+        this.selectedId = selectedId;
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.slot_name = slot_name;
+        this.nameOfDay = nameOfDay;
+        this.cycleID = cycleID;
+    }
+    
+
     public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name) {
         this.selectedId = selectedId;
         this.dayOfSlot = dayOfSlot;

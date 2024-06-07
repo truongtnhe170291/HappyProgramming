@@ -188,7 +188,7 @@
             <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="listRequest_manager.jsp">Schedule</a></li>
+                <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
               </ul>
             </li>
           

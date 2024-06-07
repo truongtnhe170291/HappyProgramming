@@ -225,64 +225,61 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table table-striped">
+                                                <table class="table mb-0 table-borderless">
                                                     <thead>
-                                                        <tr>
-                                                            <th>NO</th>
-                                                            <th>Mentor</th>
-                                                            <th>Note</th>
-                                                            <th>Actions</th>
+                                                        <tr class="userDatatable-header">
+                                                            <th><span class="userDatatable-title">User Name</span></th>
+                                                            <th><span class="userDatatable-title">Start Time</span></th>
+                                                            <th><span class="userDatatable-title">End Time</span></th>
+                                                            <th><span class="userDatatable-title">Action</span></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach items="${requestScope.cvList}" var="cv">
+                                                        <c:forEach var="slot" items="${listSlot}">
                                                             <tr>
-                                                                <td>${cv.cvId}</td>
-                                                                <td>${cv.fullName}</td>
-                                                                <td>
-                                                                    <input id="note_${cv.cvId}" required name="note" value="" class="userDatatable-content--date" type="text" />
-                                                                    <form id="form_${cv.cvId}">
-                                                                        <input type="hidden" name="cvId" value="${cv.cvId}" />
-                                                                        <input id="status_${cv.cvId}" type="hidden" name="status" value="" />
-                                                                        <input id="note_Input_${cv.cvId}" type="hidden" name="note" value="" />
-                                                                    </form>
-                                                                </td>
+                                                                <td><div class="userDatatable-content">${slot.userName}</div></td>
+                                                                <td><div class="userDatatable-content">${slot.startDate}</div></td>
+                                                                <td><div class="userDatatable-content">${slot.endDate}</div></td>
                                                                 <td>
                                                                     <button class="btn btn-info btn-sm">
                                                                         <i class="fas fa-eye"></i>
                                                                         <div id="requestDetailsModal" class="modal test">
                                                                             <div class="modal-content">
                                                                                 <span class="close">&times;</span>
-                                                                                <h2>CV Details</h2>
-                                                                                <p><strong>Mentor Name:</strong> <span id="modalMentorName">${cv.userName}</span></p>
-                                                                                <p><strong>Email:</strong> <span id="modalEmail">${cv.gmail}</span></p>
-                                                                                <p><strong>Full name:</strong> <span id="modalFullName">${cv.fullName}</span></p>
-                                                                                <p><strong>DoB:</strong> <span id="modalDoB">${cv.dob}</span></p>
-                                                                                <p><strong>Gender:</strong> <span id="modalGender">${cv.sex ? "Male" : "Female"}</span></p>
-                                                                                <p><strong>Address:</strong> <span id="modalDeadlineDate">${cv.address}</span></p>
-                                                                                <p><strong>Profession:</strong> <span id="modalDeadlineDate">${cv.profession}</span></p>
-                                                                                <p><strong>Profession Introduction:</strong> <span id="modalDeadlineDate">${cv.professionIntro}</span></p>
-                                                                                <p><strong>Achievement Description:</strong> <span id="modalDeadlineDate">${cv.achievementDescription}</span></p>
-                                                                                <p><strong>Service Description:</strong> <span id="modalDeadlineDate">${cv.serviceDescription}</span></p>
-                                                                                <p>
-                                                                                    <strong>Skills:</strong> 
-                                                                                    <span id="modalDeadlineDate">
-                                                                                        <c:forEach items="${cv.listSkill}" var="skill">
-                                                                                            <p>${skill.skillName}</p>
+                                                                                <h2>Schedule Details</h2>
+                                                                                <p><strong>Mentor Name:</strong> <span id="modalMentorName">${slot.userName}</span></p>
+                                                                                <p><strong>Start Date:</strong> <span id="modalStartDate">${slot.startDate}</span></p>
+                                                                                <p><strong>End Date:</strong> <span id="modalMentorName">${slot.endDate}</span></p>
+                                                                                <p><strong>Details Slot:</strong>
+                                                                                    <span id ="modalDetails">
+                                                                                        <c:forEach items="${slot.list}" var="details">
+                                                                                            <p><strong>SelectedID:</strong> ${details.selectedId}</p>
+                                                                                            <p><strong>Day Of Slot:</strong> ${details.dayOfSlot}</p>
+                                                                                            <p><strong>Slot ID:</strong> ${details.slotId}</p>  
+                                                                                            <p><strong>Slot Name:</strong> ${details.slot_name}</p> 
+                                                                                            <p><strong>Name Of Day:</strong> ${details.nameOfDay}</p> 
+                                                                                            <p><strong>Cycle ID: ${details.cycleID}</p> 
+
                                                                                         </c:forEach>
+
                                                                                     </span>
                                                                                 </p>
 
                                                                             </div>
                                                                         </div></button>
 
-                                                                    <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                                                    <button id="edit_${cv.cvId}" class="reject btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                                                    <form action="HandleSlotMentor" method="post">
+                                                                        <input type="hidden" name="mentorName" value="${slot.userName}" />
+                                                                        <c:if test="${not empty slot.list}">
+                                                                            <input type="hidden" name="cycleID" value="${slot.list[0].cycleID}" />
+                                                                        </c:if>
+                                                                        <button type="submit" name="action" value="2">Approve</button>
+                                                                        <button type="submit" name="action" value="3">Reject</button>
+                                                                    </form>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
 
-                                                    
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -444,7 +441,7 @@
                         const cvId = this.id.split('_')[1];
                         const note = document.getElementById('note_' + cvId);
                         const noteInput = document.getElementById('note_Input_' + cvId);
-                        const status = document.getElementById('status_'+cvId);
+                        const status = document.getElementById('status_' + cvId);
                         status.value = 2;
                         noteInput.value = note.value;
                         const form = document.getElementById('form_' + cvId);
@@ -460,7 +457,7 @@
                         const cvId = this.id.split('_')[1];
                         const note = document.getElementById('note_' + cvId);
                         const noteInput = document.getElementById('note_Input_' + cvId);
-                        const status = document.getElementById('status_'+cvId);
+                        const status = document.getElementById('status_' + cvId);
                         status.value = 3;
                         noteInput.value = note.value;
                         const form = document.getElementById('form_' + cvId);
