@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!doctype html>
+
 <html lang="en" dir="ltr">
 
     <head>
@@ -15,13 +15,13 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Fmaster</title>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <jsp:include page="style/linkcss.jsp" />
 
 
 
     </head>
 
     <body class="layout-light side-menu">
+      
         <div class="mobile-search">
             <form action="/" class="search-form">
                 <img src="img/svg/search.svg" alt="search" class="svg">
@@ -31,9 +31,10 @@
         <div class="mobile-author-actions"></div>
         <jsp:include page="control_nav.jsp" />
         <main class="main-content">
+            
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-
+              
 
                 <div class="dm-page-content">
                     <div class="container-fluid">
@@ -57,53 +58,26 @@
                         <div class="row calendar-grid justify-content-center">
                             <div class="col-xxl-3 col-xl-5 col-md-6 col-sm-8">
                                 <div class="dm-calendar-left">
-                                    <button class="btn btn-primary btn-lg btn-create-event" data-bs-toggle="modal" data-bs-target="#c-event-modal">
-                                        <img class="svg" src="img/svg/plus.svg" alt="">Create New Event</button>
-                                    <div class="card card-md mb-4">
-                                        <div class="card-body px-10">
-                                            <div class="date-picker">
-                                                <div class="date-picker__calendar"></div>
-                                                <!-- ends: .date-picker__calendar -->
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="card card-md mb-4">
                                         <div class="card-body">
                                             <div class="draggable-events" id="draggable-events">
                                                 <div class="draggable-events__top d-flex justify-content-between">
                                                     <h6>My Calendars</h6>
                                                     <!--I think we should leave this token-->
-                                                    <a href="#">
-                                                        <img class="svg" src="img/svg/plus.svg" alt="">
-                                                    </a>
+                                                   
                                                 </div>
-                                                <!--This will show the student have booking this menter-->
+                                                  <c:forEach items="${requestScope.listSchedule}" var="schedule">
+                 
+                
                                                 <ul class="draggable-event-list">
                                                     <li class="draggable-event-list__single d-flex align-items-center" data-class="primary">
                                                         <span class="badge-dot badge-primary"></span>
-                                                        <span class="event-text">Adam</span>
+                                                        
+                                                        <span class="event-text">${schedule.fullName}</span>
                                                     </li>
-                                                    <!-- ends: .draggable-event-list__single -->
-                                                    <li class="draggable-event-list__single d-flex align-items-center" data-class="secondary">
-                                                        <span class="badge-dot badge-secondary"></span>
-                                                        <span class="event-text">Son Pham</span>
-                                                    </li>
-                                                    <!-- ends: .draggable-event-list__single -->
-                                                    <li class="draggable-event-list__single d-flex align-items-center" data-class="success">
-                                                        <span class="badge-dot badge-success"></span>
-                                                        <span class="event-text">Alexandra</span>
-                                                    </li>
-                                                    <!-- ends: .draggable-event-list__single -->
-                                                    <li class="draggable-event-list__single d-flex align-items-center" data-class="primary">
-                                                        <span class="badge-dot badge-primary"></span>
-                                                        <span class="event-text">Minh Do</span>
-                                                    </li>
-                                                    <!-- ends: .draggable-event-list__single -->
-                                                    <li class="draggable-event-list__single d-flex align-items-center" data-class="warning">
-                                                        <span class="badge-dot badge-warning"></span>
-                                                        <span class="event-text">Eva</span>
-                                                    </li>
-                                                    <!-- ends: .draggable-event-list__single -->
+                                                    
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
@@ -256,37 +230,16 @@
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <ul class="e-info-list">
-                                    <li>
-                                        <img class="svg" src="img/svg/chevron-right.svg" alt="chevron-right.svg">
-                                        <span class="list-line">
-                                            <span class="list-label">Date :</span>
-                                            <span class="list-meta"> Thursday, January 23</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <img class="svg" src="img/svg/clock.svg" alt="clock">
-                                        <span class="list-line">
-                                            <span class="list-label">Time :</span>
-                                            <span class="list-meta"> 23⋅5:00 – 6:00 am</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <img class="svg" src="img/svg/align-left.svg" alt="align-left">
-                                        <span class="list-line">
-                                            <span class="list-text"> Lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam consetetur sadipscing elitr sed diam</span>
-                                        </span>
-                                    </li>
-                                </ul>
+                                
+                              
                             </div>
+                           
                         </div>
                     </div>
                 </div>
                 <!-- ends: .e-info-modal -->
-
-
             </div>
-
+ 
         </main>
         <div id="overlayer">
             <div class="loader-overlay">
@@ -298,101 +251,167 @@
                 </div>
             </div>
         </div>
+          
         <div class="overlay-dark-sidebar"></div>
         <div class="customizer-overlay"></div>
         <script>
-            (function ($) {
-            // initialize the external events
-            $("#external-events .fc-event").each(function () {
-            // store data so the calendar knows to render an event upon drop
-            $(this).data("event", {
+        (function ($) {
+    // initialize the external events
+    $("#external-events .fc-event").each(function () {
+        // store data so the calendar knows to render an event upon drop
+        $(this).data("event", {
             title: $.trim($(this).text()), // use the element's text as the event title
-                    stick: true, // maintain when user navigates (see docs on the renderEvent method)
-            });
-            // make the event draggable using jQuery UI
-            $(this).draggable({
+            stick: true, // maintain when user navigates (see docs on the renderEvent method)
+        });
+        $(this).draggable({
             zIndex: 999,
-                    revert: true, // will cause the event to go back to its
-                    revertDuration: 0, //  original position after the drag 
-            });
-            });
-            let projectUpdate = {
-            id: 4,
-                    events: [
-                <c:set var="count" value="1"/>
-                <c:forEach items="${requestScope.listSchedule}" var="schedule">
-                    {
-                    id: "${count}",
-                            //const s = fucts('${schedule.slotName}');
-                            //console.log(s.start);
-                            start: '${schedule.dayOfSlot}',
-                            //end: '${schedule.dayOfSlot}',
-                            title: "${schedule.skillName} - ${schedule.fullName}",
-                    },
-                    <c:set var="count" value="${count + 1}"/>
-                </c:forEach>
-                    ],
-                    className: "warning",
-                    textColor: "#FA8B0C",
-            };
-            document.addEventListener("DOMContentLoaded", function () {
-            var fullCalendar = document.getElementById("full-calendar");
-            if (fullCalendar) {
+            revert: true, // will cause the event to go back to its
+            revertDuration: 0, //  original position after the drag 
+        });
+    });
+
+    let date = new Date();
+
+    // className: "primary",
+    //    textColor: "#5F63F2",
+    //    className: "secondary",
+    //    textColor: "#FF69A5",
+    //    className: "success",
+    //    textColor: "#20C997",
+
+    let projectUpdate = {
+        id: 4,
+        events: [],
+        className: "warning",
+        textColor: "#FFF"
+    };
+
+    var count = 1; // Biến đếm số lần lặp
+
+    <c:forEach items="${requestScope.listSchedule}" var="schedule">
+        var dates = "${schedule.dayOfSlot}";
+        var timeRange = "${schedule.slotName}".split(" - ");
+        var startTime = timeRange[0];
+        var endTime = timeRange[1];
+        var start = moment(dates + " " + startTime, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DDTHH:mm:ss');
+        var end = moment(dates + " " + endTime, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DDTHH:mm:ss');
+
+       projectUpdate.events.push({
+            id: count,
+            start: start,
+            end: end,
+            title: "${schedule.skillName} - ${schedule.fullName}",
+            extendedProps: {
+              fullName: "${schedule.fullName}",
+              skillName: "${schedule.skillName}",
+              dayOfSlot: "${schedule.dayOfSlot}",
+              slotName: "${schedule.slotName}",
+              description: "${schedule.description}"
+            }
+});
+
+        count++;
+    </c:forEach>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var fullCalendar = document.getElementById("full-calendar");
+        if (fullCalendar) {
             var calendar = new FullCalendar.Calendar(fullCalendar, {
-            headerToolbar: {
-            left: "today,prev,title,next",
+                headerToolbar: {
+                    left: "today,prev,title,next",
                     right: "timeGridDay,timeGridWeek,dayGridMonth,listMonth",
-            },
-                    views: {
+                },
+                views: {
                     listMonth: {
-                    buttonText: "Schedule",
-                            titleFormat: {month: "short", weekday: "short"},
+                        buttonText: "Schedule",
+                        titleFormat: { month: "short", weekday: "short" },
                     }
-                    },
-                    listDayFormat: true,
-                    listDayAltFormat: true,
-                    allDaySlot: false,
-                    editable: true,
-                    eventSources: [familyEvents, productLaunch, teamMeeting, projectUpdate],
-                    contentHeight: 800,
-                    initialView: "timeGridDay",
-                    eventDidMount: function (view) {
+                },
+                listDayFormat: true,
+                listDayAltFormat: true,
+                allDaySlot: false,
+                editable: true,
+                eventSources: [projectUpdate],
+                contentHeight: 800,
+                initialView: "timeGridDay",
+                eventDidMount: function (view) {
                     $(".fc-list-day").each(function () {});
-                    },
-                    eventClick: function (infoEvent) {
+                },
+                eventClick: function (infoEvent) {
+                    console.log(infoEvent.event.extendedProps.fullName);
+                    const en = infoEvent.event.extendedProps;
+                    console.log(en);
                     console.log(infoEvent.event.title);
+                    console.log(en.fullName);
+                    console.log(en.skillName);
                     let infoModal = $("#e-info-modal");
+                    infoModal.find('.modal-content').empty();
+
+                   const infoContent = `
+                        <div class="modal-body">
+                            <ul class="e-info-list">
+                                <li>
+                                    <img class="svg" src="img/svg/align-left.svg" alt="align-left">
+                                    <span class="list-line">
+                                        <span class="list-text"> ` + en.fullName + ` </span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" src="img/svg/align-left.svg" alt="align-left">
+                                    <span class="list-line">
+                                        <span class="list-text"> ` + en.skillName + `</span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" src="img/svg/chevron-right.svg" alt="chevron-right.svg">
+                                    <span class="list-line">
+                                        <span class="list-label">Date :</span>
+                                        <span class="list-meta"> ` + en.dayOfSlot + `</span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" src="img/svg/clock.svg" alt="">
+                                    <span class="list-line">
+                                        <span class="list-label">Time :</span>
+                                        <span class="list-meta"> ` + en.slotName + `</span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <img class="svg" src="img/svg/align-left.svg" alt="align-left">
+                                    <span class="list-line">
+                                        <span class="list-text">` + en.description + `</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+
+                    infoModal.find('.modal-content').html(infoContent);
+
                     infoModal.modal("show");
+
                     console.log(infoModal.find(".e-info-title"));
                     infoModal.find(".e-info-title").text(infoEvent.event.title);
-                    },
+                },
             });
+
             let eventElement = document.getElementById("draggable-events");
             let draggable = new FullCalendar.Draggable(eventElement, {
-            itemSelector: ".draggable-event-list__single",
-                    eventData: function (eEl) {
+                itemSelector: ".draggable-event-list__single",
+                eventData: function (eEl) {
                     return {
-                    title: eEl.innerText,
-                            className: $(eEl).data("class"),
+                        title: eEl.innerText,
+                        className: $(eEl).data("class"),
                     };
-                    },
+                },
             });
             calendar.render();
             $('.fc-button-group .fc-listMonth-button').prepend('<i class="las la-list"></i>');
-            }
-            });
-            })(jQuery);
-            const fucts = (timeRange) => {
-                let timeParts = timeRange.split(" - ");
-                let startTime = timeParts[0];
-                let endTime = timeParts[1];
+        }
+    });
 
-                let timeObject = {
-                  start: startTime,
-                  end: endTime,
-                };
-                return timeObject;
-              };
+})(jQuery);
+
             </script>
         </body>
     </html>
