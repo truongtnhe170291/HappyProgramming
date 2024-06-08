@@ -234,12 +234,4 @@ public class ScheduleDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        ScheduleDAO aO = new ScheduleDAO();
-        List<ScheduleCommon> list = aO.getScheduleCommonByMentorName("son");
-        for (ScheduleCommon schedulePublic : list) {
-            System.out.println(schedulePublic);
-        }
-    }
-
 }
