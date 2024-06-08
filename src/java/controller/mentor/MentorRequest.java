@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import models.Account;
 import models.CV;
+import models.Day;
 import models.SchedulePublic;
 import models.Skill;
 import models.Slot;
@@ -73,16 +74,12 @@ public class MentorRequest extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            boolean checkValidDate = true;
+
             Account acc = (Account) request.getSession().getAttribute("user");
             if (acc == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
-
-            MentorDAO mentorDao = new MentorDAO();
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            ArrayList<Slot> listSlots = mentorDao.listSlots();
 
             LocalDate today = LocalDate.now();
             String todayName = "" + today.getDayOfWeek();
@@ -91,15 +88,13 @@ public class MentorRequest extends HttpServlet {
             // Tìm ngày Chủ Nhật của tuần tiếp theo
             LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
             // Mảng để lưu trữ tên các thứ trong tuần
-            String[] periodName = new String[7];
-            LocalDate currentDay = nextMonday;
 
-            for (int i = 0; i < 7; i++) {
-                periodName[i] = "" + currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " " + currentDay;
-                currentDay = currentDay.plusDays(1);
-            }
-
-            String SundayMonday = nextMonday + " - " + nextSunday;
+            MentorDAO mentorDao = new MentorDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+            ArrayList<Slot> listSlots = mentorDao.listSlots();
+            String status = scheduleDAO.getSelectedSlotStatus(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            ArrayList<Day> listDays = mentorDao.listDays();
+            String SundayMonday = listDays.get(0).getDateName() + " - " + listDays.get(6).getDateName();
 
             if (mentorDao.getNextMonSunByUserName(acc.getUserName()).equalsIgnoreCase(SundayMonday)) {
                 String error = "You already send request! Please try again in next week";
@@ -108,15 +103,22 @@ public class MentorRequest extends HttpServlet {
                 if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
                     String error = "You cannot send request this time! Please try again in next week";
                     request.setAttribute("error", error);
+                    if (status.equalsIgnoreCase("Approved")) {
+                        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+                        request.setAttribute("listSchedule", listSchedule);
+                    }
                 }
-                if (request.getParameter("error") != null) {
+                if (status.equalsIgnoreCase("Pending")) {
                     String error = "You have booking a schedule for this week";
                     request.setAttribute("error", error);
+                    List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+                    request.setAttribute("listSchedule", listSchedule);
                 }
             }
-            request.setAttribute("period", periodName);
+
             request.setAttribute("listSlots", listSlots);
-            request.setAttribute("SundayMonday", SundayMonday);
+            request.setAttribute("status", status);
+            request.setAttribute("listDays", listDays);
             request.getRequestDispatcher("Menter_Request.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
@@ -146,18 +148,30 @@ public class MentorRequest extends HttpServlet {
         LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
         String SundayMonday = nextMonday + " " + nextSunday;
 
-        for (String string : schedule) {
-            String userName = acc.getUserName();
-            String slotId = string.split(" ")[0];
-            String slotDate = string.split(" ")[2];
-            String startTime = SundayMonday.split(" ")[0];
-            String endTime = SundayMonday.split(" ")[1];
-            int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
-            mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
-            String error = "You cannot send request this time! Please try again in next week";
+        if (request.getParameter("isUpdate") != null) {
+            for (String string : schedule) {
+                String userName = acc.getUserName();
+                String slotId = string.split(" ")[0];
+                String slotDate = string.split(" ")[2];
+                String startTime = SundayMonday.split(" ")[0];
+                String endTime = SundayMonday.split(" ")[1];
+                int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
+                mentorDao.deleteSchedulePublic(userName, cycleID);
+                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+            }
+        } else {
+            for (String string : schedule) {
+                String userName = acc.getUserName();
+                String slotId = string.split(" ")[0];
+                String slotDate = string.split(" ")[2];
+                String startTime = SundayMonday.split(" ")[0];
+                String endTime = SundayMonday.split(" ")[1];
+                int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
+                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+            }
         }
 
-        response.sendRedirect("MentorRequest?error=check");
+        response.sendRedirect("MentorRequest");
 
     }
 

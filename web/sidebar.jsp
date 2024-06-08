@@ -48,7 +48,7 @@
                            <a href="MentorRequest">Booking Calendar</a>
                         </li>
                         <li class="l_sidebar">
-                           <a href="Mentor_Mentee_calendar.jsp">View Schedule</a>
+                           <a href="scheduleCommonMentor">View Schedule</a>
                         </li>
                      </ul>
                   </li>
