@@ -82,7 +82,7 @@
                                         <c:out value="${mentor.rate}" />
                                     </strong></li>
                                 <li> <strong class="pull-right">
-                                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success">Send Request</a>
+                                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success">Book</a>
                                     </strong></li>
                             </ul>
 
