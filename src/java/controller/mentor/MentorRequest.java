@@ -137,26 +137,33 @@ public class MentorRequest extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         MentorDAO mentorDao = new MentorDAO();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+
         Account acc = (Account) request.getSession().getAttribute("user");
+
         String[] schedule = request.getParameterValues("schedule");
 
         LocalDate today = LocalDate.now();
         String todayName = "" + today.getDayOfWeek();
         // Tìm ngày tiếp theo có thể là thứ 2
         LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+        String nextMondayS = "" + nextMonday;
         // Tìm ngày Chủ Nhật của tuần tiếp theo
         LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+        String nextSundayS = "" + nextSunday;
         String SundayMonday = nextMonday + " " + nextSunday;
+        String status = scheduleDAO.getSelectedSlotStatus(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
 
-        if (request.getParameter("isUpdate") != null) {
+        int cycleID = mentorDao.getCycleIdByStart_End(nextMondayS, nextSundayS);
+
+        if (status.equalsIgnoreCase("pending")) {
+            mentorDao.deleteSchedulePublic(acc.getUserName(), cycleID);
             for (String string : schedule) {
                 String userName = acc.getUserName();
                 String slotId = string.split(" ")[0];
                 String slotDate = string.split(" ")[2];
                 String startTime = SundayMonday.split(" ")[0];
                 String endTime = SundayMonday.split(" ")[1];
-                int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
-                mentorDao.deleteSchedulePublic(userName, cycleID);
                 mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
             }
         } else {
@@ -166,7 +173,6 @@ public class MentorRequest extends HttpServlet {
                 String slotDate = string.split(" ")[2];
                 String startTime = SundayMonday.split(" ")[0];
                 String endTime = SundayMonday.split(" ")[1];
-                int cycleID = mentorDao.getCycleIdByStart_End(startTime, endTime);
                 mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
             }
         }
