@@ -103,7 +103,8 @@ public class ScheduleDAO {
         return true;
     }
 
-    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName, java.sql.Date startTime, java.sql.Date endTime) {
+    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName, java.sql.Date startTime,
+            java.sql.Date endTime) {
         List<SchedulePublic> list = new ArrayList<>();
         try {
             String sql = "SELECT ss.selected_id, ss.day_of_slot, ss.slot_id, c.start_time, c.end_time, s.slot_name from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
@@ -115,12 +116,70 @@ public class ScheduleDAO {
             ps.setDate(3, endTime);
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new SchedulePublic(rs.getInt(1), rs.getDate(2), rs.getString(3), rs.getDate(4), rs.getDate(5), rs.getString(6)));
+                list.add(new SchedulePublic(rs.getInt(1), rs.getDate(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+                        rs.getString(6)));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return list;
+    }
+
+    public List<SchedulePublic> getListSchedulePublic(String userName, Date startTime, Date endTime) {
+        List<SchedulePublic> list = new ArrayList<>();
+        try {
+            String sql = "SELECT * from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id \r\n"
+                    + //
+                    "where ss.mentor_name = ? AND c.start_time >= ? AND c.end_time <= ?";
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, userName);
+            ps.setDate(2, startTime);
+            ps.setDate(3, endTime);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new SchedulePublic(rs.getString(2),
+                        rs.getInt(1),
+                        rs.getDate(5),
+                        rs.getString(3),
+                        rs.getDate(8),
+                        rs.getDate(9),
+                        rs.getString(11),
+                        rs.getString(6)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+    public String getSelectedSlotStatus(String userName, Date startTime, Date endTime) {
+        String status = "";
+        try {
+            String sql = "SELECT * from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id JOIN Status_Selected stas ON stas.status_id = ss.status_id\r\n"
+                    + //
+                    "where ss.mentor_name = ? AND c.start_time >= ? AND c.end_time <= ?";
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, userName);
+            ps.setDate(2, startTime);
+            ps.setDate(3, endTime);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                status = rs.getString(13);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return status;
+    }
+
+    public static void main(String[] args) {
+        ScheduleDAO aO = new ScheduleDAO();
+        List<SchedulePublic> list = aO.getScheduleByRequestId(2);
+        for (SchedulePublic schedulePublic : list) {
+            System.out.println(schedulePublic);
+        }
     }
 
     public List<SchedulePublic> getScheduleByRequestId(int requestId) {
@@ -175,12 +234,12 @@ public class ScheduleDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        ScheduleDAO aO = new ScheduleDAO();
-        List<ScheduleCommon> list = aO.getScheduleCommonByMentorName("son");
-        for (ScheduleCommon schedulePublic : list) {
-            System.out.println(schedulePublic);
-        }
-    }
+//    public static void main(String[] args) {
+//        ScheduleDAO aO = new ScheduleDAO();
+//        List<ScheduleCommon> list = aO.getScheduleCommonByMentorName("son");
+//        for (ScheduleCommon schedulePublic : list) {
+//            System.out.println(schedulePublic);
+//        }
+//    }
 
 }

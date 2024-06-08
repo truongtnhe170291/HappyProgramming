@@ -160,6 +160,82 @@
                 .rights {
                     margin-left: auto;
                 }
+
+                body {
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f0f0f0;
+                }
+
+                table {
+                    border-collapse: collapse;
+                    width: 80%;
+                    margin: 20px 0;
+                }
+
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                th {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+                th.equal-width {
+                    width: 100%; /* hoặc một giá trị khác tùy theo bạn muốn */
+                }
+
+
+                .slot {
+                    background-color: #f9f9f9;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                }
+
+                .slot.selected {
+                    background-color: #1a5218;
+                    color: white;
+                }
+
+                .form-container {
+                    text-align: center;
+                }
+
+                .form-container button {
+                    padding: 10px 20px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                }
+
+                .form-container button:hover {
+                    background-color: #0056b3;
+                }
+
+                .status-box {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    padding: 10px;
+                    background-color: #f8f9fa;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                }
+                .highlighted {
+                    background-color: #d1e7dd;
+                }
             </style>
         </head>
 
@@ -183,99 +259,144 @@
                     <div class="">
                         <section id="page-content">
                             <div class="container">
-                                <div style="text-align: center">
-                                        <h4 style="color: #ffbf00">${error}</h4>
+                                <div>
+                                    <h5 style="color: #ffbf00">${error}</h5>
                                     </div>
-                                    <div class="row">
-                                        <!-- content -->
-                                        <div class="content col-lg-9">
-                                            <!-- form -->
-                                            <c:set value="${requestScope.listSchedule}" var="listSchedule"/>
-                                            <form action="MentorRequest" method="post">
+                                    <c:if test="${status != ''}">
+                                        <div class="status-box">
+                                            <p style="color: #cccc00">${status}</p>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${status == ''}">
+                                        <div class="status-box">
+                                            <p style="color: #cccc00">Selected</p>
+                                        </div>
+                                    </c:if>
+                                    <form id="slotForm" action="MentorRequest?isUpdate=${status}" method="post">
+                                        <div class="row">
+                                            <!-- content -->
+                                            <div class="content col-lg-9">
+                                                <!-- form -->
                                                 <div class="row">
-                                                    <section id="page-content" class="no-sidebar">
-                                                        <div class="container">
-                                                            <!-- Calendar -->
-                                                            <div class="row mb-5">
-                                                                <div class="col-lg-6">
-                                                                </div>
+                                                    <div class="container">
+                                                        <!-- Calendar -->
+                                                        <div class="row mb-5">
+                                                            <div class="col-lg-6">
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="calendar">
-                                                                        <div class="header" style="display: flex;
-                                                                        justify-content: center">
-                                                                            <h2>${SundayMonday}</h2>
-                                                                        </div>
-                                                                        <c:forEach items="${period}" var="schedule">
-                                                                            <div class="day">
-                                                                                <div class="day-header">${schedule}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
 
-                                                                                <c:forEach items="${listSlots}" var="s">
-                                                                                    <div class="event">
-                                                                                        <div class="event-dot" style="background-color: red;"></div>
-                                                                                    <div>${s.slot_id} : ${s.slot_name}</div>
-                                                                                    <input type="checkbox" name="schedule" value="${s.slot_id} ${schedule} ${s.slot_name}" autocomplete="off">
-                                                                                </div>
+                                                                <div class="form-container">
+
+                                                                    <table>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="equal-width">Time Line</th>
+                                                                                    <c:forEach var="day" items="${listDays}">
+                                                                                    <th class="equal-width">${day.dateName} <br/> ${day.dateValue}</th>
+                                                                                    </c:forEach>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <c:forEach var="slot" items="${listSlots}" varStatus="loop">
+                                                                                <tr>
+                                                                                    <td>${slot.slot_name}</td>
+                                                                                    <c:forEach var="day" items="${listDays}">
+                                                                                        <td>
+                                                                                            <input type="checkbox" class="slot-checkbox" name="schedule" 
+                                                                                                   <c:forEach items="${listSchedule}" var="shedule">
+                                                                                                       <c:if test="${shedule.slotId eq slot.slot_id && shedule.getdayOfSlotString() eq day.dateValue}">checked</c:if>
+                                                                                                   </c:forEach>
+                                                                                                   value="${slot.slot_id} ${day.dateName} ${day.dateValue}">
+                                                                                        </td>
+                                                                                    </c:forEach>
+                                                                                </tr>
                                                                             </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
 
-
-                                                                        </div>
-                                                                    </c:forEach>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <!-- end: Calendar -->
                                                     </div>
-                                                </section>
-                                            </div>
-                                            <div class="row mt-5">
-                                                <div class="col-lg-9">
-                                                    <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
-                                                    <button type="reset" class="btn btn-primary">Reset</button>
+
+                                                </div>
+                                                <div class="row mt-5">
+                                                    <div class="col" style="display: flex;
+                                                    justify-content: end">
+
+                                                        <c:if test="${status == 'Pending'}">
+                                                            <button type="submit" id="notify_btn_Update" class="btn btn-primary">Update</button>
+                                                        </c:if>
+                                                        <c:if test="${status != 'Pending'}">
+                                                            <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
+                                                        </c:if>
+                                                        <button type="reset" class="btn btn-primary">Reset</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                        </div>
                     </div>
+
                 </div>
+                <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
+                <!--Plugins-->
+                <script src="js/jquery.js"></script>
+                <script src="js/plugins.js"></script>
+                <script src="js/functions.js"></script>
+                <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
+                <script src='plugins/moment/moment.min.js'></script>
+                <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const checkboxes = document.querySelectorAll('.slot-checkbox');
+                        const statusText = document.getElementById('status-text');
 
-            </div>
-            <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
-            <!--Plugins-->
-            <script src="js/jquery.js"></script>
-            <script src="js/plugins.js"></script>
-            <script src="js/functions.js"></script>
-            <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
-            <script src='plugins/moment/moment.min.js'></script>
-            <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    var error = "${error}";
-                    var notifyBtn = document.getElementById("notify_btn");
+                        checkboxes.forEach(checkbox => {
+                            checkbox.addEventListener('change', function () {
+                                if (checkbox.checked) {
+                                    checkbox.parentElement.classList.add('highlighted');
+                                } else {
+                                    checkbox.parentElement.classList.remove('highlighted');
+                                }
 
-                    if (error && error.trim() !== "") {
-                        notifyBtn.disabled = true;
-                    } else {
-                        notifyBtn.disabled = false;
-                    }
-                });
-            </script>
-            <script>
-                document.querySelectorAll('.btn.btn-light').forEach(function (label) {
-                    label.addEventListener('click', function () {
-                        const checkbox = this.querySelector('input[type="checkbox"]');
-                        this.classList.toggle('active');
-                        checkbox.remove();
+                                const selected = document.querySelectorAll('.slot-checkbox:checked');
+                                statusText.textContent = `${selected.length} slots selected`;
+                            });
+                        });
                     });
-                });
-            </script>
+                </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var error = "${error}";
+                        var notifyBtn = document.getElementById("notify_btn");
+
+                        if (error && error.trim() !== "") {
+                            notifyBtn.disabled = false;
+                        } else {
+                            notifyBtn.disabled = false;
+                        }
+                    });
+                </script>
+                <script>
+                    document.querySelectorAll('.btn.btn-light').forEach(function (label) {
+                        label.addEventListener('click', function () {
+                            const checkbox = this.querySelector('input[type="checkbox"]');
+                            this.classList.toggle('active');
+                            checkbox.remove();
+                        });
+                    });
+                </script>
 
 
-        </body>
+            </body>
 
-    </html>
+        </html>
 
