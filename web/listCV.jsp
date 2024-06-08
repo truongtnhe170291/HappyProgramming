@@ -36,6 +36,7 @@
             }
 
             .modal-content {
+                text-align: left;
                 background-color: #fefefe;
                 top:25%;
                 left: 40%;
@@ -45,8 +46,9 @@
             }
 
             .close {
+                transform: translate(95%,-5%);
                 color: #aaa;
-                float: right;
+                float: right ;
                 font-size: 28px;
                 font-weight: bold;
             }
@@ -119,7 +121,7 @@
     </head>
 
     <body>
-        <div class="loader"></div>
+         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
                 <div class="navbar-bg"></div>
@@ -189,13 +191,13 @@
                             <li class="dropdown">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>CV Management</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listRequest_manager.jsp">List CV</a></li>
+                                    <li><a class="nav-link" href="listCV">List CV</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listRequest_manager.jsp">Schedule</a></li>
+                                    <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
                                 </ul>
                             </li>
 
@@ -207,21 +209,21 @@
                     <section class="section">
                         <ul class="breadcrumb breadcrumb-style ">
                             <li class="breadcrumb-item">
-                                <h4 class="page-title m-b-0">Wizard</h4>
+                                <h4 class="page-title m-b-0">Homes</h4>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="index.html">
+                                <a href="Homes_manager.jsp">
                                     <i class="fas fa-home"></i></a>
                             </li>
-                            <li class="breadcrumb-item">Forms</li>
-                            <li class="breadcrumb-item">Wizard</li>
+                            <li class="breadcrumb-item">Schedule</li>
+                         
                         </ul>
                         <div class="section-body">
                             <div class="row clearfix">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4>Horizontal Layout</h4>
+                                            <h4>List Schedule Mentor</h4>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -282,7 +284,23 @@
                                                             </tr>
                                                         </c:forEach>
 
-                                                    
+                                                        <!--                                                                            <div class="calendar">
+                                                                                                                                        <div class="calendar-header">
+                                                                                                                                            <span class="calendar-date">2024-06-03 - 2024-06-09</span>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="calendar-body">
+                                                                                                                                            <div class="calendar-day">
+                                                                                                                                                <div class="day-label">abc</div>
+                                                                                                                                                <div class="day-date">2024-06-05</div>
+                                                                                                                                                <div class="time-slots">
+                                                                                                                                                    <div class="time-slot">
+                                                                                                                                                        <span class="slot-time">SLOT01: 7:00 - 9:00</span>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>-->
+                                                        <!-- Add more rows here -->
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -400,76 +418,64 @@
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
-            // Get the modal
-            var modal = document.querySelectorAll(".test");
+         document.addEventListener('DOMContentLoaded', (e) => {
+    const eyeIcons = document.querySelectorAll(".fas.fa-eye");
+    eyeIcons.forEach(function (icon) {
+        icon.addEventListener('click', function () {
+            const modal = this.parentElement.querySelector('.modal');
+            modal.style.display = 'block';
+        });
+    });
 
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
+    const closeButtons = document.querySelectorAll('.close');
+    closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const modal = this.closest('.modal');
+            modal.style.display = 'none';
+        });
+    });
 
-            // Get all buttons/icons with class "fas fa-eye"
-            var eyeIcons = document.querySelectorAll(".fas.fa-eye");
+    window.onclick = function (event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    };
 
+    const editButtons = document.querySelectorAll('.edit');
+    editButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const cvId = this.id.split('_')[1];
+            const note = document.getElementById('note_' + cvId);
+            const noteInput = document.getElementById('note_Input_' + cvId);
+            const status = document.getElementById('status_' + cvId);
+            status.value = 2;
+            noteInput.value = note.value;
+            const form = document.getElementById('form_' + cvId);
+            form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
+            form.method = 'get';
+            form.submit();
+        });
+    });
 
+    const rejectButtons = document.querySelectorAll('.reject');
+    rejectButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const cvId = this.id.split('_')[1];
+            const note = document.getElementById('note_' + cvId);
+            const noteInput = document.getElementById('note_Input_' + cvId);
+            const status = document.getElementById('status_' + cvId);
+            status.value = 3;
+            noteInput.value = note.value;
+            const form = document.getElementById('form_' + cvId);
+            form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
+            form.method = 'get';
+            form.submit();
+        });
+    });
+});
 
-            // Add click event listener to each eye icon
-            eyeIcons.forEach(function (icon) {
-                icon.onclick = function () {
-                    modal.forEach((ele) => {
-                        ele.style.display = 'block';
-                    });
-                };
-            });
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function () {
-                modal.forEach((ele) => {
-                    ele.style.display = 'none';
-                });
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.forEach((ele) => {
-                        ele.style.display = 'none';
-                    });
-                }
-            };
-
-            document.addEventListener('DOMContentLoaded', (e) => {
-                const editButtons = document.querySelectorAll('.edit');
-                editButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const cvId = this.id.split('_')[1];
-                        const note = document.getElementById('note_' + cvId);
-                        const noteInput = document.getElementById('note_Input_' + cvId);
-                        const status = document.getElementById('status_'+cvId);
-                        status.value = 2;
-                        noteInput.value = note.value;
-                        const form = document.getElementById('form_' + cvId);
-                        form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
-                        form.method = 'get';
-                        form.submit();
-                    });
-                });
-                const rejectButtons = document.querySelectorAll('.reject');
-                rejectButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const cvId = this.id.split('_')[1];
-                        const note = document.getElementById('note_' + cvId);
-                        const noteInput = document.getElementById('note_Input_' + cvId);
-                        const status = document.getElementById('status_'+cvId);
-                        status.value = 3;
-                        noteInput.value = note.value;
-                        const form = document.getElementById('form_' + cvId);
-                        form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
-                        form.method = 'get';
-                        form.submit();
-                    });
-                });
-            });
         </script>
     </body>
 
