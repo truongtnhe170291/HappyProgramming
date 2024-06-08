@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -188,7 +187,7 @@
                 </div>
             </section>
             <div class="wrapper">
-                <c:set value="${requestScope.cv}" var="cv"/>
+                <c:set value="${requestScope.cv}" var="cv" />
                 <div class="content-box">
                     <div class="">
                         <img src="./img/${cv.imgcv}" alt="Mentor Image" class="mentor-image">
@@ -197,11 +196,11 @@
                             <div class="container">
                                 <div class="row">
                                     <!-- content -->
-                                    <div class="content col-lg-9" >
+                                    <div class="content col-lg-9">
                                         <!-- form -->
-                                        <c:set value="${requestScope.listSchedule}" var="listSchedule"/>
+                                        <c:set value="${requestScope.listSchedule}" var="listSchedule" />
                                         <form action="request" method="post">
-                                            <input type="hidden" name="mentorname" value="${cv.userName}"/>
+                                            <input type="hidden" name="mentorname" value="${cv.userName}" />
                                             <div class="row">
                                                 <div class="col-lg-8">
                                                     <div class="form-group">
@@ -210,19 +209,19 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Description</label>
-                                                        <textarea name="description" id="notify_message" class="form-control notification-message" placeholder="Type your message here..." required="" rows="5"></textarea>
+                                                        <textarea name="description" class="form-control notification-message" placeholder="Type your message here..." required="" rows="5"></textarea>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Deadline Date</label>
-                                                        <input name="deadlineDate" id="notify_message" type="date" class="form-control notification-message" placeholder="" required="" rows="5" />
+                                                        <input name="deadlineDate" id="notify_messages" type="date" class="form-control notification-message" placeholder="" required="" rows="5" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Deadline Hour</label>
-                                                        <input name="deadlineHour" id="notify_message" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
+                                                        <input name="deadlineHour" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Price/Slot: </label>
-                                                        <label id="notify_message" class="form-control notification-message" rows="5" >
+                                                        <label class="form-control notification-message" rows="5">
                                                             ${rate}
                                                         </label>
                                                     </div>
@@ -243,11 +242,11 @@
 
                                                                     <c:forEach items="${listSchedule}" var="schedule">
                                                                         <div class="day">
-                                                                            <div class="day-header" >${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
+                                                                            <div class="day-header">${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
                                                                             <div class="event">
 
                                                                                 <div>${schedule.slotId}: ${schedule.slot_name}</div>
-                                                                                <input  type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off" >
+                                                                                <input type="checkbox" name="schedule" value="${schedule.selectedId}" autocomplete="off">
                                                                             </div>
                                                                         </div>
                                                                     </c:forEach>
@@ -256,10 +255,11 @@
                                                             </div>
                                                         </div>
                                                         <!-- end: Calendar -->
-                                                        <div class="header mt-2 text-end" style="display: flex; justify-content: flex-end;">
+                                                        <div class="header mt-2 text-end" style="display: flex;
+                                                            justify-content: flex-end;">
                                                             <h4 id="totalPrice">Total Price: </h4>
                                                         </div>
-                                                        <input type="hidden" id="totalPriceInput" name="totalPrice" value=""/>
+                                                        <input type="hidden" id="totalPriceInput" name="totalPrice" value="" />
                                                     </div>
                                                 </section>
                                                 <div class="col-lg-4">
@@ -269,9 +269,9 @@
                                                         <div class="d-flex">
                                                             <c:forEach items="${requestScope.skills}" var="skill">
                                                                 <div class="form-check text-center m-3">
-                                                                    <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>       
+                                                                    <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
 
-                                                                    <input  type="radio" name="skill" value="${skill.skillID}"  autocomplete="off" style="transform: translate(80px, -28px);">                                                                 
+                                                                    <input type="radio" name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translate(80px, -28px);">
                                                                 </div>
 
                                                             </c:forEach>
@@ -320,73 +320,72 @@
 
                     return formattedSunday;
                 }
-                const sundayOfWeek = getSundayOfWeek();
-                console.log(sundayOfWeek);
 
-                function validateForm(e) {
-                    e.preventDefault();
-
-
-                    const deadlineDate = document.getElementById("notify_message").value;
-                    const deadlineHour = document.getElementById("notify_message").value;
-
-                    if (deadlineDate === "" || deadlineHour === "") {
-                        Toastify({
-                            text: "Please select both deadline date and deadline hour.",
-                            duration: 5000,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#ff7b5a",
-                        }).showToast();
-                        return false;
-                    }
-
-                    const cycleEndTime = new Date("2024-06-15");
-                    const selectedDeadline = new Date(deadlineDate);
-
-                    if (selectedDeadline > cycleEndTime) {
-                        Toastify({
-                            text: "Deadline date cannot exceed the end time of the cycle.",
-                            duration: 5000,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#ff7b5a",
-                        }).showToast();
-                        return false;
-                    }
-
-                    const selectedSlots = document.querySelectorAll('input[name="schedule"]:checked');
-
-                    if (selectedSlots.length === 0) {
-                        Toastify({
-                            text: "Please select at least one slot.",
-                            duration: 5000,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#ff7b5a",
-                        }).showToast();
-                        return false;
-                    }
-
-                    const selectedSkills = document.querySelectorAll('input[name="skills"]:checked');
-
-                    if (selectedSkills.length < 1 || selectedSkills.length > 3) {
-                        Toastify({
-                            text: "Please select between 1 and 3 skills.",
-                            duration: 3000,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#ff7b5a",
-                        }).showToast();
-                        return false;
-                    }
-
-                    return true;
+                function getFormattedCurrentDate() {
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.getFullYear() + "-"
+                            + ('0' + (currentDate.getMonth() + 1)).slice(-2) + "-"
+                            + ('0' + currentDate.getDate()).slice(-2);
+                    return formattedDate;
                 }
 
-                document.addEventListener('DOMContentLoaded', (event) => {
+                function showToastMessage(message) {
+                    Toastify({
+                        text: message,
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                    }).showToast();
+                }
+
+
+
+
+                document.addEventListener('DOMContentLoaded', (et) => {
+                    et.preventDefault();
+                    const deadlineInput = document.getElementById('notify_messages');
+                    const selectedSkills = document.querySelectorAll('input[name="skills"]:checked');
+                    const selectedSlots = document.querySelectorAll('input[name="schedule"]:checked');
+                    // Add change event listener to deadlineDate input
+                    deadlineInput.addEventListener('change', () => {
+                        selectedSkills.forEach((skillss) => {
+                            skillss.addEventListener('change', () => {
+                                selectedSlots.addEventListener('change', () => {
+
+                                });
+                            });
+                        });
+                        const deadlineDate = deadlineInput.value;
+                        const sundayOfWeek = getSundayOfWeek();
+                        const formattedCurrentDate = getFormattedCurrentDate();
+
+
+
+
+                        if (deadlineDate < formattedCurrentDate || deadlineDate > sundayOfWeek) {
+
+                            document.getElementById("notify_btn").disabled = true;
+
+                            showToastMessage("Please select a valid deadline date.");
+
+                        } else if (selectedSlots.length === 0) {
+                            document.getElementById("notify_btn").disabled = true;
+                            showToastMessage("Please select > 1 slots.");
+
+                        } else if (selectedSkills.length < 1) {
+                            document.getElementById("notify_btn").disabled = true;
+                            showToastMessage("Please select > 1 skill.");
+                        } else {
+                            document.getElementById("notify_btn").disabled = false;
+                            showToastMessage("Sucsess");
+                        }
+                    });
+
                     const checkboxes = document.querySelectorAll('input[type="checkbox"][name="schedule"]');
                     const totalPriceInput = document.getElementById("totalPriceInput");
+                    const totalPrice = document.getElementById("totalPrice");
+
                     // Function to count checked checkboxes
                     function countChecked() {
                         let checkedCount = 0;
@@ -397,10 +396,11 @@
                         });
                         return checkedCount;
                     }
-                    const totalPrice = document.getElementById("totalPrice");
+
                     if (countChecked() === 0) {
                         totalPrice.innerHTML = "";
                     }
+
                     // Add event listener to each checkbox
                     checkboxes.forEach((checkbox) => {
                         checkbox.addEventListener('change', () => {
@@ -415,8 +415,6 @@
                     });
                 });
             </script>
-
         </body>
 
     </html>
-
