@@ -11,7 +11,10 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import models.ScheduleDTO;
 import models.ScheduleCommon;
 import models.SchedulePublic;
 
@@ -35,35 +38,65 @@ public class ScheduleDAO {
         }
     }
 
-    public List<SchedulePublic> getRequestByMentor() {
-        String sql = "SELECT ss.mentor_name, \n"
-                + "       STRING_AGG(s.slot_id , ',') as slot_id, \n"
-                + "       STRING_AGG(ss.day_of_slot, ',') as day_of_slot,c.cycle_id,\n"
-                + "       c.start_time, c.end_time \n"
-                + "FROM Selected_Slot ss \n"
-                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id \n"
-                + "JOIN Slots s ON s.slot_id = ss.slot_id \n"
-                + "WHERE ss.status_id = 1\n"
-                + "GROUP BY ss.mentor_name, c.start_time, c.end_time,c.cycle_id";
-        List<SchedulePublic> list = new ArrayList<>();
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String mentorName = rs.getString("mentor_name");
-                String slotId = rs.getString("slot_id");
-                String dayOfSlot = rs.getString("day_of_slot");
-                Date startTime = rs.getDate("start_time");
-                Date endTime = rs.getDate("end_time");
-                int cycleID = rs.getInt("cycle_id");
-                SchedulePublic request = new SchedulePublic(mentorName, endTime, slotId, startTime, endTime, cycleID);
-                list.add(request);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
+ public List<ScheduleDTO> getRequestByMentor(Date startTimeParam, Date endTimeParam) {
+    String sql = "SELECT DISTINCT ss.mentor_name, c.start_time, c.end_time " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "WHERE status_id = 1 AND c.start_time = ? AND c.end_time = ?";
+    List<ScheduleDTO> scheduleDTOList = new ArrayList<>();
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setDate(1, new java.sql.Date(startTimeParam.getTime()));
+        ps.setDate(2, new java.sql.Date(endTimeParam.getTime()));
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            ScheduleDTO scheduleDTO = new ScheduleDTO();
+            scheduleDTO.setUserName(rs.getString("mentor_name")); 
+            scheduleDTO.setStartDate(rs.getDate("start_time"));
+            scheduleDTO.setEndDate(rs.getDate("end_time"));
+            List<SchedulePublic> list = getSlotDetail(rs.getString("mentor_name"));
+            scheduleDTO.setList(list);
+            scheduleDTOList.add(scheduleDTO);
         }
-        return list;
+    } catch (SQLException e) {
+        System.out.println(e);
     }
+    return scheduleDTOList;
+}
+
+
+
+  public List<SchedulePublic> getSlotDetail(String mentorName) {
+    String sql = "SELECT ss.selected_id, s.slot_id, c.cycle_id, ss.day_of_slot, " +
+                 "DATENAME(WEEKDAY, ss.day_of_slot) AS nameOfDay, s.slot_name " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN slots s ON s.slot_id = ss.slot_id " +
+                 "WHERE status_id = 1 AND ss.mentor_name = ?";
+    List<SchedulePublic> list = new ArrayList<>();
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int selectedId = rs.getInt("selected_id");
+            Date dayOfSlot = rs.getDate("day_of_slot");
+            String slotId = rs.getString("slot_id");
+            String slotName = rs.getString("slot_name");
+            String nameOfDayString = rs.getString("nameOfDay");
+            DayOfWeek nameOfDay = DayOfWeek.valueOf(nameOfDayString.toUpperCase());
+            int cycleID = rs.getInt("cycle_id");
+            SchedulePublic schedule = new SchedulePublic(selectedId, dayOfSlot, slotId, slotName, nameOfDay, cycleID);
+            list.add(schedule);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+
+
 
     public boolean approveRequest(String mentorName, int cycleId) {
         String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE cycle_id = ? and mentor_name = ?";
@@ -84,8 +117,10 @@ public class ScheduleDAO {
         return true;
     }
 
+
     public boolean rejectRequest(String mentorName, int cycleId) {
         String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ? and mentor_name = ?";
+
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -103,8 +138,9 @@ public class ScheduleDAO {
         return true;
     }
 
-    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName, java.sql.Date startTime,
-            java.sql.Date endTime) {
+
+    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName, java.sql.Date startTime, java.sql.Date endTime) {
+
         List<SchedulePublic> list = new ArrayList<>();
         try {
             String sql = "SELECT ss.selected_id, ss.day_of_slot, ss.slot_id, c.start_time, c.end_time, s.slot_name from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
@@ -176,10 +212,17 @@ public class ScheduleDAO {
 
     public static void main(String[] args) {
         ScheduleDAO aO = new ScheduleDAO();
-        List<SchedulePublic> list = aO.getScheduleByRequestId(2);
-        for (SchedulePublic schedulePublic : list) {
+        LocalDate today = LocalDate.now();
+            // Tìm ngày tiếp theo có thể là thứ 2
+            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+            // Tìm ngày Chủ Nhật của tuần tiếp theo
+            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+        List<ScheduleDTO> list = aO.getRequestByMentor(java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+        for (ScheduleDTO schedulePublic : list) {
             System.out.println(schedulePublic);
         }
+//        List<SchedulePublic> list = aO.getSlotDetail("son");
+//        System.out.println(list);
     }
 
     public List<SchedulePublic> getScheduleByRequestId(int requestId) {
@@ -234,4 +277,8 @@ public class ScheduleDAO {
         return list;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 81b97554b3b639a0c75a470fe453bd270eb7fc94
 }

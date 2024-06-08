@@ -87,7 +87,7 @@ public class ListCVController extends HttpServlet {
         List<CVDTO> list = dao.getCVByStatus(1);
 
         request.setAttribute("cvList", list);
-        request.getRequestDispatcher("listRequest_manager.jsp").forward(request, response);
+        request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }
 
     /**

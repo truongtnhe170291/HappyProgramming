@@ -36,7 +36,6 @@
             }
 
             .modal-content {
-                text-align: left;
                 background-color: #fefefe;
                 top:25%;
                 left: 40%;
@@ -46,9 +45,8 @@
             }
 
             .close {
-                transform: translate(95%,-5%);
                 color: #aaa;
-                float: right ;
+                float: right;
                 font-size: 28px;
                 font-weight: bold;
             }
@@ -117,11 +115,83 @@
                 font-size: 12px;
                 color: #333;
             }
+                        #modalMentorName, #modalStartDate, #modalEndDate {
+              display: inline-block;
+              margin-right: 10px;
+              font-weight: bold;
+              color: #333;
+            }
+
+                        #modalDetails {
+              max-width: 800px;
+              margin: 50px auto;
+              background-color: #fff;
+              border-radius: 10px;
+              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+              overflow: hidden;
+              padding: 20px;
+            }
+
+            #modalMentorName, #modalStartDate, #modalEndDate {
+              background: linear-gradient(135deg, #7e57c2, #ab47bc);
+              color: #fff;
+              padding: 10px;
+              text-align: center;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              border-radius: 5px;
+              margin-bottom: 20px;
+            }
+
+            p {
+              margin-bottom: 20px;
+              padding: 20px;
+              background-color: #f9f9f9;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+              transition: all 0.3s ease;
+            }
+
+            p:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            p strong {
+              font-weight: bold;
+              color: #7e57c2;
+            }
+           .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .btn-sm {
+        margin-left: 5px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: white;
+    }
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
         </style>
     </head>
 
     <body>
-         <div class="loader"></div>
+        <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
                 <div class="navbar-bg"></div>
@@ -227,80 +297,65 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table table-striped">
+                                                <table class="table mb-0 table-borderless">
                                                     <thead>
-                                                        <tr>
-                                                            <th>NO</th>
-                                                            <th>Mentor</th>
-                                                            <th>Note</th>
-                                                            <th>Actions</th>
+                                                        <tr class="userDatatable-header">
+                                                            <th><span class="userDatatable-title">User Name</span></th>
+                                                            <th><span class="userDatatable-title">Start Time</span></th>
+                                                            <th><span class="userDatatable-title">End Time</span></th>
+                                                            <th><span class="userDatatable-title">Action</span></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach items="${requestScope.cvList}" var="cv">
-                                                            <tr>
-                                                                <td>${cv.cvId}</td>
-                                                                <td>${cv.fullName}</td>
-                                                                <td>
-                                                                    <input id="note_${cv.cvId}" required name="note" value="" class="userDatatable-content--date" type="text" />
-                                                                    <form id="form_${cv.cvId}">
-                                                                        <input type="hidden" name="cvId" value="${cv.cvId}" />
-                                                                        <input id="status_${cv.cvId}" type="hidden" name="status" value="" />
-                                                                        <input id="note_Input_${cv.cvId}" type="hidden" name="note" value="" />
-                                                                    </form>
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-info btn-sm">
-                                                                        <i class="fas fa-eye"></i>
-                                                                        <div id="requestDetailsModal" class="modal test">
-                                                                            <div class="modal-content">
-                                                                                <span class="close">&times;</span>
-                                                                                <h2>CV Details</h2>
-                                                                                <p><strong>Mentor Name:</strong> <span id="modalMentorName">${cv.userName}</span></p>
-                                                                                <p><strong>Email:</strong> <span id="modalEmail">${cv.gmail}</span></p>
-                                                                                <p><strong>Full name:</strong> <span id="modalFullName">${cv.fullName}</span></p>
-                                                                                <p><strong>DoB:</strong> <span id="modalDoB">${cv.dob}</span></p>
-                                                                                <p><strong>Gender:</strong> <span id="modalGender">${cv.sex ? "Male" : "Female"}</span></p>
-                                                                                <p><strong>Address:</strong> <span id="modalDeadlineDate">${cv.address}</span></p>
-                                                                                <p><strong>Profession:</strong> <span id="modalDeadlineDate">${cv.profession}</span></p>
-                                                                                <p><strong>Profession Introduction:</strong> <span id="modalDeadlineDate">${cv.professionIntro}</span></p>
-                                                                                <p><strong>Achievement Description:</strong> <span id="modalDeadlineDate">${cv.achievementDescription}</span></p>
-                                                                                <p><strong>Service Description:</strong> <span id="modalDeadlineDate">${cv.serviceDescription}</span></p>
-                                                                                <p>
-                                                                                    <strong>Skills:</strong> 
-                                                                                    <span id="modalDeadlineDate">
-                                                                                        <c:forEach items="${cv.listSkill}" var="skill">
-                                                                                            <p>${skill.skillName}</p>
-                                                                                        </c:forEach>
-                                                                                    </span>
-                                                                                </p>
+                                                       <c:forEach var="slot" items="${listSlot}">
+        <tr>
+            <td><div class="userDatatable-content">${slot.userName}</div></td>
+            <td><div class="userDatatable-content">${slot.startDate}</div></td>
+            <td><div class="userDatatable-content">${slot.endDate}</div></td>
+            <td>
+                <div class="btn-group">
+                    <button class="btn btn-info btn-sm" onclick="openModal('${slot.userName}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <form action="HandleSlotMentor" method="post">
+                        <input type="hidden" name="mentorName" value="${slot.userName}" />
+                        <c:if test="${not empty slot.list}">
+                            <input type="hidden" name="cycleID" value="${slot.list[0].cycleID}" />
+                        </c:if>
+                        <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+                </div>
 
-                                                                            </div>
-                                                                        </div></button>
+                <div id="modal-${slot.userName}" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('${slot.userName}')">&times;</span>
+                        <h2>Schedule Details</h2>
+                        <p><strong>Mentor Name:</strong> <span id="modalMentorName">${slot.userName}</span></p>
+                        <p><strong>Start Date:</strong> <span id="modalStartDate">${slot.startDate}</span></p>
+                        <p><strong>End Date:</strong> <span id="modalEndDate">${slot.endDate}</span></p>
+                        <p><strong>Details Slot:</strong>
+                            <span id="modalDetails">
+                                <c:forEach items="${slot.list}" var="details">
+                                    <p><strong>SelectedID:</strong> ${details.selectedId}</p>
+                                    <p><strong>Day Of Slot:</strong> ${details.dayOfSlot}</p>
+                                    <p><strong>Slot ID:</strong> ${details.slotId}</p>  
+                                    <p><strong>Slot Name:</strong> ${details.slot_name}</p> 
+                                    <p><strong>Name Of Day:</strong> ${details.nameOfDay}</p> 
+                                    <p><strong>Cycle ID:</strong> ${details.cycleID}</p> 
+                                </c:forEach>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </c:forEach>
 
-                                                                    <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                                                    <button id="edit_${cv.cvId}" class="reject btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
-                                                                </td>
-                                                            </tr>
-                                                        </c:forEach>
-
-                                                        <!--                                                                            <div class="calendar">
-                                                                                                                                        <div class="calendar-header">
-                                                                                                                                            <span class="calendar-date">2024-06-03 - 2024-06-09</span>
-                                                                                                                                        </div>
-                                                                                                                                        <div class="calendar-body">
-                                                                                                                                            <div class="calendar-day">
-                                                                                                                                                <div class="day-label">abc</div>
-                                                                                                                                                <div class="day-date">2024-06-05</div>
-                                                                                                                                                <div class="time-slots">
-                                                                                                                                                    <div class="time-slot">
-                                                                                                                                                        <span class="slot-time">SLOT01: 7:00 - 9:00</span>
-                                                                                                                                                    </div>
-                                                                                                                                                </div>
-                                                                                                                                            </div>
-                                                                                                                                        </div>
-                                                                                                                                    </div>-->
-                                                        <!-- Add more rows here -->
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -418,64 +473,49 @@
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
-         document.addEventListener('DOMContentLoaded', (e) => {
-    const eyeIcons = document.querySelectorAll(".fas.fa-eye");
-    eyeIcons.forEach(function (icon) {
-        icon.addEventListener('click', function () {
-            const modal = this.parentElement.querySelector('.modal');
-            modal.style.display = 'block';
-        });
-    });
+            
+  function openModal(userName) {
+        document.getElementById('modal-' + userName).style.display = 'block';
+    }
 
-    const closeButtons = document.querySelectorAll('.close');
-    closeButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const modal = this.closest('.modal');
-            modal.style.display = 'none';
-        });
-    });
-
-    window.onclick = function (event) {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
-        }
-    };
-
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-            const cvId = this.id.split('_')[1];
-            const note = document.getElementById('note_' + cvId);
-            const noteInput = document.getElementById('note_Input_' + cvId);
-            const status = document.getElementById('status_' + cvId);
-            status.value = 2;
-            noteInput.value = note.value;
-            const form = document.getElementById('form_' + cvId);
-            form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
-            form.method = 'get';
-            form.submit();
-        });
-    });
-
-    const rejectButtons = document.querySelectorAll('.reject');
-    rejectButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-            const cvId = this.id.split('_')[1];
-            const note = document.getElementById('note_' + cvId);
-            const noteInput = document.getElementById('note_Input_' + cvId);
-            const status = document.getElementById('status_' + cvId);
-            status.value = 3;
-            noteInput.value = note.value;
-            const form = document.getElementById('form_' + cvId);
-            form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
-            form.method = 'get';
-            form.submit();
-        });
-    });
-});
-
+    function closeModal(userName) {
+        document.getElementById('modal-' + userName).style.display = 'none';
+    }
+            document.addEventListener('DOMContentLoaded', (e) => {
+                
+                const editButtons = document.querySelectorAll('.edit');
+                editButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 2;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+                const rejectButtons = document.querySelectorAll('.reject');
+                rejectButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 3;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+            });
         </script>
     </body>
 

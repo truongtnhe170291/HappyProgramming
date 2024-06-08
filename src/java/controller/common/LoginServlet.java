@@ -89,8 +89,8 @@ public class LoginServlet extends HttpServlet {
             }
 
             // Hash the input password
-//            MD_5 md5 = new MD_5();
-//            String hashedPassword = md5.getMd5(password);
+//           MD_5 md5 = new MD_5();
+//           String hashedPassword = md5.getMd5(password);
 
             AccountService accountService = AccountService.getInstance();
             Account acc = accountService.getAccount(username, password); // Retrieve account info using username and hashed password
@@ -135,3 +135,4 @@ public class LoginServlet extends HttpServlet {
     }// </editor-fold>
 
 }
+

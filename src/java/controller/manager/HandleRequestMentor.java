@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import models.ScheduleDTO;
 import models.SchedulePublic;
 
 /**
@@ -72,13 +73,14 @@ public class HandleRequestMentor extends HttpServlet {
         // Mảng để lưu trữ tên các thứ trong tuần
 
         ScheduleDAO scheduleDAO = new ScheduleDAO();
-        List<SchedulePublic> list = scheduleDAO.getRequestByMentor();
-        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic("son", java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-        request.setAttribute("listSchedule", listSchedule);
-        request.setAttribute("listSlot", list);
-        request.getRequestDispatcher("ListRequest_Mentor.jsp").forward(request, response);
 
-    }
+        List<ScheduleDTO> list = scheduleDAO.getRequestByMentor(java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+        request.setAttribute("listSlot", list);
+        request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
+        
+    } 
+
+
 
     /**
      * Handles the HTTP <code>POST</code> method.
