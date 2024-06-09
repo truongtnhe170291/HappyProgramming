@@ -7,6 +7,9 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>FMASTER</title>
    <style>
+       .formc{
+           transform: translateY(-100px);
+       }
        #backh{
            width: 200px;
            transform: translateX(150px);
@@ -23,7 +26,7 @@
       <div class="admin">
          <div class="container-fluid">
             <div class="row justify-content-center">
-               <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-8">
+               <div class="col-xxl-3 col-xl-4 col-md-6 col-sm-8 formc">
                   <div class="edit-profile">
                      <div class="edit-profile__logos">
 
@@ -76,8 +79,8 @@
                                     ${status}
                                     ${messaget}
                            </div>
-                        <div class="admin-topbar">
-                           <p class="mb-0">
+                        <div class="admin-topbar d-flex flex-column g-3">
+                           <p class="mb-0 p-3">
                               Don't have an account?
                               <a href="sign_up.jsp" class="color-primary">
                                  Sign up

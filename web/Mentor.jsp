@@ -81,7 +81,11 @@
                                 <li>Price <strong class="pull-right">
                                         <c:out value="${mentor.rate}" />
                                     </strong></li>
+                                <li> <strong class="pull-right">
+                                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success">Book</a>
+                                    </strong></li>
                             </ul>
+
                         </div>
                     </aside>
                     <div class="col-md-8">

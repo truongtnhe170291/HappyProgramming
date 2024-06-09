@@ -158,7 +158,7 @@
                 <section class="background-grey">
                     <div class="container">
                         <div class="heading-text heading-section text-center">
-                            <h2>MEET OUR TEAM</h2>
+                            <h2>MEET OUR MENTOR</h2>
                             <p>Lorem ipsum dolor sit amet, consecte adipiscing elit. Suspendisse condimentum porttitor cursumus.
                             </p>
                         </div>

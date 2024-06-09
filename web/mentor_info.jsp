@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Update CV of mentor</title>
+
         <style>
             .author_2{
                 transform: translate(750px,-87px);
@@ -23,15 +24,39 @@
                 margin-left: 500px;
                 margin-top: 20px;
             }
-            .fcontent{
-                background-color: #01B81A26;
-                color: #01B81A;
-            }
-            .tcontent{
-                background-color: #FF0F0F26;
-                color: #FF0F0F;
+        
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
             }
 
+            th {
+                background-color: #f2f2f2;
+            }
+
+            td {
+                position: relative;
+            }
+
+            td span {
+                display: block;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            td hr {
+                border: none;
+                border-top: 1px solid #ddd;
+                margin: 5px 0;
+            }
+
+            td input[type="checkbox"] {
+                transform: scale(1.2);
+            }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -72,15 +97,8 @@
                                             <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home" role="tab" aria-selected="true">
                                                 <img src="img/svg/user.svg" alt="user" class="svg">personal info</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-selected="false">
-                                                <img src="img/svg/briefcase.svg" alt="briefcase" class="svg">Curriculum Vitae</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <div class="cards">                                        
-                                                <span class="text_ct">Active</span>                          
-                                            </div>
-                                        </li>
+                                    
+                                   
                                     </ul>
                                 </div>
                                 <div class="tab-content" id="v-pills-tabContent">
@@ -206,146 +224,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                        <div class="row justify-content-center">
-                                            <div class="col-xxl-4 col-10">
-                                                <div class="mt-40 mb-50">
-                                                    <div class="user-tab-info-title mb-35 text-capitalize">
-                                                        <h5 class="fw-500">CV Information</h5>
-                                                    </div>
-                                                    <form action="cv" method="POST" enctype="multipart/form-data">
-                                                        <c:set var="cv" value="${requestScope.cv}"/>
-                                                        <div class="account-profile d-flex align-items-center mb-4">
-                                                            <div class="ap-img pro_img_wrapper">
-                                                                <input id="file-uploadcv" type="file" name="uploadcv" class="d-none" accept="image/*">
-                                                                <!-- Profile picture image -->
-                                                                <label for="file-uploadcv" class="position-relative d-inline-block">
-                                                                    <img id="profile-imgcv" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./imgcv/${cv.imgcv}" alt="profile">
-                                                                    <span class="cross position-absolute" id="remove_pro_pic">
-                                                                        <img src="img/svg/camera.svg" alt="camera" class="svg">
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-
-                                                            <div class="account-profile__title">
-                                                                <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="edit-profile__body">
-
-
-                                                            <div style="margin-bottom: 15px">
-                                                                <div class="form-group mb-25">
-                                                                    <label for="name4">Full Name</label>
-                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Duran Clayton">
-                                                                </div>
-                                                                <div style="display: none" id="nameError2" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Your name is invalid.
-                                                                </div>
-                                                            </div>
-
-                                                            <div style="margin-bottom: 15px">
-                                                                <div class="form-group mb-25">
-                                                                    <label for="phoneNumber1">Mail</label>
-                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="Design">
-                                                                </div>
-                                                                <div style="display: none" id="emailError2" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Your email is invalid.
-                                                                </div>
-                                                            </div>
-
-                                                            <div style="margin-bottom: 15px">
-                                                                <div class="form-group mb-25 form-group">
-                                                                    <label for="datepicker">Date of birth</label>
-                                                                    <div class="position-relative">
-                                                                        <input id="dob2" name="dob" value="${cv.dob}" type="date" class="form-control"  placeholder="January 20, 2018">
-                                                                    </div>
-                                                                </div>
-                                                                <div style="display: none" id="dobError2" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Your date of birth is invalid.
-                                                                </div>
-                                                            </div>
-                                                            <div style="display: none" id="dobvcErr" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                <strong style="color: red">Oh no!</strong> your birthday is invalid.
-                                                            </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber">Sex</label>
-                                                                <div class="d-flex">
-                                                                    <div class="radio-horizontal-list d-flex flex-wrap">
-                                                                        <div class="radio-theme-default custom-radio ">
-                                                                            <input name="sex" ${cv.sex ? "checked": ""} class="radio" type="radio"  value="1" id="radio-hl1">
-                                                                            <label for="radio-hl1">
-                                                                                <span class="radio-text">Male</span>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="radio-theme-default custom-radio ">
-                                                                            <input name="sex" ${cv.sex ? "": "checked"} class="radio" type="radio"  value="0" id="radio-hl2">
-                                                                            <label for="radio-hl2">
-                                                                                <span class="radio-text">Female</span>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div style="margin-bottom: 15px">
-
-                                                                <div class="form-group mb-25">
-                                                                    <label for="phoneNumber1">Address</label>
-                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Design">
-                                                                </div>
-                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                                    <strong style="color: red">Oh no!</strong> Please input your Address.
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Profession</label>
-                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
-                                                            </div>
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Profession introduction</label>
-                                                                <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
-                                                            </div>
-                                                            
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Achievement Description</label>
-                                                                <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
-                                                            </div>
-                                                            
-                                                            <div class="form-group mb-25">
-                                                                <label for="phoneNumber1">Service Description</label>
-                                                                <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
-                                                            </div>
-
-                                                            <div class="form-group mb-25 status-radio ">
-                                                                <label for="hiringDateCheckbox">Skill</label>
-                                                                <div class="d-flex">
-                                                                    <c:forEach items="${requestScope.skills}" var="skill">
-                                                                        <c:set var="isChecked" value="false"/>
-                                                                        <c:forEach items="${cv.skills}" var="cvskill">
-                                                                            <c:if test="${skill.skillID == cvskill}">
-                                                                                <c:set var="isChecked" value="true"/>
-                                                                            </c:if>
-                                                                        </c:forEach>
-                                                                        <div class="form-check">
-                                                                            <input name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox">
-                                                                            <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
-                                                                        </div>
-
-                                                                    </c:forEach>
-                                                                </div>
-                                                            </div>
-                                                            <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
-                                                                <button type="submit" id="submitForm2" class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2 btn-sm">OK</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                                 </main>
@@ -361,22 +239,7 @@
                                 </div>
                                 <div class="overlay-dark-sidebar"></div>
                                 <div class="customizer-overlay"></div>
-                                <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
-                                <jsp:include page="style/linkJS.jsp" />
-                                <script>
-                                    const text = document.querySelector(".text_ct");
-                                    const card = document.querySelector(".cards");
-                                    card.classList.add("fcontent");
-                                    const two = document.querySelectorAll("#edit_oki");
-                                    two.forEach((editButton) => {
-                                        editButton.addEventListener("click", (event) => {
-                                            text.textContent = "change";
-                                            card.classList.remove("fcontent");
-                                            card.classList.add("tcontent");
-                                        });
-                                    });
 
-                                </script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var emailInput = document.getElementById('email');
@@ -559,19 +422,30 @@
                                             reader.readAsDataURL(file);
                                         }
                                     });
-                                    
 
-                                        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
-                                            const file = event.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    document.getElementById('profile-imgcv').src = e.target.result;
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        });
- 
+
+                                    document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                                        const file = event.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('profile-imgcv').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+
+                                </script>
+                                <script>
+                                    function checkCVStatus(cvStatus) {
+                                        if (cvStatus !== 2) {
+                                            $('#exampleModal2').modal('show');
+                                            $('#exampleModal2').on('hidden.bs.modal', function (e) {
+                                                location.reload();
+                                            });
+                                        }
+                                    }
+
                                 </script>
                                 </body>
                                 </html>

@@ -1,7 +1,6 @@
 package dal;
 
-
-
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.sql.Date;
 import models.Account;
 
 public class SignUpDAO {
+
     private Connection con;
 
     public SignUpDAO() {
@@ -20,19 +20,22 @@ public class SignUpDAO {
             e.printStackTrace();
         }
     }
-    
+
     public boolean signUp(Account account) {
         if (isDuplicateAccount(account.getUserName())) {
             return false; 
         }
+         MD_5 md5 = new MD_5();
+        String hashedPassword = md5.getMd5(account.getPassword());
 
+        
        String sql = "INSERT INTO Accounts ([user_name], gmail, full_name, pass_word, dob, sex, address, phone, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, account.getUserName());
             statement.setString(2, account.getGmail());
             statement.setString(3, account.getFullName());
-            statement.setString(4, account.getPassword());
+            statement.setString(4, hashedPassword);
             statement.setDate(5, account.getDob());
             statement.setBoolean(6, account.isSex());
             statement.setString(7, account.getAddress());
@@ -48,7 +51,31 @@ public class SignUpDAO {
         }
     }
     
-
+    public boolean insertMentee(String account) {
+       String sql = "INSERT INTO Mentees (mentee_name) VALUES (?)";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, account);
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+  
+    public boolean insertMenter(String account) {
+       String sql = "INSERT INTO Mentors (mentor_name, rate) VALUES (?, 0)";
+        try {
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, account);
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
   
     public boolean isDuplicateAccount( String userName) {
         String query = "SELECT COUNT(*) FROM Accounts Where user_name = ?";

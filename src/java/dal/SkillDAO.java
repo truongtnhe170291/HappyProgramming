@@ -46,29 +46,47 @@ public class SkillDAO{
         return list;
     }
     
-    public List<Skill> getSkillByUserName(String username) {
-        String sql = "SELECT s.[skill_id], s.[skill_name] FROM Mentors m join MentorSkills ms ON m.mentor_name = ms.mentor_name\n" +
-                            "JOIN Skills s ON s.skill_id = ms.skill_id where m.mentor_name = ?";
+    public List<Skill> searchSkills(String searchTerm){
+    String sql = "SELECT * FROM Skills WHERE skill_name LIKE ?";
+    List<Skill> list = new ArrayList<>();
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, "%" + searchTerm + "%"); // Adding wildcards to search term
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getBoolean(5));
+            list.add(s);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+    
+    public static void main(String[] args) {
+        SkillDAO sd = new SkillDAO();
+        for(Skill s : sd.getSkillByCVId(1)){
+            System.out.println(s.getSkillName());
+        }
+    }
+
+    public List<Skill> getSkillByCVId(int cvId) {
+        String sql = "SELECT cs.skill_id, s.skill_name from CVSkills cs join Skills s on cs.skill_id = s.skill_id WHERE cs.cv_id = ?";
         List<Skill> list = new ArrayList<>();
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, username);
+            ps.setInt(1, cvId);
             rs = ps.executeQuery();
             while(rs.next()){
-                Skill s = new Skill(rs.getInt(1), rs.getString(2),rs.getString(3), rs.getString(4), rs.getBoolean(4));
+                Skill s = new Skill();
+                s.setSkillID(rs.getInt(1));
+                s.setSkillName(rs.getString(2));
                 list.add(s);
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
-        
         return list;
-    }
-
-    public static void main(String[] args) {
-        SkillDAO sd = new SkillDAO();
-        for(Skill s : sd.getSkills()){
-            System.out.println(s.getSkillName());
-        }
     }
 }

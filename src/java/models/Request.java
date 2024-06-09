@@ -19,9 +19,17 @@ public class Request {
     private String description;
     private int statusId;
     private java.time.LocalTime deadlineHour;
-
+    private int price;
     // Default constructor
     public Request() {}
+
+    public Request(String mentorName, LocalDate deadlineDate, String title, LocalTime deadlineHour) {
+        this.mentorName = mentorName;
+        this.deadlineDate = deadlineDate;
+        this.title = title;
+        this.deadlineHour = deadlineHour;
+    }
+    
 
     public Request(int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
         this.requestId = requestId;
@@ -32,6 +40,24 @@ public class Request {
         this.description = description;
         this.statusId = statusId;
         this.deadlineHour = deadlineHour;
+    }
+
+    public Request(String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
+        this.mentorName = mentorName;
+        this.menteeName = menteeName;
+        this.deadlineDate = deadlineDate;
+        this.title = title;
+        this.description = description;
+        this.statusId = statusId;
+        this.deadlineHour = deadlineHour;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getRequestId() {
@@ -98,11 +124,13 @@ public class Request {
         this.deadlineHour = deadlineHour;
     }
 
-    
-
     @Override
     public String toString() {
         return "Request{" + "requestId=" + requestId + ", mentorName=" + mentorName + ", menteeName=" + menteeName + ", deadlineDate=" + deadlineDate + ", title=" + title + ", description=" + description + ", statusId=" + statusId + ", deadlineHour=" + deadlineHour + '}';
     }
+
+    
+
+   
 
 }
