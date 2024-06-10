@@ -308,7 +308,7 @@
                                                                                                    <c:forEach items="${listSchedule}" var="shedule">
                                                                                                        <c:if test="${shedule.slotId eq slot.slot_id && shedule.getdayOfSlotString() eq day.dateValue}">checked</c:if>
                                                                                                    </c:forEach>
-                                                                                                   value="${slot.slot_id} ${day.dateName} ${day.dateValue}">
+                                                                                                   value="${slot.slot_id} ${day.dateName} ${day.dateValue}" />
                                                                                         </td>
                                                                                     </c:forEach>
                                                                                 </tr>
