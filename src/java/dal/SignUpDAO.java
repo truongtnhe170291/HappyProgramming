@@ -44,6 +44,7 @@ public class SignUpDAO {
             statement.setInt(10, account.getStatusId());
 
             int rowsInserted = statement.executeUpdate();
+            statement.close();
             return rowsInserted > 0;
         } catch (SQLException e) {
             e.printStackTrace();

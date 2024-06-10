@@ -26,6 +26,7 @@ import models.Account;
  */
 @WebServlet("/forgotPassword")
 public class ForgotPassword extends HttpServlet {
+    private final Random rand = new Random();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
                   request.getRequestDispatcher("forget-password.jsp").forward(request, response);
@@ -40,7 +41,7 @@ public class ForgotPassword extends HttpServlet {
         AccountDAO ac = new AccountDAO();
         try {
             if (username!= null && email != null && !email.equals("") && ac.isUsermailAndEmailExists(username,email)) {
-                Random rand = new Random();
+                
                 otpvalue = rand.nextInt(1255650);
 
                 String to = email; 

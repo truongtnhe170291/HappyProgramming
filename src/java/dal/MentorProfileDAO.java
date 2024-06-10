@@ -53,9 +53,9 @@ public class MentorProfileDAO {
 "                ORDER BY f.avg_star DESC;";
 
         // Chuẩn bị câu truy vấn SQL
-        PreparedStatement ps = con.prepareStatement(sql);
+        ps = con.prepareStatement(sql);
         // Thực hiện câu truy vấn và lấy kết quả
-        ResultSet rs = ps.executeQuery();
+        rs = ps.executeQuery();
 
         // Tạo danh sách để lưu trữ thông tin của các mentor
         List<MentorProfile> mentors = new ArrayList<>();
