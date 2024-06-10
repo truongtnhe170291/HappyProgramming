@@ -41,7 +41,7 @@ public class ListRequest extends HttpServlet {
             // Lấy tham số menteeName từ request
             String menteeName = a.getUserName();
             RequestDAO rdao = new RequestDAO();
-            // Gọi hàm getAllRequests để lấy danh sách các yêu cầu
+            // Gọi hàm getRequestOfMenteeInDeadlineByStatus để lấy danh sách các yêu cầu
             List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(2,menteeName);
 
             request.setAttribute("requests", requests);
