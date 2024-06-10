@@ -272,7 +272,7 @@
                                             <p style="color: #cccc00">Selected</p>
                                         </div>
                                     </c:if>
-                                    <form id="slotForm" action="MentorRequest?isUpdate=${status}" method="post">
+                                    <form id="slotForm" action="MentorRequest" method="post">
                                         <div class="row">
                                             <!-- content -->
                                             <div class="content col-lg-9">

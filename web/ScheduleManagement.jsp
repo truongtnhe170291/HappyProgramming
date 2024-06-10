@@ -115,6 +115,78 @@
                 font-size: 12px;
                 color: #333;
             }
+                        #modalMentorName, #modalStartDate, #modalEndDate {
+              display: inline-block;
+              margin-right: 10px;
+              font-weight: bold;
+              color: #333;
+            }
+
+                        #modalDetails {
+              max-width: 800px;
+              margin: 50px auto;
+              background-color: #fff;
+              border-radius: 10px;
+              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+              overflow: hidden;
+              padding: 20px;
+            }
+
+            #modalMentorName, #modalStartDate, #modalEndDate {
+              background: linear-gradient(135deg, #7e57c2, #ab47bc);
+              color: #fff;
+              padding: 10px;
+              text-align: center;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              border-radius: 5px;
+              margin-bottom: 20px;
+            }
+
+            p {
+              margin-bottom: 20px;
+              padding: 20px;
+              background-color: #f9f9f9;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+              transition: all 0.3s ease;
+            }
+
+            p:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            p strong {
+              font-weight: bold;
+              color: #7e57c2;
+            }
+           .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .btn-sm {
+        margin-left: 5px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: white;
+    }
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
         </style>
     </head>
 
@@ -189,13 +261,13 @@
                             <li class="dropdown">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>CV Management</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listRequest_manager.jsp">List CV</a></li>
+                                    <li><a class="nav-link" href="listCV">List CV</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listRequest_manager.jsp">Schedule</a></li>
+                                    <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
                                 </ul>
                             </li>
 
@@ -207,21 +279,21 @@
                     <section class="section">
                         <ul class="breadcrumb breadcrumb-style ">
                             <li class="breadcrumb-item">
-                                <h4 class="page-title m-b-0">Wizard</h4>
+                                <h4 class="page-title m-b-0">Homes</h4>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="index.html">
+                                <a href="Homes_manager.jsp">
                                     <i class="fas fa-home"></i></a>
                             </li>
-                            <li class="breadcrumb-item">Forms</li>
-                            <li class="breadcrumb-item">Wizard</li>
+                            <li class="breadcrumb-item">Schedule</li>
+                         
                         </ul>
                         <div class="section-body">
                             <div class="row clearfix">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4>Horizontal Layout</h4>
+                                            <h4>List Schedule Mentor</h4>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -235,50 +307,54 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach var="slot" items="${listSlot}">
-                                                            <tr>
-                                                                <td><div class="userDatatable-content">${slot.userName}</div></td>
-                                                                <td><div class="userDatatable-content">${slot.startDate}</div></td>
-                                                                <td><div class="userDatatable-content">${slot.endDate}</div></td>
-                                                                <td>
-                                                                    <button class="btn btn-info btn-sm">
-                                                                        <i class="fas fa-eye"></i>
-                                                                        <div id="requestDetailsModal" class="modal test">
-                                                                            <div class="modal-content">
-                                                                                <span class="close">&times;</span>
-                                                                                <h2>Schedule Details</h2>
-                                                                                <p><strong>Mentor Name:</strong> <span id="modalMentorName">${slot.userName}</span></p>
-                                                                                <p><strong>Start Date:</strong> <span id="modalStartDate">${slot.startDate}</span></p>
-                                                                                <p><strong>End Date:</strong> <span id="modalMentorName">${slot.endDate}</span></p>
-                                                                                <p><strong>Details Slot:</strong>
-                                                                                    <span id ="modalDetails">
-                                                                                        <c:forEach items="${slot.list}" var="details">
-                                                                                            <p><strong>SelectedID:</strong> ${details.selectedId}</p>
-                                                                                            <p><strong>Day Of Slot:</strong> ${details.dayOfSlot}</p>
-                                                                                            <p><strong>Slot ID:</strong> ${details.slotId}</p>  
-                                                                                            <p><strong>Slot Name:</strong> ${details.slot_name}</p> 
-                                                                                            <p><strong>Name Of Day:</strong> ${details.nameOfDay}</p> 
-                                                                                            <p><strong>Cycle ID: ${details.cycleID}</p> 
+                                                       <c:forEach var="slot" items="${listSlot}">
+        <tr>
+            <td><div class="userDatatable-content">${slot.userName}</div></td>
+            <td><div class="userDatatable-content">${slot.startDate}</div></td>
+            <td><div class="userDatatable-content">${slot.endDate}</div></td>
+            <td>
+                <div class="btn-group">
+                    <button class="btn btn-info btn-sm" onclick="openModal('${slot.userName}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <form action="HandleSlotMentor" method="post">
+                        <input type="hidden" name="mentorName" value="${slot.userName}" />
+                        <c:if test="${not empty slot.list}">
+                            <input type="hidden" name="cycleID" value="${slot.list[0].cycleID}" />
+                        </c:if>
+                        <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+                </div>
 
-                                                                                        </c:forEach>
-
-                                                                                    </span>
-                                                                                </p>
-
-                                                                            </div>
-                                                                        </div></button>
-
-                                                                    <form action="HandleSlotMentor" method="post">
-                                                                        <input type="hidden" name="mentorName" value="${slot.userName}" />
-                                                                        <c:if test="${not empty slot.list}">
-                                                                            <input type="hidden" name="cycleID" value="${slot.list[0].cycleID}" />
-                                                                        </c:if>
-                                                                        <button type="submit" name="action" value="2">Approve</button>
-                                                                        <button type="submit" name="action" value="3">Reject</button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        </c:forEach>
+                <div id="modal-${slot.userName}" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('${slot.userName}')">&times;</span>
+                        <h2>Schedule Details</h2>
+                        <p><strong>Mentor Name:</strong> <span id="modalMentorName">${slot.userName}</span></p>
+                        <p><strong>Start Date:</strong> <span id="modalStartDate">${slot.startDate}</span></p>
+                        <p><strong>End Date:</strong> <span id="modalEndDate">${slot.endDate}</span></p>
+                        <p><strong>Details Slot:</strong>
+                            <span id="modalDetails">
+                                <c:forEach items="${slot.list}" var="details">
+                                    <p><strong>SelectedID:</strong> ${details.selectedId}</p>
+                                    <p><strong>Day Of Slot:</strong> ${details.dayOfSlot}</p>
+                                    <p><strong>Slot ID:</strong> ${details.slotId}</p>  
+                                    <p><strong>Slot Name:</strong> ${details.slot_name}</p> 
+                                    <p><strong>Name Of Day:</strong> ${details.nameOfDay}</p> 
+                                    <p><strong>Cycle ID:</strong> ${details.cycleID}</p> 
+                                </c:forEach>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </c:forEach>
 
                                                     </tbody>
                                                 </table>
@@ -397,43 +473,16 @@
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
-            // Get the modal
-            var modal = document.querySelectorAll(".test");
+            
+  function openModal(userName) {
+        document.getElementById('modal-' + userName).style.display = 'block';
+    }
 
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-            // Get all buttons/icons with class "fas fa-eye"
-            var eyeIcons = document.querySelectorAll(".fas.fa-eye");
-
-
-
-            // Add click event listener to each eye icon
-            eyeIcons.forEach(function (icon) {
-                icon.onclick = function () {
-                    modal.forEach((ele) => {
-                        ele.style.display = 'block';
-                    });
-                };
-            });
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function () {
-                modal.forEach((ele) => {
-                    ele.style.display = 'none';
-                });
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.forEach((ele) => {
-                        ele.style.display = 'none';
-                    });
-                }
-            };
-
+    function closeModal(userName) {
+        document.getElementById('modal-' + userName).style.display = 'none';
+    }
             document.addEventListener('DOMContentLoaded', (e) => {
+                
                 const editButtons = document.querySelectorAll('.edit');
                 editButtons.forEach(button => {
                     button.addEventListener('click', function (event) {

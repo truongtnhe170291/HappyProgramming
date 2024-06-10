@@ -84,6 +84,10 @@ public class CVServlet extends HttpServlet {
             String achievementDescription = request.getParameter("achievementDescription");
             String serviceDescription = request.getParameter("serviceDescription");
             String[] _skills = request.getParameterValues("skills");
+            if(_skills == null){
+                response.sendRedirect("cv");
+                return;
+            }
             int[] skills;
             if (_skills.length > 0) {
                 skills = new int[_skills.length];
