@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import models.Account;
 import models.RequestDTO;
 import models.RequestSkill;
+import models.Status;
 
 /**
  *
@@ -41,11 +42,11 @@ public class ListRequest extends HttpServlet {
             // Lấy tham số menteeName từ request
             String menteeName = a.getUserName();
             RequestDAO rdao = new RequestDAO();
-            // Gọi hàm getAllRequests để lấy danh sách các yêu cầu
-            List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(2,menteeName);
-
+            // Gọi hàm getRequestOfMenteeInDeadlineByStatus để lấy danh sách các yêu cầu
+            List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+            List<Status> statuses = rdao.getAllStatuses();
             request.setAttribute("requests", requests);
-
+            request.setAttribute("statuses", statuses);
             // Chuyển hướng đến trang ListRequest.jsp
             request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
         } catch (SQLException e) {

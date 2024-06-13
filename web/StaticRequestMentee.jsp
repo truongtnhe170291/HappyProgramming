@@ -25,10 +25,10 @@
     <head>
              <jsp:include page="header.jsp" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Static Request Mentee</title>
+        <title>Statistics Request Mentee</title>
     </head>
     <body>
-     <h1>Static Request Mentee</h1>
+     <h1>Statistics Request Mentee</h1>
 <table border="1" cellspacing="0" cellpadding="5">
     <thead>
         <tr>
