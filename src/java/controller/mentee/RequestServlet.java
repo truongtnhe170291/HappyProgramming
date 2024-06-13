@@ -122,7 +122,6 @@ public class RequestServlet extends HttpServlet {
             Request re = new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour);
             re.setPrice(price);
             RequestDAO dao = new RequestDAO();
-            System.out.println("ok");
             if (dao.insertRequest(re, skills, listSelected)) {
                 System.out.println("Insert thành công");
                 response.sendRedirect("ListRequest");

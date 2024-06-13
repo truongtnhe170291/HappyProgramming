@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.manager;
+package controller.mentee;
 
-import dal.CVDAO;
-import dal.SkillDAO;
+import dal.RequestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,17 +12,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
-import models.CV;
-import models.CVDTO;
-import models.Skill;
+import models.RequestDTO;
+import models.Status;
 
 /**
  *
- * @author ADMIN
+ * @author Admin
  */
-@WebServlet(name = "ListCVController", urlPatterns = {"/listCV"})
-public class ListCVController extends HttpServlet {
+@WebServlet(name = "FilterStatusServlet", urlPatterns = {"/FilterStatusServlet"})
+public class FilterStatusServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +41,10 @@ public class ListCVController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListCVController</title>");
+            out.println("<title>Servlet FilterStatusServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListCVController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterStatusServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,10 +62,7 @@ public class ListCVController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CVDAO dao = new CVDAO();
-        List<CVDTO> list = dao.getCVByStatus(1);
-        request.setAttribute("cvList", list);
-        request.getRequestDispatcher("listCV.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -77,15 +73,52 @@ public class ListCVController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        CVDAO dao = new CVDAO();
-        List<CVDTO> list = dao.getCVByStatus(1);
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String menteeName = request.getParameter("menteeName");
+    String statusFilter = request.getParameter("statusFilter");
 
-        request.setAttribute("cvList", list);
-        request.getRequestDispatcher("listCV.jsp").forward(request, response);
+   
+    int statusId = -1;
+
+    List<RequestDTO> requests;
+    RequestDAO rdao = new RequestDAO();
+    try {
+       
+          
+        if (!"all".equals(statusFilter)) {
+            try {
+                statusId = Integer.parseInt(statusFilter);
+            } catch (NumberFormatException e) {
+              
+            }
+        }
+
+        // Retrieve the requests based on menteeName and statusId
+        if (statusId == -1) {
+            requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+            for (int i = 0; i < 10; i++) {
+              
+            }
+        } else {
+            requests = rdao.getRequestsByMenteeAndStatus(menteeName, statusId);
+            for (int i = 0; i < 10; i++) {
+           
+            }
+        }
+
+        // Set the requests attribute and forward to ListRequest.jsp
+        request.setAttribute("requests", requests);
+        request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+
+    } catch (Exception e) {
+        // Log the error and forward to the error page
+        e.printStackTrace();
+        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
+}
+    
 
     /**
      * Returns a short description of the servlet.

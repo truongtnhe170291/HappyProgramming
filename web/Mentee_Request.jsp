@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Document title -->
-    <title>Fmaster</title>
+    <title>Create request</title>
     <link href="plugins/bootstrap-switch/bootstrap-switch.css" rel="stylesheet">
     <link href='plugins/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
     <link href="css/plugins.css" rel="stylesheet">
@@ -358,7 +358,7 @@
         const checkedCount = countCheckedSchedules();
         const total = checkedCount * rate;
         totalPriceInput.value = total;
-        totalPrice.innerHTML = `Total Price: ${total}`;
+        totalPrice.innerHTML = `Total Price: ` + total;
     }
 
     // Function to validate form inputs

@@ -144,7 +144,7 @@ public class ScheduleDAO {
         List<SchedulePublic> list = new ArrayList<>();
         try {
             String sql = "SELECT ss.selected_id, ss.day_of_slot, ss.slot_id, c.start_time, c.end_time, s.slot_name from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
-                    + "where ss.mentor_name = ? AND c.start_time >= ? AND c.end_time <= ? AND ss.status_id = 2";
+                    + "where ss.mentor_name = ? AND c.start_time >= ? AND c.end_time <= ? AND ss.status_id = 2 order by day_of_slot";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
@@ -276,6 +276,5 @@ public class ScheduleDAO {
         }
         return list;
     }
-
 
 }

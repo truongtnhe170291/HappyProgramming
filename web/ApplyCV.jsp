@@ -231,7 +231,7 @@
                                             <form action="aplly" method="post">
                                                 <input type="hidden" name="cvId" value="${cv.cvId}"/>
                                                 <button type="submit" class="sets">
-                                                    Send
+                                                    Apply CV
                                                     <div class="star-1">
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
