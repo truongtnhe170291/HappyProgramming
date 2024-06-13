@@ -2,10 +2,14 @@
 USE master;
 GO
 
--- Drop the database
-DROP DATABASE HappyProgrammingDB;
-GO
 
+IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'HappyProgrammingDB')
+BEGIN
+	ALTER DATABASE HappyProgrammingDB SET OFFLINE WITH ROLLBACK IMMEDIATE;
+	ALTER DATABASE HappyProgrammingDB SET ONLINE;
+	DROP DATABASE HappyProgrammingDB;
+END
+GO
 -- Create the database
 CREATE DATABASE HappyProgrammingDB;
 GO
@@ -119,7 +123,8 @@ GO
 CREATE TABLE Cycle(
     cycle_id INT IDENTITY(1,1) PRIMARY KEY,
 	start_time DATE,
-	end_time DATE
+	end_time DATE,
+	note NVARCHAR(1000)
 );
 GO
 
@@ -161,6 +166,7 @@ CREATE TABLE RequestsFormMentee(
     [description] NVARCHAR(200),
     status_id INT FOREIGN KEY REFERENCES RequestStatuses(status_id),
 	price INT,
+	note NVARCHAR(1000)
 );
 GO 
 CREATE TABLE RquestSelectedSlot(
@@ -185,7 +191,25 @@ CREATE TABLE FeedBacks(
     comment NVARCHAR(1000),
     time_feedback DATE,
     PRIMARY KEY (mentor_name, mentee_name)
-);
+)
+GO
+CREATE TABLE Wallet(
+	wallet_id VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	real_balance DECIMAL(15, 0),
+	avaiable_balance DECIMAL(15, 0),
+)
+
+GO
+CREATE TABLE Transactions(
+	transaction_id INT IDENTITY(1,1) PRIMARY KEY,
+	user_send VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	user_receive VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	create_date DATETIME,
+	amount DECIMAL(15, 0),
+	[message] NVARCHAR(1000)
+)
+
+
 GO
 -- Insert into AccountStatuses
 INSERT INTO AccountStatuses (status_name) VALUES ('Active');
@@ -201,12 +225,12 @@ GO
 
 -- Insert into Accounts
 INSERT INTO Accounts ([user_name], gmail, full_name, [pass_word], dob, sex, [address], phone, avatar, role_id, status_id) VALUES
- ('truong', 'truongtnhe170291@fpt.edu.vn', 'Tran Nam Truong', 'c4ca4238a0b923820dcc509a6f75849b', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
- ('hieu', 'hieuvq@fpt.edu.vn', 'Vu Quang Hieu', 'c4ca4238a0b923820dcc509a6f75849b', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
- ('minh', 'minhvq@fpt.edu.vn', 'Vu Quang Minh', 'c4ca4238a0b923820dcc509a6f75849b', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
- ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', 'c4ca4238a0b923820dcc509a6f75849b', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
- ('abc', 'abc@fpt.edu.vn', 'Nguyen Van A', 'c4ca4238a0b923820dcc509a6f75849b', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
- ('xyz', 'xyz@fpt.edu.vn', 'Do Van X', 'c4ca4238a0b923820dcc509a6f75849b', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
+ ('truong', 'truongtnhe170291@fpt.edu.vn', 'Tran Nam Truong', '1', '1990-01-01', 1, '123 Main St', '1234567890', 'mentee1.jpg', 1, 1),
+ ('hieu', 'hieuvq@fpt.edu.vn', 'Vu Quang Hieu', '1', '1991-02-02', 0, '456 Elm St', '0987654321', 'mentee2.jpg', 1, 1),
+ ('minh', 'minhvq@fpt.edu.vn', 'Vu Quang Minh', '1', '1992-03-03', 1, '789 Oak St', '1112223333', 'mentor1.jpg', 2, 1),
+ ('son', 'sonph@fpt.edu.vn', 'Pham Hung Son', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
+ ('abc', 'abc@fpt.edu.vn', 'Nguyen Van A', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
+ ('xyz', 'xyz@fpt.edu.vn', 'Do Van X', '1', '2003-03-03', 1, '456 HN St', '0977333888', 'mentor2.jpg', 2, 1),
  ('manager', 'manager@fpt.edu.vn', 'Manager', '1', '2002-03-03', 1, '456 HN St', '0977333888', 'manager.jpg', 3, 1);
 GO
 
@@ -284,13 +308,15 @@ INSERT INTO Status_Selected(status_name) VALUES
 ('Pending'),
 ('Approved'),
 ('Rejected'),
-('Selected')
+('Not yet'),
+('attended'),
+('Saved')
 
 GO
-INSERT INTO Cycle(start_time, end_time) VALUES
-('2024-05-27', '2024-06-02'),
-('2024-06-03', '2024-06-09'),
-('2024-06-10', '2024-06-16')
+INSERT INTO Cycle(start_time, end_time, note) VALUES
+('2024-05-27', '2024-06-02', ''),
+('2024-06-03', '2024-06-09', ''),
+('2024-06-10', '2024-06-16', '')
 
 GO
 
@@ -309,19 +335,19 @@ VALUES
 
 GO
 -- Insert into RequestStatuses
-INSERT INTO RequestStatuses (status_name) VALUES ('Open');
+INSERT INTO RequestStatuses (status_name) VALUES ('Open Class');
 INSERT INTO RequestStatuses (status_name) VALUES ('Processing');
-INSERT INTO RequestStatuses (status_name) VALUES ('Cancel');
-INSERT INTO RequestStatuses (status_name) VALUES ('Closed');
+INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
+INSERT INTO RequestStatuses (status_name) VALUES ('Out Of Date');
 INSERT INTO RequestStatuses (status_name) VALUES ('Wait For Payment');
 GO
 
-INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price)
+INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price, note)
 VALUES 
-('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 1, 400000),
-('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 2, 200000),
-('son', 'hieu', '2024-06-10', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 2, 200000),
-('son', 'hieu', '2024-06-11', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 1, 200000)
+('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 1, 400000, ''),
+('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 2, 200000, ''),
+('son', 'hieu', '2024-06-10', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 2, 200000, ''),
+('son', 'hieu', '2024-06-11', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 3, 200000, 'Toi Tu Choi')
 
 GO
 INSERT INTO RquestSelectedSlot(request_id, selected_id)
@@ -339,5 +365,5 @@ VALUES
 (3, 1), -- Example values, replace with actual data
 (4, 2),
 (4, 3),
-(4, 4),
+(4, 4)
 
