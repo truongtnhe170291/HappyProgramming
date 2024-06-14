@@ -149,6 +149,38 @@
                 padding: 10px;
                 border: 2px solid red;
                 border-radius: 5px;
+
+            }
+            .filter-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: #f4f4f4; /* Màu nền cho container */
+                border-radius: 5px; /* Bo góc cho container */
+                margin-bottom: 20px; /* Khoảng cách dưới container */
+            }
+            .filter-container > form {
+                display: flex;
+                align-items: center;
+                width: 100%;
+            }
+            .filter-container label,
+            .filter-container select,
+            .filter-container input[type="date"] {
+                margin-right: 10px; /* Khoảng cách giữa các phần tử */
+            }
+            .filter-container button {
+
+                background-color: #007bff; /* Màu nền cho nút */
+                color: white; /* Màu chữ cho nút */
+                border: none;
+                border-radius: 5px; /* Bo góc cho nút */
+                cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
+                margin-left: 20px; /* Đẩy nút ra xa các phần tử khác */
+            }
+            .filter-container button:hover {
+                background-color: #0056b3; /* Màu nền khi hover vào nút */
             }
         </style>
     </head>
@@ -163,15 +195,34 @@
                         <form method="POST" action="FilterStatusServlet">
                             <label for="statusFilter">Filter by Status: </label>
                             <select id="statusFilter" name="statusFilter">
-                                <option value="all">All</option>
+                                <option value="all" ${statusId == -1 ? 'selected' : ''}>All</option>
                                 <c:forEach var="status" items="${statuses}">
-                                    <option value="${status.statusId}">${status.statusName}</option>
+                                    <option value="${status.statusId}" ${statusId == status.statusId ? 'selected' : ''}>
+                                        ${status.statusName}
+                                    </option>
                                 </c:forEach>
                             </select>
-                            <input type="hidden" name="menteeName" value="${menteeName}" />
-                            <button type="submit">Submit</button>
+
+                            <label for="mentorNameFilter">Filter by Mentor Name: </label>
+                            <select id="mentorNameFilter" name="mentorNameFilter">
+                                <option value="all" ${mentorName == '' ? 'selected' : ''}>All</option>
+                                <c:forEach var="mentor" items="${mentors1}">
+                                    <option value="${mentor.userName}" ${mentorName == mentor.userName ? 'selected' : ''}>
+                                        ${mentor.userName}
+                                    </option>
+                                </c:forEach>
+                            </select>
+
+                            <label for="startTimeFilter">Filter by Start Time: </label>
+                            <input type="date" id="startTimeFilter" name="startTimeFilter" value="${startTime == null ? '' : startTime}">
+
+                            <label for="endTimeFilter">Filter by End Time: </label>
+                            <input type="date" id="endTimeFilter" name="endTimeFilter" value="${endTime == null ? '' : endTime}">
+
+                            <button type="submit">Filter</button>
                         </form>
                     </div>
+
 
                     <table class="table mb-0 table-borderless">
                         <thead>
@@ -287,11 +338,26 @@
                                                 </button>
                                             </form>
                                         </c:if>
+
+                                        <!-- Payment button for 'Wait For Payment' status -->
+                                        <c:if test="${request.status.statusName == 'Wait For Payment'}">
+                                            <form method="POST" action="ProcessPayment">
+                                                <input type="hidden" name="requestId" value="${request.requestId}" />
+                                                <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
+                                                    <li>
+                                                        <a href="#" class="pay">
+                                                            <i class="uil uil-credit-card"></i> 
+                                                        </a>
+                                                    </li>
+                                                </button>
+                                            </form>
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
+
                 </div>
             </div>
 

@@ -19,6 +19,11 @@ public class Account {
     public Account() {
     }
 
+    public Account(String userName) {
+        this.userName = userName;
+    }
+    
+
     public Account(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, int roleId, int statusId) {
         this.userName = userName;
         this.gmail = gmail;
