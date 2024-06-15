@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Mentor;
 import models.Request;
 import models.RequestDTO;
 import models.RequestSkill;
@@ -83,9 +84,10 @@ public class RequestDAO {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT *\n"
-                    + "FROM RequestsFormMentee r\n"
-                    + "WHERE r.mentee_name = ?";
+            String sql = " SELECT *\n" +
+"                    FROM RequestsFormMentee r\n" +
+"                    WHERE r.mentee_name = ?\n" +
+"		     order by [deadline_date] DESC";
             ps = con.prepareStatement(sql);
             ps.setString(1, menteeName);
             rs = ps.executeQuery();
@@ -124,16 +126,43 @@ public class RequestDAO {
         return requests;
     }
     
-    public List<RequestDTO> getRequestsByMenteeAndStatus(String menteeName, int statusId) throws SQLException {
+ public List<RequestDTO> getRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
     List<RequestDTO> requests = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     try {
-        String sql = "SELECT * FROM [RequestsFormMentee] WHERE status_id = ? AND mentee_name = ?";
-        ps = con.prepareStatement(sql);
-        ps.setInt(1, statusId);
-        ps.setString(2, menteeName);
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM [RequestsFormMentee] WHERE mentee_name = ?");
+        if (statusId != null && statusId != -1) {
+            sqlBuilder.append(" AND status_id = ?");
+        }
+        if (mentorName != null && !mentorName.isEmpty()) {
+            sqlBuilder.append(" AND mentor_name = ?");
+        }
+        if (startTime != null) {
+            sqlBuilder.append(" AND deadline_date >= ?");
+        }
+        if (endTime != null) {
+            sqlBuilder.append(" AND deadline_date <= ?");
+        }
+
+        ps = con.prepareStatement(sqlBuilder.toString());
+        int paramIndex = 1;
+        ps.setString(paramIndex++, menteeName);
+
+        if (statusId != null && statusId != -1) {
+            ps.setInt(paramIndex++, statusId);
+        }
+        if (mentorName != null && !mentorName.isEmpty()) {
+            ps.setString(paramIndex++, mentorName);
+        }
+        if (startTime != null) {
+            ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
+        }
+        if (endTime != null) {
+            ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
+        }
+
         rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -168,6 +197,21 @@ public class RequestDAO {
 
     return requests;
 }
+ 
+ public void updateExpiredRequestsStatus() throws SQLException {
+    PreparedStatement ps = null;
+    try {
+        String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] " +
+                     "SET status_id = 4 " +
+                     "WHERE deadline_date < CAST(GETDATE() AS DATE) " +
+                     "AND status_id IN (2, 5)";
+        ps = con.prepareStatement(sql);
+        ps.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("updateExpiredRequestsStatus: " + e.getMessage());
+    } 
+}
+
 
 
     public StaticMentee getStaticRequest(String menteeName) {
@@ -190,6 +234,30 @@ public class RequestDAO {
         }
         return null;
     }
+    
+   public List<Mentor> getMentorByRequest(String menteeName) throws SQLException {
+    List<Mentor> mentors = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        String sql = "SELECT DISTINCT mentor_name FROM RequestsFormMentee WHERE mentee_name = ?";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, menteeName);
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            String mentorName = rs.getString("mentor_name");
+            Mentor mentor = new Mentor(mentorName);
+            mentors.add(mentor);
+        }
+    } catch (SQLException e) {
+        System.out.println("getMentorByRequest: " + e.getMessage());
+    } 
+    return mentors;
+}
+
+
     
     public List<Status> getAllStatuses() throws SQLException {
     List<Status> statuses = new ArrayList<>();
@@ -246,8 +314,7 @@ public class RequestDAO {
             String sql = "SELECT r.*, rs.status_name \n"
                     + "FROM RequestsFormMentee r \n"
                     + "JOIN RequestStatuses rs ON r.status_id = rs.status_id \n"
-                    + "WHERE CONVERT(DATETIME, r.deadline_date) + CAST(r.deadline_hour AS DATETIME) > GETDATE() \n"
-                    + " AND r.mentor_name = ?";
+                    + "WHERE r.mentor_name = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, mentorName);
             rs = ps.executeQuery();
@@ -262,7 +329,7 @@ public class RequestDAO {
                 request.setTitle(rs.getString("title"));
 
                 int status_id = rs.getInt("status_id");
-                String status_name = rs.getString("status_id");
+                String status_name = rs.getString("status_name");
                 Status status = new Status(status_id, status_name);
                 request.setStatus(status);
 
@@ -473,12 +540,19 @@ public class RequestDAO {
 
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
-        List<RequestDTO> rList = rdao.getRequestOfMenteeInDeadlineByStatus("hieu");
+        List<RequestDTO> rList = rdao.getRequestOfMentorInDeadlineByStatus("son");
         for (RequestDTO rq : rList) {
             System.out.println(rq);
 
         }
       
+//        List<RequestDTO> rList = rdao.getRequestsByMenteeAndStatus("hieu",3);
+//        for (RequestDTO rq : rList) {
+//            System.out.println(rq);
+//
+//        }
+//        List<Mentor> mList = rdao.getMentorByRequest("truong");
+//        System.out.println(mList);
     }
 
 }

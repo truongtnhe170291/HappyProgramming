@@ -309,19 +309,32 @@
                     const status = cell.getAttribute("data-status");
                     console.log(status);
                     switch(status) {
-                        case "Open":
+                        case "Open Class":
                             cell.classList.add("status-open");
                             break;
                         case "Processing":
+                          case  "Wait For Payment":
                             cell.classList.add("status-processing");
                             break;
-                        case "Cancel":
-                        case "Closed":
+                        case "Out Of Date":
+                        case "Rejected":
                             cell.classList.add("status-cancel");
                             break;
                         default:
                             break;
                     }
+                     if (status !== "Processing") {
+            const parentRow = cell.closest("tr");
+            if (parentRow) {
+                const forms = parentRow.querySelectorAll("form");
+                forms.forEach(form => {
+                    const icon = form.querySelector("i.uil-check, i.uil-times");
+                    if (icon) {
+                        form.style.display = "none";
+                    }
+                });
+            }
+        }
                 });
             });
 </script>
