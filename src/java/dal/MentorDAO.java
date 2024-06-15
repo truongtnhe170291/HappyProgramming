@@ -187,25 +187,30 @@ public class MentorDAO {
         ArrayList<Day> list = new ArrayList<>();
         try {
             LocalDate today = LocalDate.now();
-            String todayName = "" + today.getDayOfWeek();
             // Tìm ngày tiếp theo có thể là thứ 2
-            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+            LocalDate mondayWeek1 = today.plusDays(7).with(DayOfWeek.MONDAY);
             // Tìm ngày Chủ Nhật của tuần tiếp theo
-            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+            LocalDate sundayWeek1 = mondayWeek1.with(DayOfWeek.SUNDAY);
             // Mảng để lưu trữ tên các thứ trong tuần
-            LocalDate currentDay = nextMonday;
+            LocalDate currentDay = mondayWeek1;
+            int cycle = 1;
 
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 28; i++) {
                 String inputDateString = "" + currentDay;
-
+                
                 String[] parts = inputDateString.split("-");
-                String day = parts[0];
                 String month = parts[1];
-                String year = parts[2];
+                String day = parts[2];
 
-                String outputDateString = day + "/" + month + "/" + year;
-                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-                        outputDateString));
+                String outputDateString = day + "/" + month;
+                if(i == 7 || i == 14 || i == 21){
+                    cycle ++;
+                }
+                
+                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH), outputDateString, cycle));
+                
+//                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+//                        outputDateString, cycle));
                 currentDay = currentDay.plusDays(1);
             }
 

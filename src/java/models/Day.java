@@ -10,6 +10,7 @@ package models;
  */
 public class Day {
     private String dateName, dateValue;
+    private int cycle;
 
     public Day() {
     }
@@ -18,6 +19,22 @@ public class Day {
         this.dateName = dateName;
         this.dateValue = dateValue;
     }
+
+    public Day(String dateName, String dateValue, int cycle) {
+        this.dateName = dateName;
+        this.dateValue = dateValue;
+        this.cycle = cycle;
+    }
+
+    public int getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(int cycle) {
+        this.cycle = cycle;
+    }
+    
+    
 
     public String getDateName() {
         return dateName;
@@ -37,8 +54,9 @@ public class Day {
 
     @Override
     public String toString() {
-        return "Day{" + "dateName=" + dateName + ", dateValue=" + dateValue + '}';
+        return "Day{" + "dateName=" + dateName + ", dateValue=" + dateValue + ", cycle=" + cycle + '}';
     }
+    
     
     
 }

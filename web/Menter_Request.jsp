@@ -288,33 +288,36 @@
                                                             <div class="col-lg-12">
 
                                                                 <div class="form-container">
-
-                                                                    <table>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th class="equal-width">Time Line</th>
-                                                                                    <c:forEach var="day" items="${listDays}">
-                                                                                    <th class="equal-width">${day.dateName} <br/> ${day.dateValue}</th>
-                                                                                    </c:forEach>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <c:forEach var="slot" items="${listSlots}" varStatus="loop">
-                                                                                <tr>
-                                                                                    <td>${slot.slot_name}</td>
-                                                                                    <c:forEach var="day" items="${listDays}">
-                                                                                        <td>
-                                                                                            <input type="checkbox" class="slot-checkbox" name="schedule" 
-                                                                                                   <c:forEach items="${listSchedule}" var="shedule">
-                                                                                                       <c:if test="${shedule.slotId eq slot.slot_id && shedule.getdayOfSlotString() eq day.dateValue}">checked</c:if>
-                                                                                                   </c:forEach>
-                                                                                                   value="${slot.slot_id} ${day.dateName} ${day.dateValue}" />
-                                                                                        </td>
-                                                                                    </c:forEach>
-                                                                                </tr>
+                                                                    <table border="1" width="100%">
+                                                                        <tr>
+                                                                            <th rowspan="2">
+                                                                                WEEK
+                                                                                <select>
+                                                                                    <option>10/6 To 16/6</option>
+                                                                                    <option>17/6 To 23/6</option>
+                                                                                    <option>24/6 To 30/6</option>
+                                                                                    <option>31/6 To 7/7</option>
+                                                                                </select>
+                                                                            </th>
+                                                                            <c:forEach var="day" items="${listDays}">
+                                                                                <th class="equal-width">${day.dateName}</th>
                                                                             </c:forEach>
-                                                                        </tbody>
-                                                                    </table>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <c:forEach var="day" items="${listDays}">
+                                                                                <th class="equal-width">${day.dateValue}</th>
+                                                                                </c:forEach>
+                                                                        </tr>
+                                                                        <c:forEach var="slot" items="${listSlots}" varStatus="loop">
+                                                                            <tr>
+                                                                                <td>${slot.slot_id}</td>
+                                                                                <c:forEach var="day" items="${listDays}">
+                                                                                    <td></td>
+                                                                                </c:forEach>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </table>            
+
                                                                     <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
 
                                                                 </div>
