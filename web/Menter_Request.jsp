@@ -11,14 +11,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- Document title -->
         <title>Fmaster</title>
-        <link href="plugins/bootstrap-switch/bootstrap-switch.css" rel="stylesheet">
-        <link href='plugins/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
-        <link href="css/plugins.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
             .calendar {
-                max-width: 600px;
+                max-width: 900px;
                 margin: 0 auto;
                 background-color: #fff;
                 border-radius: 8px;
@@ -100,7 +96,7 @@
                     padding: 20px;
                     border-radius: 10px;
                     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                    max-width: 800px;
+                    max-width: 1000px;
                     width: 100%;
                 }
 
@@ -185,7 +181,7 @@
                 }
 
                 th {
-                    background-color: #007bff;
+                    background-color: #8B0000;
                     color: white;
                 }
 
@@ -195,24 +191,41 @@
 
 
                 .slot {
-                    background-color: #f9f9f9;
+                    display: block;
+                    text-align: center;
                     padding: 10px;
                     cursor: pointer;
-                    transition: background-color 0.3s;
                 }
 
-                .slot.selected {
-                    background-color: #1a5218;
-                    color: white;
+                .slot-checkbox {
+                    display: none;
                 }
 
+                .slot-label {
+                    display: inline-block;
+                    padding: 5px 10px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    border-radius: 4px;
+                    transition: background-color 0.3s ease;
+                }
+
+                .slot-checkbox:checked + .slot-label {
+                    background-color: #4CAF50;
+                    color: #fff;
+                }
+
+                .slot-checkbox:focus + .slot-label {
+                    outline: none;
+                    box-shadow: none;
+                }
                 .form-container {
                     text-align: center;
                 }
 
                 .form-container button {
                     padding: 10px 20px;
-                    background-color: #007bff;
+                    background-color: #8B0000;
                     color: white;
                     border: none;
                     border-radius: 5px;
@@ -223,11 +236,13 @@
                 .form-container button:hover {
                     background-color: #0056b3;
                 }
+                .status_check{
+                    display: flex;
+                    justify-content: space-between;
+                }
 
                 .status-box {
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
+                    height: 50px;
                     padding: 10px;
                     background-color: #f8f9fa;
                     border: 1px solid #ddd;
@@ -236,43 +251,70 @@
                 .highlighted {
                     background-color: #d1e7dd;
                 }
+                                .slot-checkbox:checked + label {
+                    background-color: #f0f0f0; 
+                }
+
+                .slot-checkbox:checked + label.highlighted {
+                    background-color: #d1e7dd; 
+                }
+                table {
+                    width: 100%;
+                    table-layout: fixed;
+                }
+
+                th, td {
+                    width: 20%; 
+                    padding: 8px;
+                    text-align: center;
+                }
+                #notify_btn{
+                    margin-right: 12px;
+                }
             </style>
         </head>
 
-        <body>
-            <jsp:include page="header.jsp" />
-            <section id="page-title">
+        <body class="layout-light side-menu">
+             <div class="mobile-search">
+      <form action="/" class="search-form">
+         <img src="img/svg/search.svg" alt="search" class="svg">
+         <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+      </form>
+   </div>
+   <div class="mobile-author-actions"></div>
+            <jsp:include page="control_nav.jsp" />
+
+        <main class="main-content">
+
+            <jsp:include page="sidebar.jsp" />
+    <div class="wrapper contents">
+        <div class="content-box">
+            <section id="page-content">
                 <div class="container">
-                    <div class="page-title">
-                        <h1>Mentor Request</h1>
+                    <div class="status_check">
+                        <h5 style="color: #ffbf00">${error}</h5>
+                        <c:if test="${status != ''}">
+                        <div class="status-box">
+                            <p style="color: #cccc00">${status}</p>
+                        </div>
+                    </c:if>
+                    <c:if test="${status == ''}">
+                        <div class="status-box">
+                            <p style="color: #cccc00">Selected</p>
+                        </div>
+                    </c:if>
                     </div>
-                    <div class="breadcrumb">
-                        <ul>
-                            <li><a href="home.jsp">Home</a> </li>
-                            <li class="active"><a href="Menter_Request.jsp">Mentor Request</a> </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-            <div class="wrapper">
-                <div class="content-box">
-                    <div class="">
-                        <section id="page-content">
-                            <div class="container">
-                                <div>
-                                    <h5 style="color: #ffbf00">${error}</h5>
-                                    </div>
-                                    <c:if test="${status != ''}">
-                                        <div class="status-box">
-                                            <p style="color: #cccc00">${status}</p>
+                    
+                    <form id="slotForm" action="MentorRequest" method="post">
+                        <div class="row">
+                            <div class="content col-lg-9">
+                                <div class="row">
+                                    <div class="container">
+                                        <div class="row mb-5">
+                                            <div class="col-lg-6">
+                                                <!-- Các phần tử khác có thể được thêm vào đây -->
+                                            </div>
                                         </div>
-                                    </c:if>
-                                    <c:if test="${status == ''}">
-                                        <div class="status-box">
-                                            <p style="color: #cccc00">Selected</p>
-                                        </div>
-                                    </c:if>
-                                    <form id="slotForm" action="MentorRequest" method="post">
                                         <div class="row">
                                             <!-- content -->
                                             <div class="content col-lg-9">
@@ -342,63 +384,61 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-                            </section>
+                                <div class="row mt-5">
+                                    <div class="col" style="display: flex; justify-content: end;">
+                                        <c:if test="${status == 'Pending'}">
+                                            <button type="submit" id="notify_btn_Update" class="btn btn-primary">Update</button>
+                                        </c:if>
+                                        <c:if test="${status != 'Pending'}">
+                                            <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
+                                        </c:if>
+                                        <button type="reset" class="btn btn-primary">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
-                <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
-                <!--Plugins-->
-                <script src="js/jquery.js"></script>
-                <script src="js/plugins.js"></script>
-                <script src="js/functions.js"></script>
-                <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
-                <script src='plugins/moment/moment.min.js'></script>
-                <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+            </section>
+        </div>
+    </div>
+                    </main>
+
                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const checkboxes = document.querySelectorAll('.slot-checkbox');
-                        const statusText = document.getElementById('status-text');
+       document.addEventListener('DOMContentLoaded', function () {
+   const slots = document.querySelectorAll('.slot');
+    const colors = ['#8BC34A', '#64B5F6', '#FFB74D', '#EC407A'];
 
-                        checkboxes.forEach(checkbox => {
-                            checkbox.addEventListener('change', function () {
-                                if (checkbox.checked) {
-                                    checkbox.parentElement.classList.add('highlighted');
-                                } else {
-                                    checkbox.parentElement.classList.remove('highlighted');
-                                }
+    slots.forEach((slot, index) => {
+        const checkbox = slot.querySelector('.slot-checkbox');
+        const label = slot.querySelector('.slot-label');
+        const slotIndex = index % 4;
 
-                                const selected = document.querySelectorAll('.slot-checkbox:checked');
-                                statusText.textContent = `${selected.length} slots selected`;
-                            });
-                        });
-                    });
-                </script>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var error = "${error}";
-                        var notifyBtn = document.getElementById("notify_btn");
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                label.style.backgroundColor = colors[slotIndex];
+            } else {
+                label.style.backgroundColor = '#f0f0f0';
+            }
+        });
+    });
+});
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var error = "${error}";
+            var notifyBtn = document.getElementById("notify_btn");
 
-                        if (error && error.trim() !== "") {
-                            notifyBtn.disabled = false;
-                        } else {
-                            notifyBtn.disabled = false;
-                        }
-                    });
-                </script>
-                <script>
-                    document.querySelectorAll('.btn.btn-light').forEach(function (label) {
-                        label.addEventListener('click', function () {
-                            const checkbox = this.querySelector('input[type="checkbox"]');
-                            this.classList.toggle('active');
-                            checkbox.remove();
-                        });
-                    });
-                </script>
-
-
+            if (error && error.trim() !== "") {
+                notifyBtn.disabled = false;
+            } else {
+                notifyBtn.disabled = false;
+            }
+        });
+    </script>
+   
             </body>
 
         </html>

@@ -17,6 +17,11 @@ public class Mentor extends Account{
     public Mentor() {
     }
 
+    public Mentor(String userName) {
+        super(userName);
+    }
+    
+
     public Mentor(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, String avatar, int roleId, int statusId) {
         super(userName, gmail, fullName, password, dob, sex, address, phone, avatar, roleId, statusId);
     }

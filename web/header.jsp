@@ -97,7 +97,13 @@
                                                     <a href="UpdateAccountServlet">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
-
+                                                
+                                                <li>
+                                                    <a href="wallet">
+                                                        <i class="uil uil-key-skeleton"></i> Your Wallet
+                                                    </a>
+                                                </li>
+                                                
                                                 <li>
                                                     <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password
