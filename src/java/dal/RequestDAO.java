@@ -473,7 +473,7 @@ public class RequestDAO {
 
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
-        List<RequestDTO> rList = rdao.getRequestsByMenteeAndStatus("hieu",3);
+        List<RequestDTO> rList = rdao.getRequestOfMenteeInDeadlineByStatus("hieu");
         for (RequestDTO rq : rList) {
             System.out.println(rq);
 

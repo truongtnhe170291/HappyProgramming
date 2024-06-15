@@ -154,6 +154,9 @@
     </head>
 
     <body>
+        <c:forEach var="request" items="${requestScope.requestsabc}">
+            <h3>${request.title}</h3>
+        </c:forEach>
         <jsp:include page="header.jsp" />
         <div class="contents">
             <h1>My Requests</h1>
@@ -168,7 +171,6 @@
                                     <option value="${status.statusId}">${status.statusName}</option>
                                 </c:forEach>
                             </select>
-                            <input type="hidden" name="menteeName" value="${menteeName}" />
                             <button type="submit">Submit</button>
                         </form>
                     </div>
