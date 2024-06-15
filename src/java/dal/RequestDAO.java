@@ -314,8 +314,7 @@ public class RequestDAO {
             String sql = "SELECT r.*, rs.status_name \n"
                     + "FROM RequestsFormMentee r \n"
                     + "JOIN RequestStatuses rs ON r.status_id = rs.status_id \n"
-                    + "WHERE CONVERT(DATETIME, r.deadline_date) + CAST(r.deadline_hour AS DATETIME) > GETDATE() \n"
-                    + " AND r.mentor_name = ?";
+                    + "WHERE r.mentor_name = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, mentorName);
             rs = ps.executeQuery();
@@ -330,7 +329,7 @@ public class RequestDAO {
                 request.setTitle(rs.getString("title"));
 
                 int status_id = rs.getInt("status_id");
-                String status_name = rs.getString("status_id");
+                String status_name = rs.getString("status_name");
                 Status status = new Status(status_id, status_name);
                 request.setStatus(status);
 
@@ -541,13 +540,19 @@ public class RequestDAO {
 
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
+        List<RequestDTO> rList = rdao.getRequestOfMentorInDeadlineByStatus("son");
+        for (RequestDTO rq : rList) {
+            System.out.println(rq);
+
+        }
+      
 //        List<RequestDTO> rList = rdao.getRequestsByMenteeAndStatus("hieu",3);
 //        for (RequestDTO rq : rList) {
 //            System.out.println(rq);
 //
 //        }
-        List<Mentor> mList = rdao.getMentorByRequest("truong");
-        System.out.println(mList);
+//        List<Mentor> mList = rdao.getMentorByRequest("truong");
+//        System.out.println(mList);
     }
 
 }
