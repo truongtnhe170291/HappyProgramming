@@ -1,5 +1,8 @@
 
 import dal.CVDAO;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import models.CV;
 import services.CVService;
@@ -8,12 +11,12 @@ import services.CVService;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Admin
  */
 public class TestApplyCV {
+
     public static void main(String[] args) {
 //        CVService cv_service = CVService.getInstance();
 //        String userName = "son";
@@ -25,5 +28,9 @@ public class TestApplyCV {
 //    CVDAO dao = new CVDAO();
 //        List<CV> list = dao.getCVByStatus(1);
 //        System.out.println(list.size());
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+        LocalDate nextNextMonday = nextMonday.plusWeeks(1);
+        System.out.println(nextNextMonday);
     }
 }

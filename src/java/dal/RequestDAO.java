@@ -518,14 +518,18 @@ public class RequestDAO {
         }
     }
 
-    public boolean updateStatus(int requestId, int statusId) throws SQLException {
+    public boolean updateStatus(int requestId, int statusId){
         String sql = "UPDATE RequestsFormMentee SET status_id = ? WHERE request_id = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try {
+            ps = con.prepareStatement(sql);
             ps.setInt(1, statusId);
             ps.setInt(2, requestId);
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
+        }catch(SQLException e){
+            System.out.println("updateStatus "+e.getMessage());
         }
+        return false;
     }
 
     public void checkAndUpdateOverdueStatus() throws SQLException {
@@ -538,9 +542,34 @@ public class RequestDAO {
         }
     }
 
+    public Request getRequestById(int requestId){
+        try {
+            String sql = "";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, requestId);
+            int result = ps.executeUpdate();
+            if(result == 1){
+                Request r = new Request();
+                r.setRequestId(rs.getInt(1));
+                r.setMentorName(rs.getString(2));
+                r.setMenteeName(rs.getString(3));
+                r.setDeadlineDate(rs.getDate(4).toLocalDate());
+                r.setDeadlineHour(rs.getTime(5).toLocalTime());
+                r.setTitle(rs.getString(6));
+                r.setDescription(rs.getString(7));
+                r.setStatusId(rs.getInt(8));
+                r.setPrice(rs.getInt(9));
+                r.setNote(rs.getString(10));
+                return r;
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestById  " + e.getMessage());
+        }
+        return null;
+    }
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
-        List<RequestDTO> rList = rdao.getRequestOfMentorInDeadlineByStatus("son");
+        List<RequestDTO> rList = rdao.getRequestOfMenteeInDeadlineByStatus("truong");
         for (RequestDTO rq : rList) {
             System.out.println(rq);
 

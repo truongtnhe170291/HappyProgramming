@@ -12,6 +12,7 @@
         <meta charset="utf-8">
         <title>Fmaster</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+               <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
         <!-- Favicons-->
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
@@ -30,171 +31,179 @@
 
 
         <style>
-            .form {
-                margin-left: 12rem;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                width: 700px;
-                padding: 20px;
-                border-radius: 20px;
-                position: relative;
-                background-color: #fff;
-                color: #ccc;
-                box-shadow: 1px 1px 1px 2px rgba(122,112,331);
-            }
 
-            .title {
-                font-size: 28px;
-                font-weight: 600;
-                letter-spacing: -1px;
-                position: relative;
-                display: flex;
-                align-items: center;
-                padding-left: 30px;
-                color: #00bfff;
-            }
+.form {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: linear-gradient(145deg, #f3f4f6, #ffffff);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
 
-            .title::before {
-                width: 18px;
-                height: 18px;
-            }
+.form:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
 
-            .title::after {
-                width: 18px;
-                height: 18px;
-                animation: pulse 1s linear infinite;
-            }
+.form label span {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
 
-            .title::before,
-            .title::after {
-                position: absolute;
-                content: "";
-                height: 16px;
-                width: 16px;
-                border-radius: 50%;
-                left: 0px;
-                background-color: #00bfff;
-            }
+.form input,
+.form select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
-            .message,
-            .signin {
-                font-size: 14.5px;
-                color: rgba(255, 255, 255, 0.7);
-            }
+.form input:focus,
+.form select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
 
-            .signin {
-                text-align: center;
-            }
+.form input[type="file"] {
+    display: none;
+}
 
-            .signin a:hover {
-                text-decoration: underline royalblue;
-            }
+label[for="file-upload"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
 
-            .signin a {
-                color: #00bfff;
-            }
+label[for="file-upload"] img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #ddd;
+    transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
 
-            .flex {
-                display: flex;
-                width: 100%;
-                gap: 6px;
-            }
+label[for="file-upload"]:hover img {
+    border-color: #007bff;
+    transform: scale(1.05);
+}
 
-            .form label {
-                position: relative;
-            }
 
-            .form label .input {
-                background-color: #333;
-                color: #fff;
-                width: 100%;
-                padding: 20px 05px 05px 10px;
-                outline: 0;
-                border: 1px solid rgba(105, 105, 105, 0.397);
-                border-radius: 10px;
-            }
 
-            .form label .input + span {
-                color: rgba(255, 255, 255, 0.5);
-                position: absolute;
-                left: 10px;
-                top: 0px;
-                font-size: 0.9em;
-                cursor: text;
-                transition: 0.3s ease;
-            }
 
-            .form label .input:placeholder-shown + span {
-                top: 12.5px;
-                font-size: 0.9em;
-            }
-            .form label .input:focus + span,
-            .form label .input:valid + span {
-                color: #00bfff;
-                top: 0px;
-                font-size: 0.7em;
-                font-weight: 600;
-            }
+.form h5 {
+    margin: 5px 0 10px 0;
+    font-size: 14px;
+    color: red;
+}
 
-            .input {
-                font-size: medium;
-            }
+.flext {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+button {
+   
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+ --glow-color: rgb(217, 176, 255);
+ --glow-spread-color: rgba(191, 123, 255, 0.781);
+ --enhanced-glow-color: rgb(231, 206, 255);
+ --btn-color: rgb(100, 61, 136);
+ border: .25em solid var(--glow-color);
+ padding: 1em 3em;
+ color: var(--glow-color);
+ font-size: 15px;
+ font-weight: bold;
+ background-color: var(--btn-color);
+ border-radius: 1em;
+ outline: none;
+ box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 1em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
+ text-shadow: 0 0 .5em var(--glow-color);
+ position: relative;
+ transition: all 0.3s;
+}
 
-            .submit {
-                border: none;
-                outline: none;
-                padding: 10px;
-                border-radius: 10px;
-                color: #fff;
-                font-size: 16px;
-                transform: .3s ease;
-                background-color: #00bfff;
-            }
+button::after {
+ pointer-events: none;
+ content: "";
+ position: absolute;
+ top: 120%;
+ left: 0;
+ height: 100%;
+ width: 100%;
+ background-color: var(--glow-spread-color);
+ filter: blur(2em);
+ opacity: .7;
+ transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
+}
 
-            .submit:hover {
-                background-color: #00bfff96;
-            }
+button:hover {
+ color: var(--btn-color);
+ background-color: var(--glow-color);
+ box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 2em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
+}
 
-            @keyframes pulse {
-                from {
-                    transform: scale(0.9);
-                    opacity: 1;
-                }
+button:active {
+ box-shadow: 0 0 0.6em .25em var(--glow-color),
+        0 0 2.5em 2em var(--glow-spread-color),
+        inset 0 0 .5em .25em var(--glow-color);
+}
+.account-profile__title h6 {
+    text-align: center;
+    color: #007bff;
+    font-size: 18px;
+    margin-top: 10px;
+}
 
-                to {
-                    transform: scale(1.8);
-                    opacity: 0;
-                }
-            }
-            li {
-                list-style-type: none;
-            }
-            #header{
-                position: fixed;
-            }
-            #profile-img{
+#profile-img {
+    border: 2px solid #007bff;
+}
+
+.js-example-basic-single {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .form {
+        padding: 15px;
+    }
+    
+    .form button.submit {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    label[for="file-upload"] img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.rounded-circle {
                 width: 200px;
                 height: 200px;
             }
-            #file-upload{
-                display: none;
-            }
-            .flext{
-                width: 50%;
-
-            }
-            .row{
-
-                margin-top: 20px;
-                display: flex;
-
-            }
-            .rounded-circle{
-                width: 200px;
-                height: 200px;
-            }
-
         </style>
     </head>
     <body>
@@ -211,7 +220,8 @@
                     </div>
                     <!--End: Logo-->
                     <!-- Search -->
-                    <div id="search"><a id="btn-search-close" class="btn-search-close" aria-label="Close search form"><i class="icon-x"></i></a>
+                    <div id="search"><a id="btn-search-close" class="btn-search-close"
+                                        aria-label="Close search form"><i class="icon-x"></i></a>
                         <form class="search-form" action="search-results-page.html" method="get">
                             <input class="form-control" name="q" type="text" placeholder="Type & Search..." />
                             <span class="text-muted">Start typing & press "Enter" or "ESC" to close</span>
@@ -240,49 +250,58 @@
                                     <li><a href="homes.jsp">Home</a></li>
 
                                     <li class="dropdown"><a href="#">Features</a>
-                                        <ul class="dropdown-menu"> 
+                                        <ul class="dropdown-menu">
                                             <li><a href="skill">SKILLS</a></li>
+                                                <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
+                                                <li><a href="StaticRequest">REQUEST STATIC</a></li>
+                                                <li><a href="ListRequest">History Request</a></li>
+                                                </c:if>
                                         </ul>
                                     </li>
-                                    <li><a href="login.jsp">Login</a></li>
-                                    <li><a href="sign_up.jsp">Sign up</a></li>
-                                    <li class="t">
-                                        <a href="javascript:;" class="nav-item-toggle">
-                                            <span class="nav-item__title">${user.fullName}<i class="las la-angle-down nav-item__arrow"></i></span>
-                                        </a>
-                                        <ul class="dropdown-menu"> 
-                                            <li>  <div class="nav-author__info">
-                                                    <div class="author-img">
-                                                        <img src="./img/${user.avatar}" alt="" class="rounded-circle">
-                                                    </div>
-                                                    <div>
-                                                        <span>UI Designer</span>
-                                                    </div>
-                                                </div></li>
-                                            <li>
-                                                <a href="updatementee">
-                                                    <i class="uil uil-user"></i> Profile</a>
-                                            </li>           
-                                            <li>
-                                                <a href="">
-                                                    <i class="uil uil-setting"></i>
-                                                    Settings</a>
-                                            </li>
-                                            <li>
-                                                <a href="newPassword.jsp">
-                                                    <i class="uil uil-key-skeleton"></i> Change Password</a>
-                                            </li>
+                                    <c:if test="${sessionScope.user == null}">
+                                        <li><a href="login.jsp">Login</a></li>
+                                        <li><a href="sign_up.jsp">Sign up</a></li>
+                                        </c:if>
 
-                                            <li>
-                                                <a href="">
-                                                    <i class="uil uil-bell"></i> Help</a>
-                                            </li>
-                                            <li>
-                                                <a href="login.jsp" class="nav-author__signout">
-                                                    <i class="uil uil-sign-out-alt"></i> Sign Out</a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    <c:if test="${sessionScope.user != null}">
+                                        <li class="t">
+                                            <a href="javascript:;" class="nav-item-toggle">
+                                                <span class="nav-item__title">${sessionScope.user.fullName}<i
+                                                        class="las la-angle-down nav-item__arrow"></i></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <div class="nav-author__info">
+                                                        <div class="author-img">
+                                                            <img src="./img/${user.avatar}" alt=""
+                                                                 class="rounded-circle">
+                                                        </div>
+                                                        <div>
+                                                            <span>UI Designer</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a href="UpdateAccountServlet">
+                                                        <i class="uil uil-user"></i> Profile</a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="changepass">
+                                                        <i class="uil uil-key-skeleton"></i> Change Password
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="">
+                                                        <i class="uil uil-bell"></i> Help</a>
+                                                </li>
+                                                <li>
+                                                    <a href="Signout_Servlet" class="nav-author__signout">
+                                                        <i class="uil uil-sign-out-alt"></i> Sign Out</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </c:if>
                                 </ul>
                             </nav>
                         </div>
@@ -298,7 +317,7 @@
 
                 <ol class="breadcrumb">
                     <li><a href="homes.jsp">Home</a></li>
-                    <li class="active">Active page</li>
+                    <li class="active">Mentee Profile</li>
                 </ol>
                 <div class="row">
                     <div class="col-md-12">
@@ -306,8 +325,6 @@
                         <!--  Tabs -->   
                         <ul class="nav nav-tabs" id="mytabs">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><a href="#agenda" data-toggle="tab">My Agenda</a></li>
-                            <li><a href="#plans" data-toggle="tab">Plans/billing</a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -321,25 +338,24 @@
                                                     <input id="file-upload" type="file" name="fileUpload" class="d-none">
                                                     <label for="file-upload" class="">
                                                         <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./img/${user.avatar}" alt="profile">                                                                  
-                                                        <img src="img\camera.png"/>
+                                                     
                                                     </label>
                                                 </div>
 
-                                                <div class="account-profile__title">
-                                                    <h6 class="fs-15 ms-20 fw-500 text-capitalize">Profile Photo</h6>
-                                                </div>
                                             </div>
                                         </div>
 
                                         <label>
-                                            <input class="input" type="text" name="username" value="${user.userName}" readonly>
                                             <span>Username</span>
+                                            <input class="input" type="text" name="username" value="${user.userName}" readonly>
+                                            
                                         </label>  
 
                                         <div style="margin-bottom: 15px">
                                             <label>
-                                                <input id="fullname" class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
                                                 <span>Fullname</span>
+                                                <input id="fullname" class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
+                                                
                                             </label>   
                                             <h5 id="nameError" style="display: none"><strong style="color: red;">Oh No!</strong> Your name is not valid.</h5>
                                         </div>
@@ -390,79 +406,11 @@
                             </div><!-- End tab-pane --> 
 
 
-
-                            <div class="tab-pane fade" id="agenda">
-
-                                <div class="row">
-                                    <aside class="col-md-4">
-                                        <div class="box_style_1"  id="external-events">
-                                            <h4>Draggable Events</h4>
-                                            <div class='external-event'>Coffe Break</div>
-                                            <div class='external-event'>Meeting</div>
-                                            <div class='external-event'>Lesson</div>
-                                            <div class='external-event'>Exam</div>
-                                            <p><input type='checkbox' id='drop-remove' /><label for='drop-remove'>remove after drop</label></p>
-                                        </div>
-                                    </aside>
-
-                                    <div class="col-md-8">
-                                        <div id="calendar"></div><!-- End calendar --> 
-                                    </div>
-                                </div><!-- End row --> 
-
-                            </div><!-- End tab-pane --> 
-
-                            <div class="tab-pane fade" id="plans">
-                                <h3>Change your Payment method</h3>
-                                <div  id="payment_opt">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="payment" checked><img src="img/logo_paypal.png" alt="Paypal" class="payment_logos">
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"  name="payment"><img src="img/logo_visa.png" alt="Card" class="payment_logos">
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="payment"><img src="img/logo_master.png" alt="Card" class="payment_logos">
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="payment"><img src="img/logo_maestro.png" alt="Card" class="payment_logos">
-                                    </label>
-                                </div>       
-                                <hr>                     
-
-                                <h3>Order summary</h3>
-                                <div class="table-responsive">             
-                                    <table class="table table-hover " style="margin-bottom:0;">
-                                        <thead>
-                                            <tr>								
-                                                <th>Items</th>
-                                                <th>Amount</th>									
-                                            </tr></thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Price of the course</td>
-                                                <td>?0.99</td>
-                                            </tr>
-                                            <tr class="info" style="border-top: 2px solid #ccc; border-bottom: 2px solid #ccc; font-size:18px">
-                                                <td><strong>TOTAL</strong></td>
-                                                <td><strong>?0.99</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>without VAT</small></td>
-                                                <td><small>? 0.83</small></td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>VAT (19%)</small></td>
-                                                <td> <small>?0.16</small> </td>
-                                            </tr>
-
-                                        </tbody></table>
+                                      
                                 </div>
                             </div><!-- End tab-pane -->
                         </div><!-- End col-md-8--> 
                     </div>  
-                </div><!-- End row-->   
-            </div><!-- End container -->
         </section><!-- End main_content-->
 
         <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
@@ -594,9 +542,12 @@
         <script src="jss/retina.min.js"></script>
         <script src="assets/validate.js"></script>
         <script src="jss/jquery.placeholder.js"></script>
-        <script src="jss/functions.js"></script>
         <script src="jss/classie.js"></script>
         <script src="jss/uisearch.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/functions.js"></script>
+        <jsp:include page="style/linkJS.jsp" />
 
     </body>
 </html>

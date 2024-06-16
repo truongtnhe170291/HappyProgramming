@@ -47,12 +47,12 @@ public class WalletDAO {
 
     public boolean insertWallet(Wallet wallet) {
         try {
-            String sql = "INSERT INTO Wallet(wallet_id, real_balance,avaiable_balance)"
+            String sql = "INSERT INTO Wallet(wallet_id, real_binance,avaiable_binance)"
                     + "     VALUES (?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, wallet.getWallet_id());
-            ps.setLong(2, wallet.getReal_balance());
-            ps.setLong(3, wallet.getAvaiable_balance());
+            ps.setLong(2, wallet.getReal_binance());
+            ps.setLong(3, wallet.getAvaiable_binance());
             int result = ps.executeUpdate();
             if (result == 1) {
                 return true;
@@ -86,11 +86,11 @@ public class WalletDAO {
     public boolean updateWallet(Wallet wallet) {
         try {
             String sql = "UPDATE Wallet"
-                    + "   SET real_balance  = ?, avaiable_balance  = ?"
+                    + "   SET real_binance  = ?, avaiable_binance  = ?"
                     + " WHERE wallet_id = ?";
             ps = con.prepareStatement(sql);
-            ps.setLong(1, wallet.getReal_balance());
-            ps.setLong(2, wallet.getAvaiable_balance());
+            ps.setLong(1, wallet.getReal_binance());
+            ps.setLong(2, wallet.getAvaiable_binance());
             ps.setString(3, wallet.getWallet_id());
             int result = ps.executeUpdate();
             if (result == 1) {
@@ -105,7 +105,7 @@ public class WalletDAO {
     public List<Transaction> getTransactionsByUserName(String userName) {
         List<Transaction> list = new ArrayList<>();
         try {
-            String sql = "select * from Transactions t where t.user_receive = ? or t.user_send = ?";
+            String sql = "select * from Transactions t where t.user_receive = ? or t.user_send = ? order by t.create_date desc";
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
             ps.setString(2, userName);
