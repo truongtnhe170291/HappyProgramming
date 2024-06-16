@@ -8,17 +8,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.List;
-import models.Account;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Locale;
 import models.Day;
-import models.Mentor;
 import models.Slot;
 import models.Week;
 
@@ -161,6 +157,23 @@ public class MentorDAO {
         } catch (Exception e) {
             System.out.println("insertSchedulePublic: " + e.getMessage());
         }
+    }
+
+    public boolean insertCycle(Date startDate, Date endDate) {
+        try {
+            String sql = "insert into Cycle(start_time, end_time)"
+                    + "values(?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setDate(1, startDate);
+            ps.setDate(2, endDate);
+            int result = ps.executeUpdate();
+            if(result == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("insertCycle " + e.getMessage());
+        }
+        return false;
     }
 
     public String getNextMonSunByUserName(String userName) {

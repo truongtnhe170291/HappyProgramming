@@ -37,7 +37,7 @@ public class WalletServlet extends HttpServlet {
             throws ServletException, IOException {
         Account user = (Account) request.getSession().getAttribute("user");
         if (user == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("login.jsp");
             return;
         }
         WalletDAO dao = new WalletDAO();
