@@ -11,14 +11,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guarda Wallet</title>
-    
-    <link rel="stylesheet" href="assetss/css/app.min.css">
-        <link rel="stylesheet" href="assetss/css/style.css">
-        <link rel="stylesheet" href="assetss/css/components.css">
-        <link rel="stylesheet" href="assetss/css/custom.css">
+
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
-            
+            body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
 .browser-frame {
   max-width: 1200px;
   margin: 20px auto;
@@ -99,7 +101,8 @@ nav ul li sup {
 }
 
 main {
-  display: flex;
+    height: auto;
+  display: flex !important;
   gap: 20px;
 }
 
@@ -270,113 +273,9 @@ main {
         </style>
   </head>
   <body>
-      <div class="loader"></div>
-        <div id="app">
-            <div class="main-wrapper main-wrapper-1">
-                <div class="navbar-bg"></div>
-                <nav class="navbar navbar-expand-lg main-navbar sticky">
-                    <div class="form-inline mr-auto">
-                        <ul class="navbar-nav mr-3">
-                            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-                                   collapse-btn"> <i data-feather="align-justify"></i></a></li>
-                            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
-                                    <i data-feather="maximize"></i>
-                                </a></li>
-                            <li>
-                                <form class="form-inline mr-auto">
-                                    <div class="search-element">
-                                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" data-width="200">
-                                        <button class="btn" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                    <ul class="navbar-nav navbar-right">
+      <jsp:include page="header.jsp" />
+<div class="browser-frame">
 
-                        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                                                                     class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
-                                <div class="dropdown-header">
-                                    Notifications
-                                    <div class="float-right">
-                                        <a href="#">Mark All As Read</a>
-                                    </div>
-                                </div>
-                                <div class="dropdown-footer text-center">
-                                    <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="dropdown"><a href="#" data-toggle="dropdown"
-                                                class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assetss/img/user.png"
-                                                                                             class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
-                            <div class="dropdown-menu dropdown-menu-right pullDown">
-                                <div class="dropdown-title">Hello Sarah Smith</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="main-sidebar sidebar-style-2">
-                    <aside id="sidebar-wrapper">
-
-                        <ul class="sidebar-menu">
-                            <li class="menu-header">Main</li>
-                            <li class="dropdown active">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                        data-feather="monitor"></i><span>Dashboard</span></a>
-                                <ul class="dropdown-menu">
-                                    <li class="active"><a class="nav-link" href="Homes_manager.jsp">Dashboard 1</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-header">Request</li>
-                            <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>CV Management</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listCV">List CV</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </aside>
-                </div>
-                <div class="main-content">
-                    <section class="section">
-                        <ul class="breadcrumb breadcrumb-style ">
-                            <li class="breadcrumb-item">
-                                <h4 class="page-title m-b-0">Homes</h4>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="Homes_manager.jsp">
-                                    <i class="fas fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item">Schedule</li>
-                         
-                        </ul>
-                        <div class="section-body">
-                            <div class="row clearfix">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4>List Schedule Mentor</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-    <div class="browser-frame">
-      
       <div class="app-content">
         <header>
           <nav>
@@ -388,12 +287,12 @@ main {
         <main>
           <section class="wallet-overview">
             <div class="total-balance">
-              <h1>7 160.27 <span>USD</span></h1>
+                <h1>Available: ${requestScope.wallet.avaiable_balance}<span>VND</span></h1>
             </div>
-            <p class="wallet-stats">
-              50 wallets | 30 hidden | 0 watch only | 0 ledger
-            </p>
-            <div class="wallet-list"></div>
+            <div class="total-balance">
+                <h1>Binance: ${requestScope.wallet.real_balance}<span>VND</span></h1>
+            </div>
+<!--            <div class="wallet-list"></div>-->
           </section>
           <section class="transaction-history">
             <div class="tabs">
@@ -401,25 +300,23 @@ main {
               <button id="depositBtn">Deposit</button>
             </div>
             <div id="historyContent" class="tab-content active">
-              <div class="filters">
-                <select id="wallet-filter">
-                  <option>Wallet: All</option>
-                </select>
-                <select id="type-filter">
-                  <option>Type: All</option>
-                </select>
-                <input type="text" placeholder="Search by hash, address" />
-                
-              </div>
-              <table class="transactions"></table>
+                <table class="transactions">
+                    <c:forEach items="${requestScope.list}" var="tran">
+                    <tr>
+                        <td>${tran.create_date}</td>
+                        <td>${tran.message}</td>
+                        <td>${tran.user_send == sessionScope.user.userName?"-":"+"}${tran.amount}</td>
+                    </tr>
+                    </c:forEach>
+                </table>
             </div>
             <div id="depositContent" class="tab-content">
               <div class="deposit-form">
                 <h2>Deposit Funds</h2>
-                <form id="depositForm">
+                <form action="vnp" method="POST">
                   <div class="form-group">
                     <label for="amount">Amount</label>
-                    <input
+                    <input name="amount"
                       type="number"
                       id="amount"
                       placeholder="Enter amount"
@@ -427,11 +324,11 @@ main {
                     />
                   </div>
                   <div class="form-group">
-                    <label for="walletAddress">Wallet Address</label>
-                    <input
+                    <label for="walletAddress">Message</label>
+                    <input name="message"
                       type="text"
                       id="walletAddress"
-                      placeholder="Enter wallet address"
+                      placeholder="Enter Message"
                       required
                     />
                   </div>
@@ -445,105 +342,6 @@ main {
         </main>
       </div>
     </div>
-                                                </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                        </div>
-                                    </div>
-                        </section>
-                    <div class="settingSidebar">
-                        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-                        </a>
-                        <div class="settingSidebar-body ps-container ps-theme-default">
-                            <div class=" fade show active">
-                                <div class="setting-panel-header">Setting Panel
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Select Layout</h6>
-                                    <div class="selectgroup layout-color w-50">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                                            <span class="selectgroup-button">Light</span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                                            <span class="selectgroup-button">Dark</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                                    <div class="selectgroup selectgroup-pills sidebar-color">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Color Theme</h6>
-                                    <div class="theme-setting-options">
-                                        <ul class="choose-theme list-unstyled mb-0">
-                                            <li title="white" class="active">
-                                                <div class="white"></div>
-                                            </li>
-                                            <li title="cyan">
-                                                <div class="cyan"></div>
-                                            </li>
-                                            <li title="black">
-                                                <div class="black"></div>
-                                            </li>
-                                            <li title="purple">
-                                                <div class="purple"></div>
-                                            </li>
-                                            <li title="orange">
-                                                <div class="orange"></div>
-                                            </li>
-                                            <li title="green">
-                                                <div class="green"></div>
-                                            </li>
-                                            <li title="red">
-                                                <div class="red"></div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="mini_sidebar_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Mini Sidebar</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="sticky_header_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Sticky Header</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                                    <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                                        <i class="fas fa-undo"></i> Restore Default
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
                 <script>
                     const wallets = [
                 { name: "SHIBA INU", amount: 39900, value: 0.24, icon: "shiba.png" },
@@ -591,9 +389,7 @@ main {
                   btn.classList.remove("active");
                 });
                 document.getElementById(tabId).classList.add("active");
-                document
-                  .querySelector(`button[id="${tabId.replace("Content", "Btn")}"]`)
-                  .classList.add("active");
+                document.querySelector(`button[id="${tabId.replace("Content", "Btn")}"]`).classList.add("active");
               }
 
               document.querySelector(".tabs").addEventListener("click", function (e) {
@@ -619,16 +415,6 @@ main {
               };
 
                 </script>
-                                 <script src="assetss/js/app.min.js"></script>
-        <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
-        <!-- JS Libraies -->
-        <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
-        <!-- Page Specific JS File -->
-        <script src="assetss/js/page/form-wizard.js"></script>
-        <!-- Template JS File -->
-        <script src="assetss/js/scripts.js"></script>
-        <!-- Custom JS File -->
-        <script src="assetss/js/custom.js"></script>
             
   </body>
 </html>

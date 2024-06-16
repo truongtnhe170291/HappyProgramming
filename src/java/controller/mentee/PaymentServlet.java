@@ -2,18 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.vnp;
+package controller.mentee;
 
+import dal.RequestDAO;
 import dal.WalletDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import models.Account;
+import models.Request;
 import models.Transaction;
 import models.Wallet;
 
@@ -21,8 +23,8 @@ import models.Wallet;
  *
  * @author Admin
  */
-@WebServlet(name = "TransactionServlet", urlPatterns = {"/data"})
-public class TransactionServlet extends HttpServlet {
+@WebServlet(name = "PaymentServlet", urlPatterns = {"/payment"})
+public class PaymentServlet extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,34 +39,40 @@ public class TransactionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            WalletDAO dao = new WalletDAO();
-            Account acc = (Account) request.getSession().getAttribute("user");
-            String userName = acc.getUserName();
-            long amount = Long.parseLong(request.getParameter("vnp_Amount"));
-            String vnp_OrderInfo = request.getParameter("vnp_OrderInfo");
-            String vnp_OrderDate = request.getParameter("vnp_PayDate");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            // Chuyển đổi chuỗi thành LocalDateTime
-            LocalDateTime orderDate = LocalDateTime.parse(vnp_OrderDate, formatter);
-            String status = request.getParameter("vnp_ResponseCode");
-            if (status.equals("00")) {
-                Transaction transaction = new Transaction(0, null, userName, orderDate, amount, vnp_OrderInfo);
-                if (dao.insertTransaction(transaction)) {
-                    Wallet wallet = dao.getWalletByUsenName(userName);
+            Account a = (Account) request.getSession().getAttribute("user");
+            if (a == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            int requestId = Integer.parseInt(request.getParameter("requestId"));
+            RequestDAO rdao = new RequestDAO();
+            WalletDAO wdao = new WalletDAO();
+            Request r = rdao.getRequestById(requestId);
+            if (r != null) {
+                Wallet wallet = wdao.getWalletByUsenName(a.getUserName());
+                wallet.setReal_binance(wallet.getReal_binance() - r.getPrice());
+                if (wdao.updateWallet(wallet)) {
+                    wdao.insertTransaction(new Transaction(0, a.getUserName(), "manager", LocalDateTime.now(), r.getPrice(), "Pay Request to Menttor: " + r.getMentorName()));
+                    wallet = wdao.getWalletByUsenName("manager");
                     if (wallet != null) {
-                        wallet.setAvaiable_binance(wallet.getAvaiable_binance()+transaction.getAmount());
-                        wallet.setReal_binance(wallet.getReal_binance()+transaction.getAmount());
-                        dao.updateWallet(wallet);
-                        response.sendRedirect("wallet");
+                        wallet.setReal_binance(wallet.getReal_binance() + r.getPrice());
+                        wdao.updateWallet(wallet);
                     } else {
-                        dao.insertWallet(new Wallet(userName, transaction.getAmount(), transaction.getAmount()));
-                        response.sendRedirect("wallet");
+                        wdao.insertWallet(new Wallet("manager", r.getPrice(), 0));
+                    }
+                    if(rdao.updateStatus(requestId, 1)){
+                        response.sendRedirect("ListRequest");
+                        return;
                     }
                 }
+                // chuyen huong neu error
             }
-        } catch (NumberFormatException e) {
+            // chuyen huong neu error
+        } catch (IOException e) {
+            // chuyen huong neu error
         }
-
+        // chuyen huong neu error
     }
 
     /**
