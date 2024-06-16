@@ -34,8 +34,6 @@ public class Day {
         this.cycle = cycle;
     }
     
-    
-
     public String getDateName() {
         return dateName;
     }

@@ -20,6 +20,7 @@ import java.util.Locale;
 import models.Day;
 import models.Mentor;
 import models.Slot;
+import models.Week;
 
 /**
  *
@@ -197,20 +198,17 @@ public class MentorDAO {
 
             for (int i = 0; i < 28; i++) {
                 String inputDateString = "" + currentDay;
-                
+
                 String[] parts = inputDateString.split("-");
                 String month = parts[1];
                 String day = parts[2];
 
                 String outputDateString = day + "/" + month;
-                if(i == 7 || i == 14 || i == 21){
-                    cycle ++;
+                if (i == 7 || i == 14 || i == 21) {
+                    cycle++;
                 }
-                
+
                 list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH), outputDateString, cycle));
-                
-//                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-//                        outputDateString, cycle));
                 currentDay = currentDay.plusDays(1);
             }
 
@@ -220,18 +218,31 @@ public class MentorDAO {
         return list;
     }
 
+    public ArrayList<Week> listCycleWeek() {
+        ArrayList<Week> list = new ArrayList<>();
+
+        ArrayList<Day> listDay = listDays();
+
+        list.add(new Week(listDay.get(0).getDateValue() + " to " + listDay.get(6).getDateValue(), 1));
+        list.add(new Week(listDay.get(7).getDateValue() + " to " + listDay.get(13).getDateValue(), 2));
+        list.add(new Week(listDay.get(14).getDateValue() + " to " + listDay.get(20).getDateValue(), 3));
+        list.add(new Week(listDay.get(21).getDateValue() + " to " + listDay.get(27).getDateValue(), 4));
+
+        return list;
+    }
+
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
-        ArrayList<Day> list = dao.listDays();
-        String SundayMonday = list.get(0).getDateName() + " - " + list.get(6).getDateName();
-        for (Day day : list) {
+        ArrayList<Week> list = dao.listCycleWeek();
+        for (Week day : list) {
             System.out.println(day);
         }
     }
 
     public void deleteSchedulePublic(String userName, int cycleID) {
         try {
-            String query = "DELETE FROM Selected_Slot\n" + //
+            String query = "DELETE FROM Selected_Slot\n"
+                    + //
                     "WHERE mentor_name = ? AND cycle_id = ? AND status_id = 1";
             con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
