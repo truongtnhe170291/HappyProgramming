@@ -4,6 +4,7 @@
  */
 package controller.mentor;
 
+import dal.AccountDAO;
 import dal.MentorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import models.Account;
 
 /**
  *
@@ -64,7 +67,25 @@ public class SetRateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int rate = 0;
+        AccountDAO accDao = new AccountDAO();
+        HttpSession session = request.getSession();
+        Account curentAccount = (Account) session.getAttribute("user");
+        if(curentAccount == null){
+            response.sendRedirect("Login.jsp");
+            return;
+        }
+        Account acc = accDao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
+        if (acc.getRoleId() == 1) {
+            response.sendRedirect("homes.jsp");
+            return;
+        }
+        if (acc.getRoleId() == 2) {
+            rate = mentorDAO.getRateOfMentor(acc.getUserName());
+            request.setAttribute("rate", rate);
+            request.setAttribute("mentorName", acc.getUserName());
+            request.getRequestDispatcher("Mentor_SetRate.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -79,10 +100,9 @@ public class SetRateController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int rate = Integer.parseInt(request.getParameter("rate"));
-        String mentorName = request.getParameter("mentor_name");
+        String mentorName = request.getParameter("mentorName");
         mentorDAO.changeMentorRate(mentorName, rate);
-        //presumably we do the operation at the mentor homepage
-        response.sendRedirect("home");
+        response.sendRedirect("SetRate");
 
     }
 
