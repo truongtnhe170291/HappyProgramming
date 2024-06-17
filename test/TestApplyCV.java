@@ -29,8 +29,9 @@ public class TestApplyCV {
 //        List<CV> list = dao.getCVByStatus(1);
 //        System.out.println(list.size());
         LocalDate today = LocalDate.now();
+        DayOfWeek nameOfDay = today.getDayOfWeek();
         LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
         LocalDate nextNextMonday = nextMonday.plusWeeks(1);
-        System.out.println(nextNextMonday);
+        System.out.println(nextNextMonday.getDayOfWeek());
     }
 }

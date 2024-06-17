@@ -268,8 +268,8 @@
                                 <div class="header">
                                     <div class="select-container">
                                         <label for="year">YEAR</label>
-                                        <select id="year" name="year">
-                                            <option value="2024">2024</option>
+                                        <select id="year" >
+                                            <option>2024</option>
                                         </select>
                                     </div>
                                     <div class="select-container">
@@ -293,7 +293,7 @@
                                         <li>You can <span class="highlight">Update</span> your schedule when status is <span class="highlight">Pending</span></li>
                                     </ul>
                                 </div>  
-                                <button type="button" id="saveSelectedSlots">Save Selected Slots</button>      </div>
+                                <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>      </div>
                         </form>
 
 
@@ -306,7 +306,14 @@
             document.addEventListener("DOMContentLoaded", function () {
                 const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT","SUN"];
 
-                const scheduleData = [];
+                const scheduleData = [{
+      day: "MON",
+      slot: 1,
+      class: "SWR302",
+      room: "BE-209",
+      status: "attended",
+      time: "7:30-9:50",
+    }];
 
             <c:set var="i" value="1"/>
             <c:forEach items="${requestScope.listSlot}" var="slot">
@@ -410,8 +417,7 @@
 
                 updateSchedule();
 
-                function saveSelectedSlots(event) {
-                    event.preventDefault();
+                function saveSelectedSlots() {
 
                     const selectedSlots = [];
                     const tbody = document.querySelector("#scheduleTable tbody");

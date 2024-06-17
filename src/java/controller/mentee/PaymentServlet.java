@@ -63,7 +63,7 @@ public class PaymentServlet extends HttpServlet {
                     }
                     if(rdao.updateStatus(requestId, 1)){
                         response.sendRedirect("ListRequest");
-                        return;
+                        //return;
                     }
                 }
                 // chuyen huong neu error

@@ -287,10 +287,10 @@ main {
         <main>
           <section class="wallet-overview">
             <div class="total-balance">
-                <h1>Available: ${requestScope.wallet.avaiable_balance}<span>VND</span></h1>
+                <h1>Available: ${requestScope.wallet.avaiable_binance}<span>VND</span></h1>
             </div>
             <div class="total-balance">
-                <h1>Binance: ${requestScope.wallet.real_balance}<span>VND</span></h1>
+                <h1>Binance: ${requestScope.wallet.real_binance}<span>VND</span></h1>
             </div>
 <!--            <div class="wallet-list"></div>-->
           </section>
