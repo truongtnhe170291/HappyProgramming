@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import models.Account;
 import models.Mentor;
 import models.RequestDTO;
-import models.RequestSkill;
 import models.Status;
 
 /**

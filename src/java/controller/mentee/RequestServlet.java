@@ -9,6 +9,7 @@ import dal.MentorDAO;
 import dal.RequestDAO;
 import dal.ScheduleDAO;
 import dal.SkillDAO;
+import dal.WalletDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
@@ -26,6 +26,7 @@ import models.CV;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
+import models.Wallet;
 
 /**
  *
@@ -43,8 +44,15 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
+            // check if not enough binance
+            String warning = (String) request.getSession().getAttribute("warning");
+            if (warning != null && warning.length() > 0) {
+                request.setAttribute("warning", warning);
+            }
+
             CVDAO cvdao = new CVDAO();
             int cvId = Integer.parseInt(request.getParameter("cvId"));
+            request.getSession().setAttribute("cvId", cvId);
             SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
             request.setAttribute("skills", list);
@@ -57,16 +65,16 @@ public class RequestServlet extends HttpServlet {
 
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-            
+
             //get rate of mentor
             MentorDAO mentorDAO = new MentorDAO();
             int rate = mentorDAO.getRateOfMentor(userName);
             request.setAttribute("rate", rate);
-            
+
             // get Schedule public by user mentor name
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-            if(listSchedule.isEmpty()){
+            if (listSchedule.isEmpty()) {
                 response.sendRedirect("homes.jsp");
                 return;
             }
@@ -96,6 +104,7 @@ public class RequestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            WalletDAO wdao = new WalletDAO();
             Account acc = (Account) request.getSession().getAttribute("user");
             if (acc == null) {
                 response.sendRedirect("login.jsp");
@@ -119,16 +128,38 @@ public class RequestServlet extends HttpServlet {
                 listSelected.add(Integer.valueOf(paramValue));
             }
             int price = Integer.parseInt(request.getParameter("totalPrice"));
+
+            // check available binance
+            Wallet wallet = wdao.getWalletByUsenName(acc.getUserName());
+            if (wallet != null && wallet.getAvaiable_binance() < price || wallet == null) {
+                if (wallet == null) {
+                    wdao.insertWallet(new Wallet(acc.getUserName(), 0, 0));
+                }
+
+                int cvId = (int) request.getSession().getAttribute("cvId");
+                request.getSession().removeAttribute("cvId");
+                request.getSession().setAttribute("warning", "not enough binance!");
+
+                response.sendRedirect("request?cvId=" + cvId);
+                return;
+            }
+
             Request re = new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour);
             re.setPrice(price);
             RequestDAO dao = new RequestDAO();
             if (dao.insertRequest(re, skills, listSelected)) {
-                System.out.println("Insert thành công");
-                response.sendRedirect("ListRequest");
+                wallet.setAvaiable_binance(wallet.getAvaiable_binance() - price);
+                if (wdao.updateWallet(wallet)) {
+                    response.sendRedirect("ListRequest");
+                } else {
+                    // chuyen sang erro page
+                }
             } else {
+                // chuyen sang erro page
                 System.out.println("insert fails");
             }
         } catch (NumberFormatException e) {
+            // chuyen sang erro page
         }
 
     }

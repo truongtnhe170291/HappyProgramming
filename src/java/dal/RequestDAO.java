@@ -314,8 +314,7 @@ public class RequestDAO {
             String sql = "SELECT r.*, rs.status_name \n"
                     + "FROM RequestsFormMentee r \n"
                     + "JOIN RequestStatuses rs ON r.status_id = rs.status_id \n"
-                    + "WHERE CONVERT(DATETIME, r.deadline_date) + CAST(r.deadline_hour AS DATETIME) > GETDATE() \n"
-                    + " AND r.mentor_name = ?";
+                    + "WHERE r.mentor_name = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, mentorName);
             rs = ps.executeQuery();
@@ -330,7 +329,7 @@ public class RequestDAO {
                 request.setTitle(rs.getString("title"));
 
                 int status_id = rs.getInt("status_id");
-                String status_name = rs.getString("status_id");
+                String status_name = rs.getString("status_name");
                 Status status = new Status(status_id, status_name);
                 request.setStatus(status);
 
@@ -519,14 +518,18 @@ public class RequestDAO {
         }
     }
 
-    public boolean updateStatus(int requestId, int statusId) throws SQLException {
+    public boolean updateStatus(int requestId, int statusId){
         String sql = "UPDATE RequestsFormMentee SET status_id = ? WHERE request_id = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try {
+            ps = con.prepareStatement(sql);
             ps.setInt(1, statusId);
             ps.setInt(2, requestId);
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
+        }catch(SQLException e){
+            System.out.println("updateStatus "+e.getMessage());
         }
+        return false;
     }
 
     public void checkAndUpdateOverdueStatus() throws SQLException {
@@ -539,15 +542,46 @@ public class RequestDAO {
         }
     }
 
+    public Request getRequestById(int requestId){
+        try {
+            String sql = "";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, requestId);
+            int result = ps.executeUpdate();
+            if(result == 1){
+                Request r = new Request();
+                r.setRequestId(rs.getInt(1));
+                r.setMentorName(rs.getString(2));
+                r.setMenteeName(rs.getString(3));
+                r.setDeadlineDate(rs.getDate(4).toLocalDate());
+                r.setDeadlineHour(rs.getTime(5).toLocalTime());
+                r.setTitle(rs.getString(6));
+                r.setDescription(rs.getString(7));
+                r.setStatusId(rs.getInt(8));
+                r.setPrice(rs.getInt(9));
+                r.setNote(rs.getString(10));
+                return r;
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestById  " + e.getMessage());
+        }
+        return null;
+    }
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
+        List<RequestDTO> rList = rdao.getRequestOfMenteeInDeadlineByStatus("truong");
+        for (RequestDTO rq : rList) {
+            System.out.println(rq);
+
+        }
+      
 //        List<RequestDTO> rList = rdao.getRequestsByMenteeAndStatus("hieu",3);
 //        for (RequestDTO rq : rList) {
 //            System.out.println(rq);
 //
 //        }
-        List<Mentor> mList = rdao.getMentorByRequest("truong");
-        System.out.println(mList);
+//        List<Mentor> mList = rdao.getMentorByRequest("truong");
+//        System.out.println(mList);
     }
 
 }
