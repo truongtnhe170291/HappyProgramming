@@ -341,7 +341,7 @@
 
                                         <!-- Payment button for 'Wait For Payment' status -->
                                         <c:if test="${request.status.statusName == 'Wait For Payment'}">
-                                            <form method="POST" action="payment">
+                                            <form method="get" action="payment">
                                                 <input type="hidden" name="requestId" value="${request.requestId}" />
                                                 <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
                                                     <li>

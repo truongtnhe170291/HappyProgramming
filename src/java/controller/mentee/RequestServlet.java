@@ -4,6 +4,8 @@
  */
 package controller.mentee;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dal.CVDAO;
 import dal.MentorDAO;
 import dal.RequestDAO;
@@ -16,6 +18,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.CV;
+import models.FormData;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
@@ -100,68 +105,35 @@ public class RequestServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            WalletDAO wdao = new WalletDAO();
-            Account acc = (Account) request.getSession().getAttribute("user");
-            if (acc == null) {
-                response.sendRedirect("login.jsp");
-                return;
+      @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder jsonBuffer = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonBuffer.append(line);
             }
-            int skill = Integer.parseInt(request.getParameter("skill"));
-            List<Integer> skills = new ArrayList<>();
-            skills.add(skill);
-            String mentorName = request.getParameter("mentorname");
-            String menteeName = acc.getUserName();
-            String title = request.getParameter("title");
-            String rawDatelineDate = request.getParameter("deadlineDate");
-            LocalDate dateLineDate = LocalDate.parse(rawDatelineDate);
-            String rawTime = request.getParameter("deadlineHour");
-            LocalTime deadlineHour = LocalTime.parse(rawTime);
-            String description = request.getParameter("description");
-            //get selected Slot
-            String[] selectedSlots = request.getParameterValues("schedule");
-            List<Integer> listSelected = new ArrayList<>();
-            for (String paramValue : selectedSlots) {
-                listSelected.add(Integer.valueOf(paramValue));
-            }
-            int price = Integer.parseInt(request.getParameter("totalPrice"));
-
-            // check available binance
-            Wallet wallet = wdao.getWalletByUsenName(acc.getUserName());
-            if (wallet != null && wallet.getAvaiable_binance() < price || wallet == null) {
-                if (wallet == null) {
-                    wdao.insertWallet(new Wallet(acc.getUserName(), 0, 0));
-                }
-
-                int cvId = (int) request.getSession().getAttribute("cvId");
-                request.getSession().removeAttribute("cvId");
-                request.getSession().setAttribute("warning", "not enough binance!");
-
-                response.sendRedirect("request?cvId=" + cvId);
-                return;
-            }
-
-            Request re = new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour);
-            re.setPrice(price);
-            RequestDAO dao = new RequestDAO();
-            if (dao.insertRequest(re, skills, listSelected)) {
-                wallet.setAvaiable_binance(wallet.getAvaiable_binance() - price);
-                if (wdao.updateWallet(wallet)) {
-                    response.sendRedirect("ListRequest");
-                } else {
-                    // chuyen sang erro page
-                }
-            } else {
-                // chuyen sang erro page
-                System.out.println("insert fails");
-            }
-        } catch (NumberFormatException e) {
-            // chuyen sang erro page
         }
 
+        String jsonString = jsonBuffer.toString();
+
+        Gson gson = new Gson();
+        FormData formData = gson.fromJson(jsonString, FormData.class);
+
+        System.out.println("Title: " + formData.getTitle());
+        System.out.println("Description: " + formData.getDescription());
+        System.out.println("Deadline Date: " + formData.getDeadlineDate());
+        System.out.println("Deadline Hour: " + formData.getDeadlineHour());
+        System.out.println("Skill: " + formData.getSkill());
+        for (FormData.Slot slot : formData.getSelectedSlots()) {
+            System.out.println("Slot: " + slot.getSlot() + ", Day: " + slot.getDay());
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("status", "success");
+        response.getWriter().write(responseJson.toString());
     }
 
     /*

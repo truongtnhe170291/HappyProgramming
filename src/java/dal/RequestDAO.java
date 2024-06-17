@@ -544,11 +544,11 @@ public class RequestDAO {
 
     public Request getRequestById(int requestId){
         try {
-            String sql = "";
+            String sql = "select * from RequestsFormMentee r where r.request_id = ?";
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
-            int result = ps.executeUpdate();
-            if(result == 1){
+            rs = ps.executeQuery();
+            if(rs.next()){
                 Request r = new Request();
                 r.setRequestId(rs.getInt(1));
                 r.setMentorName(rs.getString(2));
