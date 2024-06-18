@@ -380,29 +380,8 @@
                                                                     <div>Mentor Name: ${request.mentorName}</div><br>
                                                                     <div>Description: ${request.description}</div><br>
                                                                     <div>Deadline: ${request.deadlineHour} ${request.deadlineDate}</div><br>
-                                                                    
-                                                                        <div class="schedule-container">
-                                                                                <div class="header">
-                                                                                    <div class="select-container">
-                                                                                        <label for="year">YEAR</label>
-                                                                                        <select id="year">
-                                                                                            <option value="2024">2024</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="select-container">
-                                                                                        <label for="week">WEEK</label>
-                                                                                        <select id="week"></select>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <table id="scheduleTable">
-                                                                                    <thead>
-                                                                                    <tr id="dayHeaders"></tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                    <!-- Table rows will be dynamically added here -->
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
+                                                                   
+                                                                       
                                                                    
 
                                                                     <c:forEach items="${request.listSkills}" var="skill">
@@ -464,127 +443,66 @@
                     </table>
                 </div>
             </div>
-
                             <script>
     document.addEventListener("DOMContentLoaded", function () {
-    <c:forEach var="request" items="${requests}"></c:forEach>
-  const scheduleData = [
-    {
-      day: "MON",
-      slot: 1,
-      class: "SWR302",
-      room: "BE-209",
-      status: "attended",
-      time: "7:30-9:50"
-    },
-    {
-      day: "MON",
-      slot: 2,
-      class: "SWT301",
-      room: "BE-209",
-      status: "attended",
-      time: "10:00-12:20"
-    },
-    {
-      day: "MON",
-      slot: 4,
-      class: "SWP391",
-      room: "BE-113",
-      status: "absent",
-      time: "15:20-17:40",
-    },
-    {
-      day: "TUE",
-      slot: 2,
-      class: "FER202",
-      room: "BE-209",
-      status: "attended",
-      time: "10:00-12:20",
-    },
-    {
-      day: "WED",
-      slot: 3,
-      class: "SWP391",
-      room: "BE-115",
-      status: "attended",
-      time: "12:50-15:10",
-    },
-    {
-      day: "THU",
-      slot: 1,
-      class: "SWT301",
-      room: "BE-209",
-      status: "attended",
-      time: "7:30-9:50"
-    },
-    {
-      day: "THU",
-      slot: 2,
-      class: "SWR302",
-      room: "BE-209",
-      status: "absent",
-      time: "10:00-12:20"
-    },
-    {
-      day: "FRI",
-      slot: 1,
-      class: "FER202",
-      room: "BE-209",
-      status: "attended",
-      time: "7:30-9:50"
-    },
-    {
-      day: "SAT",
-      slot: 4,
-      class: "ITE302c",
-      room: "AL-L204",
-      status: "absent",
-      time: "17:50-20:40",
-      online: true
-    }
-  ];
+  
+ const scheduleData = [
+        <c:forEach items="${listSchedule}" var="schedule">
+        {
+            day: "${schedule.nameOfDay}",
+            slot: ${schedule.slotId.substring(5)},
+            class: "SWR302",
+            room: "BE-209",
+            status: "not-selected",
+            time: "${schedule.slot_name}",
+        },<c:set var="start" value="${schedule.startTime}"/>
+                    <c:set var="end" value="${schedule.endTime}"/>
 
+
+        </c:forEach>
+    ];
+   
   function getMonday(d) {
-    d = new Date(d);
-    var day = d.getDay(),
-      diff = d.getDate() - day + (day == 0 ? -6 : 1);
-    return new Date(d.setDate(diff));
-  }
+        d = new Date('${start}');
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6 : 1);
+        return new Date(d.setDate(diff));
+    }
 
-  function formatDate(date) {
-    return (
-      date.getDate().toString().padStart(2, "0") +
-      "/" +
-      (date.getMonth() + 1).toString().padStart(2, "0")
-    );
-  }
+    function formatDate(date) {
+        return (
+            date.getFullYear().toString().padStart(4, "0") +
+            "-" +
+            (date.getMonth() + 1).toString().padStart(2, "0") +
+            "-" +
+            date.getDate().toString().padStart(2, "0")
+        );
+    }
+
 
   function getWeekOptions() {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const options = [];
-    for (let week = 1; week <= 52; week++) {
-      const mondayOfWeek = getMonday(
-        new Date(currentYear, 0, 1 + (week - 1) * 7)
-      );
-      const sundayOfWeek = new Date(mondayOfWeek);
-      sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+        const startDate = new Date('${start}');
+        const options = [];
+        for (let week = 0; week < 4; week++) {
+            const mondayOfWeek = new Date(startDate);
+            mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+            const sundayOfWeek = new Date(mondayOfWeek);
+            sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
 
-      const optionText = formatDate(mondayOfWeek)+ ` to ` +formatDate(sundayOfWeek);
-      options.push({ value: week, text: optionText });
+            const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+            options.push({value: week + 1, text: optionText});
+        }
+        return options;
     }
 
-    return options;
-  }
-
-  const weekSelect = document.getElementById("week");
-  const weekOptions = getWeekOptions();
-  weekOptions.forEach((option) => {
-    const optionElement = document.createElement("option");
-    optionElement.value = option.value;
-    optionElement.textContent = option.text;
-    weekSelect.appendChild(optionElement);
-  });
+    const weekSelect = document.getElementById("week");
+    const weekOptions = getWeekOptions();
+    weekOptions.forEach((option) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.value;
+        optionElement.textContent = option.text;
+        weekSelect.appendChild(optionElement);
+    });
 
   function isClassCurrentlyHappening(classItem, currentDate) {
     const [startHour, startMinute] = classItem.time
@@ -611,8 +529,7 @@
 
     const dayHeaders = document.getElementById("dayHeaders");
     dayHeaders.innerHTML = "<th>WEEK</th>";
-    const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-
+ const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
     daysOfWeek.forEach((day, index) => {
       const date = new Date(monday);
       date.setDate(date.getDate() + index);

@@ -8,10 +8,15 @@ import java.util.List;
 
 public class FormData {
     private String title;
+    private String mentorname;
     private String description;
     private String deadlineDate;
     private String deadlineHour;
     private String skill;
+    private int totalPrice;
+    private String action;
+    private String startime;
+    private String endtime;
     private List<Slot> selectedSlots;
 
     
@@ -37,6 +42,30 @@ public class FormData {
         }
 
         
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getStartime() {
+        return startime;
+    }
+
+    public void setStartime(String startime) {
+        this.startime = startime;
+    }
+
+    public String getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(String endtime) {
+        this.endtime = endtime;
     }
 
     // Getters and setters
@@ -87,4 +116,21 @@ public class FormData {
     public void setSelectedSlots(List<Slot> selectedSlots) {
         this.selectedSlots = selectedSlots;
     }
+
+    public String getMentorname() {
+        return mentorname;
+    }
+
+    public void setMentorname(String mentorname) {
+        this.mentorname = mentorname;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    
 }

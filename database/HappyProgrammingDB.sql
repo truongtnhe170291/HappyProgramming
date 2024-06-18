@@ -127,6 +127,7 @@ CREATE TABLE Cycle(
 	note NVARCHAR(1000),
 	mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
 	deadline_date DATE
+	UNIQUE(start_time, end_time, mentor_name)
 );
 GO
 
@@ -340,6 +341,7 @@ INSERT INTO RequestStatuses (status_name) VALUES ('Processing');
 INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
 INSERT INTO RequestStatuses (status_name) VALUES ('Out Of Date');
 INSERT INTO RequestStatuses (status_name) VALUES ('Wait For Payment');
+INSERT INTO RequestStatuses (status_name) VALUES ('Saved');
 GO
 
 INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price, note)

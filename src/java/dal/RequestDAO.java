@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import java.util.logging.Logger;
 import models.Mentor;
 import models.Request;
 import models.RequestDTO;
-import models.RequestSkill;
 import models.SchedulePublic;
 import models.Skill;
 import models.StaticMentee;
@@ -84,10 +84,10 @@ public class RequestDAO {
         ResultSet rs = null;
 
         try {
-            String sql = " SELECT *\n" +
-"                    FROM RequestsFormMentee r\n" +
-"                    WHERE r.mentee_name = ?\n" +
-"		     order by [deadline_date] DESC";
+            String sql = " SELECT *\n"
+                    + "                    FROM RequestsFormMentee r\n"
+                    + "                    WHERE r.mentee_name = ?\n"
+                    + "		     order by [deadline_date] DESC";
             ps = con.prepareStatement(sql);
             ps.setString(1, menteeName);
             rs = ps.executeQuery();
@@ -126,93 +126,121 @@ public class RequestDAO {
         return requests;
     }
     
- public List<RequestDTO> getRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
-    List<RequestDTO> requests = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
+     public List<SchedulePublic> getScheduleByMenteeName(String menteeName) {
+    List<SchedulePublic> list = new ArrayList<>();
     try {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM [RequestsFormMentee] WHERE mentee_name = ?");
-        if (statusId != null && statusId != -1) {
-            sqlBuilder.append(" AND status_id = ?");
-        }
-        if (mentorName != null && !mentorName.isEmpty()) {
-            sqlBuilder.append(" AND mentor_name = ?");
-        }
-        if (startTime != null) {
-            sqlBuilder.append(" AND deadline_date >= ?");
-        }
-        if (endTime != null) {
-            sqlBuilder.append(" AND deadline_date <= ?");
-        }
-
-        ps = con.prepareStatement(sqlBuilder.toString());
-        int paramIndex = 1;
-        ps.setString(paramIndex++, menteeName);
-
-        if (statusId != null && statusId != -1) {
-            ps.setInt(paramIndex++, statusId);
-        }
-        if (mentorName != null && !mentorName.isEmpty()) {
-            ps.setString(paramIndex++, mentorName);
-        }
-        if (startTime != null) {
-            ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
-        }
-        if (endTime != null) {
-            ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
-        }
-
-        rs = ps.executeQuery();
-
-        while (rs.next()) {
-            RequestDTO request = new RequestDTO();
-            request.setRequestId(rs.getInt("request_id"));
-            request.setMentorName(rs.getString("mentor_name"));
-            request.setMenteeName(rs.getString("mentee_name"));
-            request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
-            request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
-            request.setDescription(rs.getString("description"));
-            request.setTitle(rs.getString("title"));
-            request.setPrice(rs.getInt("price"));
-            request.setNote(rs.getString("note"));
-
-            
-            Status status = fetchStatusById(statusId, con);
-            request.setStatus(status);
-
-            requests.add(request);
-        }
-
-        for (RequestDTO requ : requests) {
-            List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
-            requ.setListSkills(skills);
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
-            requ.setListSchedule(listSchedule);
-        }
-    } catch (SQLException e) {
-        System.out.println("getRequestsByMenteeAndStatus: " + e.getMessage());
-    } 
-
-    return requests;
-}
- 
- public void updateExpiredRequestsStatus() throws SQLException {
-    PreparedStatement ps = null;
-    try {
-        String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] " +
-                     "SET status_id = 4 " +
-                     "WHERE deadline_date < CAST(GETDATE() AS DATE) " +
-                     "AND status_id IN (2, 5)";
+        String sql = "select * from Selected_Slot ss " +
+                     "join RquestSelectedSlot rs on rs.selected_id = ss.selected_id " +
+                     "join Cycle c on ss.cycle_id = c.cycle_id " +
+                     "join Slots s on s.slot_id = ss.slot_id " +
+                     "join RequestsFormMentee rfm on rs.request_id = rfm.request_id " +
+                     "where rfm.mentee_name = ?";
         ps = con.prepareStatement(sql);
-        ps.executeUpdate();
+        ps.setString(1, menteeName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            SchedulePublic schedule = new SchedulePublic();
+            schedule.setSelectedId(rs.getInt("selected_id"));
+            schedule.setMentorName(rs.getString("mentor_name"));
+            schedule.setSlotId(rs.getString("slot_id"));
+            schedule.setDayOfSlot(rs.getDate("day_of_slot"));
+            schedule.setStartTime(rs.getDate("start_time"));
+            schedule.setEndTime(rs.getDate("end_time"));
+            schedule.setSlot_name(rs.getString("slot_name"));
+            DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
+            schedule.setNameOfDay(nameOfDay);
+            list.add(schedule);
+        }
     } catch (SQLException e) {
-        System.out.println("updateExpiredRequestsStatus: " + e.getMessage());
-    } 
+        System.out.println("getScheduleByMenteeName: " + e.getMessage());
+    }
+    return list;
 }
 
+    public List<RequestDTO> getRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
+        List<RequestDTO> requests = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
+        try {
+            StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM [RequestsFormMentee] WHERE mentee_name = ?");
+            if (statusId != null && statusId != -1) {
+                sqlBuilder.append(" AND status_id = ?");
+            }
+            if (mentorName != null && !mentorName.isEmpty()) {
+                sqlBuilder.append(" AND mentor_name = ?");
+            }
+            if (startTime != null) {
+                sqlBuilder.append(" AND deadline_date >= ?");
+            }
+            if (endTime != null) {
+                sqlBuilder.append(" AND deadline_date <= ?");
+            }
+
+            ps = con.prepareStatement(sqlBuilder.toString());
+            int paramIndex = 1;
+            ps.setString(paramIndex++, menteeName);
+
+            if (statusId != null && statusId != -1) {
+                ps.setInt(paramIndex++, statusId);
+            }
+            if (mentorName != null && !mentorName.isEmpty()) {
+                ps.setString(paramIndex++, mentorName);
+            }
+            if (startTime != null) {
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
+            }
+            if (endTime != null) {
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
+            }
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+
+                Status status = fetchStatusById(statusId, con);
+                request.setStatus(status);
+
+                requests.add(request);
+            }
+
+            for (RequestDTO requ : requests) {
+                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+                requ.setListSkills(skills);
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                requ.setListSchedule(listSchedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestsByMenteeAndStatus: " + e.getMessage());
+        }
+
+        return requests;
+    }
+
+    public void updateExpiredRequestsStatus() throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
+                    + "SET status_id = 4 "
+                    + "WHERE deadline_date < CAST(GETDATE() AS DATE) "
+                    + "AND status_id IN (2, 5)";
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("updateExpiredRequestsStatus: " + e.getMessage());
+        }
+    }
 
     public StaticMentee getStaticRequest(String menteeName) {
         String sql = "SELECT COUNT(DISTINCT request_id) AS TotalRequests, "
@@ -234,55 +262,52 @@ public class RequestDAO {
         }
         return null;
     }
-    
-   public List<Mentor> getMentorByRequest(String menteeName) throws SQLException {
-    List<Mentor> mentors = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
 
-    try {
-        String sql = "SELECT DISTINCT mentor_name FROM RequestsFormMentee WHERE mentee_name = ?";
-        ps = con.prepareStatement(sql);
-        ps.setString(1, menteeName);
-        rs = ps.executeQuery();
+    public List<Mentor> getMentorByRequest(String menteeName) throws SQLException {
+        List<Mentor> mentors = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        while (rs.next()) {
-            String mentorName = rs.getString("mentor_name");
-            Mentor mentor = new Mentor(mentorName);
-            mentors.add(mentor);
+        try {
+            String sql = "SELECT DISTINCT mentor_name FROM RequestsFormMentee WHERE mentee_name = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, menteeName);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String mentorName = rs.getString("mentor_name");
+                Mentor mentor = new Mentor(mentorName);
+                mentors.add(mentor);
+            }
+        } catch (SQLException e) {
+            System.out.println("getMentorByRequest: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getMentorByRequest: " + e.getMessage());
-    } 
-    return mentors;
-}
+        return mentors;
+    }
 
-
-    
     public List<Status> getAllStatuses() throws SQLException {
-    List<Status> statuses = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+        List<Status> statuses = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-    try {
-        String sql = "SELECT * FROM RequestStatuses";
-        ps = con.prepareStatement(sql);
-        rs = ps.executeQuery();
+        try {
+            String sql = "SELECT * FROM RequestStatuses";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
 
-        while (rs.next()) {
-            Status status = new Status(
-                rs.getInt("status_id"),
-                rs.getString("status_name")
-            );
-            statuses.add(status);
+            while (rs.next()) {
+                Status status = new Status(
+                        rs.getInt("status_id"),
+                        rs.getString("status_name")
+                );
+                statuses.add(status);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAllStatuses: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getAllStatuses: " + e.getMessage());
-    } 
 
-    return statuses;
-}
-
+        return statuses;
+    }
 
     public List<RequestDTO> getRequestList(String menteeName) {
         String sql = "SELECT request_id, mentor_name, title, deadline_date, deadline_hour "
@@ -369,7 +394,7 @@ public class RequestDAO {
 
     }
 
-    public boolean insertRequest(Request request, List<Integer> skills, List<Integer> listSelectSlot) {
+    public int insertRequestReturnRequestId(Request request) {
         String query = "INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price)"
                 + "VALUES"
                 + " (?,?,?,?,?,?,?,?)";
@@ -389,20 +414,22 @@ public class RequestDAO {
 
             if (result == 1) {
                 int requestId = getRequestId();
-                for (Integer skill : skills) {
-                    insertRequestSkills(requestId, skill);
+                if (requestId != 0) {
+                    return requestId;
                 }
-
-                for (Integer selectedId : listSelectSlot) {
-                    insertRquestSelectedSlot(requestId, selectedId);
-                }
-                return true;
+//                for (Integer skill : skills) {
+//                    insertRequestSkills(requestId, skill);
+//                }
+//
+//                for (Integer selectedId : listSelectSlot) {
+//                    insertRquestSelectedSlot(requestId, selectedId);
+//                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return false;
+        return 0;
     }
 
     private List<Skill> fetchRequestSkills(int requestId, Connection con) throws SQLException {
@@ -427,20 +454,20 @@ public class RequestDAO {
         // Trả về danh sách kỹ năng
         return skills;
     }
-    
+
     public Status fetchStatusByName(String statusName) throws SQLException {
-    Status status = null;
-    String sql = "SELECT * FROM Status_Selected WHERE status_name = ?";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, statusName);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                status = new Status(rs.getInt("status_id"), rs.getString("status_name"));
+        Status status = null;
+        String sql = "SELECT * FROM Status_Selected WHERE status_name = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, statusName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    status = new Status(rs.getInt("status_id"), rs.getString("status_name"));
+                }
             }
         }
+        return status;
     }
-    return status;
-}
 
     public Status fetchStatusById(int statusId, Connection con) throws SQLException {
         // Tạo câu truy vấn SQL để lấy thông tin từ bảng RequestStatuses
@@ -477,7 +504,7 @@ public class RequestDAO {
 
     }
 
-    public void insertRequestSkills(int requestId, int skillId) {
+    public boolean insertRequestSkills(int requestId, int skillId) {
         try {
             String query = "INSERT INTO [dbo].[RequestSkills]"
                     + "           ([skill_id]"
@@ -489,11 +516,14 @@ public class RequestDAO {
 
             ps.setInt(1, skillId);
             ps.setInt(2, requestId);
-            ps.executeUpdate();
+            int result = ps.executeUpdate();
+            if(result == 1){
+                return true;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RequestDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return false;
     }
 
     public void deleteRequest(int requestId) {
@@ -518,7 +548,7 @@ public class RequestDAO {
         }
     }
 
-    public boolean updateStatus(int requestId, int statusId){
+    public boolean updateStatus(int requestId, int statusId) {
         String sql = "UPDATE RequestsFormMentee SET status_id = ? WHERE request_id = ?";
         try {
             ps = con.prepareStatement(sql);
@@ -526,8 +556,8 @@ public class RequestDAO {
             ps.setInt(2, requestId);
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
-        }catch(SQLException e){
-            System.out.println("updateStatus "+e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("updateStatus " + e.getMessage());
         }
         return false;
     }
@@ -542,13 +572,13 @@ public class RequestDAO {
         }
     }
 
-    public Request getRequestById(int requestId){
+    public Request getRequestById(int requestId) {
         try {
             String sql = "select * from RequestsFormMentee r where r.request_id = ?";
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
             rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 Request r = new Request();
                 r.setRequestId(rs.getInt(1));
                 r.setMentorName(rs.getString(2));
@@ -567,6 +597,7 @@ public class RequestDAO {
         }
         return null;
     }
+
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
         List<RequestDTO> rList = rdao.getRequestOfMenteeInDeadlineByStatus("truong");
@@ -574,7 +605,7 @@ public class RequestDAO {
             System.out.println(rq);
 
         }
-      
+
 //        List<RequestDTO> rList = rdao.getRequestsByMenteeAndStatus("hieu",3);
 //        for (RequestDTO rq : rList) {
 //            System.out.println(rq);
@@ -582,6 +613,34 @@ public class RequestDAO {
 //        }
 //        List<Mentor> mList = rdao.getMentorByRequest("truong");
 //        System.out.println(mList);
+    }
+
+    public Request getRequestByStatusSaved(String menteeName, String mentorName) {
+        try {
+            String sql = "select r.* from RequestsFormMentee r join Cycle c on r.mentor_name = c.mentor_name where r.status_id = 6 and r.mentee_name = ? and r.mentor_name = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, menteeName);
+            ps.setString(2, mentorName);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Request r = new Request();
+                r.setRequestId(rs.getInt(1));
+                r.setMentorName(rs.getString(2));
+                r.setMenteeName(rs.getString(3));
+                r.setDeadlineDate(rs.getDate(4).toLocalDate());
+                r.setDeadlineHour(rs.getTime(5).toLocalTime());
+                r.setTitle(rs.getString(6));
+                r.setDescription(rs.getString(7));
+                r.setStatusId(rs.getInt(8));
+                r.setPrice(rs.getInt(9));
+                r.setNote(rs.getString(10));
+                return r;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("getRequestByStatusSaved " +e.getMessage());
+        }
+        return null;
     }
 
 }

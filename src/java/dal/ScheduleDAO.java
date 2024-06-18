@@ -139,7 +139,7 @@ public class ScheduleDAO {
     }
 
 
-    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName, java.sql.Date startTime, java.sql.Date endTime) {
+    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName) {
 
         List<SchedulePublic> list = new ArrayList<>();
         try {
@@ -248,6 +248,37 @@ public class ScheduleDAO {
         }
         return list;
     }
+    public List<SchedulePublic> getScheduleByMenteeName(String menteeName) {
+    List<SchedulePublic> list = new ArrayList<>();
+    try {
+        String sql = "select * from Selected_Slot ss " +
+                     "join RquestSelectedSlot rs on rs.selected_id = ss.selected_id " +
+                     "join Cycle c on ss.cycle_id = c.cycle_id " +
+                     "join Slots s on s.slot_id = ss.slot_id " +
+                     "join RequestsFormMentee rfm on rs.request_id = rfm.request_id " +
+                     "where rfm.mentee_name = ?";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, menteeName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            SchedulePublic schedule = new SchedulePublic();
+            schedule.setSelectedId(rs.getInt("selected_id"));
+            schedule.setMentorName(rs.getString("mentor_name"));
+            schedule.setSlotId(rs.getString("slot_id"));
+            schedule.setDayOfSlot(rs.getDate("day_of_slot"));
+            schedule.setStartTime(rs.getDate("start_time"));
+            schedule.setEndTime(rs.getDate("end_time"));
+            schedule.setSlot_name(rs.getString("slot_name"));
+            DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
+            schedule.setNameOfDay(nameOfDay);
+            list.add(schedule);
+        }
+    } catch (SQLException e) {
+        System.out.println("getScheduleByMenteeName: " + e.getMessage());
+    }
+    return list;
+}
+
 
     public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
         List<ScheduleCommon> list = new ArrayList<>();
@@ -271,6 +302,47 @@ public class ScheduleDAO {
             }
         } catch (SQLException e) {
             System.out.println("getScheduleCommonByMentorName: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public int getCycleIdInTime(String mentorName, String startTime, String endTime) {
+        try {
+            String sql = "select c.cycle_id from Cycle c where c.mentor_name = ? and c.start_time = ? and c.end_time = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            ps.setString(2, startTime);
+            ps.setString(3, endTime);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("getCycleIdInTime: "+ e.getMessage());
+        }
+        return -1;
+    }
+
+    public List<SchedulePublic> getListSheduleByCycleAndStatus(int cycleId, int statusId) {
+        List<SchedulePublic> list = new ArrayList<>();
+        try {
+            String sql = "select * from Selected_Slot ss where ss.cycle_id = ? and ss.status_id = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cycleId);
+            ps.setInt(2, statusId);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                SchedulePublic schedule = new SchedulePublic();
+                schedule.setSelectedId(rs.getInt("selected_id"));
+                schedule.setSlotId(rs.getString("slot_id"));
+                schedule.setCycleID(cycleId);
+                schedule.setDayOfSlot(rs.getDate("day_of_slot"));
+                DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
+                schedule.setNameOfDay(nameOfDay);
+                list.add(schedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getListSheduleByCycleAndStatus: "+e.getMessage());
         }
         return list;
     }
