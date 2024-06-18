@@ -434,7 +434,11 @@
 
                 updateSchedule();
 
+<<<<<<< HEAD
                 function saveSelectedSlots(event) {
+=======
+                function saveSelectedSlots() {
+>>>>>>> a76c03d5173a47cb5a637178c0cec9732445eed2
 
                     const selectedSlots = [];
                     const tbody = document.querySelector("#scheduleTable tbody");

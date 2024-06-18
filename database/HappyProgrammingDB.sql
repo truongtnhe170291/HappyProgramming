@@ -124,7 +124,10 @@ CREATE TABLE Cycle(
     cycle_id INT IDENTITY(1,1) PRIMARY KEY,
 	start_time DATE,
 	end_time DATE,
-	note NVARCHAR(1000)
+	note NVARCHAR(1000),
+	mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+	deadline_date DATE
+	UNIQUE(start_time, end_time, mentor_name)
 );
 GO
 
@@ -138,12 +141,10 @@ GO
 -- Create Selected_Slot table
 CREATE TABLE Selected_Slot(
     selected_id INT IDENTITY(1,1) PRIMARY KEY,
-    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
     slot_id VARCHAR(50) FOREIGN KEY REFERENCES Slots(slot_id),
     cycle_id INT FOREIGN KEY REFERENCES Cycle(cycle_id),
 	day_of_slot DATE,
     status_id INT FOREIGN KEY REFERENCES Status_Selected(status_id),
-	UNIQUE(mentor_name, day_of_slot, slot_id, cycle_id)
 );
 GO
 
@@ -195,8 +196,8 @@ CREATE TABLE FeedBacks(
 GO
 CREATE TABLE Wallet(
 	wallet_id VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	real_balance DECIMAL(15, 0),
-	avaiable_balance DECIMAL(15, 0),
+	real_binance DECIMAL(15, 0),
+	avaiable_binance DECIMAL(15, 0),
 )
 
 GO
@@ -313,25 +314,25 @@ INSERT INTO Status_Selected(status_name) VALUES
 ('Saved')
 
 GO
-INSERT INTO Cycle(start_time, end_time, note) VALUES
-('2024-05-27', '2024-06-02', ''),
-('2024-06-03', '2024-06-09', ''),
-('2024-06-10', '2024-06-16', '')
+
+INSERT INTO Cycle(start_time, end_time, note, mentor_name, deadline_date) VALUES
+('2024-06-24', '2024-07-22', '', 'son', '2024-06-20'),
+('2024-06-24', '2024-07-22', '', 'minh', '2024-06-20')
 
 GO
 
-INSERT INTO Selected_Slot(mentor_name, slot_id, cycle_id, day_of_slot, status_id)
+INSERT INTO Selected_Slot(slot_id, cycle_id, day_of_slot, status_id)
 VALUES 
-('son', 'SLOT01', 1, '2024-05-30', 1),
-('son', 'SLOT02', 1, '2024-05-28', 1),
-('son', 'SLOT01', 2, '2024-06-05', 2),
-('son', 'SLOT02', 2, '2024-06-05', 4),
-('son', 'SLOT04', 2, '2024-06-06', 2),
-('son', 'SLOT01', 3, '2024-06-11', 2),
-('minh', 'SLOT03', 2, '2024-06-07', 1),
-('minh', 'SLOT02', 2, '2024-06-07', 1),
-('minh', 'SLOT01', 1, '2024-05-30', 2),
-('minh', 'SLOT04', 1, '2024-05-30', 2)
+('SLOT01', 1, '2024-06-24', 1),
+('SLOT02', 1, '2024-07-10', 1),
+('SLOT01', 1, '2024-06-30', 2),
+('SLOT02', 1, '2024-07-01', 2),
+('SLOT04', 1, '2024-06-28', 2),
+('SLOT01', 2, '2024-06-25', 2),
+('SLOT03', 2, '2024-07-07', 1),
+('SLOT02', 2, '2024-07-05', 1),
+('SLOT01', 2, '2024-06-30', 2),
+('SLOT04', 2, '2024-06-28', 2)
 
 GO
 -- Insert into RequestStatuses
@@ -340,6 +341,7 @@ INSERT INTO RequestStatuses (status_name) VALUES ('Processing');
 INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
 INSERT INTO RequestStatuses (status_name) VALUES ('Out Of Date');
 INSERT INTO RequestStatuses (status_name) VALUES ('Wait For Payment');
+INSERT INTO RequestStatuses (status_name) VALUES ('Saved');
 GO
 
 INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price, note)

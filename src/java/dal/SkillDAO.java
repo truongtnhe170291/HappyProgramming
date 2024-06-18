@@ -93,6 +93,23 @@ public class SkillDAO {
         return list;
     }
 
+    public Skill getSkillByRequestId(int requestId) {
+        String sql = "SELECT s.skill_id, s.skill_name from RequestSkills rs join Skills s on rs.skill_id = s.skill_id WHERE rs.request_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, requestId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill();
+                s.setSkillID(rs.getInt(1));
+                s.setSkillName(rs.getString(2));
+                return s;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
     //get all skills
     public List<Skill> getAllSkills() {
         String sql = "select * from Skills";
@@ -153,4 +170,42 @@ public class SkillDAO {
             System.out.println(e);
         }
     }
+   public boolean updateSkillStatus(int skillID, boolean status) {
+        String sql = "UPDATE Skills SET status = ? WHERE skill_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setBoolean(1, status);
+            ps.setInt(2, skillID);
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+   public void deleteSkill(int skillID) {
+       try{
+           String sql = " delete from CVSkills where skill_id = ?";
+           ps = con.prepareStatement(sql);
+           ps.setInt(1, skillID);
+           ps.executeUpdate();
+           
+           sql = "DELETE FROM Skills WHERE skill_id =?";
+           ps = con.prepareStatement(sql);
+           ps.setInt(1, skillID);
+           ps.executeUpdate();
+       }catch (SQLException e){
+           System.out.println(e.getMessage());
+       }
+//    String sql = "DELETE FROM Skills WHERE skill_id =?";
+//    try (PreparedStatement ps = con.prepareStatement(sql)) {
+//        ps.setInt(1, skillID);
+//        ps.executeUpdate();
+//    } catch (SQLException e) {
+//        System.err.println("Error deleting skill: " + e.getMessage());
+//    }
+}
+   
 }

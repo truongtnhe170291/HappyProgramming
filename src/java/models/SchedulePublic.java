@@ -6,8 +6,6 @@ package models;
 
 import java.sql.Date;
 import java.time.DayOfWeek;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 /**
  *

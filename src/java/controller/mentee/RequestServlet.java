@@ -4,6 +4,9 @@
  */
 package controller.mentee;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import dal.CVDAO;
 import dal.MentorDAO;
 import dal.RequestDAO;
@@ -16,13 +19,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.CV;
+import models.FormData;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
@@ -44,36 +52,26 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
+            SkillDAO skillDAO = new SkillDAO();
+            CVDAO cvdao = new CVDAO();
+            MentorDAO mentorDAO = new MentorDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+
             // check if not enough binance
             String warning = (String) request.getSession().getAttribute("warning");
             if (warning != null && warning.length() > 0) {
                 request.setAttribute("warning", warning);
             }
-
-            CVDAO cvdao = new CVDAO();
             int cvId = Integer.parseInt(request.getParameter("cvId"));
             request.getSession().setAttribute("cvId", cvId);
-            SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
-            request.setAttribute("skills", list);
-
-            LocalDate today = LocalDate.now();
-            // Tìm ngày tiếp theo có thể là thứ 2
-            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-            // Tìm ngày Chủ Nhật của tuần tiếp theo
-            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-
             //get rate of mentor
-            MentorDAO mentorDAO = new MentorDAO();
             int rate = mentorDAO.getRateOfMentor(userName);
-            request.setAttribute("rate", rate);
-
             // get Schedule public by user mentor name
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+            List<SchedulePublic> listSchedule_raw = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
+            List<SchedulePublic> listSchedule = getOneWeek(listSchedule_raw);
             if (listSchedule.isEmpty()) {
                 response.sendRedirect("homes.jsp");
                 return;
@@ -83,13 +81,55 @@ public class RequestServlet extends HttpServlet {
                 s.setNameOfDay(nameOfDay);
             }
             request.setAttribute("listSchedule", listSchedule);
-            // set attribute CV
+            RequestDAO dao = new RequestDAO();
+            Request requ = dao.getRequestByStatusSaved(acc.getUserName(), userName);
+            if (requ != null) {
+                request.setAttribute("Editable", "Editable");
+                Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
+                List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                if (!listScheduleByMentee.isEmpty()) {
+                    listScheduleByMentee = getOneWeek(listScheduleByMentee);
+                }
+                request.setAttribute("scheduleOfMentee", listScheduleByMentee);
+                request.setAttribute("skillOfMentee", s);
+            }
+
             CV cv = cvdao.getCVByCVId(cvId);
+
+            // set attribute
+            request.setAttribute("skills", list);
+            request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);
             request.getRequestDispatcher("Mentee_Request.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
         }
+    }
+
+    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
+        List<SchedulePublic> listOne = new ArrayList<>();
+        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
+
+        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
+        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        // Tạo danh sách các ngày trong tuần
+        List<LocalDate> weekDates = new ArrayList<>();
+        LocalDate current = startOfWeek;
+        while (!current.isAfter(endOfWeek)) {
+            weekDates.add(current);
+            current = current.plusDays(1);
+        }
+        for (SchedulePublic s : list) {
+            for (LocalDate d : weekDates) {
+                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
+                    listOne.add(s);
+                }
+            }
+        }
+
+        return listOne;
     }
 
     /**
@@ -101,8 +141,7 @@ public class RequestServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             WalletDAO wdao = new WalletDAO();
             Account acc = (Account) request.getSession().getAttribute("user");
@@ -110,56 +149,141 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            int skill = Integer.parseInt(request.getParameter("skill"));
-            List<Integer> skills = new ArrayList<>();
-            skills.add(skill);
-            String mentorName = request.getParameter("mentorname");
-            String menteeName = acc.getUserName();
-            String title = request.getParameter("title");
-            String rawDatelineDate = request.getParameter("deadlineDate");
-            LocalDate dateLineDate = LocalDate.parse(rawDatelineDate);
-            String rawTime = request.getParameter("deadlineHour");
-            LocalTime deadlineHour = LocalTime.parse(rawTime);
-            String description = request.getParameter("description");
-            //get selected Slot
-            String[] selectedSlots = request.getParameterValues("schedule");
-            List<Integer> listSelected = new ArrayList<>();
-            for (String paramValue : selectedSlots) {
-                listSelected.add(Integer.valueOf(paramValue));
-            }
-            int price = Integer.parseInt(request.getParameter("totalPrice"));
-
-            // check available binance
             Wallet wallet = wdao.getWalletByUsenName(acc.getUserName());
-            if (wallet != null && wallet.getAvaiable_binance() < price || wallet == null) {
-                if (wallet == null) {
-                    wdao.insertWallet(new Wallet(acc.getUserName(), 0, 0));
+            StringBuilder jsonBuffer = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonBuffer.append(line);
                 }
-
-                int cvId = (int) request.getSession().getAttribute("cvId");
-                request.getSession().removeAttribute("cvId");
-                request.getSession().setAttribute("warning", "not enough binance!");
-
-                response.sendRedirect("request?cvId=" + cvId);
-                return;
             }
 
-            Request re = new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour);
-            re.setPrice(price);
+            String jsonString = jsonBuffer.toString();
+
+            Gson gson = new Gson();
+            FormData formData = gson.fromJson(jsonString, FormData.class);
+
+            String title = formData.getTitle();
+            String description = formData.getDescription();
+            String deadlineDate_raw = formData.getDeadlineDate();
+            String deadlineHour_raw = formData.getDeadlineHour();
+            int skillId = Integer.parseInt(formData.getSkill());
+            int totalPrice = formData.getTotalPrice();
+            String mentorName = formData.getMentorname();
+            String menteeName = acc.getUserName();
+            String action = formData.getAction();
+            String startTime = formData.getStartime();
+            String endTime = formData.getEndtime();
+            LocalDate deadlineDate = LocalDate.parse(deadlineDate_raw);
+            LocalTime deadlineHour = LocalTime.parse(deadlineHour_raw);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             RequestDAO dao = new RequestDAO();
-            if (dao.insertRequest(re, skills, listSelected)) {
-                wallet.setAvaiable_binance(wallet.getAvaiable_binance() - price);
-                if (wdao.updateWallet(wallet)) {
-                    response.sendRedirect("ListRequest");
+            ScheduleDAO sdao = new ScheduleDAO();
+            Request re = new Request(mentorName, menteeName, deadlineDate, title, description, 2, deadlineHour);
+            re.setPrice(totalPrice);
+            if (action.equalsIgnoreCase("Editable")) {
+                Request requ = dao.getRequestByStatusSaved(menteeName, mentorName);
+                if (requ != null) {
+                    // update request này
+                    if (dao.deleteRequest(requ.getRequestId())) {
+                        re.setStatusId(6);
+                        int requestId = dao.insertRequestReturnRequestId(re);
+                        //insert skill request
+                        dao.insertRequestSkills(requestId, skillId);
+                        int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                        List<Integer> listSelectSlot = new ArrayList<>();
+                        List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                        for (FormData.Slot slot : formData.getSelectedSlots()) {
+                            for (SchedulePublic sp : listS) {
+                                // check the same slot id and name of date
+                                if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getNameOfDay().equals(LocalDate.parse(slot.getDay(), formatter).getDayOfWeek())) {
+                                    listSelectSlot.add(sp.getSelectedId());
+                                }
+                            }
+                        }
+                        if (!listSelectSlot.isEmpty()) {
+                            for (Integer i : listSelectSlot) {
+                                dao.insertRquestSelectedSlot(requestId, i);
+                            }
+                        }
+                    }
                 } else {
-                    // chuyen sang erro page
+                    re.setStatusId(6);
+                    int requestId = dao.insertRequestReturnRequestId(re);
+                    //insert skill request
+                    dao.insertRequestSkills(requestId, skillId);
+                    int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                    List<Integer> listSelectSlot = new ArrayList<>();
+                    List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                    for (FormData.Slot slot : formData.getSelectedSlots()) {
+                        for (SchedulePublic sp : listS) {
+                            // check the same slot id and name of date
+                            if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getNameOfDay().equals(LocalDate.parse(slot.getDay(), formatter).getDayOfWeek())) {
+                                listSelectSlot.add(sp.getSelectedId());
+                            }
+                        }
+                    }
+                    if (!listSelectSlot.isEmpty()) {
+                        for (Integer i : listSelectSlot) {
+                            dao.insertRquestSelectedSlot(requestId, i);
+                        }
+                    }
                 }
-            } else {
-                // chuyen sang erro page
-                System.out.println("insert fails");
+            } else { // Send request
+                Request requ = dao.getRequestByStatusSaved(menteeName, mentorName);
+                if (requ != null) {
+                    dao.updateStatus(requ.getRequestId(), 2);
+                    // update request này
+//                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
+//                    wdao.updateWallet(wallet);
+                } else {
+                    re.setStatusId(2);
+                    int requestId = dao.insertRequestReturnRequestId(re);
+                    //insert skill request
+                    dao.insertRequestSkills(requestId, skillId);
+                    int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                    List<Integer> listSelectSlot = new ArrayList<>();
+                    List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                    for (FormData.Slot slot : formData.getSelectedSlots()) {
+                        for (SchedulePublic sp : listS) {
+                            // check the same slot id and name of date
+                            if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getNameOfDay().equals(LocalDate.parse(slot.getDay(), formatter).getDayOfWeek())) {
+                                listSelectSlot.add(sp.getSelectedId());
+                            }
+                        }
+                    }
+                    if (!listSelectSlot.isEmpty()) {
+                        for (Integer i : listSelectSlot) {
+                            dao.insertRquestSelectedSlot(requestId, i);
+                        }
+                    }
+//                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
+//                    wdao.updateWallet(wallet);
+                }
             }
-        } catch (NumberFormatException e) {
-            // chuyen sang erro page
+
+            // insert request
+            //get selected Slot
+//            String[] selectedSlots = request.getParameterValues("schedule");
+//            List<Integer> listSelected = new ArrayList<>();
+//            for (String paramValue : selectedSlots) {
+//                listSelected.add(Integer.valueOf(paramValue));
+//            }
+//            if (requestId != 0) {
+//                if (dao.insertRequestSkills(requestId, skillId)) {
+//
+//                }
+//                response.setContentType("application/json");
+//                response.setCharacterEncoding("UTF-8");
+//                JsonObject responseJson = new JsonObject();
+//                responseJson.addProperty("status", "success" + t);
+//                response.getWriter().write(responseJson.toString());
+//            } else {
+//                System.out.println("insert fails");
+//            }
+        } catch (JsonSyntaxException | IOException e) {
+            System.out.println(e.getMessage());
         }
 
     }
