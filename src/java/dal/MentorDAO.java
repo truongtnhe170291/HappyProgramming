@@ -14,7 +14,11 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Locale;
+import models.Account;
+import models.BookSchedule;
 import models.Day;
+import models.SchedulePublic;
+import models.SelectedSlot;
 import models.Slot;
 import models.Week;
 
@@ -141,17 +145,16 @@ public class MentorDAO {
         return cycleId;
     }
 
-    public void insertSchedulePublic(String mentor_name, String slot_id, int cycle_id, String day_of_slot,
+    public void insertSchedulePublic(String slot_id, int cycle_id, String day_of_slot,
             int status_id) {
         try {
-            String query = "INSERT INTO Selected_Slot(mentor_name, slot_id, cycle_id, day_of_slot, status_id) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Selected_Slot(slot_id, cycle_id, day_of_slot, status_id) VALUES (?, ?, ?, ?)";
             con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
-            ps.setString(1, mentor_name);
-            ps.setString(2, slot_id);
-            ps.setInt(3, cycle_id);
-            ps.setString(4, day_of_slot);
-            ps.setInt(5, status_id);
+            ps.setString(1, slot_id);
+            ps.setInt(2, cycle_id);
+            ps.setString(3, day_of_slot);
+            ps.setInt(4, status_id);
             ps.executeUpdate();
 
         } catch (Exception e) {
@@ -159,15 +162,52 @@ public class MentorDAO {
         }
     }
 
-    public boolean insertCycle(Date startDate, Date endDate) {
+    public void insertCycle(String start_time, String end_time, String note, String mentor_name, String deadline_date) {
         try {
-            String sql = "insert into Cycle(start_time, end_time)"
-                    + "values(?, ?)";
+            String query = "insert into Cycle(start_time, end_time, note, mentor_name, deadline_date) values (?, ?, ?, ?, ?)";
+            con = new DBContext().connection;//mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, start_time);
+            ps.setString(2, end_time);
+            ps.setString(3, note);
+            ps.setString(4, mentor_name);
+            ps.setString(5, deadline_date);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("insertCycle: " + e.getMessage());
+        }
+    }
+
+    public int getCycleIdByMentor(String userName, String startTime, String endTime) {
+        int cycleId = 0;
+        try {
+            String query = "SELECT * FROM Cycle where mentor_name = ? and start_time = ? and end_time = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, userName);
+            ps.setString(2, startTime);
+            ps.setString(3, endTime);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                cycleId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println("getCycleIdByStart_End: " + e.getMessage());
+        }
+        return cycleId;
+    }
+
+    public boolean checkContainCycle(String userName, String start_time, String end_time) {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM [Cycle] WHERE start_time = ? and end_time = ? and mentor_name = ?";
             ps = con.prepareStatement(sql);
-            ps.setDate(1, startDate);
-            ps.setDate(2, endDate);
-            int result = ps.executeUpdate();
-            if(result == 1){
+            ps.setString(1, userName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            if (count == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -221,7 +261,8 @@ public class MentorDAO {
                     cycle++;
                 }
 
-                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH), outputDateString, cycle));
+                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                        outputDateString, cycle));
                 currentDay = currentDay.plusDays(1);
             }
 
@@ -244,14 +285,6 @@ public class MentorDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        MentorDAO dao = new MentorDAO();
-        ArrayList<Week> list = dao.listCycleWeek();
-        for (Week day : list) {
-            System.out.println(day);
-        }
-    }
-
     public void deleteSchedulePublic(String userName, int cycleID) {
         try {
             String query = "DELETE FROM Selected_Slot\n"
@@ -266,4 +299,75 @@ public class MentorDAO {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
         }
     }
+
+    public ArrayList<SelectedSlot> listSelectedSlotByCycle(int cycleID) {
+        ArrayList<SelectedSlot> list = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM [Selected_Slot] ss \n"
+                    + "JOIN Cycle c ON ss.cycle_id = c.cycle_id \n"
+                    + "JOIN Slots s ON ss.slot_id = s.slot_id \n"
+                    + "JOIN Status_Selected statusS ON statusS.status_id = ss.status_id\n"
+                    + "WHERE c.cycle_id = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setInt(1, cycleID);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String inputDate = "" + rs.getDate(4);
+                list.add(new SelectedSlot(
+                        rs.getString(10), 
+                        rs.getString(9), 
+                        rs.getString(13), 
+                        getStringByDate(inputDate).toUpperCase(), 
+                        rs.getString(15), 
+                        rs.getDate(4), 
+                        rs.getDate(7),
+                        rs.getDate(8), 
+                        rs.getInt(6), 
+                        rs.getInt(5), 
+                        getSlotValue(rs.getString(2))));
+            }
+        } catch (SQLException e) {
+            System.out.println("listSlots: " + e.getMessage());
+        }
+        return list;
+    }
+    
+    public String getStringByDate(String input){
+        LocalDate date = LocalDate.parse(input);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+    }
+
+    public int getSlotValue(String slotId) {
+        int slotValue = 0;
+        switch (slotId) {
+            case "SLOT01": {
+                slotValue = 1;
+                break;
+            }
+            case "SLOT02": {
+                slotValue = 2;
+                break;
+            }
+            case "SLOT03": {
+                slotValue = 3;
+                break;
+            }
+            case "SLOT04": {
+                slotValue = 4;
+                break;
+            }
+        }
+        return slotValue;
+    }
+
+    public static void main(String[] args) {
+        MentorDAO dao = new MentorDAO();
+        ArrayList<SelectedSlot> list = dao.listSelectedSlotByCycle(6);
+        for (SelectedSlot s : list) {
+            System.out.println(s);
+        }
+    }
+
 }

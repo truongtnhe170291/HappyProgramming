@@ -167,7 +167,7 @@ public class MentorRequest extends HttpServlet {
                 String slotDate = string.split(" ")[2];
                 String startTime = SundayMonday.split(" ")[0];
                 String endTime = SundayMonday.split(" ")[1];
-                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+                mentorDao.insertSchedulePublic(slotId, cycleID, slotDate, 1);
             }
         } else {
             for (String string : schedule) {
@@ -176,7 +176,7 @@ public class MentorRequest extends HttpServlet {
                 String slotDate = string.split(" ")[2];
                 String startTime = SundayMonday.split(" ")[0];
                 String endTime = SundayMonday.split(" ")[1];
-                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+                mentorDao.insertSchedulePublic(slotId, cycleID, slotDate, 1);
             }
         }
 
