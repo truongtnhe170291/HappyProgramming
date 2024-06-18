@@ -312,8 +312,8 @@
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
-<!--                                                                <td>-->
-<!--                                                                    <div class="btn-group">
+                                                                <td>
+                                                                    <div class="btn-group">
                                                                         <button class="btn btn-info btn-sm" onclick="openModal('${slot.userName}')">
                                                                             <i class="fas fa-eye"></i>
                                                                         </button>
@@ -351,7 +351,7 @@
                                                                                 </span>
                                                                             </p>
                                                                         </div>
-                                                                    </div>-->
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>

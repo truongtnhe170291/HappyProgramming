@@ -73,7 +73,9 @@ public class HandleRequestMentor extends HttpServlet {
             List<SchedulePublic> listpublic = s.getList();
             s.setList(getOneWeek(listpublic));
         }
+        
         request.setAttribute("listSlot", list);
+        
         request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
 
     }

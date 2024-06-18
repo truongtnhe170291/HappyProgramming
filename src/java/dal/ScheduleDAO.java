@@ -48,12 +48,10 @@ public class ScheduleDAO {
             ps.setInt(1, status);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ScheduleDTO schedule = new ScheduleDTO();
-                schedule.setMentorName(rs.getString("mentor_name"));
-                schedule.setDeadline(rs.getDate("deadline_date"));
-                schedule.setCycleId(rs.getInt("cycle_id"));
-                schedule.setStatus(rs.getString("status_name"));
-                list.add(schedule);
+                list.add(new ScheduleDTO(
+                        rs.getString(2), 
+                        rs.getDate(3), 
+                        rs.getString(4)));
             }
             for (ScheduleDTO s : list) {
                 List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), status);
@@ -63,6 +61,14 @@ public class ScheduleDAO {
             System.out.println("getAllRequestByMentorByStatus: " + e.getMessage());
         }
         return list;
+    }
+    
+    public static void main(String[] args) {
+        ScheduleDAO dao = new ScheduleDAO();
+        List<ScheduleDTO> list = dao.getAllRequestByMentorByStatus(1);
+        for (ScheduleDTO s : list) {
+            System.out.println(s);
+        }
     }
 
     public List<SchedulePublic> getSlotDetail(String mentorName, int statusId) {
@@ -200,20 +206,20 @@ public class ScheduleDAO {
         return status;
     }
 
-    public static void main(String[] args) {
-        ScheduleDAO aO = new ScheduleDAO();
-//        LocalDate today = LocalDate.now();
-//        // Tìm ngày tiếp theo có thể là thứ 2
-//        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-//        // Tìm ngày Chủ Nhật của tuần tiếp theo
-//        LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-        List<ScheduleDTO> list = aO.getAllRequestByMentorByStatus(1);
-        for (ScheduleDTO schedulePublic : list) {
-            System.out.println(schedulePublic);
-        }
-//        List<SchedulePublic> list = aO.getSlotDetail("son");
-//        System.out.println(list);
-    }
+//    public static void main(String[] args) {
+//        ScheduleDAO aO = new ScheduleDAO();
+////        LocalDate today = LocalDate.now();
+////        // Tìm ngày tiếp theo có thể là thứ 2
+////        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+////        // Tìm ngày Chủ Nhật của tuần tiếp theo
+////        LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+//        List<ScheduleDTO> list = aO.getAllRequestByMentorByStatus(1);
+//        for (ScheduleDTO schedulePublic : list) {
+//            System.out.println(schedulePublic);
+//        }
+////        List<SchedulePublic> list = aO.getSlotDetail("son");
+////        System.out.println(list);
+//    }
 
     public List<SchedulePublic> getScheduleByRequestId(int requestId) {
         List<SchedulePublic> list = new ArrayList<>();
