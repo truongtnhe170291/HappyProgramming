@@ -46,7 +46,7 @@
             <nav class="navbar navbar-light">
                 <div class="navbar-left">
                     <div class="logo-area">
-                              <a class="navbar-brand" href="mentor_info.jsp">
+                              <a class="navbar-brand" href="home">
                             <input id="dark" class="dark" type="submit" value="F_Master"/>
                             <input id="dark" class="light" type="submit" value="F_Master"/>
                         </a>

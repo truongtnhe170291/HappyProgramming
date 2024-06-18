@@ -316,34 +316,71 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-container">
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="equal-width">Time Line</th>
-                                                                <c:forEach var="day" items="${listDays}">
-                                                                    <th class="equal-width">${day.dateName} <br/> ${day.dateValue}</th>
-                                                                </c:forEach>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <c:forEach var="slot" items="${listSlots}" varStatus="loop">
-                                                                <tr>
-                                                                    <td>${slot.slot_name}</td>
-                                                                    <c:forEach var="day" items="${listDays}">
-                                                                                <td>
-                                                                                    <label class="slot">
-                                                                                      <span class="slot-label">  <input class="slot-checkbox" type="checkbox" name="schedule" value="${slot.slot_id} ${day.dateName} ${day.dateValue}">SELECT</span>
-                                                                                        
-                                                                                    </label>
-                                                                                </td>
+                                            <!-- content -->
+                                            <div class="content col-lg-9">
+                                                <!-- form -->
+                                                <div class="row">
+                                                    <div class="container">
+                                                        <!-- Calendar -->
+                                                        <div class="row mb-5">
+                                                            <div class="col-lg-6">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+
+                                                                <div class="form-container">
+                                                                    <table border="1" width="100%">
+                                                                        <tr>
+                                                                            <th rowspan="2">
+                                                                                WEEK
+                                                                                <select>
+                                                                                    <option>10/6 To 16/6</option>
+                                                                                    <option>17/6 To 23/6</option>
+                                                                                    <option>24/6 To 30/6</option>
+                                                                                    <option>31/6 To 7/7</option>
+                                                                                </select>
+                                                                            </th>
+                                                                            <c:forEach var="day" items="${listDays}">
+                                                                                <th class="equal-width">${day.dateName}</th>
                                                                             </c:forEach>
-                                                                </tr>
-                                                            </c:forEach>
-                                                        </tbody>
-                                                    </table>
-                                                    <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <c:forEach var="day" items="${listDays}">
+                                                                                <th class="equal-width">${day.dateValue}</th>
+                                                                                </c:forEach>
+                                                                        </tr>
+                                                                        <c:forEach var="slot" items="${listSlots}" varStatus="loop">
+                                                                            <tr>
+                                                                                <td>${slot.slot_id}</td>
+                                                                                <c:forEach var="day" items="${listDays}">
+                                                                                    <td></td>
+                                                                                </c:forEach>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </table>            
+
+                                                                    <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end: Calendar -->
+                                                    </div>
+
+                                                </div>
+                                                <div class="row mt-5">
+                                                    <div class="col" style="display: flex;
+                                                    justify-content: end">
+
+                                                        <c:if test="${status == 'Pending'}">
+                                                            <button type="submit" id="notify_btn_Update" class="btn btn-primary">Update</button>
+                                                        </c:if>
+                                                        <c:if test="${status != 'Pending'}">
+                                                            <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
+                                                        </c:if>
+                                                        <button type="reset" class="btn btn-primary">Reset</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

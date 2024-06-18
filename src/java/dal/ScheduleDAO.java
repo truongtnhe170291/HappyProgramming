@@ -38,65 +38,59 @@ public class ScheduleDAO {
         }
     }
 
- public List<ScheduleDTO> getRequestByMentor(Date startTimeParam, Date endTimeParam) {
-    String sql = "SELECT DISTINCT ss.mentor_name, c.start_time, c.end_time " +
-                 "FROM Selected_Slot ss " +
-                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
-                 "WHERE status_id = 1 AND c.start_time = ? AND c.end_time = ?";
-    List<ScheduleDTO> scheduleDTOList = new ArrayList<>();
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setDate(1, new java.sql.Date(startTimeParam.getTime()));
-        ps.setDate(2, new java.sql.Date(endTimeParam.getTime()));
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            ScheduleDTO scheduleDTO = new ScheduleDTO();
-            scheduleDTO.setUserName(rs.getString("mentor_name")); 
-            scheduleDTO.setStartDate(rs.getDate("start_time"));
-            scheduleDTO.setEndDate(rs.getDate("end_time"));
-            List<SchedulePublic> list = getSlotDetail(rs.getString("mentor_name"));
-            scheduleDTO.setList(list);
-            scheduleDTOList.add(scheduleDTO);
+    public List<ScheduleDTO> getAllRequestByMentorByStatus(int status) {
+        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name from"
+                + "  Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id join Status_Selected sta on sta.status_id = ss.status_id "
+                + "  where ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)";
+        List<ScheduleDTO> list = new ArrayList<>();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, status);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ScheduleDTO schedule = new ScheduleDTO();
+                schedule.setMentorName(rs.getString("mentor_name"));
+                schedule.setDeadline(rs.getDate("deadline_date"));
+                schedule.setCycleId(rs.getInt("cycle_id"));
+                schedule.setStatus(rs.getString("status_name"));
+                list.add(schedule);
+            }
+            for (ScheduleDTO s : list) {
+                List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), status);
+                s.setList(lists);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAllRequestByMentorByStatus: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println(e);
+        return list;
     }
-    return scheduleDTOList;
-}
 
-
-
-  public List<SchedulePublic> getSlotDetail(String mentorName) {
-    String sql = "SELECT ss.selected_id, s.slot_id, c.cycle_id, ss.day_of_slot, " +
-                 "DATENAME(WEEKDAY, ss.day_of_slot) AS nameOfDay, s.slot_name " +
-                 "FROM Selected_Slot ss " +
-                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
-                 "JOIN slots s ON s.slot_id = ss.slot_id " +
-                 "WHERE status_id = 1 AND ss.mentor_name = ?";
-    List<SchedulePublic> list = new ArrayList<>();
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, mentorName);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            int selectedId = rs.getInt("selected_id");
-            Date dayOfSlot = rs.getDate("day_of_slot");
-            String slotId = rs.getString("slot_id");
-            String slotName = rs.getString("slot_name");
-            String nameOfDayString = rs.getString("nameOfDay");
-            DayOfWeek nameOfDay = DayOfWeek.valueOf(nameOfDayString.toUpperCase());
-            int cycleID = rs.getInt("cycle_id");
-            SchedulePublic schedule = new SchedulePublic(selectedId, dayOfSlot, slotId, slotName, nameOfDay, cycleID);
-            list.add(schedule);
+    public List<SchedulePublic> getSlotDetail(String mentorName, int statusId) {
+        String sql = "SSELECT * from "
+                + "Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
+                + "  where c.mentor_name = ? and ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE) order by day_of_slot";
+        List<SchedulePublic> list = new ArrayList<>();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            ps.setInt(2, statusId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int selectedId = rs.getInt("selected_id");
+                Date dayOfSlot = rs.getDate("day_of_slot");
+                String slotId = rs.getString("slot_id");
+                String slotName = rs.getString("slot_name");
+                String nameOfDayString = rs.getString("nameOfDay");
+                DayOfWeek nameOfDay = DayOfWeek.valueOf(nameOfDayString.toUpperCase());
+                int cycleID = rs.getInt("cycle_id");
+                SchedulePublic schedule = new SchedulePublic(selectedId, dayOfSlot, slotId, slotName, nameOfDay, cycleID);
+                list.add(schedule);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-    } catch (SQLException e) {
-        System.out.println(e);
+        return list;
     }
-    return list;
-}
-
-
-
 
     public boolean approveRequest(String mentorName, int cycleId) {
         String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE cycle_id = ? and mentor_name = ?";
@@ -117,10 +111,8 @@ public class ScheduleDAO {
         return true;
     }
 
-
     public boolean rejectRequest(String mentorName, int cycleId) {
         String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ? and mentor_name = ?";
-
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -138,16 +130,16 @@ public class ScheduleDAO {
         return true;
     }
 
-
-    public List<SchedulePublic> getListSchedulePublicByMentorName(String userName) {
+    public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
 
         List<SchedulePublic> list = new ArrayList<>();
         try {
             String sql = "SELECT ss.selected_id, ss.day_of_slot, ss.slot_id, c.start_time, c.end_time, s.slot_name from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
-                    + "where c.mentor_name = ? AND ss.status_id = 2 order by day_of_slot";
+                    + "where c.mentor_name = ? AND ss.status_id = ? order by day_of_slot";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
+            ps.setInt(2, statusId);
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new SchedulePublic(rs.getInt(1), rs.getDate(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
@@ -210,12 +202,12 @@ public class ScheduleDAO {
 
     public static void main(String[] args) {
         ScheduleDAO aO = new ScheduleDAO();
-        LocalDate today = LocalDate.now();
-            // Tìm ngày tiếp theo có thể là thứ 2
-            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-            // Tìm ngày Chủ Nhật của tuần tiếp theo
-            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-        List<ScheduleDTO> list = aO.getRequestByMentor(java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+//        LocalDate today = LocalDate.now();
+//        // Tìm ngày tiếp theo có thể là thứ 2
+//        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+//        // Tìm ngày Chủ Nhật của tuần tiếp theo
+//        LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
+        List<ScheduleDTO> list = aO.getAllRequestByMentorByStatus(1);
         for (ScheduleDTO schedulePublic : list) {
             System.out.println(schedulePublic);
         }
@@ -314,11 +306,11 @@ public class ScheduleDAO {
             ps.setString(2, startTime);
             ps.setString(3, endTime);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println("getCycleIdInTime: "+ e.getMessage());
+            System.out.println("getCycleIdInTime: " + e.getMessage());
         }
         return -1;
     }
@@ -331,7 +323,7 @@ public class ScheduleDAO {
             ps.setInt(1, cycleId);
             ps.setInt(2, statusId);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 SchedulePublic schedule = new SchedulePublic();
                 schedule.setSelectedId(rs.getInt("selected_id"));
                 schedule.setSlotId(rs.getString("slot_id"));
@@ -342,7 +334,7 @@ public class ScheduleDAO {
                 list.add(schedule);
             }
         } catch (SQLException e) {
-            System.out.println("getListSheduleByCycleAndStatus: "+e.getMessage());
+            System.out.println("getListSheduleByCycleAndStatus: " + e.getMessage());
         }
         return list;
     }

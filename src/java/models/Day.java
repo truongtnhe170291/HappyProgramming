@@ -4,12 +4,16 @@
  */
 package models;
 
+import java.time.DayOfWeek;
+
 /**
  *
  * @author 2k3so
  */
 public class Day {
     private String dateName, dateValue;
+    private int cycle;
+    private DayOfWeek dateWeek;
 
     public Day() {
     }
@@ -19,6 +23,37 @@ public class Day {
         this.dateValue = dateValue;
     }
 
+    public Day(String dateName, String dateValue, int cycle, DayOfWeek dateWeek) {
+        this.dateName = dateName;
+        this.dateValue = dateValue;
+        this.cycle = cycle;
+        this.dateWeek = dateWeek;
+    }
+    
+
+    public Day(String dateName, String dateValue, int cycle) {
+        this.dateName = dateName;
+        this.dateValue = dateValue;
+        this.cycle = cycle;
+    }
+
+    public DayOfWeek getDateWeek() {
+        return dateWeek;
+    }
+
+    public void setDateWeek(DayOfWeek dateWeek) {
+        this.dateWeek = dateWeek;
+    }
+
+    
+    public int getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(int cycle) {
+        this.cycle = cycle;
+    }
+    
     public String getDateName() {
         return dateName;
     }
@@ -37,8 +72,9 @@ public class Day {
 
     @Override
     public String toString() {
-        return "Day{" + "dateName=" + dateName + ", dateValue=" + dateValue + '}';
+        return "Day{" + "dateName=" + dateName + ", dateValue=" + dateValue + ", cycle=" + cycle + '}';
     }
+    
     
     
 }

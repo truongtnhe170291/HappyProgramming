@@ -27,6 +27,7 @@ import models.Day;
 import models.SchedulePublic;
 import models.Skill;
 import models.Slot;
+import models.Week;
 
 /**
  *
@@ -94,13 +95,14 @@ public class MentorRequest extends HttpServlet {
             ArrayList<Slot> listSlots = mentorDao.listSlots();
             String status = scheduleDAO.getSelectedSlotStatus(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
             ArrayList<Day> listDays = mentorDao.listDays();
+            ArrayList<Week> listCycleWeek = mentorDao.listCycleWeek();
             String SundayMonday = listDays.get(0).getDateName() + " - " + listDays.get(6).getDateName();
 
             if (mentorDao.getNextMonSunByUserName(acc.getUserName()).equalsIgnoreCase(SundayMonday)) {
                 String error = "You already send request! Please try again in next week";
                 request.setAttribute("error", error);
             } else {
-                if (todayName.equalsIgnoreCase("FRIDAY") || todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
+                if (todayName.equalsIgnoreCase("Saturday") || todayName.equalsIgnoreCase("Sunday")) {
                     String error = "You cannot send request this time! Please try again in next week";
                     request.setAttribute("error", error);
                     if (status.equalsIgnoreCase("Approved")) {
@@ -119,7 +121,8 @@ public class MentorRequest extends HttpServlet {
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("status", status);
             request.setAttribute("listDays", listDays);
-            request.getRequestDispatcher("Menter_Request.jsp").forward(request, response);
+            request.setAttribute("listCycleWeek", listCycleWeek);
+            request.getRequestDispatcher("calendar_booking.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
         }
@@ -164,7 +167,7 @@ public class MentorRequest extends HttpServlet {
                 String slotDate = string.split(" ")[2];
                 String startTime = SundayMonday.split(" ")[0];
                 String endTime = SundayMonday.split(" ")[1];
-                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+                mentorDao.insertSchedulePublic(slotId, cycleID, slotDate, 1);
             }
         } else {
             for (String string : schedule) {
@@ -173,7 +176,7 @@ public class MentorRequest extends HttpServlet {
                 String slotDate = string.split(" ")[2];
                 String startTime = SundayMonday.split(" ")[0];
                 String endTime = SundayMonday.split(" ")[1];
-                mentorDao.insertSchedulePublic(userName, slotId, cycleID, slotDate, 1);
+                mentorDao.insertSchedulePublic(slotId, cycleID, slotDate, 1);
             }
         }
 

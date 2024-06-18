@@ -93,6 +93,23 @@ public class SkillDAO {
         return list;
     }
 
+    public Skill getSkillByRequestId(int requestId) {
+        String sql = "SELECT s.skill_id, s.skill_name from RequestSkills rs join Skills s on rs.skill_id = s.skill_id WHERE rs.request_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, requestId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill();
+                s.setSkillID(rs.getInt(1));
+                s.setSkillName(rs.getString(2));
+                return s;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
     //get all skills
     public List<Skill> getAllSkills() {
         String sql = "select * from Skills";

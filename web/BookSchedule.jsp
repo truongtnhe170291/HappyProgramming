@@ -295,7 +295,9 @@
                                 </div>  
                                 <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>      </div>
                         </form>
-
+<!--                        <form action="bookSchedule" method="post">
+                            <button type="submit">Saving</button>
+                        </form>-->
 
                     </div>
                 </div>
@@ -304,35 +306,23 @@
         </main>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT","SUN"];
+                const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-                const scheduleData = [{
-      day: "MON",
-      slot: 1,
-      class: "SWR302",
-      room: "BE-209",
-      status: "attended",
-      time: "7:30-9:50",
-    }];
-
-            <c:set var="i" value="1"/>
-            <c:forEach items="${requestScope.listSlot}" var="slot">
-                daysOfWeek.forEach((day, index = 1) => {
-                    scheduleData.push({
-                        day: day,
-                        slot: ${i},
-                        class: `Class-` + day + `-` + ${i},
-                        room: `Room-` + day + `-` +${i},
-                        time: "",
-                        online: Math.random() > 0.5,
-                    });
-                <c:set var="i" value="${i + 1}"/>
-                });
-
+                const scheduleData = [
+            <c:forEach items="${listSS}">
+                    {
+                        day: "${listSS.dayOfSlotName}",
+                        slot: ${listSS.slotId},
+                        class: "SWR302",
+                        room: "BE-209",
+                        status: "attended",
+                        time: "${listSS.slotName}",
+                        selected: true
+                    },
             </c:forEach>
-                
+                ];
+
                 function getMonday(d) {
-                    d = new Date('${requestScope.mon}');
                     var day = d.getDay(),
                             diff = d.getDate() - day + (day == 0 ? -6 : 1);
                     return new Date(d.setDate(diff));
@@ -340,12 +330,10 @@
 
                 function formatDate(date) {
                     return (
-                            date.getFullYear().toString().padStart(4, "0")
-                            + "-" +
+                            date.getDate().toString().padStart(2, "0") +
+                            "-" +
                             (date.getMonth() + 1).toString().padStart(2, "0")
-                            + "-" +
-                            date.getDate().toString().padStart(2, "0"))
-                            ;
+                            );
                 }
 
                 function createSlotListener(cell, item) {
@@ -402,7 +390,7 @@
                     for (let i = 1; i <= 4; i++) {
                         const row = document.createElement("tr");
                         row.innerHTML =
-                                `<td>Slot` + i + `</td>` + daysOfWeek.map(() => "<td></td>").join("");
+                                `<td>Slot ` + i + `</td>` + daysOfWeek.map(() => "<td></td>").join("");
                         tbody.appendChild(row);
                     }
 
@@ -410,14 +398,43 @@
                         const dayIndex = daysOfWeek.indexOf(item.day);
                         if (dayIndex !== -1) {
                             const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
+                            if (item.selected) {
+                                cell.classList.add("selected");
+                            }
                             createSlotListener(cell, item);
                         }
                     });
+
+                    for (let row = 0; row < tbody.rows.length; row++) {
+                        for (let col = 1; col < tbody.rows[row].cells.length; col++) {
+                            const cell = tbody.rows[row].cells[col];
+                            if (!cell.innerHTML) {
+                                cell.innerHTML = '<div class="slot-label">Not Selected</div>';
+                                cell.addEventListener("click", function () {
+                                    cell.classList.toggle("selected");
+                                    if (cell.classList.contains("selected")) {
+                                        cell.innerHTML =
+                                                '<div class="class-block selected">' +
+                                                "<div>Class</div>" +
+                                                '<div class="view-materials">View Materials</div>' +
+                                                '<div class="edu-next">EduNext</div>' +
+                                                "<div>at Room</div>" +
+                                                '<div class="selected-text">(selected)</div>' +
+                                                '<div class="time">Time</div>' +
+                                                "</div>" +
+                                                '<div class="slot_active">Selected</div>';
+                                    } else {
+                                        cell.innerHTML = '<div class="slot-label">Not Selected</div>';
+                                    }
+                                });
+                            }
+                        }
+                    }
                 }
 
                 updateSchedule();
 
-                function saveSelectedSlots() {
+                function saveSelectedSlots(event) {
 
                     const selectedSlots = [];
                     const tbody = document.querySelector("#scheduleTable tbody");
@@ -441,7 +458,7 @@
 
                     console.log("Selected Slots:", selectedSlots);
 
-                    fetch("bookSchedule", {
+                    fetch("testajax", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -474,4 +491,3 @@
 
     </body>
 </html>
-

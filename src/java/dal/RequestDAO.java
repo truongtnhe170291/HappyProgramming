@@ -526,26 +526,31 @@ public class RequestDAO {
         return false;
     }
 
-    public void deleteRequest(int requestId) {
+    public boolean deleteRequest(int requestId) {
         try {
 
             String sql = "DELETE FROM [RequestSkills] WHERE [request_id] = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
-            ps.executeUpdate();
+            int result1 = ps.executeUpdate();
 
             sql = "DELETE FROM [RquestSelectedSlot] WHERE [request_id] = ?";
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
-            ps.executeUpdate();
+            int result2 = ps.executeUpdate();
 
             sql = "DELETE FROM [dbo].[RequestsFormMentee] WHERE request_id = ?";
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
-            ps.executeUpdate();
+            int result3 = ps.executeUpdate();
+            
+            if(result1 >=1 && result2 >=1 && result3>=1){
+                return true;
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     public boolean updateStatus(int requestId, int statusId) {

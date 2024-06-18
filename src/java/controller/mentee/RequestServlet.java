@@ -52,30 +52,25 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
+            SkillDAO skillDAO = new SkillDAO();
+            CVDAO cvdao = new CVDAO();
+            MentorDAO mentorDAO = new MentorDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+
             // check if not enough binance
             String warning = (String) request.getSession().getAttribute("warning");
             if (warning != null && warning.length() > 0) {
                 request.setAttribute("warning", warning);
             }
-
-            CVDAO cvdao = new CVDAO();
             int cvId = Integer.parseInt(request.getParameter("cvId"));
             request.getSession().setAttribute("cvId", cvId);
-            SkillDAO skillDAO = new SkillDAO();
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
-            request.setAttribute("skills", list);
-
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-
             //get rate of mentor
-            MentorDAO mentorDAO = new MentorDAO();
             int rate = mentorDAO.getRateOfMentor(userName);
-            request.setAttribute("rate", rate);
-
             // get Schedule public by user mentor name
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule_raw = scheduleDAO.getListSchedulePublicByMentorName(userName);
+            List<SchedulePublic> listSchedule_raw = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
             List<SchedulePublic> listSchedule = getOneWeek(listSchedule_raw);
             if (listSchedule.isEmpty()) {
                 response.sendRedirect("homes.jsp");
@@ -86,8 +81,24 @@ public class RequestServlet extends HttpServlet {
                 s.setNameOfDay(nameOfDay);
             }
             request.setAttribute("listSchedule", listSchedule);
-            // set attribute CV
+            RequestDAO dao = new RequestDAO();
+            Request requ = dao.getRequestByStatusSaved(acc.getUserName(), userName);
+            if (requ != null) {
+                request.setAttribute("Editable", "Editable");
+                Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
+                List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                if (!listScheduleByMentee.isEmpty()) {
+                    listScheduleByMentee = getOneWeek(listScheduleByMentee);
+                }
+                request.setAttribute("scheduleOfMentee", listScheduleByMentee);
+                request.setAttribute("skillOfMentee", s);
+            }
+
             CV cv = cvdao.getCVByCVId(cvId);
+
+            // set attribute
+            request.setAttribute("skills", list);
+            request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);
             request.getRequestDispatcher("Mentee_Request.jsp").forward(request, response);
 
@@ -175,6 +186,28 @@ public class RequestServlet extends HttpServlet {
                 Request requ = dao.getRequestByStatusSaved(menteeName, mentorName);
                 if (requ != null) {
                     // update request này
+                    if (dao.deleteRequest(requ.getRequestId())) {
+                        re.setStatusId(6);
+                        int requestId = dao.insertRequestReturnRequestId(re);
+                        //insert skill request
+                        dao.insertRequestSkills(requestId, skillId);
+                        int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                        List<Integer> listSelectSlot = new ArrayList<>();
+                        List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                        for (FormData.Slot slot : formData.getSelectedSlots()) {
+                            for (SchedulePublic sp : listS) {
+                                // check the same slot id and name of date
+                                if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getNameOfDay().equals(LocalDate.parse(slot.getDay(), formatter).getDayOfWeek())) {
+                                    listSelectSlot.add(sp.getSelectedId());
+                                }
+                            }
+                        }
+                        if (!listSelectSlot.isEmpty()) {
+                            for (Integer i : listSelectSlot) {
+                                dao.insertRquestSelectedSlot(requestId, i);
+                            }
+                        }
+                    }
                 } else {
                     re.setStatusId(6);
                     int requestId = dao.insertRequestReturnRequestId(re);
@@ -202,8 +235,8 @@ public class RequestServlet extends HttpServlet {
                 if (requ != null) {
                     dao.updateStatus(requ.getRequestId(), 2);
                     // update request này
-                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
-                    wdao.updateWallet(wallet);
+//                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
+//                    wdao.updateWallet(wallet);
                 } else {
                     re.setStatusId(2);
                     int requestId = dao.insertRequestReturnRequestId(re);
@@ -225,8 +258,8 @@ public class RequestServlet extends HttpServlet {
                             dao.insertRquestSelectedSlot(requestId, i);
                         }
                     }
-                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
-                    wdao.updateWallet(wallet);
+//                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
+//                    wdao.updateWallet(wallet);
                 }
             }
 
