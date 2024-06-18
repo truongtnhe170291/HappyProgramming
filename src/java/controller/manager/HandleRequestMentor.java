@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import models.ScheduleDTO;
 import models.SchedulePublic;
@@ -64,23 +66,43 @@ public class HandleRequestMentor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        LocalDate today = LocalDate.now();
-        String todayName = "" + today.getDayOfWeek();
-        // Tìm ngày tiếp theo có thể là thứ 2
-        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-        // Tìm ngày Chủ Nhật của tuần tiếp theo
-        LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-        // Mảng để lưu trữ tên các thứ trong tuần
-
         ScheduleDAO scheduleDAO = new ScheduleDAO();
 
-        List<ScheduleDTO> list = scheduleDAO.getRequestByMentor(java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+        List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorByStatus(1);
+        for(ScheduleDTO s : list){
+            List<SchedulePublic> listpublic = s.getList();
+            s.setList(getOneWeek(listpublic));
+        }
         request.setAttribute("listSlot", list);
         request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
-        
-    } 
 
+    }
 
+    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
+        List<SchedulePublic> listOne = new ArrayList<>();
+        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
+
+        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
+        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        // Tạo danh sách các ngày trong tuần
+        List<LocalDate> weekDates = new ArrayList<>();
+        LocalDate current = startOfWeek;
+        while (!current.isAfter(endOfWeek)) {
+            weekDates.add(current);
+            current = current.plusDays(1);
+        }
+        for (SchedulePublic s : list) {
+            for (LocalDate d : weekDates) {
+                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
+                    listOne.add(s);
+                }
+            }
+        }
+
+        return listOne;
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.

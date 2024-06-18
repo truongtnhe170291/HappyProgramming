@@ -10,45 +10,38 @@ import java.util.List;
  *
  * @author Admin
  */
-public class ScheduleDTO {
-    private String userName;
-    private Date startDate;
-    private Date endDate;
+public class ScheduleDTO{
+    private int cycleId;
+    private String mentorName;
+    private Date deadline;
+    private String status;
     private List<SchedulePublic> list;
 
     public ScheduleDTO() {
     }
 
-    
-    public ScheduleDTO(String userName, Date startDate, Date endDate, List<SchedulePublic> list) {
-        this.userName = userName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.list = list;
+    public String getMentorName() {
+        return mentorName;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public Date getDeadline() {
+        return deadline;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public String getStatus() {
+        return status;
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<SchedulePublic> getList() {
@@ -59,10 +52,17 @@ public class ScheduleDTO {
         this.list = list;
     }
 
-    @Override
-    public String toString() {
-        return "ScheduleDTO{" + "userName=" + userName + ", startDate=" + startDate + ", endDate=" + endDate + ", list=" + list + '}';
+    public int getCycleId() {
+        return cycleId;
     }
+
+    public void setCycleId(int cycleId) {
+        this.cycleId = cycleId;
+    }
+
+    
+
+   
     
     
     
