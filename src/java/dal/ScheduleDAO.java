@@ -251,6 +251,37 @@ public class ScheduleDAO {
         }
         return list;
     }
+    public List<SchedulePublic> getScheduleByMenteeName(String menteeName) {
+    List<SchedulePublic> list = new ArrayList<>();
+    try {
+        String sql = "select * from Selected_Slot ss " +
+                     "join RquestSelectedSlot rs on rs.selected_id = ss.selected_id " +
+                     "join Cycle c on ss.cycle_id = c.cycle_id " +
+                     "join Slots s on s.slot_id = ss.slot_id " +
+                     "join RequestsFormMentee rfm on rs.request_id = rfm.request_id " +
+                     "where rfm.mentee_name = ?";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, menteeName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            SchedulePublic schedule = new SchedulePublic();
+            schedule.setSelectedId(rs.getInt("selected_id"));
+            schedule.setMentorName(rs.getString("mentor_name"));
+            schedule.setSlotId(rs.getString("slot_id"));
+            schedule.setDayOfSlot(rs.getDate("day_of_slot"));
+            schedule.setStartTime(rs.getDate("start_time"));
+            schedule.setEndTime(rs.getDate("end_time"));
+            schedule.setSlot_name(rs.getString("slot_name"));
+            DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
+            schedule.setNameOfDay(nameOfDay);
+            list.add(schedule);
+        }
+    } catch (SQLException e) {
+        System.out.println("getScheduleByMenteeName: " + e.getMessage());
+    }
+    return list;
+}
+
 
     public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
         List<ScheduleCommon> list = new ArrayList<>();

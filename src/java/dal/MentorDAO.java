@@ -60,8 +60,6 @@ public class MentorDAO {
         return list;
     }
 
-
-
     public boolean changeMentorRate(String mentorName, int rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
                 + "SET [rate] = ?\n"
@@ -140,7 +138,7 @@ public class MentorDAO {
     public void insertCycle(String start_time, String end_time, String note, String mentor_name, String deadline_date) {
         try {
             String query = "insert into Cycle(start_time, end_time, note, mentor_name, deadline_date) values (?, ?, ?, ?, ?)";
-            con = new DBContext().connection;//mo ket noi voi sql
+            con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
             ps.setString(1, start_time);
             ps.setString(2, end_time);
@@ -220,13 +218,10 @@ public class MentorDAO {
             for (int i = 0; i < 7; i++) {
                 list.add(new Day(begin.getDayOfWeek().plus(i).toString()));
             }
-            
-        } catch (Exception e) {
-            System.out.println("listDays: " + e.getMessage());
-        }
-        return list;
+    } catch (Exception e) {
+        System.out.println("listDays: " + e.getMessage());
     }
-    
+
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
         ArrayList<Day> list = dao.listDays();
@@ -235,18 +230,22 @@ public class MentorDAO {
         }
     }
 
-//    public ArrayList<Week> listCycleWeek() {
-//        ArrayList<Week> list = new ArrayList<>();
-//
-//        ArrayList<Day> listDay = listDays();
-//
-//        list.add(new Week(listDay.get(0).getDateValue() + " to " + listDay.get(6).getDateValue(), 1));
-//        list.add(new Week(listDay.get(7).getDateValue() + " to " + listDay.get(13).getDateValue(), 2));
-//        list.add(new Week(listDay.get(14).getDateValue() + " to " + listDay.get(20).getDateValue(), 3));
-//        list.add(new Week(listDay.get(21).getDateValue() + " to " + listDay.get(27).getDateValue(), 4));
-//
-//        return list;
-//    }
+    // public ArrayList<Week> listCycleWeek() {
+    // ArrayList<Week> list = new ArrayList<>();
+    //
+    // ArrayList<Day> listDay = listDays();
+    //
+    // list.add(new Week(listDay.get(0).getDateValue() + " to " +
+    // listDay.get(6).getDateValue(), 1));
+    // list.add(new Week(listDay.get(7).getDateValue() + " to " +
+    // listDay.get(13).getDateValue(), 2));
+    // list.add(new Week(listDay.get(14).getDateValue() + " to " +
+    // listDay.get(20).getDateValue(), 3));
+    // list.add(new Week(listDay.get(21).getDateValue() + " to " +
+    // listDay.get(27).getDateValue(), 4));
+    //
+    // return list;
+    // }
     public void deleteSchedulePublic(String userName, int cycleID) {
         try {
             String query = "DELETE FROM Selected_Slot\n"
