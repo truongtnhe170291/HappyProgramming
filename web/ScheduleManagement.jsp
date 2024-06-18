@@ -187,6 +187,7 @@
                 background-color: #138496;
                 border-color: #117a8b;
             }
+
         </style>
     </head>
 
@@ -307,20 +308,20 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach var="schedule" items="${listSlot}">
+                                                        <c:forEach var="schedule" items="${list}">
                                                             <tr>
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
-                                                                <td>
+                                                                <td> 
                                                                     <div class="btn-group">
-                                                                        <button class="btn btn-info btn-sm" onclick="openModal('${slot.userName}')">
+                                                                        <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
                                                                             <i class="fas fa-eye"></i>
                                                                         </button>
                                                                         <form action="HandleSlotMentor" method="post">
-                                                                            <input type="hidden" name="mentorName" value="${slot.userName}" />
-                                                                            <c:if test="${not empty slot.list}">
-                                                                                <input type="hidden" name="cycleID" value="${slot.list[0].cycleID}" />
+                                                                            <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
+                                                                            <c:if test="${not empty schedule.list}">
+                                                                                <input type="hidden" name="cycleID" value="${schedule.list[0].cycleID}" />
                                                                             </c:if>
                                                                             <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
                                                                                 <i class="fas fa-check"></i>
@@ -331,24 +332,57 @@
                                                                         </form>
                                                                     </div>
 
-                                                                    <div id="modal-${slot.userName}" class="modal">
+                                                                    <div id="modal-${schedule.mentorName}" class="modal">
                                                                         <div class="modal-content">
-                                                                            <span class="close" onclick="closeModal('${slot.userName}')">&times;</span>
+                                                                            <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
                                                                             <h2>Schedule Details</h2>
-                                                                            <p><strong>Mentor Name:</strong> <span id="modalMentorName">${slot.userName}</span></p>
-                                                                            <p><strong>Start Date:</strong> <span id="modalStartDate">${slot.startDate}</span></p>
-                                                                            <p><strong>End Date:</strong> <span id="modalEndDate">${slot.endDate}</span></p>
-                                                                            <p><strong>Details Slot:</strong>
-                                                                                <span id="modalDetails">
-                                                                                    <c:forEach items="${slot.list}" var="details">
-                                                                                        <p><strong>SelectedID:</strong> ${details.selectedId}</p>
-                                                                                        <p><strong>Day Of Slot:</strong> ${details.dayOfSlot}</p>
-                                                                                        <p><strong>Slot ID:</strong> ${details.slotId}</p>  
-                                                                                        <p><strong>Slot Name:</strong> ${details.slot_name}</p> 
-                                                                                        <p><strong>Name Of Day:</strong> ${details.nameOfDay}</p> 
-                                                                                        <p><strong>Cycle ID:</strong> ${details.cycleID}</p> 
+                                                                            <p><strong>Mentor Name:</strong> <span id="modalMentorName">${schedule.mentorName}</span></p>
+                                                                            <p><strong>Details Schedule</strong>
+                                                                            <div class="form-container">
+                                                                                <table border="1" width="100%">
+                                                                                    <tr>
+                                                                                        <th rowspan="2">
+                                                                                            WEEK</br>
+                                                                                            <select>
+                                                                                                <option>10/6 To 16/6</option>
+                                                                                                <option>17/6 To 23/6</option>
+                                                                                                <option>24/6 To 30/6</option>
+                                                                                                <option>31/6 To 7/7</option>
+                                                                                            </select>
+                                                                                        </th>
+                                                                                        <th>Monday</th>
+                                                                                        <th>Tuesday</th>
+                                                                                        <th>Wednesday</th>
+                                                                                        <th>Thursday</th>
+                                                                                        <th>Friday</th>
+                                                                                        <th>Saturday</th>
+                                                                                        <th>Sunday</th>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <c:forEach items="${listDays}" var="day">
+                                                                                            <c:if test="${day.cycle == 1}">
+                                                                                                <td>${day.dateValue}</td>
+                                                                                            </c:if>
+                                                                                        </c:forEach>
+                                                                                    </tr>
+                                                                                    <c:forEach items="${listSlot}" var="slot">
+                                                                                        <tr>
+                                                                                            <td>${slot.slot_id}</td>
+                                                                                            <c:forEach items="${listDay}" var="day">
+                                                                                                <c:forEach items="${schedule.list}" var="listS">
+                                                                                                    <c:if test="${listS.slotId eq slot.slot_id && listS.weekName eq day.dateValue}">
+                                                                                                        <td>Booked</td>
+                                                                                                    </c:if>
+                                                                                                </c:forEach>
+
+                                                                                            </c:forEach>
+                                                                                        </tr>
                                                                                     </c:forEach>
-                                                                                </span>
+                                                                                </table>           
+
+                                                                                <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+
+                                                                            </div>
                                                                             </p>
                                                                         </div>
                                                                     </div>

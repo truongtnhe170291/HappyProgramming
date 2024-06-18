@@ -54,7 +54,7 @@ public class ScheduleDAO {
                         rs.getString(4)));
             }
             for (ScheduleDTO s : list) {
-                List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), status);
+                List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
                 s.setList(lists);
             }
         } catch (SQLException e) {
@@ -72,7 +72,7 @@ public class ScheduleDAO {
     }
 
     public List<SchedulePublic> getSlotDetail(String mentorName, int statusId) {
-        String sql = "SSELECT * from "
+        String sql = "SELECT * from "
                 + "Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
                 + "  where c.mentor_name = ? and ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE) order by day_of_slot";
         List<SchedulePublic> list = new ArrayList<>();
@@ -82,14 +82,17 @@ public class ScheduleDAO {
             ps.setInt(2, statusId);
             rs = ps.executeQuery();
             while (rs.next()) {
-                int selectedId = rs.getInt("selected_id");
-                Date dayOfSlot = rs.getDate("day_of_slot");
-                String slotId = rs.getString("slot_id");
-                String slotName = rs.getString("slot_name");
-                String nameOfDayString = rs.getString("nameOfDay");
-                DayOfWeek nameOfDay = DayOfWeek.valueOf(nameOfDayString.toUpperCase());
-                int cycleID = rs.getInt("cycle_id");
-                SchedulePublic schedule = new SchedulePublic(selectedId, dayOfSlot, slotId, slotName, nameOfDay, cycleID);
+                LocalDate dateLocal = LocalDate.parse(rs.getDate(4).toString());
+                SchedulePublic schedule = new SchedulePublic(
+                        rs.getString(10), 
+                        rs.getInt(1), 
+                        rs.getDate(4), 
+                        rs.getString(12),
+                        rs.getDate(7),
+                        rs.getDate(8), 
+                        rs.getString(13), 
+                        rs.getString(4),
+                        dateLocal.getDayOfWeek().toString());
                 list.add(schedule);
             }
         } catch (SQLException e) {
@@ -97,6 +100,7 @@ public class ScheduleDAO {
         }
         return list;
     }
+    
 
     public boolean approveRequest(String mentorName, int cycleId) {
         String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE cycle_id = ? and mentor_name = ?";
@@ -170,7 +174,8 @@ public class ScheduleDAO {
             ps.setDate(3, endTime);
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new SchedulePublic(rs.getString(2),
+                list.add(new SchedulePublic(
+                        rs.getString(2),
                         rs.getInt(1),
                         rs.getDate(5),
                         rs.getString(3),
