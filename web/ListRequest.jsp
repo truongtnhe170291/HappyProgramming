@@ -11,11 +11,38 @@
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 20px;
+                background-color: #f0f0f0;
             }
 
             h1 {
                 text-align: center;
                 margin-bottom: 20px;
+            }
+
+
+
+            .header {
+                display: flex;
+                margin-bottom: 20px;
+            }
+
+            .select-container {
+                display: flex;
+                align-items: center;
+                margin-right: 20px;
+            }
+
+            label {
+                margin-right: 5px;
+                font-weight: bold;
+                color: #666;
+            }
+
+            select {
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                background-color: #f8f8f8;
             }
 
             table {
@@ -24,13 +51,70 @@
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
 
-            th, td {
+            th,
+            td {
+                border: 1px solid #ddd;
                 padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
+                text-align: center;
+                vertical-align: top;
             }
 
+            th {
+                background-color: #4a86e8;
+                color: white;
+                font-weight: normal;
+            }
 
+            .class-block {
+                background-color: #e6f3ff;
+                border-radius: 5px;
+                padding: 5px;
+                margin-bottom: 5px;
+                text-align: left;
+            }
+
+            .attended {
+                color: green;
+            }
+
+            .absent {
+                color: red;
+            }
+
+            .view-materials,
+            .edu-next {
+                display: inline-block;
+                padding: 2px 5px;
+                margin: 2px;
+                border-radius: 3px;
+                font-size: 0.8em;
+                cursor: pointer;
+            }
+
+            .view-materials {
+                background-color: #ffa500;
+                color: white;
+            }
+
+            .edu-next {
+                background-color: #4682b4;
+                color: white;
+            }
+
+            .time {
+                font-size: 0.9em;
+                color: #666;
+            }
+
+            .online-indicator {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                background-color: #4caf50;
+                border-radius: 50%;
+                margin-left: 5px;
+                vertical-align: middle;
+            }
 
             tr:hover {
                 background-color: #f5f5f5;
@@ -62,6 +146,7 @@
             button:hover {
                 background-color: #45a049;
             }
+
             .modal-content.radius-xl {
                 border-radius: 15px;
                 padding: 20px;
@@ -121,26 +206,32 @@
             .ticket_modal-modal label {
                 font-weight: bold;
             }
-            .status-open {
+
+            .status-open,
+            .status-processing,
+            .status-cancel,
+            .status-closed {
                 width: 100px !important;
                 height: 50px !important;
+            }
+
+            .status-open {
                 color: greenyellow !important;
             }
 
             .status-processing {
-                width: 100px !important;
-                height: 50px !important;
                 color: yellow !important;
             }
 
-            .status-cancel, .status-closed {
-                width: 100px !important;
-                height: 50px !important;
+            .status-cancel,
+            .status-closed {
                 color: red !important;
             }
-            .contents{
+
+            .contents {
                 padding: 0 !important;
             }
+
             .reject-reason {
                 color: red;
                 font-weight: bold;
@@ -149,38 +240,53 @@
                 padding: 10px;
                 border: 2px solid red;
                 border-radius: 5px;
-
             }
+
             .filter-container {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 padding: 10px;
-                background-color: #f4f4f4; /* Màu nền cho container */
-                border-radius: 5px; /* Bo góc cho container */
-                margin-bottom: 20px; /* Khoảng cách dưới container */
+                background-color: #f4f4f4;
+                border-radius: 5px;
+                margin-bottom: 20px;
             }
+
             .filter-container > form {
                 display: flex;
                 align-items: center;
                 width: 100%;
             }
+
             .filter-container label,
             .filter-container select,
             .filter-container input[type="date"] {
-                margin-right: 10px; /* Khoảng cách giữa các phần tử */
+                margin-right: 10px;
             }
-            .filter-container button {
 
-                background-color: #007bff; /* Màu nền cho nút */
-                color: white; /* Màu chữ cho nút */
+            .filter-container button {
+                background-color: #007bff;
+                color: white;
                 border: none;
-                border-radius: 5px; /* Bo góc cho nút */
-                cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
-                margin-left: 20px; /* Đẩy nút ra xa các phần tử khác */
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 20px;
             }
+
             .filter-container button:hover {
-                background-color: #0056b3; /* Màu nền khi hover vào nút */
+                background-color: #0056b3;
+            }
+            .custom_modal .modal-dialog {
+                width: 100%;
+                max-width: 90%;
+            }
+
+            .custom_modal .modal-content {
+                width: 100%;
+            }
+            .scheduleTable{
+                width: 80% !important;
+                max-width: 50% !important;
             }
         </style>
     </head>
@@ -259,8 +365,8 @@
                                                 <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
                                                     <i class="uil uil-eye align-center" style="color: blue;"></i>
                                                 </a>
-                                                <div class="modal fade ticket_modal" id="${request.menteeName}${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal fade ticket_modal custom_modal" id="${request.menteeName}${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
                                                         <div class="modal-content radius-xl">
                                                             <div class="modal-body pb-sm-50 pb-30">
                                                                 <div class="modal-header">
@@ -274,31 +380,30 @@
                                                                     <div>Mentor Name: ${request.mentorName}</div><br>
                                                                     <div>Description: ${request.description}</div><br>
                                                                     <div>Deadline: ${request.deadlineHour} ${request.deadlineDate}</div><br>
-                                                                    <section id="page-content" class="no-sidebar">
-                                                                        <div class="container">
-                                                                            <div class="row mb-5">
-                                                                                <div class="col-lg-6"></div>
+
+                                                                    <div class="schedule-container">
+                                                                        <div class="header">
+                                                                            <div class="select-container">
+                                                                                <label for="year">YEAR</label>
+                                                                                <select id="year">
+                                                                                    <option value="2024">2024</option>
+                                                                                </select>
                                                                             </div>
-                                                                            <div class="row">
-                                                                                <div class="col-lg-12">
-                                                                                    <div class="calendar">
-                                                                                        <div class="header">
-                                                                                            <h2>${request.listSchedule.get(0).startTime} - ${request.listSchedule.get(0).endTime}</h2>
-                                                                                        </div>
-                                                                                        <c:forEach items="${request.listSchedule}" var="schedule">
-                                                                                            <div class="day">
-                                                                                                <div class="day-header">${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
-                                                                                                <div class="event">
-                                                                                                    <div class="event-dot" style="background-color: red;"></div>
-                                                                                                    <div>${schedule.slotId}: ${schedule.slot_name}</div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </c:forEach>
-                                                                                    </div>
-                                                                                </div>
+                                                                            <div class="select-container">
+                                                                                <label for="week">WEEK</label>
+                                                                                <select id="week"></select>
                                                                             </div>
                                                                         </div>
-                                                                    </section>
+                                                                        <table id="scheduleTable">
+                                                                            <thead>
+                                                                                <tr id="dayHeaders"></tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <!-- Table rows will be dynamically added here -->
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+
 
                                                                     <c:forEach items="${request.listSkills}" var="skill">
                                                                         <div>Request Skill :<label>${skill.skillName}</label></div><br/>
@@ -341,7 +446,7 @@
 
                                         <!-- Payment button for 'Wait For Payment' status -->
                                         <c:if test="${request.status.statusName == 'Wait For Payment'}">
-                                            <form method="get" action="payment">
+                                            <form method="POST" action="payment">
                                                 <input type="hidden" name="requestId" value="${request.requestId}" />
                                                 <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
                                                     <li>
@@ -357,11 +462,217 @@
                             </c:forEach>
                         </tbody>
                     </table>
-
                 </div>
             </div>
 
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                <c:forEach var="request" items="${requests}"></c:forEach>
+                    const scheduleData = [
+                        {
+                            day: "MON",
+                            slot: 1,
+                            class: "SWR302",
+                            room: "BE-209",
+                            status: "attended",
+                            time: "7:30-9:50"
+                        },
+                        {
+                            day: "MON",
+                            slot: 2,
+                            class: "SWT301",
+                            room: "BE-209",
+                            status: "attended",
+                            time: "10:00-12:20"
+                        },
+                        {
+                            day: "MON",
+                            slot: 4,
+                            class: "SWP391",
+                            room: "BE-113",
+                            status: "absent",
+                            time: "15:20-17:40",
+                        },
+                        {
+                            day: "TUE",
+                            slot: 2,
+                            class: "FER202",
+                            room: "BE-209",
+                            status: "attended",
+                            time: "10:00-12:20",
+                        },
+                        {
+                            day: "WED",
+                            slot: 3,
+                            class: "SWP391",
+                            room: "BE-115",
+                            status: "attended",
+                            time: "12:50-15:10",
+                        },
+                        {
+                            day: "THU",
+                            slot: 1,
+                            class: "SWT301",
+                            room: "BE-209",
+                            status: "attended",
+                            time: "7:30-9:50"
+                        },
+                        {
+                            day: "THU",
+                            slot: 2,
+                            class: "SWR302",
+                            room: "BE-209",
+                            status: "absent",
+                            time: "10:00-12:20"
+                        },
+                        {
+                            day: "FRI",
+                            slot: 1,
+                            class: "FER202",
+                            room: "BE-209",
+                            status: "attended",
+                            time: "7:30-9:50"
+                        },
+                        {
+                            day: "SAT",
+                            slot: 4,
+                            class: "ITE302c",
+                            room: "AL-L204",
+                            status: "absent",
+                            time: "17:50-20:40",
+                            online: true
+                        }
+                    ];
 
+                    function getMonday(d) {
+                        d = new Date(d);
+                        var day = d.getDay(),
+                                diff = d.getDate() - day + (day == 0 ? -6 : 1);
+                        return new Date(d.setDate(diff));
+                    }
+
+                    function formatDate(date) {
+                        return (
+                                date.getDate().toString().padStart(2, "0") +
+                                "/" +
+                                (date.getMonth() + 1).toString().padStart(2, "0")
+                                );
+                    }
+
+                    function getWeekOptions() {
+                        const currentDate = new Date();
+                        const currentYear = currentDate.getFullYear();
+                        const options = [];
+                        for (let week = 1; week <= 52; week++) {
+                            const mondayOfWeek = getMonday(
+                                    new Date(currentYear, 0, 1 + (week - 1) * 7)
+                                    );
+                            const sundayOfWeek = new Date(mondayOfWeek);
+                            sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+
+                            const optionText = formatDate(mondayOfWeek) + ` to ` + formatDate(sundayOfWeek);
+                            options.push({value: week, text: optionText});
+                        }
+
+                        return options;
+                    }
+
+                    const weekSelect = document.getElementById("week");
+                    const weekOptions = getWeekOptions();
+                    weekOptions.forEach((option) => {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = option.value;
+                        optionElement.textContent = option.text;
+                        weekSelect.appendChild(optionElement);
+                    });
+
+                    function isClassCurrentlyHappening(classItem, currentDate) {
+                        const [startHour, startMinute] = classItem.time
+                                .split("-")[0]
+                                .split(":")
+                                .map(Number);
+                        const [endHour, endMinute] = classItem.time
+                                .split("-")[1]
+                                .split(":")
+                                .map(Number);
+
+                        const classStart = new Date(currentDate);
+                        classStart.setHours(startHour, startMinute, 0);
+
+                        const classEnd = new Date(currentDate);
+                        classEnd.setHours(endHour, endMinute, 0);
+
+                        return currentDate >= classStart && currentDate < classEnd;
+                    }
+
+                    function updateSchedule() {
+                        const selectedWeek = weekSelect.value;
+                        const monday = getMonday(new Date(2024, 0, 1 + (selectedWeek - 1) * 7));
+
+                        const dayHeaders = document.getElementById("dayHeaders");
+                        dayHeaders.innerHTML = "<th>WEEK</th>";
+                        const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+                        daysOfWeek.forEach((day, index) => {
+                            const date = new Date(monday);
+                            date.setDate(date.getDate() + index);
+                            const th = document.createElement("th");
+                            th.innerHTML = day + `<br>` + formatDate(date);
+                            dayHeaders.appendChild(th);
+                        });
+
+                        const tbody = document.querySelector("#scheduleTable tbody");
+                        tbody.innerHTML = "";
+
+                        for (let i = 0; i < 5; i++) {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `<td>Slot` + i + `</td>` + "<td></td>".repeat(7);
+                            tbody.appendChild(row);
+                        }
+
+                        const currentDate = new Date();
+
+                        scheduleData.forEach((item) => {
+                            const dayIndex = daysOfWeek.indexOf(item.day);
+                            if (dayIndex !== -1) {
+                                const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
+
+                                let onlineIndicator = item.online
+                                        ? '<span class="online-indicator"></span>'
+                                        : "";
+
+                                const classDate = new Date(monday);
+                                classDate.setDate(classDate.getDate() + dayIndex);
+
+                                let onlineNowIndicator = "";
+                                if (
+                                        classDate.toDateString() === currentDate.toDateString() &&
+                                        isClassCurrentlyHappening(item, currentDate)
+                                        ) {
+                                    onlineNowIndicator = '<div class="online-now">Online</div>';
+                                }
+
+                                cell.innerHTML += '<div class="class-block">' +
+                                        '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
+                                        '<div class="view-materials">View Materials</div>' +
+                                        '<div class="edu-next">EduNext</div>' +
+                                        '<div>at ' + item.room + '</div>' +
+                                        '<div class="' + item.status + '">(' + item.status + ')</div>' +
+                                        '<div class="time">' + item.time + '</div>' +
+                                        onlineNowIndicator +
+                                        '</div>';
+
+                            }
+                        });
+                    }
+
+                    weekSelect.addEventListener("change", updateSchedule);
+                    updateSchedule(); // Initial call to set up the schedule
+
+                    setInterval(updateSchedule, 60000);
+                });
+
+            </script>
 
         </div>
     </body>
