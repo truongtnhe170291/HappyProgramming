@@ -193,9 +193,9 @@
                 max-width: 900px;
                 margin: 0 auto;
                 perspective: 800px;
-              }
+            }
 
-              .form-container table {
+            .form-container table {
                 border-collapse: separate;
                 border-spacing: 0 15px;
                 border-radius: 20px;
@@ -204,47 +204,47 @@
                 background: #fff;
                 transform-style: preserve-3d;
                 transition: transform 0.3s ease;
-              }
+            }
 
-              .form-container table:hover {
+            .form-container table:hover {
                 transform: scale(1.05);
-              }
+            }
 
-              .form-container th,
-              .form-container td {
+            .form-container th,
+            .form-container td {
                 color: #333;
                 text-shadow: none;
-              }
+            }
 
-              .form-container td.booked {
+            .form-container td.booked {
                 background-color: rgba(255, 0, 0, 0.5);
                 color: #fff;
-              }
+            }
 
-              .form-container th {
+            .form-container th {
                 background-color: transparent;
                 font-weight: bold;
                 letter-spacing: 2px;
                 transform: translateZ(50px);
-              }
+            }
 
-              .form-container td {
+            .form-container td {
                 background-color: rgba(255, 255, 255, 0.2);
                 backdrop-filter: blur(10px);
                 transition: background-color 0.3s ease, transform 0.3s ease;
                 border: 1px solid #ADD8E6; /* Thêm ???ng vi?n cho các ô td */
-              }
+            }
 
-              .form-container td:hover {
+            .form-container td:hover {
                 background-color: #ADD8E6;
                 transform: scale(1.1);
-              }
+            }
 
-              .over {
+            .over {
                 background-color: #ADD8E6;
-              }
+            }
 
-              .form-container select {
+            .form-container select {
                 padding: 10px 15px;
                 border: none;
                 border-radius: 10px;
@@ -253,40 +253,40 @@
                 font-weight: bold;
                 backdrop-filter: blur(10px);
                 margin-bottom: 20px;
-              }
-                .form-container td {
-                    position: relative;
-                    padding: 0;
-                }
+            }
+            .form-container td {
+                position: relative;
+                padding: 0;
+            }
 
-                .form-container td div {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    padding: 8px 12px;
-                    background-color: #f2f2f2;
-                    border-radius: 4px;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                    font-size: 14px;
-                    font-weight: bold;
-                    color: #333;
-                    white-space: nowrap;
-                }
+            .form-container td div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 8px 12px;
+                background-color: #f2f2f2;
+                border-radius: 4px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                font-size: 14px;
+                font-weight: bold;
+                color: #333;
+                white-space: nowrap;
+            }
 
-                .form-container td div.booked {
-                    background-color: rgba(255, 0, 0, 0.8);
-                    color: #fff;
-                }
+            .form-container td div.booked {
+                background-color: rgba(255, 0, 0, 0.8);
+                color: #fff;
+            }
 
-                .form-container td div a {
-                    color: inherit;
-                    text-decoration: none;
-                }
+            .form-container td div a {
+                color: inherit;
+                text-decoration: none;
+            }
 
-                .form-container td div a:hover {
-                    text-decoration: underline;
-                }
+            .form-container td div a:hover {
+                text-decoration: underline;
+            }
         </style>
     </head>
 
@@ -420,7 +420,7 @@
                                                                         <form action="HandleSlotMentor" method="post">
                                                                             <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
                                                                             <c:if test="${not empty schedule.list}">
-                                                                                <input type="hidden" name="cycleID" value="${schedule.list[0].cycleID}" />
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
                                                                             </c:if>
                                                                             <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
                                                                                 <i class="fas fa-check"></i>
@@ -443,10 +443,10 @@
                                                                                         <th rowspan="2">
                                                                                             WEEK</br>
                                                                                             <select>
-                                                                                                <option>10/6 To 16/6</option>
+<!--                                                                                                <option>10/6 To 16/6</option>
                                                                                                 <option>17/6 To 23/6</option>
                                                                                                 <option>24/6 To 30/6</option>
-                                                                                                <option>31/6 To 7/7</option>
+                                                                                                <option>31/6 To 7/7</option>-->
                                                                                             </select>
                                                                                         </th>
                                                                                         <th>Monday</th>
@@ -468,13 +468,20 @@
                                                                                         <tr>
                                                                                             <td>${slot.slot_id}</td>
                                                                                             <c:forEach items="${listDay}" var="day">
+                                                                                                <c:set var="found" value="false"/>
+
                                                                                                 <c:forEach items="${schedule.list}" var="listS">
-                                                                                                    <c:if test="${listS.slotId eq slot.slot_id && listS.weekName eq day.dateValue}">
+
+                                                                                                    <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day.dateValue}">
                                                                                                         <td>Booked</td>
+                                                                                                        <c:set var="found" value="true"/>
                                                                                                     </c:if>
                                                                                                 </c:forEach>
-
+                                                                                                <c:if test="${not found}">
+                                                                                                    <td></td>
+                                                                                                </c:if>
                                                                                             </c:forEach>
+
                                                                                         </tr>
                                                                                     </c:forEach>
                                                                                 </table>           
@@ -649,7 +656,7 @@
                                                                                         });
                                                                                     });
                                                                                 });
-                                                                                
+
         </script>
     </body>
 

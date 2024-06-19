@@ -67,11 +67,11 @@ public class ListRequest extends HttpServlet {
             List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
 
             // Chuyển đổi danh sách schedule trong các yêu cầu thành chỉ lấy một tuần
-            for (RequestDTO requestDTO : requests) {
-                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
-                requestDTO.setListSchedule(oneWeekSchedule);
-            }
+//            for (RequestDTO requestDTO : requests) {
+//                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+//                List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
+//                requestDTO.setListSchedule(oneWeekSchedule);
+//            }
 
             // Đặt các thuộc tính vào request để truyền sang ListRequest.jsp
             request.setAttribute("requests", requests);
