@@ -90,9 +90,10 @@ public class MentorRequest extends HttpServlet {
             LocalDate endDate = startDate.plusDays(27);
 
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(startDate), java.sql.Date.valueOf(endDate));
-            String status = listSchedule.get(0).getStatus();
-            request.setAttribute("isSend", status);
-
+            if (!listSchedule.isEmpty()) {
+                String status = listSchedule.get(0).getStatus();
+                request.setAttribute("isSend", status);
+            }
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("listDays", listCurrentDays);
             request.setAttribute("listSchedule", listSchedule);
