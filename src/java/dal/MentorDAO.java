@@ -175,7 +175,9 @@ public class MentorDAO {
         try {
             String sql = "SELECT COUNT(*) FROM [Cycle] WHERE start_time = ? and end_time = ? and mentor_name = ?";
             ps = con.prepareStatement(sql);
-            ps.setString(1, userName);
+            ps.setString(3, userName);
+            ps.setString(1, start_time);
+            ps.setString(2, end_time);
             rs = ps.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
@@ -218,13 +220,30 @@ public class MentorDAO {
             for (int i = 0; i < 7; i++) {
                 list.add(new Day(begin.getDayOfWeek().plus(i).toString()));
             }
-    } catch (Exception e) {
-        System.out.println("listDays: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("listDays: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public ArrayList<Day> listCurrentDays() {
+        ArrayList<Day> list = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+        LocalDate begin = nextMonday.plusWeeks(1);
+        try {
+            for (int i = 0; i < 7; i++) {
+                list.add(new Day(begin.plusDays(i).getDayOfWeek().toString(), begin.plusDays(i).toString()));
+            }
+        } catch (Exception e) {
+            System.out.println("listDays: " + e.getMessage());
+        }
+        return list;
     }
 
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
-        ArrayList<Day> list = dao.listDays();
+        ArrayList<Day> list = dao.listCurrentDays();
         for (Day day : list) {
             System.out.println(day);
         }
@@ -246,15 +265,13 @@ public class MentorDAO {
     //
     // return list;
     // }
-    public void deleteSchedulePublic(String userName, int cycleID) {
+    public void deleteSchedulePublic(int cycleID) {
         try {
             String query = "DELETE FROM Selected_Slot\n"
-                    + //
-                    "WHERE mentor_name = ? AND cycle_id = ? AND status_id = 1";
+                    + "WHERE cycle_id = ?";
             con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
-            ps.setString(1, userName);
-            ps.setInt(2, cycleID);
+            ps.setInt(1, cycleID);
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
@@ -321,6 +338,21 @@ public class MentorDAO {
             }
         }
         return slotValue;
+    }
+
+    public void deleteCycle(String startDate, String endDate, String userName) {
+        try {
+            String query = "DELETE FROM Cycle \n"
+                    + "WHERE start_time = ? and end_time = ? and mentor_name = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setString(3, userName);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("deleteSchedulePublic: " + e.getMessage());
+        }
     }
 
 }

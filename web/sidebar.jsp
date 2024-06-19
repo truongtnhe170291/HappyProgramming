@@ -45,7 +45,7 @@
                             </a>
                             <ul class="toggle">
                                 <li class="l_sidebar">
-                                    <a href="bookSchedule">Booking Calendar</a>
+                                    <a href="MentorRequest">Booking Calendar</a>
                                 </li>
                                 <li class="l_sidebar">
                                     <a href="scheduleCommonMentor">View Schedule</a>
