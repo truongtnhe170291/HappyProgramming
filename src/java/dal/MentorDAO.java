@@ -247,7 +247,6 @@ public class MentorDAO {
         for (Day day : list) {
             System.out.println(day);
         }
-        //return list;
     }
 
     // public ArrayList<Week> listCycleWeek() {
