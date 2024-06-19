@@ -36,85 +36,79 @@ import models.Status;
 @WebServlet(name = "ListRequest", urlPatterns = {"/ListRequest"})
 public class ListRequest extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        try {
-            Account a = (Account) request.getSession().getAttribute("user");
-            if (a == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-
-            // Lấy tham số menteeName từ request
-            MentorDAO mentorDao = new MentorDAO();
-            String menteeName = a.getUserName();
-            RequestDAO rdao = new RequestDAO();
-
-            // Lấy danh sách các slot và danh sách ngày từ DAO
-            ArrayList<Slot> listSlots = mentorDao.listSlots();
-            ArrayList<Day> listDays = mentorDao.listDays();
-
-            // Cập nhật trạng thái các yêu cầu hết hạn
-            rdao.updateExpiredRequestsStatus();
-
-            // Lấy danh sách các yêu cầu của mentee trong deadline
-            List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
-
-            // Lấy danh sách tất cả các trạng thái
-            List<Status> statuses = rdao.getAllStatuses();
-
-            // Lấy danh sách các mentor liên quan đến các yêu cầu
-            List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
-
-            // Chuyển đổi danh sách schedule trong các yêu cầu thành chỉ lấy một tuần
-            for (RequestDTO requestDTO : requests) {
-                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
-                requestDTO.setListSchedule(oneWeekSchedule);
-            }
-
-            // Đặt các thuộc tính vào request để truyền sang ListRequest.jsp
-            request.setAttribute("requests", requests);
-            request.setAttribute("listSlots", listSlots);
-            request.setAttribute("listDays", listDays);
-            request.setAttribute("mentors1", mentors1);
-            request.setAttribute("statuses", statuses);
-
-            // Chuyển hướng đến trang ListRequest.jsp
-            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-
-        } catch (SQLException e) {
-            throw new ServletException(e);
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        Account a = (Account) request.getSession().getAttribute("user");
+        if (a == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
+
+        MentorDAO mentorDao = new MentorDAO();
+        String menteeName = a.getUserName();
+        RequestDAO rdao = new RequestDAO();
+
+        ArrayList<Slot> listSlots = mentorDao.listSlots();
+        ArrayList<Day> listDays = mentorDao.listDays();
+
+        rdao.updateExpiredRequestsStatus();
+
+        List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+        List<Status> statuses = rdao.getAllStatuses();
+        List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
+
+        for (RequestDTO requestDTO : requests) {
+            List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+            List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
+            requestDTO.setListSchedule(oneWeekSchedule);
+            
+            // Log the schedule for debugging
+            for (SchedulePublic schedule : oneWeekSchedule) {
+                System.out.println("Request ID: " + requestDTO.getRequestId() + 
+                                    " Schedule: " + schedule.getSlotId() + 
+                                    " " + schedule.getDayOfSlot());
+            }
+        }
+
+        request.setAttribute("requests", requests);
+        request.setAttribute("listSlots", listSlots);
+        request.setAttribute("listDays", listDays);
+        request.setAttribute("mentors1", mentors1);
+        request.setAttribute("statuses", statuses);
+
+        request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+    } catch (SQLException e) {
+        throw new ServletException(e);
     }
+}
 
-    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
-        List<SchedulePublic> listOne = new ArrayList<>();
-        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
 
-        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-        // Tạo danh sách các ngày trong tuần
-        List<LocalDate> weekDates = new ArrayList<>();
-        LocalDate current = startOfWeek;
-        while (!current.isAfter(endOfWeek)) {
-            weekDates.add(current);
-            current = current.plusDays(1);
-        }
-        for (SchedulePublic s : list) {
-            for (LocalDate d : weekDates) {
-                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
-                    listOne.add(s);
-                }
-            }
-        }
-
+  // Method to filter schedules for one week
+private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
+    List<SchedulePublic> listOne = new ArrayList<>();
+    if (list.isEmpty()) {
         return listOne;
     }
+    LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
+
+    // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
+    LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+    // Lọc các schedule trong tuần đó
+    for (SchedulePublic s : list) {
+        LocalDate slotDate = s.getDayOfSlot().toLocalDate();
+        if (!slotDate.isBefore(startOfWeek) && !slotDate.isAfter(endOfWeek)) {
+            listOne.add(s);
+        }
+    }
+
+    return listOne;
+}
+
 
 //    @Override
 //    protected void doPost(HttpServletRequest request, HttpServletResponse response)

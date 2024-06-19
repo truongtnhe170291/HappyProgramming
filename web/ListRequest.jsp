@@ -288,7 +288,7 @@
                 width: 80% !important;
                 max-width: 50% !important;
             }
-         
+
             .modal-dialog-scrollable {
                 max-height: calc(100vh - 100px);
                 overflow-y: auto;
@@ -429,6 +429,8 @@
                                                                     <img src="img/svg/x.svg" alt="x" class="svg">
                                                                 </button>
                                                             </div>
+
+
                                                             <div class="ticket_modal-modal">
                                                                 <h1>Request Details</h1>
                                                                 <div>Title: ${request.title}</div><br>
@@ -464,45 +466,55 @@
                                                                                     <td>Slot ${slot.slot_name}</td>
                                                                                     <c:forEach var="day" items="${listDays}">
                                                                                         <c:set var="found" value="false"/>
-                                                                                        <c:forEach var="scheduleItem" items="${request.listSchedule}">
-                                                                                            <c:if test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
-                                                                                                <!-- Display schedule information here -->
-                                                                                                <td>
-                                                                                                    <div class="slot-info">
-                                                                                                        day: "${scheduleItem.nameOfDay}",<br>
-                                                                                                        slot: ${scheduleItem.slotId.substring(5)},<br>
-                                                                                                        class: "SWR302",<br>
-                                                                                                        room: "BE-209",<br>
-                                                                                                        status: "not-selected",<br>
-                                                                                                        time: "${scheduleItem.slot_name}",<br>
-                                                                                                        startTime: "${scheduleItem.startTime}",<br>
-                                                                                                        endTime: "${scheduleItem.endTime}"
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <c:set var="found" value="true"/>
-                                                                                            </c:if>
-                                                                                        </c:forEach>
-                                                                                        <c:if test="${not found}">
+                                                                                        <td>
+                                                                                            <c:forEach var="request" items="${requests}">
+                                                                                                <c:forEach var="scheduleItem" items="${request.listSchedule}">
+                                                                                                    <c:if test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
+                                                                                                        <div class="slot-info">
+                                                                                                            day: "${scheduleItem.nameOfDay}",<br>
+                                                                                                            slot: ${scheduleItem.slotId.substring(5)},<br>
+                                                                                                            class: "SWR302",<br>
+                                                                                                            room: "BE-209",<br>
+                                                                                                            status: "not-selected",<br>
+                                                                                                            time: "${scheduleItem.slot_name}",<br>
+                                                                                                            startTime: "${scheduleItem.startTime}",<br>
+                                                                                                            endTime: "${scheduleItem.endTime}"
+                                                                                                        </div>
+                                                                                                        <c:set var="found" value="true"/>
+                                                                                                    </c:if>
+                                                                                                </c:forEach>
+                                                                                            </c:forEach>
+                                                                                            <c:if test="${not found}">
+                                                                                                <!-- If no schedule is found for this day and slot, display an empty cell -->
                                                                                             <td></td>
                                                                                         </c:if>
+                                                                                        </td>
                                                                                     </c:forEach>
                                                                                 </tr>
                                                                             </c:forEach>
                                                                         </tbody>
                                                                     </table>
-
                                                                     <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
                                                                 </div>
+
+                                                                <!-- Displaying Skills -->
+                                                                <c:forEach var="request" items="${requests}">
+                                                                    <c:forEach var="skill" items="${request.listSkills}">
+                                                                        <div>Skill: ${skill.skillName}</div>
+                                                                    </c:forEach>
+                                                                </c:forEach>
+
+                                                               
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+
+
                                             </div>
-
-
-
-
-                                        </div>
                                     </form>
 
                                     <!-- Edit and Delete buttons -->
