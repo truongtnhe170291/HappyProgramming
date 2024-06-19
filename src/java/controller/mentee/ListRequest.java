@@ -19,8 +19,6 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import models.Account;
 import models.Day;
 import models.Mentor;
@@ -62,7 +60,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         // Log schedules for debugging
         for (RequestDTO requestDTO : requests) {
             List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-            for (SchedulePublic schedule : listSchedule) {
+            List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);  // Lọc lịch trình theo tuần
+            requestDTO.setListSchedule(oneWeekSchedule);  // Cập nhật danh sách lịch trình cho requestDTO
+            
+            for (SchedulePublic schedule : oneWeekSchedule) {
                 System.out.println("Request ID: " + requestDTO.getRequestId() + 
                                     " Schedule: " + schedule.getSlotId() + 
                                     " " + schedule.getDayOfSlot());
@@ -81,14 +82,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     }
 }
 
-
-    public static void main(String[] args) {
-        
-    }
-
-
-
-  // Method to filter schedules for one week
 private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
     List<SchedulePublic> listOne = new ArrayList<>();
     if (list.isEmpty()) {

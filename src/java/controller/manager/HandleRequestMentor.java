@@ -131,15 +131,14 @@ public class HandleRequestMentor extends HttpServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
 
         // Lấy mentorName, cycleId và action từ request
-        String mentorName = request.getParameter("mentorName");
         int cycleId = Integer.parseInt(request.getParameter("cycleID"));
         int action = Integer.parseInt(request.getParameter("action"));
-
+        System.out.println(cycleId + ""+ action);
         // Kiểm tra action và gọi hàm tương ứng
         if (action == 2) {
-            scheduleDAO.approveRequest(mentorName, cycleId);
+            scheduleDAO.approveRequest(cycleId);
         } else if (action == 3) {
-            scheduleDAO.rejectRequest(mentorName, cycleId);
+            scheduleDAO.rejectRequest(cycleId);
         }
 
         // Chuyển hướng người dùng về trang mong muốn sau khi xử lý

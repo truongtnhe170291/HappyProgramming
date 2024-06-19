@@ -72,11 +72,12 @@ public class RequestServlet extends HttpServlet {
             int rate = mentorDAO.getRateOfMentor(userName);
             // get Schedule public by user mentor name
             List<SchedulePublic> listSchedule_raw = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
-            List<SchedulePublic> listSchedule = getOneWeek(listSchedule_raw);
-            if (listSchedule.isEmpty()) {
+            if (listSchedule_raw.isEmpty()) {
                 response.sendRedirect("homes.jsp");
                 return;
             }
+            List<SchedulePublic> listSchedule = getOneWeek(listSchedule_raw);
+            
             for (SchedulePublic s : listSchedule) {
                 DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
                 s.setNameOfDay(nameOfDay);
@@ -102,7 +103,7 @@ public class RequestServlet extends HttpServlet {
             CV cv = cvdao.getCVByCVId(cvId);
 
             // set attribute
-            request.setAttribute("wallet", wallet);
+            request.setAttribute("wallet", wallet.getAvaiable_binance());
             request.setAttribute("skills", list);
             request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);

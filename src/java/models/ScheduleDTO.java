@@ -25,6 +25,12 @@ public class ScheduleDTO{
         this.deadline = deadline;
         this.status = status;
     }
+    public ScheduleDTO(String mentorName, Date deadline, String status, int cycleId) {
+        this.mentorName = mentorName;
+        this.deadline = deadline;
+        this.status = status;
+        this.cycleId = cycleId;
+    }
     
     public String getMentorName() {
         return mentorName;

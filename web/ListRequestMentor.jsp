@@ -224,43 +224,105 @@
                                                         <img src="img/svg/x.svg" alt="x" class="svg">
                                                     </button>
                                                 </div>
-                                                <div class="ticket_modal-modal">
-                                                    <h1>Request Details</h1>
-                                                    <div>Title: ${request.title}</div><br>
-                                                    <div>Mentee Name: ${request.menteeName}</div><br>
-                                                    <div>Description: ${request.description}</div><br>
-                                                    <div>Deadline Date: ${request.deadlineDate}</div><br>
-                                                    <div>Deadline Hour: ${request.deadlineHour}</div><br>
-                                                    <section id="page-content" class="no-sidebar">
-                                                        <div class="container">
-                                                            <div class="row mb-5">
-                                                                <div class="col-lg-6">
+                                                 <div class="ticket_modal-modal">
+                                                                <h1>Request Details</h1>
+                                                                <div>Title: ${request.title}</div><br>
+                                                                <div>Mentor Name: ${request.mentorName}</div><br>
+                                                                <div>Description: ${request.description}</div><br>
+                                                                <div>Deadline: ${request.deadlineHour}
+                                                                    ${request.deadlineDate}</div><br>
+
+                                                                <div class="form-container">
+                                                                    <table border="1" width="100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th rowspan="2">WEEK
+                                                                                    <select>
+                                                                                        <option>10/6 To 16/6</option>
+                                                                                        <option>17/6 To 23/6</option>
+                                                                                        <option>24/6 To 30/6</option>
+                                                                                        <option>31/6 To 7/7</option>
+                                                                                    </select>
+                                                                                </th>
+                                                                                <c:forEach var="day"
+                                                                                    items="${listDays}">
+                                                                                    <th class="equal-width">
+                                                                                        ${day.dateName}</th>
+                                                                                </c:forEach>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <c:forEach var="day"
+                                                                                    items="${listDays}">
+                                                                                    <th class="equal-width">
+                                                                                        ${day.dateValue}</th>
+                                                                                </c:forEach>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <c:forEach var="slot" items="${listSlots}"
+                                                                                varStatus="loop">
+                                                                                <tr>
+                                                                                    <td>Slot ${slot.slot_name}</td>
+                                                                                    <c:forEach var="day"
+                                                                                        items="${listDays}">
+                                                                                        <c:set var="found"
+                                                                                            value="false" />
+                                                                                        <td>
+                                                                                            <c:forEach
+                                                                                                var="scheduleItem"
+                                                                                                items="${request.listSchedule}">
+                                                                                                <c:if
+                                                                                                    test="${scheduleItem.dayOfSlot == day.date1 && scheduleItem.slotId == slot.slot_id}">
+                                                                                                    <div
+                                                                                                        class="slot-info">
+                                                                                                        day:
+                                                                                                        ${scheduleItem.nameOfDay},<br>
+                                                                                                        slot:
+                                                                                                        ${scheduleItem.slotId.substring(5)},<br>
+                                                                                                        class:
+                                                                                                        SWR302,<br>
+                                                                                                        room:
+                                                                                                        BE-209,<br>
+                                                                                                        status:
+                                                                                                        not-selected,<br>
+                                                                                                        time:
+                                                                                                        ${scheduleItem.slot_name},<br>
+                                                                                                        startTime:
+                                                                                                        ${scheduleItem.startTime},<br>
+                                                                                                        endTime:
+                                                                                                        ${scheduleItem.endTime}<br>
+                                                                                                        day Of slot:
+                                                                                                        ${scheduleItem.dayOfSlot}<br>
+                                                                                                    </div>
+                                                                                                    <c:set var="found"
+                                                                                                        value="true" />
+                                                                                                </c:if>
+                                                                                            </c:forEach>
+                                                                                            <c:if test="${not found}">
+                                                                                                <!-- If no schedule is found for this day and slot, display an empty cell -->
+                                                                                                <div class="empty-cell">
+                                                                                                </div>
+                                                                                            </c:if>
+                                                                                        </td>
+                                                                                    </c:forEach>
+                                                                                </tr>
+                                                                            </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <input type="hidden" id="selectedSlots"
+                                                                        name="selectedSlots" value="">
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="calendar">
-                                                                        <div class="header">
-                                                                            <h2>${request.listSchedule.get(0).startTime} - ${request.listSchedule.get(0).endTime}</h2>
-                                                                        </div>
-                                                                        <c:forEach items="${request.listSchedule}" var="schedule">
-                                                                            <div class="day">
-                                                                                <div class="day-header">${schedule.nameOfDay} - ${schedule.dayOfSlot}</div>
-                                                                                <div class="event">
-                                                                                    <div class="event-dot" style="background-color: red;"></div>
-                                                                                    <div>${schedule.slotId}: ${schedule.slot_name}</div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </c:forEach>
-                                                                    </div>
+
+                                                                <!-- Displaying Skills -->
+                                                                <div class="skills-container">
+                                                                    <h3>Skills</h3>
+                                                                    <c:forEach var="skill"
+                                                                        items="${request.listSkills}">
+                                                                        <div>Skill: ${skill.skillName}</div>
+                                                                    </c:forEach>
                                                                 </div>
+                                                                <br />
                                                             </div>
-                                                        </div>
-                                                    </section>
-                                                    <c:forEach items="${request.listSkills}" var="skill">
-                                                        <div><label>${skill.skillName}</label></div><br/>
-                                                    </c:forEach>
-                                                </div>
                                             </div>
                                         </div>
 
