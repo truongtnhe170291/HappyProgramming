@@ -78,16 +78,13 @@ public class RequestDAO {
 //        // Trả về danh sách request
 //        return requests;
 //    }
-    public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
+   public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
         try {
-            String sql = " SELECT *\n"
-                    + "                    FROM RequestsFormMentee r\n"
-                    + "                    WHERE r.mentee_name = ?\n"
-                    + "		     order by [deadline_date] DESC";
+            String sql = " SELECT * "
+                    + " FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name\n"
+                    + " WHERE r.mentee_name = ?\n"
+                    + " order by [deadline_date] DESC";
             ps = con.prepareStatement(sql);
             ps.setString(1, menteeName);
             rs = ps.executeQuery();
@@ -103,10 +100,10 @@ public class RequestDAO {
                 request.setTitle(rs.getString("title"));
                 request.setPrice(rs.getInt("price"));
                 request.setNote(rs.getString("note"));
-
+                request.setCvId(rs.getInt("cv_id"));
                 // Fetch status using fetchStatusById method
                 int statusId = rs.getInt("status_id");
-                Status status = fetchStatusById(statusId, con);
+                Status status = fetchStatusById(statusId, con);     
                 request.setStatus(status);
 
                 requests.add(request);

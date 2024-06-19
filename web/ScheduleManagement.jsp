@@ -472,7 +472,7 @@
 
                                                                                                 <c:forEach items="${schedule.list}" var="listS">
 
-                                                                                                    <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day.dateValue}">
+                                                                                                    <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day}">
                                                                                                         <td>Booked</td>
                                                                                                         <c:set var="found" value="true"/>
                                                                                                     </c:if>

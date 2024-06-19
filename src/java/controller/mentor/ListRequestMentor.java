@@ -35,14 +35,13 @@ public class ListRequestMentor extends HttpServlet {
    @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
     try {
         Account a = (Account) request.getSession().getAttribute("user");
         if (a == null) {
             response.sendRedirect("login.jsp");
             return;
         }
-        
+
         String mentorName = a.getUserName();
         RequestDAO rdao = new RequestDAO();
         MentorDAO mentorDao = new MentorDAO();
@@ -59,9 +58,12 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             requestDTO.setListSchedule(filteredSchedule);
         }
 
+        // Lọc danh sách các ngày trong tuần hiện tại
+        ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
+
         request.setAttribute("requests", requests);
         request.setAttribute("listSlots", listSlots);
-        request.setAttribute("listDays", listDays);
+        request.setAttribute("listDays", oneWeekDays);
 
         request.getRequestDispatcher("ListRequestMentor.jsp").forward(request, response);
     } catch (SQLException e) {
@@ -91,6 +93,31 @@ private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
 
     return listOne;
 }
+
+// Hàm để lọc các ngày trong một tuần từ danh sách các ngày
+private ArrayList<Day> getOneWeekDays(ArrayList<Day> list) {
+    ArrayList<Day> listOne = new ArrayList<>();
+    if (list.isEmpty()) {
+        return listOne;
+    }
+
+    LocalDate referenceDate = list.get(0).getDate1().toLocalDate();
+
+    // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
+    LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+    // Lọc các ngày trong tuần đó
+    for (Day day : list) {
+        LocalDate dayDate = day.getDate1().toLocalDate();
+        if (!dayDate.isBefore(startOfWeek) && !dayDate.isAfter(endOfWeek)) {
+            listOne.add(day);
+        }
+    }
+
+    return listOne;
+}
+
 
 
     @Override

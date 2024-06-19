@@ -58,13 +58,8 @@ public class RequestServlet extends HttpServlet {
             MentorDAO mentorDAO = new MentorDAO();
             ScheduleDAO scheduleDAO = new ScheduleDAO();
 
-            // check if not enough binance
-            String warning = (String) request.getSession().getAttribute("warning");
-            if (warning != null && warning.length() > 0) {
-                request.setAttribute("warning", warning);
-            }
+            
             int cvId = Integer.parseInt(request.getParameter("cvId"));
-            request.getSession().setAttribute("cvId", cvId);
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
@@ -98,12 +93,16 @@ public class RequestServlet extends HttpServlet {
             }
             Wallet wallet = walletDAO.getWalletByUsenName(acc.getUserName());
             if(wallet == null){
-                walletDAO.insertWallet(new Wallet(acc.getUserName(), 0, 0));
+                if(walletDAO.insertWallet(new Wallet(acc.getUserName(), 0, 0))){
+                    request.setAttribute("wallet", 0);
+                }
+            }else{
+                request.setAttribute("wallet", wallet.getAvaiable_binance());
             }
             CV cv = cvdao.getCVByCVId(cvId);
 
             // set attribute
-            request.setAttribute("wallet", wallet.getAvaiable_binance());
+            
             request.setAttribute("skills", list);
             request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);
