@@ -550,14 +550,13 @@
 
                                             <!-- Edit and Delete buttons -->
                                             <c:if test="${request.status.statusId == 2}">
-                                                <button style="margin-bottom: 6px; border-radius: 0.42rem;"
-                                                    onclick="editRequest(${request.requestId})">
-                                                    <li>
-                                                        <a href="#" class="edit">
-                                                            <i class="uil uil-check"></i>
-                                                        </a>
-                                                    </li>
+                                              <form method="GET" action="request">
+                                                <input type="hidden" name="cvId"
+                                                       value="${request.cvId}" />
+                                                  <button style="margin-bottom: 6px; border-radius: 0.42rem;">
+                                                Edit
                                                 </button>
+                                            </form>
                                                 <form method="POST" action="EditOrDeleteRequest"
                                                     onsubmit="return confirm('Are you sure you want to delete this request?');">
                                                     <input type="hidden" name="requestId"
