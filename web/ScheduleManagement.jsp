@@ -369,11 +369,17 @@
                                                                                         <tr>
                                                                                             <td>${slot.slot_id}</td>
                                                                                             <c:forEach items="${listDay}" var="day">
+                                                                                                <c:set var="check" value="0"/>
                                                                                                 <c:forEach items="${schedule.list}" var="listS">
-                                                                                                    <c:if test="${listS.slotId eq slot.slot_id && listS.weekName eq day.dateValue}">
+                                                                                                    <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day.dateValue}">
                                                                                                         <td>Booked</td>
+                                                                                                        <c:set var="check" value="1"/>
                                                                                                     </c:if>
                                                                                                 </c:forEach>
+                                                                                                <c:if test="${check == 0}">
+                                                                                                    <td></td>
+                                                                                                </c:if>  
+                                                                                                <c:set var="check" value="1"/>
 
                                                                                             </c:forEach>
                                                                                         </tr>

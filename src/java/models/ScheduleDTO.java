@@ -68,7 +68,7 @@ public class ScheduleDTO{
 
     @Override
     public String toString() {
-        return "ScheduleDTO{" + "cycleId=" + cycleId + ", mentorName=" + mentorName + ", deadline=" + deadline + ", status=" + status + ", list=" + list + '}';
+        return "ScheduleDTO{" + "cycleId=" + cycleId + ", mentorName=" + mentorName + ", deadline=" + deadline + ", status=" + status + ", list=" + list.size() + '}';
     }
     
 }

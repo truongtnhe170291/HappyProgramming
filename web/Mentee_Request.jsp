@@ -359,20 +359,20 @@
                                                 <div class="col-lg-8">
                                                     <div class="form-group">
                                                         <label>Title</label>
-                                                        <input name="title" type="text" id="notify_title" value="" class="form-control notification-message" required="">
+                                                        <input name="title" type="text" id="notify_title" value="${requestScope.requestMentee.title}" class="form-control notification-message" required="">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Description</label>
-                                                        <textarea id="description" name="description" class="form-control notification-message" placeholder="Type your message here..." required="" rows="5"></textarea>
+                                                        <textarea id="description" name="description" class="form-control notification-message" placeholder="Type your message here..." required="" rows="5">${requestScope.requestMentee.description}</textarea>
                                                     </div>
                                                   
                                                     <div class="form-group">
                                                         <label>Deadline Date</label>
-                                                        <input  name="deadlineDate" id="notify_messages" type="date" class="form-control notification-message" placeholder="" required="" rows="5" />
+                                                        <input  name="deadlineDate" id="notify_messages" value="${requestScope.requestMentee.deadlineDate}" type="date" class="form-control notification-message" placeholder="" required="" rows="5" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Deadline Hour</label>
-                                                        <input id="deadlineHour" name="deadlineHour" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
+                                                        <input id="deadlineHour" value="${requestScope.requestMentee.deadlineHour}" name="deadlineHour" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Price/Slot: &nbsp; ${rate}</label>
@@ -404,9 +404,10 @@
                                                     <tbody></tbody>
                                                 </table>
                                             </div>
+                                                    
                                             <div id="totalPriceContainer">
-                                                <input type="hidden" id="totalPriceInput" name="totalPrice" value="" />
-                                                <span id="totalPrice">Total Price: 0</span>
+                                                <input type="hidden" id="totalPriceInput" name="totalPrice" value="${requestScope.requestMentee.price}" />
+                                                <span id="totalPrice">Total Price: <c:if test="${requestScope.requestMentee != null}">${requestScope.requestMentee.price}</c:if> <c:if test="${requestScope.requestMentee == null}">0</c:if></span>
                                             </div>
                                         </section>
                                          <div class="col-lg-4">
@@ -418,7 +419,7 @@
                                                                 <div class="form-check text-center m-3">
                                                                     <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
 
-                                                                    <input type="radio" name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translate(80px, -28px);">
+                                                                    <input type="radio" ${requestScope.skillOfMentee.skillID == skill.skillID ? "checked": ""} name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translate(80px, -28px);">
                                                                 </div>
 
                                                             </c:forEach>
@@ -453,21 +454,29 @@
             <script>
                 document.addEventListener('DOMContentLoaded', (et) => {
     let currentAction = "editable";
+const scheduleData = [
+    <c:forEach items="${requestScope.listSchedule}" var="schedule">
+    <c:set var="isSelected" value="false"/>
+    <c:forEach items="${requestScope.scheduleOfMentee}" var="menteeSchedule">
+        <c:if test="${menteeSchedule.slotId == schedule.slotId}">
+            <c:set var="isSelected" value="true"/>
+        </c:if>
+    </c:forEach>
+    <c:set var="status" value="${isSelected ? 'selected' : 'not-selected'}"/>
+        
+    {
+        day: "${schedule.nameOfDay}",
+        slot: ${schedule.slotId.substring(5)},
+        class: "SWR302",
+        room: "BE-209",
+        status: "${status}",
+        time: "${schedule.slot_name}"
+    },
+    <c:set var="start" value="${schedule.startTime}"/>
+    <c:set var="end" value="${schedule.endTime}"/>
+</c:forEach>
+]
 
-    const scheduleData = [
-        <c:forEach items="${requestScope.listSchedule}" var="schedule">
-        {
-            day: "${schedule.nameOfDay}",
-            slot: ${schedule.slotId.substring(5)},
-            class: "SWR302",
-            room: "BE-209",
-            status: "not-selected",
-            time: "${schedule.slot_name}",
-        },,<c:set var="start" value="${schedule.startTime}"/>
-                    <c:set var="end" value="${schedule.endTime}"/>
-
-        </c:forEach>
-    ];
 
   function getMonday(d) {
         d = new Date('${start}');
@@ -720,76 +729,138 @@ const index = scheduleData.indexOf(filteredSchedule[0]);
     }
 
     function saveSelectedSlots(event) {
-        event.preventDefault();
-        const formData = getFormValues();
-        formData.action = "editable";
-        currentAction = "editable";
+    event.preventDefault();
+    const formData = getFormValues();
+    formData.action = "editable";
+    currentAction = "editable";
 
-        const selectedSlots = [];
-        const tbody = document.querySelector("#scheduleTable tbody");
-        const monday = getMonday(new Date());
+    const selectedSlots = [];
+    const tbody = document.querySelector("#scheduleTable tbody");
+    const monday = getMonday(new Date());
 
-        for (let row = 0; row < tbody.rows.length; row++) {
-            for (let col = 1; col < tbody.rows[row].cells.length; col++) {
-                const cell = tbody.rows[row].cells[col];
-                const statusElement = cell.querySelector(".status");
-                if (statusElement && statusElement.classList.contains("selected")) {
-                    const slotDate = new Date(monday);
-                    slotDate.setDate(slotDate.getDate() + col - 1);
+    for (let row = 0; row < tbody.rows.length; row++) {
+        for (let col = 1; col < tbody.rows[row].cells.length; col++) {
+            const cell = tbody.rows[row].cells[col];
+            const statusElement = cell.querySelector(".status");
+            if (statusElement && statusElement.classList.contains("selected")) {
+                const slotDate = new Date(monday);
+                slotDate.setDate(slotDate.getDate() + col - 1);
 
-                    const slotData = {
-                        slot: row + 1,
-                        day: formatDate(slotDate)
-                    };
-                    selectedSlots.push(slotData);
-                }
+                const slotData = {
+                    slot: row + 1,
+                    day: formatDate(slotDate)
+                };
+                selectedSlots.push(slotData);
             }
         }
+    }
 
-        const requestData = {
-            ...formData,
-            selectedSlots: selectedSlots
-        };
+    const requestData = {
+        ...formData,
+        selectedSlots: selectedSlots
+    };
 
-        fetch("request", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
+    fetch("request", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.text();
+    })
+    .then((data) => {
+        console.log("Response from server:", data);
+        updateStatusIndicator('Editable');
+        updateSchedule(); // Cập nhật lại lịch trình sau khi lưu
+        Toastify({
+            text: "Lưu thành công!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#4CAF50",
+            stopOnFocus: true,
+        }).showToast();
+    })
+    .catch((error) => {
+        console.error("Failed to save:", error);
+        Toastify({
+            text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+    });
+}
+
+// Event listener cho nút thông báo
+document.getElementById("notify_btn").addEventListener("click", function(event) {
+    event.preventDefault();
+    const formData = getFormValues();
+    formData.action = "rescheduled";
+    currentAction = "rescheduled";
+
+    const selectedSlots = [];
+    const tbody = document.querySelector("#scheduleTable tbody");
+    const monday = getMonday(new Date());
+
+    for (let row = 0; row < tbody.rows.length; row++) {
+        for (let col = 1; col < tbody.rows[row].cells.length; col++) {
+            const cell = tbody.rows[row].cells[col];
+            const statusElement = cell.querySelector(".status");
+            if (statusElement && statusElement.classList.contains("selected")) {
+                const slotDate = new Date(monday);
+                slotDate.setDate(slotDate.getDate() + col - 1);
+
+                const slotData = {
+                    slot: row + 1,
+                    day: formatDate(slotDate)
+                };
+                selectedSlots.push(slotData);
             }
-            return response.text();
-        })
-        .then((data) => {
-            console.log("Response from server:", data);
-            updateStatusIndicator('Editable');
-            Toastify({
-                text: "Lưu thành công!",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "#4CAF50",
-                stopOnFocus: true,
-            }).showToast();
-        })
-        .catch((error) => {
-            console.error("Failed to save:", error);
-            Toastify({
-                text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
-                duration: 3000,
-                close: true,
-                gravity: "top",
+        }
+    }
+
+    const requestData = {
+        ...formData,
+        selectedSlots: selectedSlots
+    };
+
+    fetch("request", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.text();
+    })
+    .then((data) => {
+        console.log("Response from server:", data);
+        updateStatusIndicator('Rescheduled');
+        Toastify({
+            text: "Gửi yêu cầu thành công! Bạn sẽ được chuyển hướng về home",
+            duration: 3000,
+            close: true,
+            gravity: "top",
                 position: "right",
                 backgroundColor: "#FF6347",
                 stopOnFocus: true,
             }).showToast();
         });
-    }
+    })
 
     document.getElementById("notify_btn").addEventListener("click", function(event) {
         event.preventDefault();

@@ -247,6 +247,7 @@ public class MentorDAO {
         for (Day day : list) {
             System.out.println(day);
         }
+        return list;
     }
 
     // public ArrayList<Week> listCycleWeek() {
@@ -273,7 +274,7 @@ public class MentorDAO {
             ps = con.prepareStatement(query);
             ps.setInt(1, cycleID);
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
         }
     }

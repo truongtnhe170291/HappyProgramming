@@ -76,7 +76,9 @@ public class HandleRequestMentor extends HttpServlet {
             List<SchedulePublic> listpublic = s.getList();
             s.setList(getOneWeek(listpublic));
         }
-        
+        for(ScheduleDTO s : list){
+            System.out.println(s);
+        }
         MentorDAO mentorDao = new MentorDAO();
         ArrayList<Slot> listSlot = mentorDao.listSlots();
         ArrayList<Day> listDay = mentorDao.listDays();
