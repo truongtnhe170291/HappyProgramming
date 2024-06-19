@@ -102,7 +102,7 @@ public class RequestServlet extends HttpServlet {
             CV cv = cvdao.getCVByCVId(cvId);
 
             // set attribute
-            request.setAttribute("wallet", wallet);
+            request.setAttribute("wallet", wallet.getAvaiable_binance());
             request.setAttribute("skills", list);
             request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);

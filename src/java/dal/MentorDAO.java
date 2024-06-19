@@ -224,13 +224,13 @@ public class MentorDAO {
         return list;
     }
 
-//    public static void main(String[] args) {
-//        MentorDAO dao = new MentorDAO();
-//        ArrayList<Day> list = dao.listDays();
-//        for (Day day : list) {
-//            System.out.println(day);
-//        }
-//    }
+    public static void main(String[] args) {
+        MentorDAO dao = new MentorDAO();
+        ArrayList<Day> list = dao.listDays();
+        for (Day day : list) {
+            System.out.println(day);
+        }
+    }
      public ArrayList<Week> listCycleWeek() {
      ArrayList<Week> list = new ArrayList<>();
     

@@ -37,11 +37,11 @@
 
             .modal-content {
                 background-color: #fefefe;
-                top:25%;
-                left: 40%;
+                top:15%;
+                left: 25%;
                 padding: 20px;
                 border: 1px solid #888;
-                width: 40%;
+                width: 60%;
             }
 
             .close {
@@ -187,7 +187,106 @@
                 background-color: #138496;
                 border-color: #117a8b;
             }
+            .form-container {
+                display: flex;
+                justify-content: center;
+                max-width: 900px;
+                margin: 0 auto;
+                perspective: 800px;
+              }
 
+              .form-container table {
+                border-collapse: separate;
+                border-spacing: 0 15px;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                background: #fff;
+                transform-style: preserve-3d;
+                transition: transform 0.3s ease;
+              }
+
+              .form-container table:hover {
+                transform: scale(1.05);
+              }
+
+              .form-container th,
+              .form-container td {
+                color: #333;
+                text-shadow: none;
+              }
+
+              .form-container td.booked {
+                background-color: rgba(255, 0, 0, 0.5);
+                color: #fff;
+              }
+
+              .form-container th {
+                background-color: transparent;
+                font-weight: bold;
+                letter-spacing: 2px;
+                transform: translateZ(50px);
+              }
+
+              .form-container td {
+                background-color: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                transition: background-color 0.3s ease, transform 0.3s ease;
+                border: 1px solid #ADD8E6; /* Thêm ???ng vi?n cho các ô td */
+              }
+
+              .form-container td:hover {
+                background-color: #ADD8E6;
+                transform: scale(1.1);
+              }
+
+              .over {
+                background-color: #ADD8E6;
+              }
+
+              .form-container select {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 10px;
+                background-color: #ccc;
+                color: #000;
+                font-weight: bold;
+                backdrop-filter: blur(10px);
+                margin-bottom: 20px;
+              }
+                .form-container td {
+                    position: relative;
+                    padding: 0;
+                }
+
+                .form-container td div {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    padding: 8px 12px;
+                    background-color: #f2f2f2;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #333;
+                    white-space: nowrap;
+                }
+
+                .form-container td div.booked {
+                    background-color: rgba(255, 0, 0, 0.8);
+                    color: #fff;
+                }
+
+                .form-container td div a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
+                .form-container td div a:hover {
+                    text-decoration: underline;
+                }
         </style>
     </head>
 
@@ -340,7 +439,7 @@
                                                                             <p><strong>Details Schedule</strong>
                                                                             <div class="form-container">
                                                                                 <table border="1" width="100%">
-                                                                                    <tr>
+                                                                                    <tr class="over">
                                                                                         <th rowspan="2">
                                                                                             WEEK</br>
                                                                                             <select>
@@ -369,17 +468,11 @@
                                                                                         <tr>
                                                                                             <td>${slot.slot_id}</td>
                                                                                             <c:forEach items="${listDay}" var="day">
-                                                                                                <c:set var="check" value="0"/>
                                                                                                 <c:forEach items="${schedule.list}" var="listS">
-                                                                                                    <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day.dateValue}">
+                                                                                                    <c:if test="${listS.slotId eq slot.slot_id && listS.weekName eq day.dateValue}">
                                                                                                         <td>Booked</td>
-                                                                                                        <c:set var="check" value="1"/>
                                                                                                     </c:if>
                                                                                                 </c:forEach>
-                                                                                                <c:if test="${check == 0}">
-                                                                                                    <td></td>
-                                                                                                </c:if>  
-                                                                                                <c:set var="check" value="1"/>
 
                                                                                             </c:forEach>
                                                                                         </tr>
@@ -556,6 +649,7 @@
                                                                                         });
                                                                                     });
                                                                                 });
+                                                                                
         </script>
     </body>
 
