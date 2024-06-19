@@ -335,14 +335,19 @@
                                                                                         <td>
                                                                                             <label class="slot">
                                                                                                 <span class="slot-label">  
-                                                                                                    
+
                                                                                                     <c:forEach items="${listSchedule}" var="listS"> 
                                                                                                         <c:if test="${listS.slotId eq slot.slot_id && listS.dayOfSlot eq day.dateValue}">
                                                                                                             <div>oke</div>
+
                                                                                                         </c:if>
                                                                                                     </c:forEach>
-                                                                                                    
-                                                                                                    <input class="slot-checkbox" type="checkbox" name="schedule" value="${slot.slot_id} ${day.dateValue}">
+
+                                                                                                    <input class="slot-checkbox" <c:forEach items="${listSchedule}" var="listS"> 
+                                                                                                               <c:if test="${listS.slotId eq slot.slot_id && listS.dayOfSlot eq day.dateValue}">
+                                                                                                                   checked
+                                                                                                               </c:if>
+                                                                                                           </c:forEach> type="checkbox" name="schedule" value="${slot.slot_id} ${day.dateValue}">
                                                                                                     SELECT
                                                                                                 </span>
                                                                                             </label>
@@ -361,71 +366,71 @@
                                                 <div class="row mt-5">
                                                     <div class="col" style="display: flex;
                                                     justify-content: end;">
-                                                        <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
+                                                    <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
                                                         <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> id="saveButton" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                </form>
+                                </section>
                             </div>
-                        </section>
-                    </div>
-                </div>
-            </main>
+                        </div>
+                    </main>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const slots = document.querySelectorAll('.slot');
-                    const colors = ['#8BC34A', '#64B5F6', '#FFB74D', '#EC407A'];
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const slots = document.querySelectorAll('.slot');
+                            const colors = ['#8BC34A', '#64B5F6', '#FFB74D', '#EC407A'];
 
-                    slots.forEach((slot, index) => {
-                        const checkbox = slot.querySelector('.slot-checkbox');
-                        const label = slot.querySelector('.slot-label');
-                        const slotIndex = index % 4;
+                            slots.forEach((slot, index) => {
+                                const checkbox = slot.querySelector('.slot-checkbox');
+                                const label = slot.querySelector('.slot-label');
+                                const slotIndex = index % 4;
 
-                        checkbox.addEventListener('change', function () {
-                            if (checkbox.checked) {
-                                label.style.backgroundColor = colors[slotIndex];
+                                checkbox.addEventListener('change', function () {
+                                    if (checkbox.checked) {
+                                        label.style.backgroundColor = colors[slotIndex];
+                                    } else {
+                                        label.style.backgroundColor = '#f0f0f0';
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function (e) {
+                            e.preventDefault();
+                            var action = document.getElementById("action");
+                            var sendButton = document.getElementById("sendButton");
+                            var saveButton = document.getElementById("saveButton");
+
+                            sendButton.addEventListener('click', function () {
+                                action.value = 'send';
+                            })
+
+                            saveButton.addEventListener('click', function () {
+                                action.value = 'save';
+                            })
+
+                            console.log(action.value);
+                        })
+                    </script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var error = "${error}";
+                            var notifyBtn = document.getElementById("notify_btn");
+
+                            if (error && error.trim() !== "") {
+                                notifyBtn.disabled = false;
                             } else {
-                                label.style.backgroundColor = '#f0f0f0';
+                                notifyBtn.disabled = false;
                             }
                         });
-                    });
-                });
-            </script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function (e) {
-                    e.preventDefault();
-                    var action = document.getElementById("action");
-                    var sendButton = document.getElementById("sendButton");
-                    var saveButton = document.getElementById("saveButton");
-                    
-                    sendButton.addEventListener('click', function(){
-                        action.value = 'send';
-                    } )
-                    
-                    saveButton.addEventListener('click', function(){
-                        action.value = 'save';
-                    } )
-                    
-                    console.log(action.value);
-                })
-            </script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    var error = "${error}";
-                    var notifyBtn = document.getElementById("notify_btn");
+                </script>
 
-                    if (error && error.trim() !== "") {
-                        notifyBtn.disabled = false;
-                    } else {
-                        notifyBtn.disabled = false;
-                    }
-                });
-            </script>
+            </body>
 
-        </body>
-
-    </html>
+        </html>
 

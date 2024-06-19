@@ -93,9 +93,7 @@ public class MentorRequest extends HttpServlet {
             if (!listSchedule.isEmpty()) {
                 String status = listSchedule.get(0).getStatus();
                 request.setAttribute("isSend", status);
-
             }
-
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("listDays", listCurrentDays);
             request.setAttribute("listSchedule", listSchedule);
