@@ -18,10 +18,6 @@ public class Day {
     public Day() {
     }
 
-    public Day(String dateValue) {
-        this.dateValue = dateValue;
-    }
-    
     public Day(String dateName, String dateValue) {
         this.dateName = dateName;
         this.dateValue = dateValue;

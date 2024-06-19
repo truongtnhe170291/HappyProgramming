@@ -80,11 +80,14 @@ public class RequestDAO {
 //    }
     public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
         try {
-            String sql = " SELECT * "
-                    + " FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name\n"
-                    + " WHERE r.mentee_name = ?\n"
-                    + " order by [deadline_date] DESC";
+            String sql = " SELECT *\n"
+                    + "                    FROM RequestsFormMentee r\n"
+                    + "                    WHERE r.mentee_name = ?\n"
+                    + "		     order by [deadline_date] DESC";
             ps = con.prepareStatement(sql);
             ps.setString(1, menteeName);
             rs = ps.executeQuery();
@@ -100,7 +103,7 @@ public class RequestDAO {
                 request.setTitle(rs.getString("title"));
                 request.setPrice(rs.getInt("price"));
                 request.setNote(rs.getString("note"));
-                request.setCvId(rs.getInt("cv_id"));
+
                 // Fetch status using fetchStatusById method
                 int statusId = rs.getInt("status_id");
                 Status status = fetchStatusById(statusId, con);
@@ -334,9 +337,9 @@ public class RequestDAO {
         List<RequestDTO> requests = new ArrayList<>();
         try {
             String sql = "SELECT r.*, rs.status_name \n"
-                    + "                    FROM RequestsFormMentee r \n"
-                    + "                    JOIN RequestStatuses rs ON r.status_id = rs.status_id \n"
-                    + "                 WHERE r.mentor_name = ? and r.status_id != 6";
+                    + "FROM RequestsFormMentee r \n"
+                    + "JOIN RequestStatuses rs ON r.status_id = rs.status_id \n"
+                    + "WHERE r.mentor_name = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, mentorName);
             rs = ps.executeQuery();
@@ -514,7 +517,7 @@ public class RequestDAO {
             ps.setInt(1, skillId);
             ps.setInt(2, requestId);
             int result = ps.executeUpdate();
-            if (result == 1) {
+            if(result == 1){
                 return true;
             }
         } catch (SQLException ex) {
@@ -540,8 +543,8 @@ public class RequestDAO {
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
             int result3 = ps.executeUpdate();
-
-            if (result1 >= 1 && result2 >= 1 && result3 >= 1) {
+            
+            if(result1 >=1 && result2 >=1 && result3>=1){
                 return true;
             }
         } catch (SQLException e) {
@@ -624,7 +627,7 @@ public class RequestDAO {
             ps.setString(1, menteeName);
             ps.setString(2, mentorName);
             rs = ps.executeQuery();
-            while (rs.next()) {
+            while(rs.next()){
                 Request r = new Request();
                 r.setRequestId(rs.getInt(1));
                 r.setMentorName(rs.getString(2));
@@ -638,9 +641,9 @@ public class RequestDAO {
                 r.setNote(rs.getString(10));
                 return r;
             }
-
+            
         } catch (SQLException e) {
-            System.out.println("getRequestByStatusSaved " + e.getMessage());
+            System.out.println("getRequestByStatusSaved " +e.getMessage());
         }
         return null;
     }

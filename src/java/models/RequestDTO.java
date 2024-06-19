@@ -18,7 +18,6 @@ public class RequestDTO extends Request{
     private List<SchedulePublic> listSchedule;
     private Status status;
     private String note;
-    private int cvId;
     public RequestDTO() {
     }
 
@@ -43,14 +42,6 @@ public class RequestDTO extends Request{
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public int getCvId() {
-        return cvId;
-    }
-
-    public void setCvId(int cvId) {
-        this.cvId = cvId;
     }
     
      

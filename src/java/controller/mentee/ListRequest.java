@@ -86,7 +86,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
 
 
-
   // Method to filter schedules for one week
 private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
     List<SchedulePublic> listOne = new ArrayList<>();
