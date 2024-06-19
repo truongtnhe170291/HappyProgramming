@@ -106,15 +106,15 @@ public class MentorRequest extends HttpServlet {
                     String error = "You cannot send request this time! Please try again in next week";
                     request.setAttribute("error", error);
                     if (status.equalsIgnoreCase("Approved")) {
-                        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-                        request.setAttribute("listSchedule", listSchedule);
+                        //List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+                        //request.setAttribute("listSchedule", listSchedule);
                     }
                 }
                 if (status.equalsIgnoreCase("Pending")) {
                     String error = "You have booking a schedule for this week";
                     request.setAttribute("error", error);
-                    List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-                    request.setAttribute("listSchedule", listSchedule);
+                    //List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
+                    //request.setAttribute("listSchedule", listSchedule);
                 }
             }
 

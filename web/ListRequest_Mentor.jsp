@@ -21,7 +21,36 @@
 
         <main class="main-content">
 
-            <jsp:include page="sidebar.jsp" />
+            <div class="main-sidebar sidebar-style-2">
+                <aside id="sidebar-wrapper">
+
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">Main</li>
+                        <li class="dropdown active">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                                    data-feather="monitor"></i><span>Dashboard</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="active"><a class="nav-link" href="Homes_manager.jsp">Dashboard 1</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-header">Request</li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Management</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="listCV">List CV</a></li>
+                                <li><a class="nav-link" href="skills">List Skills</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </aside>
+            </div>
 
             <div class="contents">
 
@@ -81,7 +110,7 @@
                                                 </tr>
 
                                                 <!--<div class="modal-dialog modal-xl">...</div>-->
-                                                
+
                                                 <!-- Modal -->
                                             <div class="modal fade" id="exampleModal${slot.mentorName}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -91,7 +120,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            
+
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -144,5 +173,5 @@
 
     </body>
 
-    
+
 </html>

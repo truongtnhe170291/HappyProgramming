@@ -52,6 +52,7 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
+            WalletDAO walletDAO = new WalletDAO();
             SkillDAO skillDAO = new SkillDAO();
             CVDAO cvdao = new CVDAO();
             MentorDAO mentorDAO = new MentorDAO();
@@ -92,11 +93,16 @@ public class RequestServlet extends HttpServlet {
                 }
                 request.setAttribute("scheduleOfMentee", listScheduleByMentee);
                 request.setAttribute("skillOfMentee", s);
+                request.setAttribute("requestMentee", requ);
             }
-
+            Wallet wallet = walletDAO.getWalletByUsenName(acc.getUserName());
+            if(wallet == null){
+                walletDAO.insertWallet(new Wallet(acc.getUserName(), 0, 0));
+            }
             CV cv = cvdao.getCVByCVId(cvId);
 
             // set attribute
+            request.setAttribute("wallet", wallet);
             request.setAttribute("skills", list);
             request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);
@@ -235,8 +241,8 @@ public class RequestServlet extends HttpServlet {
                 if (requ != null) {
                     dao.updateStatus(requ.getRequestId(), 2);
                     // update request này
-//                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
-//                    wdao.updateWallet(wallet);
+                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
+                    wdao.updateWallet(wallet);
                 } else {
                     re.setStatusId(2);
                     int requestId = dao.insertRequestReturnRequestId(re);
@@ -258,8 +264,8 @@ public class RequestServlet extends HttpServlet {
                             dao.insertRquestSelectedSlot(requestId, i);
                         }
                     }
-//                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
-//                    wdao.updateWallet(wallet);
+                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
+                    wdao.updateWallet(wallet);
                 }
             }
 

@@ -59,33 +59,6 @@ public class MentorDAO {
         }
         return list;
     }
-    // public List<Mentor> getMentors() {
-    // String sql = "select * from mentors m join Accounts a on m.mentor_name =
-    // a.user_name";
-    // List<Mentor> list = new ArrayList<>();
-    // try {
-    // ps = con.prepareStatement(sql);
-    // rs = ps.executeQuery();
-    // while (rs.next()) {
-    // Mentor m = new Mentor(rs.getString("avatar"), rs.getString("user_name"),
-    // rs.getString("gmail"), rs.getString("full_name"),
-    // rs.getString("pass_word"), rs.getDate("dob"),
-    // rs.getBoolean("sex"), rs.getString("address"),
-    // rs.getString("phone"), rs.getInt("role_id"),
-    // rs.getInt("status_id"));
-    // list.add(m);
-    // }
-    // } catch (SQLException e) {
-    // System.out.println(e);
-    // }
-    // return list;
-    // }
-    // public static void main(String[] args) {
-    // MentorDAO md = new MentorDAO();
-    // for (Mentor m : md.getMentors()) {
-    // System.out.println(m.getUserName());
-    // }
-    // }
 
     public boolean changeMentorRate(String mentorName, int rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
@@ -165,7 +138,7 @@ public class MentorDAO {
     public void insertCycle(String start_time, String end_time, String note, String mentor_name, String deadline_date) {
         try {
             String query = "insert into Cycle(start_time, end_time, note, mentor_name, deadline_date) values (?, ?, ?, ?, ?)";
-            con = new DBContext().connection;//mo ket noi voi sql
+            con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
             ps.setString(1, start_time);
             ps.setString(2, end_time);
@@ -237,67 +210,53 @@ public class MentorDAO {
         return monSun;
     }
 
-
-
-public ArrayList<Day> listDays() {
-    ArrayList<Day> list = new ArrayList<>();
-    try {
-        LocalDate today = LocalDate.now();
-        // Tìm ngày tiếp theo có thể là thứ 2
-        LocalDate mondayWeek1 = today.plusDays(7).with(DayOfWeek.MONDAY);
-        // Tìm ngày Chủ Nhật của tuần tiếp theo
-        LocalDate currentDay = mondayWeek1;
-        int cycle = 1;
-
-        for (int i = 0; i < 28; i++) {
-            String inputDateString = "" + currentDay;
-
-            String[] parts = inputDateString.split("-");
-            String month = parts[1];
-            String day = parts[2];
-
-            String outputDateString = day + "/" + month;
-            if (i == 7 || i == 14 || i == 21) {
-                cycle++;
+    public ArrayList<Day> listDays() {
+        ArrayList<Day> list = new ArrayList<>();
+        String beginDate = "2024-06-17";
+        LocalDate begin = LocalDate.parse(beginDate);
+        try {
+            for (int i = 0; i < 7; i++) {
+                list.add(new Day(begin.getDayOfWeek().plus(i).toString()));
             }
-
-            list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-                    outputDateString, cycle, currentDay.getDayOfWeek()));
-            currentDay = currentDay.plusDays(1);
+        } catch (Exception e) {
+            System.out.println("listDays: " + e.getMessage());
         }
-
-    } catch (Exception e) {
-        System.out.println("listDays: " + e.getMessage());
-    }
-    return list;
-}
-
-
-
-    public ArrayList<Week> listCycleWeek() {
-        ArrayList<Week> list = new ArrayList<>();
-
-        ArrayList<Day> listDay = listDays();
-
-        list.add(new Week(listDay.get(0).getDateValue() + " to " + listDay.get(6).getDateValue(), 1));
-        list.add(new Week(listDay.get(7).getDateValue() + " to " + listDay.get(13).getDateValue(), 2));
-        list.add(new Week(listDay.get(14).getDateValue() + " to " + listDay.get(20).getDateValue(), 3));
-        list.add(new Week(listDay.get(21).getDateValue() + " to " + listDay.get(27).getDateValue(), 4));
-
         return list;
     }
 
+//    public static void main(String[] args) {
+//        MentorDAO dao = new MentorDAO();
+//        ArrayList<Day> list = dao.listDays();
+//        for (Day day : list) {
+//            System.out.println(day);
+//        }
+//    }
+     public ArrayList<Week> listCycleWeek() {
+     ArrayList<Week> list = new ArrayList<>();
+    
+     ArrayList<Day> listDay = listDays();
+    
+     list.add(new Week(listDay.get(0).getDateValue() + " to " +
+     listDay.get(6).getDateValue(), 1));
+     list.add(new Week(listDay.get(7).getDateValue() + " to " +
+     listDay.get(13).getDateValue(), 2));
+     list.add(new Week(listDay.get(14).getDateValue() + " to " +
+     listDay.get(20).getDateValue(), 3));
+     list.add(new Week(listDay.get(21).getDateValue() + " to " +
+     listDay.get(27).getDateValue(), 4));
+    
+     return list;
+     }
     public void deleteSchedulePublic(String userName, int cycleID) {
         try {
             String query = "DELETE FROM Selected_Slot\n"
                     + //
                     "WHERE mentor_name = ? AND cycle_id = ? AND status_id = 1";
-            con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
             ps.setString(1, userName);
             ps.setInt(2, cycleID);
             ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
         }
     }
@@ -317,16 +276,16 @@ public ArrayList<Day> listDays() {
             while (rs.next()) {
                 String inputDate = "" + rs.getDate(4);
                 list.add(new SelectedSlot(
-                        rs.getString(10), 
-                        rs.getString(9), 
-                        rs.getString(13), 
-                        getStringByDate(inputDate).toUpperCase(), 
-                        rs.getString(15), 
-                        rs.getDate(4), 
+                        rs.getString(10),
+                        rs.getString(9),
+                        rs.getString(13),
+                        getStringByDate(inputDate).toUpperCase(),
+                        rs.getString(15),
+                        rs.getDate(4),
                         rs.getDate(7),
-                        rs.getDate(8), 
-                        rs.getInt(6), 
-                        rs.getInt(5), 
+                        rs.getDate(8),
+                        rs.getInt(6),
+                        rs.getInt(5),
                         getSlotValue(rs.getString(2))));
             }
         } catch (SQLException e) {
@@ -334,8 +293,8 @@ public ArrayList<Day> listDays() {
         }
         return list;
     }
-    
-    public String getStringByDate(String input){
+
+    public String getStringByDate(String input) {
         LocalDate date = LocalDate.parse(input);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
@@ -364,12 +323,12 @@ public ArrayList<Day> listDays() {
         return slotValue;
     }
 
-    public static void main(String[] args) {
-        MentorDAO dao = new MentorDAO();
-        ArrayList<SelectedSlot> list = dao.listSelectedSlotByCycle(6);
-        for (SelectedSlot s : list) {
-            System.out.println(s);
-        }
-    }
-
+//    public static void main(String[] args) {
+//        MentorDAO dao = new MentorDAO();
+//        ArrayList<SelectedSlot> list = dao.listSelectedSlotByCycle(1);
+//        for (SelectedSlot s : list) {
+//            System.out.println(s);
+//        }
+//        System.out.println(list.size());
+//    }
 }

@@ -465,27 +465,25 @@
                                                                                 <tr>
                                                                                     <td>Slot ${slot.slot_name}</td>
                                                                                     <c:forEach var="day" items="${listDays}">
-                                                                                        <c:set var="found" value="false"/>
                                                                                         <td>
                                                                                             <c:forEach var="request" items="${requests}">
                                                                                                 <c:forEach var="scheduleItem" items="${request.listSchedule}">
                                                                                                     <c:if test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
                                                                                                         <div class="slot-info">
-                                                                                                            day: "${scheduleItem.nameOfDay}",<br>
+                                                                                                            day: ${scheduleItem.nameOfDay},<br>
                                                                                                             slot: ${scheduleItem.slotId.substring(5)},<br>
-                                                                                                            class: "SWR302",<br>
-                                                                                                            room: "BE-209",<br>
-                                                                                                            status: "not-selected",<br>
-                                                                                                            time: "${scheduleItem.slot_name}",<br>
-                                                                                                            startTime: "${scheduleItem.startTime}",<br>
-                                                                                                            endTime: "${scheduleItem.endTime}"
+                                                                                                            class: SWR302,<br>
+                                                                                                            room: BE-209,<br>
+                                                                                                            status: not-selected,<br>
+                                                                                                            time: ${scheduleItem.slot_name},<br>
+                                                                                                            startTime: ${scheduleItem.startTime},<br>
+                                                                                                            endTime: ${scheduleItem.endTime}
                                                                                                         </div>
                                                                                                         <c:set var="found" value="true"/>
                                                                                                     </c:if>
                                                                                                 </c:forEach>
                                                                                             </c:forEach>
                                                                                             <c:if test="${not found}">
-                                                                                                <!-- If no schedule is found for this day and slot, display an empty cell -->
                                                                                             <td></td>
                                                                                         </c:if>
                                                                                         </td>
@@ -503,9 +501,8 @@
                                                                         <div>Skill: ${skill.skillName}</div>
                                                                     </c:forEach>
                                                                 </c:forEach>
-
-                                                               
                                                             </div>
+
 
                                                         </div>
                                                     </div>
