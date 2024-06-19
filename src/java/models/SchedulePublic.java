@@ -23,6 +23,7 @@ public class SchedulePublic {
     private DayOfWeek nameOfDay;
     private String status;
     private int cycleID;
+    private String weekName;
 
     public SchedulePublic() {
     }
@@ -88,7 +89,7 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
     }
 
-    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, String status) {
+    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, String status, String weekName) {
         this.mentorName = mentorName;
         this.selectedId = selectedId;
         this.dayOfSlot = dayOfSlot;
@@ -97,6 +98,7 @@ public class SchedulePublic {
         this.endTime = endTime;
         this.slot_name = slot_name;
         this.status = status;
+        this.weekName = weekName;
     }
 
     public String getdayOfSlotString() {
@@ -109,6 +111,14 @@ public class SchedulePublic {
 
         String outputDateString = day + "/" + month + "/" + year;
         return outputDateString;
+    }
+
+    public String getWeekName() {
+        return weekName;
+    }
+
+    public void setWeekName(String weekName) {
+        this.weekName = weekName;
     }
 
     public String getStatus() {
@@ -193,7 +203,7 @@ public class SchedulePublic {
 
     @Override
     public String toString() {
-        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", nameOfDay=" + nameOfDay + '}';
+        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", weekName=" + weekName + '}';
     }
 
 }

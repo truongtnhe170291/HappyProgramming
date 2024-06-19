@@ -4,6 +4,7 @@
  */
 package controller.mentee;
 
+import dal.MentorDAO;
 import dal.RequestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,12 +14,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Account;
+import models.Day;
 import models.Mentor;
 import models.RequestDTO;
+import models.SchedulePublic;
+import models.Slot;
 import models.Status;
 
 /**
@@ -27,7 +35,6 @@ import models.Status;
  */
 @WebServlet(name = "ListRequest", urlPatterns = {"/ListRequest"})
 public class ListRequest extends HttpServlet {
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,25 +46,75 @@ public class ListRequest extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            
+
             // Lấy tham số menteeName từ request
+            MentorDAO mentorDao = new MentorDAO();
             String menteeName = a.getUserName();
             RequestDAO rdao = new RequestDAO();
+
+            // Lấy danh sách các slot và danh sách ngày từ DAO
+            ArrayList<Slot> listSlots = mentorDao.listSlots();
+            ArrayList<Day> listDays = mentorDao.listDays();
+
+            // Cập nhật trạng thái các yêu cầu hết hạn
             rdao.updateExpiredRequestsStatus();
-            // Gọi hàm getRequestOfMenteeInDeadlineByStatus để lấy danh sách các yêu cầu
+
+            // Lấy danh sách các yêu cầu của mentee trong deadline
             List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+
+            // Lấy danh sách tất cả các trạng thái
             List<Status> statuses = rdao.getAllStatuses();
+
+            // Lấy danh sách các mentor liên quan đến các yêu cầu
             List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
+
+            // Chuyển đổi danh sách schedule trong các yêu cầu thành chỉ lấy một tuần
+            for (RequestDTO requestDTO : requests) {
+                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+                List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
+                requestDTO.setListSchedule(oneWeekSchedule);
+            }
+
+            // Đặt các thuộc tính vào request để truyền sang ListRequest.jsp
             request.setAttribute("requests", requests);
+            request.setAttribute("listSlots", listSlots);
+            request.setAttribute("listDays", listDays);
             request.setAttribute("mentors1", mentors1);
             request.setAttribute("statuses", statuses);
+
             // Chuyển hướng đến trang ListRequest.jsp
             request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+
         } catch (SQLException e) {
             throw new ServletException(e);
         }
     }
 
+    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
+        List<SchedulePublic> listOne = new ArrayList<>();
+        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
+
+        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
+        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        // Tạo danh sách các ngày trong tuần
+        List<LocalDate> weekDates = new ArrayList<>();
+        LocalDate current = startOfWeek;
+        while (!current.isAfter(endOfWeek)) {
+            weekDates.add(current);
+            current = current.plusDays(1);
+        }
+        for (SchedulePublic s : list) {
+            for (LocalDate d : weekDates) {
+                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
+                    listOne.add(s);
+                }
+            }
+        }
+
+        return listOne;
+    }
 
 //    @Override
 //    protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -73,7 +130,6 @@ public class ListRequest extends HttpServlet {
 //        }
 //
 //    }
-
     /**
      * Returns a short description of the servlet.
      *

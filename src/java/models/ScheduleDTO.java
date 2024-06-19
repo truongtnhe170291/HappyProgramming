@@ -20,6 +20,12 @@ public class ScheduleDTO{
     public ScheduleDTO() {
     }
 
+    public ScheduleDTO(String mentorName, Date deadline, String status) {
+        this.mentorName = mentorName;
+        this.deadline = deadline;
+        this.status = status;
+    }
+    
     public String getMentorName() {
         return mentorName;
     }
@@ -60,11 +66,9 @@ public class ScheduleDTO{
         this.cycleId = cycleId;
     }
 
-    
-
-   
-    
-    
-    
+    @Override
+    public String toString() {
+        return "ScheduleDTO{" + "cycleId=" + cycleId + ", mentorName=" + mentorName + ", deadline=" + deadline + ", status=" + status + ", list=" + list.size() + '}';
+    }
     
 }

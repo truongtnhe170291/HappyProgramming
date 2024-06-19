@@ -4,6 +4,7 @@
  */
 package controller.manager;
 
+import dal.MentorDAO;
 import dal.ScheduleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,8 +18,10 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import models.Day;
 import models.ScheduleDTO;
 import models.SchedulePublic;
+import models.Slot;
 
 /**
  *
@@ -73,7 +76,17 @@ public class HandleRequestMentor extends HttpServlet {
             List<SchedulePublic> listpublic = s.getList();
             s.setList(getOneWeek(listpublic));
         }
-        request.setAttribute("listSlot", list);
+        for(ScheduleDTO s : list){
+            System.out.println(s);
+        }
+        MentorDAO mentorDao = new MentorDAO();
+        ArrayList<Slot> listSlot = mentorDao.listSlots();
+        ArrayList<Day> listDay = mentorDao.listDays();
+        
+        request.setAttribute("list", list);
+        request.setAttribute("listDay", listDay);
+        request.setAttribute("listSlot", listSlot);
+        
         request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
 
     }
