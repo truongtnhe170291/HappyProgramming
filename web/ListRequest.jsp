@@ -424,20 +424,19 @@
                                         </form>
 
                                         <!-- Edit and Delete buttons -->
-                                        <c:if test="${request.status.statusId == 2}">
-                                            <button style="margin-bottom: 6px; border-radius: 0.42rem;" onclick="editRequest(${request.requestId})">
-                                                <li>
-                                                    <a href="#" class="edit">
-                                                        <i class="uil uil-check"></i>
-                                                    </a>
-                                                </li>
-                                            </button>
+                                        <c:if test="${request.status.statusId == 6}">
+                                            <form method="GET" action="request" ">
+                                                <input type="hidden" name="cvId" value="${request.cvId}" />
+                                                <button type="submit" class="edit btn btn-primary" style="margin-bottom: 6px;margin-right: 6px; border-radius: 0.42rem;" ">
+                                                    Edit
+                                                </button>
+                                            </form>
                                             <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
                                                 <input type="hidden" name="requestId" value="${request.requestId}" />
                                                 <button style="border-radius: 0.42rem;" type="submit">
                                                     <li>
-                                                        <a href="#" class="remove">
-                                                            <i class="uil uil-times"></i>
+                                                        <a href="#" class="remove btn btn-danger">
+                                                            Delete
                                                         </a>
                                                     </li>
                                                 </button>

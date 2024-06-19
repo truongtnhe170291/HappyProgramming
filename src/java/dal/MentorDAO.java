@@ -364,10 +364,11 @@ public class MentorDAO {
 
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
-        ArrayList<SelectedSlot> list = dao.listSelectedSlotByCycle(6);
+        ArrayList<SelectedSlot> list = dao.listSelectedSlotByCycle(1);
         for (SelectedSlot s : list) {
             System.out.println(s);
         }
+        System.out.println(list.size());
     }
 
 }

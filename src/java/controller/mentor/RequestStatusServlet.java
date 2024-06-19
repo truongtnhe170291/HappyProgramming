@@ -18,7 +18,7 @@ public class RequestStatusServlet extends HttpServlet {
        RequestDAO requestDao = new RequestDAO();
         try {
             if ("/success".equals(action)) {
-                requestDao.updateStatus(requestId, 1);
+                requestDao.updateStatus(requestId, 5);
             } else if ("/reject".equals(action)) {
                 requestDao.updateStatus(requestId, 3);
             }
