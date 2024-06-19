@@ -386,176 +386,171 @@
 
 
                 <table class="table mb-0 table-borderless">
-                    <thead>
-                        <tr class="userDatatable-header">
-                            <th>
-                                <span class="userDatatable-title">Title</span>
-                            </th>
-                            <th>
-                                <span class="userDatatable-title">Mentor Name</span>
-                            </th>
-                            <th>
-                                <span class="userDatatable-title">Deadline</span>
-                            </th>
-                            <th>
-                                <span class="userDatatable-title">Status</span>
-                            </th>
-                            <th>
-                                <span class="userDatatable-title">Actions</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="requestTableBody">
-                        <c:forEach var="request" items="${requests}">
-                            <tr class="request-row" data-status="${request.status.statusName}">
-                                <td>${request.title}</td>
-                                <td>${request.mentorName}</td>
-                                <td>${request.deadlineHour} ${request.deadlineDate}</td>
-                                <td>${request.status.statusName}</td>
-                                <td class="d-flex" style="margin-top:12px;">
-                                    <!-- View button -->
-                                    <form method="POST" action="ListRequest">
-                                        <input type="hidden" name="requestId" value="${request.requestId}" />
-                                        <div class="action-btn">
-                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
-                                                <i class="uil uil-eye align-center" style="color: blue;"></i>
-                                            </a>
-                                            <div class="modal fade ticket_modal custom_modal" id="${request.menteeName}${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
-                                                    <div class="modal-content radius-xl">
-                                                        <div class="modal-body pb-sm-50 pb-30">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                                    <img src="img/svg/x.svg" alt="x" class="svg">
-                                                                </button>
-                                                            </div>
+    <thead>
+        <tr class="userDatatable-header">
+            <th>
+                <span class="userDatatable-title">Title</span>
+            </th>
+            <th>
+                <span class="userDatatable-title">Mentor Name</span>
+            </th>
+            <th>
+                <span class="userDatatable-title">Deadline</span>
+            </th>
+            <th>
+                <span class="userDatatable-title">Status</span>
+            </th>
+            <th>
+                <span class="userDatatable-title">Actions</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody id="requestTableBody">
+        <c:forEach var="request" items="${requests}">
+            <tr class="request-row" data-status="${request.status.statusName}">
+                <td>${request.title}</td>
+                <td>${request.mentorName}</td>
+                <td>${request.deadlineHour} ${request.deadlineDate}</td>
+                <td>${request.status.statusName}</td>
+                <td class="d-flex" style="margin-top:12px;">
+                    <!-- View button -->
+                    <div class="action-btn">
+                        <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#modal-${request.requestId}" style="background-color: #fff; border: none;">
+                            <i class="uil uil-eye align-center" style="color: blue;"></i>
+                        </a>
+                    </div>
 
-
-                                                            <div class="ticket_modal-modal">
-                                                                <h1>Request Details</h1>
-                                                                <div>Title: ${request.title}</div><br>
-                                                                <div>Mentor Name: ${request.mentorName}</div><br>
-                                                                <div>Description: ${request.description}</div><br>
-                                                                <div>Deadline: ${request.deadlineHour} ${request.deadlineDate}</div><br>
-
-                                                                <div class="form-container">
-                                                                    <table border="1" width="100%">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th rowspan="2">WEEK
-                                                                                    <select>
-                                                                                        <option>10/6 To 16/6</option>
-                                                                                        <option>17/6 To 23/6</option>
-                                                                                        <option>24/6 To 30/6</option>
-                                                                                        <option>31/6 To 7/7</option>
-                                                                                    </select>
-                                                                                </th>
-                                                                                <c:forEach var="day" items="${listDays}">
-                                                                                    <th class="equal-width">${day.dateName}</th>
-                                                                                    </c:forEach>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <c:forEach var="day" items="${listDays}">
-                                                                                    <th class="equal-width">${day.dateValue}</th>
-                                                                                    </c:forEach>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <c:forEach var="slot" items="${listSlots}" varStatus="loop">
-                                                                                <tr>
-                                                                                    <td>Slot ${slot.slot_name}</td>
-                                                                                    <c:forEach var="day" items="${listDays}">
-                                                                                        <c:set var="found" value="false"/>
-                                                                                        <td>
-                                                                                            <c:forEach var="request" items="${requests}">
-                                                                                                <c:forEach var="scheduleItem" items="${request.listSchedule}">
-                                                                                                    <c:if test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
-                                                                                                        <div class="slot-info">
-                                                                                                            day: "${scheduleItem.nameOfDay}",<br>
-                                                                                                            slot: ${scheduleItem.slotId.substring(5)},<br>
-                                                                                                            class: "SWR302",<br>
-                                                                                                            room: "BE-209",<br>
-                                                                                                            status: "not-selected",<br>
-                                                                                                            time: "${scheduleItem.slot_name}",<br>
-                                                                                                            startTime: "${scheduleItem.startTime}",<br>
-                                                                                                            endTime: "${scheduleItem.endTime}"
-                                                                                                        </div>
-                                                                                                        <c:set var="found" value="true"/>
-                                                                                                    </c:if>
-                                                                                                </c:forEach>
-                                                                                            </c:forEach>
-                                                                                            <c:if test="${not found}">
-                                                                                                <!-- If no schedule is found for this day and slot, display an empty cell -->
-                                                                                            <td></td>
-                                                                                        </c:if>
-                                                                                        </td>
-                                                                                    </c:forEach>
-                                                                                </tr>
-                                                                            </c:forEach>
-                                                                        </tbody>
-                                                                    </table>
-                                                                    <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
-                                                                </div>
-
-                                                                <!-- Displaying Skills -->
-                                                                <c:forEach var="request" items="${requests}">
-                                                                    <c:forEach var="skill" items="${request.listSkills}">
-                                                                        <div>Skill: ${skill.skillName}</div>
-                                                                    </c:forEach>
-                                                                </c:forEach>
-
-                                                               
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-
-
-                                            </div>
-                                    </form>
-
-                                    <!-- Edit and Delete buttons -->
-                                    <c:if test="${request.status.statusId == 2}">
-                                        <button style="margin-bottom: 6px; border-radius: 0.42rem;" onclick="editRequest(${request.requestId})">
-                                            <li>
-                                                <a href="#" class="edit">
-                                                    <i class="uil uil-check"></i>
-                                                </a>
-                                            </li>
+                    <!-- Modal for the current request -->
+                    <div class="modal fade ticket_modal custom_modal" id="modal-${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
+                            <div class="modal-content radius-xl">
+                                <div class="modal-body pb-sm-50 pb-30">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <img src="img/svg/x.svg" alt="x" class="svg">
                                         </button>
-                                        <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="border-radius: 0.42rem;" type="submit">
-                                                <li>
-                                                    <a href="#" class="remove">
-                                                        <i class="uil uil-times"></i>
-                                                    </a>
-                                                </li>
-                                            </button>
-                                        </form>
-                                    </c:if>
+                                    </div>
 
-                                    <!-- Payment button for 'Wait For Payment' status -->
-                                    <c:if test="${request.status.statusName == 'Wait For Payment'}">
-                                        <form method="POST" action="ProcessPayment">
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
-                                                <li>
-                                                    <a href="#" class="pay">
-                                                        <i class="uil uil-credit-card"></i> 
-                                                    </a>
-                                                </li>
-                                            </button>
-                                        </form>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+                                    <div class="ticket_modal-modal">
+                                        <h1>Request Details</h1>
+                                        <div>Title: ${request.title}</div><br>
+                                        <div>Mentor Name: ${request.mentorName}</div><br>
+                                        <div>Description: ${request.description}</div><br>
+                                        <div>Deadline: ${request.deadlineHour} ${request.deadlineDate}</div><br>
+
+                                        <div class="form-container">
+                                            <table border="1" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="2">WEEK
+                                                            <select>
+                                                                <option>10/6 To 16/6</option>
+                                                                <option>17/6 To 23/6</option>
+                                                                <option>24/6 To 30/6</option>
+                                                                <option>31/6 To 7/7</option>
+                                                            </select>
+                                                        </th>
+                                                        <c:forEach var="day" items="${listDays}">
+                                                            <th class="equal-width">${day.dateName}</th>
+                                                        </c:forEach>
+                                                    </tr>
+                                                    <tr>
+                                                        <c:forEach var="day" items="${listDays}">
+                                                            <th class="equal-width">${day.dateValue}</th>
+                                                        </c:forEach>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="slot" items="${listSlots}" varStatus="loop">
+                                                        <tr>
+                                                            <td>Slot ${slot.slot_name}</td>
+                                                            <c:forEach var="day" items="${listDays}">
+                                                                <c:set var="found" value="false"/>
+                                                                <td>
+                                                                    <c:forEach var="scheduleItem" items="${request.listSchedule}">
+                                                                        <c:if test="${scheduleItem.dayOfSlot == day.date1 && scheduleItem.slotId == slot.slot_id}">
+                                                                            <div class="slot-info">
+                                                                                day: ${scheduleItem.nameOfDay},<br>
+                                                                                slot: ${scheduleItem.slotId.substring(5)},<br>
+                                                                                class: SWR302,<br>
+                                                                                room: BE-209,<br>
+                                                                                status: not-selected,<br>
+                                                                                time: ${scheduleItem.slot_name},<br>
+                                                                                startTime: ${scheduleItem.startTime},<br>
+                                                                                endTime: ${scheduleItem.endTime}<br>
+                                                                                day Of slot: ${scheduleItem.dayOfSlot}<br>
+                                                                            </div>
+                                                                            <c:set var="found" value="true"/>
+                                                                        </c:if>
+                                                                    </c:forEach>
+                                                                    <c:if test="${not found}">
+                                                                        <!-- If no schedule is found for this day and slot, display an empty cell -->
+                                                                        <div class="empty-cell"></div>
+                                                                    </c:if>
+                                                                </td>
+                                                            </c:forEach>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                            <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+                                        </div>
+
+                                        <!-- Displaying Skills -->
+                                        <div class="skills-container">
+                                            <h3>Skills</h3>
+                                            <c:forEach var="skill" items="${request.listSkills}">
+                                                <div>Skill: ${skill.skillName}</div>
+                                            </c:forEach>
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit and Delete buttons -->
+                    <c:if test="${request.status.statusId == 2}">
+                        <button style="margin-bottom: 6px; border-radius: 0.42rem;" onclick="editRequest(${request.requestId})">
+                            <li>
+                                <a href="#" class="edit">
+                                    <i class="uil uil-check"></i>
+                                </a>
+                            </li>
+                        </button>
+                        <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                            <input type="hidden" name="requestId" value="${request.requestId}" />
+                            <button style="border-radius: 0.42rem;" type="submit">
+                                <li>
+                                    <a href="#" class="remove">
+                                        <i class="uil uil-times"></i>
+                                    </a>
+                                </li>
+                            </button>
+                        </form>
+                    </c:if>
+
+                    <!-- Payment button for 'Wait For Payment' status -->
+                    <c:if test="${request.status.statusName == 'Wait For Payment'}">
+                        <form method="POST" action="ProcessPayment">
+                            <input type="hidden" name="requestId" value="${request.requestId}" />
+                            <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
+                                <li>
+                                    <a href="#" class="pay">
+                                        <i class="uil uil-credit-card"></i> 
+                                    </a>
+                                </li>
+                            </button>
+                        </form>
+                    </c:if>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+
+
             </div>
         </div>
         <script>

@@ -11,43 +11,38 @@ import java.util.List;
 import java.util.Locale;
 import models.Account;
 import models.BookSchedule;
+import models.Day;
 import models.SchedulePublic;
 
 public class Testing {
 
     public static void main(String[] args) {
-        
-//        String d1 = "2024-06-24";
-//        int slot1 = 1;
-//        String d2 = "2024-06-25";
-//        int slot2 = 2;
-//
-//        LocalDate d1_date = LocalDate.parse(d1);
-//        LocalDate d2_date = LocalDate.parse(d2);
-//
-//        dates.add(new BookSchedule(d1_date, slot1));
-//        dates.add(new BookSchedule(d2_date, slot2));
-//
-//        List<BookSchedule> newDates = new ArrayList<>(); // Tạo một danh sách mới để lưu trữ các đối tượng mới
-//        for (BookSchedule date : dates) {
-//            newDates.add(date);
-//            for (int i = 1; i < 4; i++) {
-//                newDates.add(new BookSchedule(date.getScheduleName().plusWeeks(i), date.getScheduleSlot()));
-//            }
-//        }
-//
-//        dates = newDates; // Cập nhật danh sách dates bằng danh sách newDates
-//
-//        for (BookSchedule date : dates) {
-//            System.out.println(date);
-//        }
-        
-//        MentorDAO mentorDao = new MentorDAO();
+
+        MentorDAO mentorDao = new MentorDAO();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
 //        mentorDao.insertCycle("2024-06-24", "2024-07-21", "2024-06-24", "son", "");
 //        
 //        System.out.println("OKE");
+//        System.out.println(getStartDate());
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+        LocalDate begin = nextMonday.plusWeeks(1);
 
-        System.out.println(getStartDate());
+        System.out.println(begin.minusWeeks(1).minusDays(1).toString());
+        ArrayList<Day> listCurrentDays = mentorDao.listCurrentDays();
+        System.out.println(mentorDao.checkContainCycle("son", "2024-07-01", "2024-07-28"));
+        LocalDate startDate = LocalDate.parse(listCurrentDays.get(0).getDateValue());
+        LocalDate endDate = startDate.plusDays(27);
+        LocalDate deadLineDate = LocalDate.now().plusDays(5);
+        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic("son", java.sql.Date.valueOf(startDate), java.sql.Date.valueOf(endDate));
+   
+        for (SchedulePublic schedulePublic : listSchedule) {
+            System.out.println(schedulePublic);
+        }
+        
+        mentorDao.deleteSchedulePublic(3);
+        System.out.println("oke");
+        
     }
 
     public static List<BookSchedule> dates = new ArrayList<>();

@@ -59,13 +59,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         List<Status> statuses = rdao.getAllStatuses();
         List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
 
+        // Log schedules for debugging
         for (RequestDTO requestDTO : requests) {
             List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-            List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
-            requestDTO.setListSchedule(oneWeekSchedule);
-            
-            // Log the schedule for debugging
-            for (SchedulePublic schedule : oneWeekSchedule) {
+            for (SchedulePublic schedule : listSchedule) {
                 System.out.println("Request ID: " + requestDTO.getRequestId() + 
                                     " Schedule: " + schedule.getSlotId() + 
                                     " " + schedule.getDayOfSlot());
@@ -83,6 +80,11 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throw new ServletException(e);
     }
 }
+
+
+    public static void main(String[] args) {
+        
+    }
 
 
 

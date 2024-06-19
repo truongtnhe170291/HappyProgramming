@@ -239,42 +239,43 @@ public class MentorDAO {
 
 
 
-public ArrayList<Day> listDays() {
-    ArrayList<Day> list = new ArrayList<>();
-    try {
-        LocalDate today = LocalDate.now();
-        // Tìm ngày tiếp theo có thể là thứ 2
-        LocalDate mondayWeek1 = today.plusDays(7).with(DayOfWeek.MONDAY);
-        // Tìm ngày Chủ Nhật của tuần tiếp theo
-        LocalDate currentDay = mondayWeek1;
-        int cycle = 1;
+public static ArrayList<Day> listDays() {
+        ArrayList<Day> list = new ArrayList<>();
+        try {
+            LocalDate today = LocalDate.now();
+            LocalDate mondayWeek1 = today.plusDays(7).with(DayOfWeek.MONDAY);
+            LocalDate currentDay = mondayWeek1;
+            int cycle = 1;
 
-        for (int i = 0; i < 28; i++) {
-            String inputDateString = "" + currentDay;
+            for (int i = 0; i < 28; i++) {
+                String inputDateString = "" + currentDay;
 
-            String[] parts = inputDateString.split("-");
-            String month = parts[1];
-            String day = parts[2];
+                String[] parts = inputDateString.split("-");
+                String month = parts[1];
+                String day = parts[2];
 
-            String outputDateString = day + "/" + month;
-            if (i == 7 || i == 14 || i == 21) {
-                cycle++;
+                String outputDateString = day + "/" + month;
+                Date date1 = Date.valueOf(currentDay); // Tạo đối tượng Date từ LocalDate
+
+                if (i == 7 || i == 14 || i == 21) {
+                    cycle++;
+                }
+
+                list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                        outputDateString, cycle, currentDay.getDayOfWeek(), date1));
+                currentDay = currentDay.plusDays(1);
             }
 
-            list.add(new Day(currentDay.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-                    outputDateString, cycle, currentDay.getDayOfWeek()));
-            currentDay = currentDay.plusDays(1);
+        } catch (Exception e) {
+            System.out.println("listDays: " + e.getMessage());
         }
-
-    } catch (Exception e) {
-        System.out.println("listDays: " + e.getMessage());
+        return list;
     }
-    return list;
-}
 
 
 
-    public ArrayList<Week> listCycleWeek() {
+
+    public  ArrayList<Week> listCycleWeek() {
         ArrayList<Week> list = new ArrayList<>();
 
         ArrayList<Day> listDay = listDays();
@@ -363,13 +364,56 @@ public ArrayList<Day> listDays() {
         }
         return slotValue;
     }
+    
+    
+    public ArrayList<Day> listCurrentDays() {
+        ArrayList<Day> list = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
+        LocalDate begin = nextMonday.plusWeeks(1);
+        try {
+            for (int i = 0; i < 7; i++) {
+                list.add(new Day(begin.plusDays(i).getDayOfWeek().toString(), begin.plusDays(i).toString()));
+            }
+        } catch (Exception e) {
+            System.out.println("listDays: " + e.getMessage());
+        }
+        return list;
+    }
+    
+    public void deleteSchedulePublic(int cycleID) {
+        try {
+            String query = "DELETE FROM Selected_Slot\n"
+                    + "WHERE cycle_id = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setInt(1, cycleID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("deleteSchedulePublic: " + e.getMessage());
+        }
+    }
+    
+     public void deleteCycle(String startDate, String endDate, String userName) {
+        try {
+            String query = "DELETE FROM Cycle \n"
+                    + "WHERE start_time = ? and end_time = ? and mentor_name = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setString(3, userName);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("deleteSchedulePublic: " + e.getMessage());
+        }
+    }
+
 
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
-        ArrayList<SelectedSlot> list = dao.listSelectedSlotByCycle(6);
-        for (SelectedSlot s : list) {
-            System.out.println(s);
-        }
+      ArrayList<Day> days = dao.listDays();
+        System.out.println(days);
     }
 
 }

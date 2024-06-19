@@ -59,13 +59,14 @@ public class SchedulePublic {
         this.slot_name = slot_name;
     }
 
-    public SchedulePublic(String mentorName, Date dayOfSlot, String slotId, Date startTime, Date endTime, int cycleID) {
+    public SchedulePublic(String mentorName, Date dayOfSlot, String slotId, Date startTime, Date endTime, int cycleID, String status) {
         this.mentorName = mentorName;
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.cycleID = cycleID;
+        this.status = status;
     }
 
     public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
@@ -203,7 +204,7 @@ public class SchedulePublic {
 
     @Override
     public String toString() {
-        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", weekName=" + weekName + '}';
+        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", weekName=" + weekName + ", Status=" + status +'}';
     }
 
 }
