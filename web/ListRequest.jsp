@@ -288,7 +288,7 @@
                 width: 80% !important;
                 max-width: 50% !important;
             }
-         
+
             .modal-dialog-scrollable {
                 max-height: calc(100vh - 100px);
                 overflow-y: auto;
@@ -498,183 +498,186 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Edit and Delete buttons -->
+                                            <c:if test="${request.status.statusId == 6}">
+                                                <form >
 
-                                        <!-- Edit and Delete buttons -->
-                                        <c:if test="${request.status.statusId == 6}">
-                                            <form method="GET" action="request" ">
-                                                <input type="hidden" name="cvId" value="${request.cvId}" />
-                                                <button type="submit" class="edit btn btn-primary" style="margin-bottom: 6px;margin-right: 6px; border-radius: 0.42rem;" ">
-                                                    Edit
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
-                                                <input type="hidden" name="requestId" value="${request.requestId}" />
-                                                <button style="border-radius: 0.42rem;" type="submit">
-                                                    <li>
-                                                        <a href="#" class="remove btn btn-danger">
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </button>
-                                            </form>
-                                        </c:if>
+                                                </form>
 
-
-                                    <!-- Payment button for 'Wait For Payment' status -->
-                                    <c:if test="${request.status.statusName == 'Wait For Payment'}">
-                                        <form method="POST" action="ProcessPayment">
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
-                                                <li>
-                                                    <a href="#" class="pay">
-                                                        <i class="uil uil-credit-card"></i> 
-                                                    </a>
-                                                </li>
-                                            </button>
-                                        </form>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-
-                const scheduleData = [
-            <c:forEach items="${listSchedule}" var="schedule">
-                {
-                day: "${schedule.nameOfDay}",
-                        slot: ${schedule.slotId.substring(5)},
-                        class: "SWR302",
-                        room: "BE-209",
-                        status: "not-selected",
-                        time: "${schedule.slot_name}",
-                },<c:set var="start" value="${schedule.startTime}"/>
-                <c:set var="end" value="${schedule.endTime}"/>
+                                                <form method="GET" action="request">
+                                                    <input type="hidden" name="cvId" value="${request.cvId}" />
+                                                    <button type="submit" class=" btn btn-primary" style="margin-bottom: 6px;margin-right: 6px; border-radius: 0.42rem;" ">
+                                                        Edit
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                                                    <input type="hidden" name="requestId" value="${request.requestId}" />
+                                                    <button style="border-radius: 0.42rem;" type="submit">
+                                                        <li>
+                                                            <a href="#" class="remove btn btn-danger">
+                                                                Delete
+                                                            </a>
+                                                        </li>
+                                                    </button>
+                                                </form>
+                                            </c:if>
 
 
-            </c:forEach>
-                ];
-                function getMonday(d) {
-                    d = new Date('${start}');
-                    var day = d.getDay(),
-                            diff = d.getDate() - day + (day == 0 ? -6 : 1);
-                    return new Date(d.setDate(diff));
-                }
+                                            <!-- Payment button for 'Wait For Payment' status -->
+                                            <c:if test="${request.status.statusName == 'Wait For Payment'}">
+                                                <form method="POST" action="ProcessPayment">
+                                                    <input type="hidden" name="requestId" value="${request.requestId}" />
+                                                    <button style="margin-bottom: 10px; border-radius: 0.42rem;" type="submit">
+                                                        <li>
+                                                            <a href="#" class="pay">
+                                                                <i class="uil uil-credit-card"></i> 
+                                                            </a>
+                                                        </li>
+                                                    </button>
+                                                </form>
+                                            </c:if>
+                                            </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
 
-                function formatDate(date) {
-                    return (
-                            date.getFullYear().toString().padStart(4, "0") +
-                            "-" +
-                            (date.getMonth() + 1).toString().padStart(2, "0") +
-                            "-" +
-                            date.getDate().toString().padStart(2, "0")
-                            );
-                }
+                                            const scheduleData = [
+                                        <c:forEach items="${listSchedule}" var="schedule">
+                                            {
+                                            day: "${schedule.nameOfDay}",
+                                                    slot: ${schedule.slotId.substring(5)},
+                                                    class: "SWR302",
+                                                    room: "BE-209",
+                                                    status: "not-selected",
+                                                    time: "${schedule.slot_name}",
+                                            },<c:set var="start" value="${schedule.startTime}"/>
+                                            <c:set var="end" value="${schedule.endTime}"/>
 
 
-                function getWeekOptions() {
-                    const startDate = new Date('${start}');
-                    const options = [];
-                    for (let week = 0; week < 4; week++) {
-                        const mondayOfWeek = new Date(startDate);
-                        mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
-                        const sundayOfWeek = new Date(mondayOfWeek);
-                        sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
-                        const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
-                        options.push({value: week + 1, text: optionText});
-                    }
-                    return options;
-                }
+                                        </c:forEach>
+                                            ];
+                                            function getMonday(d) {
+                                                d = new Date('${start}');
+                                                var day = d.getDay(),
+                                                        diff = d.getDate() - day + (day == 0 ? -6 : 1);
+                                                return new Date(d.setDate(diff));
+                                            }
 
-                const weekSelect = document.getElementById("week");
-                const weekOptions = getWeekOptions();
-                weekOptions.forEach((option) => {
-                    const optionElement = document.createElement("option");
-                    optionElement.value = option.value;
-                    optionElement.textContent = option.text;
-                    weekSelect.appendChild(optionElement);
-                });
-                function isClassCurrentlyHappening(classItem, currentDate) {
-                    const [startHour, startMinute] = classItem.time
-                            .split("-")[0]
-                            .split(":")
-                            .map(Number);
-                    const [endHour, endMinute] = classItem.time
-                            .split("-")[1]
-                            .split(":")
-                            .map(Number);
-                    const classStart = new Date(currentDate);
-                    classStart.setHours(startHour, startMinute, 0);
-                    const classEnd = new Date(currentDate);
-                    classEnd.setHours(endHour, endMinute, 0);
-                    return currentDate >= classStart && currentDate < classEnd;
-                }
+                                            function formatDate(date) {
+                                                return (
+                                                        date.getFullYear().toString().padStart(4, "0") +
+                                                        "-" +
+                                                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                                                        "-" +
+                                                        date.getDate().toString().padStart(2, "0")
+                                                        );
+                                            }
 
-                function updateSchedule() {
-                    const selectedWeek = weekSelect.value;
-                    const monday = getMonday(new Date(2024, 0, 1 + (selectedWeek - 1) * 7));
-                    const dayHeaders = document.getElementById("dayHeaders");
-                    dayHeaders.innerHTML = "<th>WEEK</th>";
-                    const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-                    daysOfWeek.forEach((day, index) => {
-                        const date = new Date(monday);
-                        date.setDate(date.getDate() + index);
-                        const th = document.createElement("th");
-                        th.innerHTML = day + `<br>` + formatDate(date);
-                        dayHeaders.appendChild(th);
-                    });
-                    const tbody = document.querySelector("#scheduleTable tbody");
-                    tbody.innerHTML = "";
-                    for (let i = 0; i < 5; i++) {
-                        const row = document.createElement("tr");
-                        row.innerHTML = `<td>Slot` + i + `</td>` + "<td></td>".repeat(7);
-                        tbody.appendChild(row);
-                    }
 
-                    const currentDate = new Date();
-                    scheduleData.forEach((item) => {
-                        const dayIndex = daysOfWeek.indexOf(item.day);
-                        if (dayIndex !== -1) {
-                            const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
-                            let onlineIndicator = item.online
-                                    ? '<span class="online-indicator"></span>'
-                                    : "";
-                            const classDate = new Date(monday);
-                            classDate.setDate(classDate.getDate() + dayIndex);
-                            let onlineNowIndicator = "";
-                            if (
-                                    classDate.toDateString() === currentDate.toDateString() &&
-                                    isClassCurrentlyHappening(item, currentDate)
-                                    ) {
-                                onlineNowIndicator = '<div class="online-now">Online</div>';
-                            }
+                                            function getWeekOptions() {
+                                                const startDate = new Date('${start}');
+                                                const options = [];
+                                                for (let week = 0; week < 4; week++) {
+                                                    const mondayOfWeek = new Date(startDate);
+                                                    mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                                                    const sundayOfWeek = new Date(mondayOfWeek);
+                                                    sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                                                    const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                                                    options.push({value: week + 1, text: optionText});
+                                                }
+                                                return options;
+                                            }
 
-                            cell.innerHTML += '<div class="class-block">' +
-                                    '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
-                                    '<div class="view-materials">View Materials</div>' +
-                                    '<div class="edu-next">EduNext</div>' +
-                                    '<div>at ' + item.room + '</div>' +
-                                    '<div class="' + item.status + '">(' + item.status + ')</div>' +
-                                    '<div class="time">' + item.time + '</div>' +
-                                    onlineNowIndicator +
-                                    '</div>';
-                        }
-                    });
-                }
+                                            const weekSelect = document.getElementById("week");
+                                            const weekOptions = getWeekOptions();
+                                            weekOptions.forEach((option) => {
+                                                const optionElement = document.createElement("option");
+                                                optionElement.value = option.value;
+                                                optionElement.textContent = option.text;
+                                                weekSelect.appendChild(optionElement);
+                                            });
+                                            function isClassCurrentlyHappening(classItem, currentDate) {
+                                                const [startHour, startMinute] = classItem.time
+                                                        .split("-")[0]
+                                                        .split(":")
+                                                        .map(Number);
+                                                const [endHour, endMinute] = classItem.time
+                                                        .split("-")[1]
+                                                        .split(":")
+                                                        .map(Number);
+                                                const classStart = new Date(currentDate);
+                                                classStart.setHours(startHour, startMinute, 0);
+                                                const classEnd = new Date(currentDate);
+                                                classEnd.setHours(endHour, endMinute, 0);
+                                                return currentDate >= classStart && currentDate < classEnd;
+                                            }
 
-                weekSelect.addEventListener("change", updateSchedule);
-                updateSchedule(); // Initial call to set up the schedule
+                                            function updateSchedule() {
+                                                const selectedWeek = weekSelect.value;
+                                                const monday = getMonday(new Date(2024, 0, 1 + (selectedWeek - 1) * 7));
+                                                const dayHeaders = document.getElementById("dayHeaders");
+                                                dayHeaders.innerHTML = "<th>WEEK</th>";
+                                                const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+                                                daysOfWeek.forEach((day, index) => {
+                                                    const date = new Date(monday);
+                                                    date.setDate(date.getDate() + index);
+                                                    const th = document.createElement("th");
+                                                    th.innerHTML = day + `<br>` + formatDate(date);
+                                                    dayHeaders.appendChild(th);
+                                                });
+                                                const tbody = document.querySelector("#scheduleTable tbody");
+                                                tbody.innerHTML = "";
+                                                for (let i = 0; i < 5; i++) {
+                                                    const row = document.createElement("tr");
+                                                    row.innerHTML = `<td>Slot` + i + `</td>` + "<td></td>".repeat(7);
+                                                    tbody.appendChild(row);
+                                                }
 
-                setInterval(updateSchedule, 60000);
-            });
+                                                const currentDate = new Date();
+                                                scheduleData.forEach((item) => {
+                                                    const dayIndex = daysOfWeek.indexOf(item.day);
+                                                    if (dayIndex !== -1) {
+                                                        const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
+                                                        let onlineIndicator = item.online
+                                                                ? '<span class="online-indicator"></span>'
+                                                                : "";
+                                                        const classDate = new Date(monday);
+                                                        classDate.setDate(classDate.getDate() + dayIndex);
+                                                        let onlineNowIndicator = "";
+                                                        if (
+                                                                classDate.toDateString() === currentDate.toDateString() &&
+                                                                isClassCurrentlyHappening(item, currentDate)
+                                                                ) {
+                                                            onlineNowIndicator = '<div class="online-now">Online</div>';
+                                                        }
 
-        </script>
+                                                        cell.innerHTML += '<div class="class-block">' +
+                                                                '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
+                                                                '<div class="view-materials">View Materials</div>' +
+                                                                '<div class="edu-next">EduNext</div>' +
+                                                                '<div>at ' + item.room + '</div>' +
+                                                                '<div class="' + item.status + '">(' + item.status + ')</div>' +
+                                                                '<div class="time">' + item.time + '</div>' +
+                                                                onlineNowIndicator +
+                                                                '</div>';
+                                                    }
+                                                });
+                                            }
 
-    </div>
-</body>
+                                            weekSelect.addEventListener("change", updateSchedule);
+                                            updateSchedule(); // Initial call to set up the schedule
 
-</html>
+                                            setInterval(updateSchedule, 60000);
+                                        });
+
+                                    </script>
+
+                                    </div>
+                                    </body>
+
+                                    </html>

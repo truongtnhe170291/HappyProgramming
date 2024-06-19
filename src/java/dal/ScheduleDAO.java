@@ -51,7 +51,8 @@ public class ScheduleDAO {
                 list.add(new ScheduleDTO(
                         rs.getString(2),
                         rs.getDate(3),
-                        rs.getString(4)));
+                        rs.getString(4),
+                        rs.getInt(1)));
             }
             for (ScheduleDTO s : list) {
                 List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
@@ -101,14 +102,12 @@ public class ScheduleDAO {
         return list;
     }
 
-    public boolean approveRequest(String mentorName, int cycleId) {
-        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE cycle_id = ? and mentor_name = ?";
+    public boolean approveRequest(int cycleId) {
+        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 2 WHERE cycle_id = ?";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(sql);
             ps.setInt(1, cycleId);
-            ps.setString(2, mentorName);
-
             int row = ps.executeUpdate();
             if (row != 1) {
                 return false;
@@ -120,13 +119,12 @@ public class ScheduleDAO {
         return true;
     }
 
-    public boolean rejectRequest(String mentorName, int cycleId) {
-        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ? and mentor_name = ?";
+    public boolean rejectRequest(int cycleId) {
+        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(sql);
             ps.setInt(1, cycleId);
-            ps.setString(2, mentorName);
 
             int row = ps.executeUpdate();
             if (row != 1) {
