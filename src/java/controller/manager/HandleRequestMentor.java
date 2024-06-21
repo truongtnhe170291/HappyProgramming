@@ -17,6 +17,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import models.Day;
 import models.ScheduleDTO;
@@ -81,10 +82,18 @@ public class HandleRequestMentor extends HttpServlet {
         }
         MentorDAO mentorDao = new MentorDAO();
         ArrayList<Slot> listSlot = mentorDao.listSlots();
-        ArrayList<Day> listDay = mentorDao.listDays();
-        
+        //ArrayList<Day> listDay = mentorDao.listDays();
+        List<String> daysOfWeek = Arrays.asList(
+            "MONDAY", 
+            "TUESDAY", 
+            "WEDNESDAY", 
+            "THURSDAY", 
+            "FRIDAY", 
+            "SATURDAY", 
+            "SUNDAY"
+        );
         request.setAttribute("list", list);
-        request.setAttribute("listDay", listDay);
+        request.setAttribute("listDay", daysOfWeek);
         request.setAttribute("listSlot", listSlot);
         
         request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);

@@ -239,7 +239,7 @@ public class MentorDAO {
 
 
 
-public static ArrayList<Day> listDays() {
+public ArrayList<Day> listDays() {
         ArrayList<Day> list = new ArrayList<>();
         try {
             LocalDate today = LocalDate.now();

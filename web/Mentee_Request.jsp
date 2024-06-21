@@ -518,14 +518,7 @@
                         backgroundColor: "#ff7b5a",
                 }).showToast();
                 }
-                const notifyBtns = document.getElementById("notify_btn");
-                if (${wallet} < document.getElementById("totalPriceInput").value){
-                notifyBtns.disabled = true;
-                showToastMessagess("Bạn không đủ tiền để book lịch học. Hãy nạp thêm tiền vào tài khoản để book lịch !!!");
-                }
-                else{
-                notifyBtns.disabled = false;
-    }
+               
                 function getWeekOptions() {
                 const startDate = new Date('${start}');
                 const options = [];
@@ -563,7 +556,10 @@
                 classEnd.setHours(endHour, endMinute, 0);
                 return currentDate >= classStart && currentDate < classEnd;
                 }
-
+                if (${wallet} < document.getElementById("totalPriceInput").value){
+                notifyBtn.disabled = true;
+                showToastMessage("Bạn không đủ tiền.");
+                } 
                 function updateSchedule() {
                 const selectedWeek = weekSelect.value;
                 const monday = getMonday(
@@ -793,7 +789,6 @@
                         });
                 }
 
-                // Event listener cho nút thông báo
                 document.getElementById("notify_btn").addEventListener("click", function(event) {
                 event.preventDefault();
                 const formData = getFormValues();
@@ -937,17 +932,18 @@
                 const scheduleCheckboxes = document.querySelectorAll('input[type="checkbox"][name="schedule"]');
                 const totalPriceInput = document.getElementById("totalPriceInput");
                 const totalPrice = document.getElementById("totalPrice");
-                const rate = ${rate}; // Predefined rate from JSP
-
+                const rate = ${rate}; 
+                const balance = ${wallet};  
+                
                 function getSundayOfWeek() {
-                const currentDate = new Date();
+                const currentDate = new Date('${start}');
                 const dayOfWeek = currentDate.getDay();
                 const daysUntilSunday = (7 - dayOfWeek) % 7;
                 const sundayDate = new Date(currentDate);
                 sundayDate.setDate(currentDate.getDate() + daysUntilSunday);
                 return sundayDate.toISOString().split('T')[0];
                 }
-
+               
                 function getFormattedCurrentDate() {
                 const currentDate = new Date();
                 return currentDate.toISOString().split('T')[0];
@@ -970,8 +966,6 @@
                 function countSelectedSkills() {
                 return [...skillRadios].filter(radio => radio.checked).length;
                 }
-
-
                 function validateForm() {
                 const deadlineDate = deadlineInput.value;
                 const currentDate = getFormattedCurrentDate();
@@ -982,12 +976,18 @@
                 notifyBtn.disabled = true;
                 showToastMessage("Please select a valid deadline date.");
                 return false;
-                } else if (selectedSkills === 0) {
+                }    
+                else if (selectedSkills === 0) {
                 notifyBtn.disabled = true;
                 showToastMessage("Please select at least one skill.");
                 return false;
-                } 
                 }
+                else{
+                    notifyBtn.disabled = false;
+                     return true;
+                }
+                }
+
 
                 deadlineInput.addEventListener('change', validateForm);
                 skillRadios.forEach(radio => {
