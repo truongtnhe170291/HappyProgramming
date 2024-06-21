@@ -149,7 +149,7 @@
                 <h1>Statistic Requests Mentor</h1>
                 <div class="statistics">
                     <div class="accepted">
-                        <strong>Accepted Requests:</strong>
+                        <strong>Completed Requests:</strong>
                         <span>${staticMentor.acceptedRequests}</span>
                     </div>
                     <div class="invited">
