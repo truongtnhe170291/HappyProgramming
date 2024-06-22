@@ -8,7 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Update CV of mentor</title>
-        <style>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>       
+            <style>
             .author_2{
                 transform: translate(750px,-87px);
             }
@@ -196,7 +198,7 @@
                 border-radius: 5px;
                 background-color: #f1f1f1;
             }
-           .feedback-container img {
+            .feedback-container img {
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
@@ -217,31 +219,31 @@
                 color: #555;
             }
             .hidden {
-            display: none;
-        }
-        h4 {
-           
-            cursor: pointer;
-            padding: 10px 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            color: #fff;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-        #set-rate-as1, #apply-cv-as2 {
-             margin: 6px 12px;
-            background-color: #a6e9f4;
-        }
-        #set-rate-as1:hover, #apply-cv-as2:hover {
-            background-color: #5a6268;
-        }
-        #apply-cv-as1, #set-rate-as2 {
-            background-color: #a6e9f4;
-        }
-        #apply-cv-as1:hover, #set-rate-as2:hover {
-            background-color: #138496;
-        }
+                display: none;
+            }
+            h4 {
+
+                cursor: pointer;
+                padding: 10px 15px;
+                margin: 10px 0;
+                border-radius: 5px;
+                color: #fff;
+                text-align: center;
+                transition: background-color 0.3s ease;
+            }
+            #set-rate-as1, #apply-cv-as2 {
+                margin: 6px 12px;
+                background-color: #a6e9f4;
+            }
+            #set-rate-as1:hover, #apply-cv-as2:hover {
+                background-color: #5a6268;
+            }
+            #apply-cv-as1, #set-rate-as2 {
+                background-color: #a6e9f4;
+            }
+            #apply-cv-as1:hover, #set-rate-as2:hover {
+                background-color: #138496;
+            }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -271,7 +273,7 @@
                             <div class="d-flex align-items-center user-member__title mb-30 mt-30">
                                 <h4 class="text-capitalize" id="apply-cv-as1">Apply CV</h4>
                                 <h4 class="text-capitalize" id="set-rate-as1">Set Rate</h4>
-    
+
                             </div>
                         </div>
                     </div>
@@ -554,55 +556,56 @@
                                             </div>
                                         </div>
                                     </div>
-                                         <div class="feedback-container">
-                                            <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
-                                            <div class="feedback-content">
-                                                <strong>Feedback From Manager:</strong>
-                                                <p>${cv.note}</p>
-                                            </div>
+                                    <div class="feedback-container">
+                                        <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
+                                        <div class="feedback-content">
+                                            <strong>Feedback From Manager:</strong>
+                                            <p>${cv.note}</p>
                                         </div>
+                                    </div>
                                 </div>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                       <div class="container-fluid as2 hidden">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid as2 hidden">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex align-items-center user-member__title mb-30 mt-30">
-                                 
-    <h4 class="text-capitalize" id="apply-cv-as2">Apply CV</h4>
-    <h4 class="text-capitalize" id="set-rate-as2">Set Rate</h4>
+
+                                <h4 class="text-capitalize" id="apply-cv-as2">Apply CV</h4>
+                                <h4 class="text-capitalize" id="set-rate-as2">Set Rate</h4>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="user-info-tab w-100 bg-white global-shadow radius-xl mb-50">
-                                <div class="ap-tab-wrapper border-bottom ">
-                                    <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <form action="SetRate" method="post">
+                                    <div class="ap-tab-wrapper border-bottom ">
+                                        <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-                                        <li class="nav-item hes">
-                                                
-                                                            <form action="SetRate" method="post">
+                                            <li class="nav-item hes">
+
+
                                                 <button type="submit" class="sets">
                                                     Set Rate
                                                     <div class="star-1">
@@ -720,285 +723,295 @@
                                                         </svg>
                                                     </div>
                                                 </button>
-                                                                    
-                                        </li>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" id="v-pills-tabContent">
 
-                                    </ul>
-                                </div>
-                                <div class="tab-content" id="v-pills-tabContent">
+                                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                            <div class="row justify-content-center">
+                                                <div class="col-xxl-4 col-10">
 
-                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                        <div class="row justify-content-center">
-                                            <div class="col-xxl-4 col-10">
-                                                
-                                               
-                                                    
-                                                     
-                                                        <div class="edit-profile__body">
-                                                         <label for="rate" style="font-size: 14px;
-                font-weight: 500;
-                color: #495057;
-                margin-bottom: 5px;
-                display: block;;">Your Current Rate:</label>
-                <input type="number" name="rate" value="${rate}" style="width: 100%;
-                padding: 10px;
-                margin-bottom: 20px;
-                border: 1px solid #ced4da;
-                border-radius: 5px;
-                font-size: 16px;
-                color: #495057;">
+                                                    <div class="edit-profile__body">
+                                                        <label for="rate" style="font-size: 14px;
+                                                               font-weight: 500;
+                                                               color: #495057;
+                                                               margin-bottom: 5px;
+                                                               display: block;;">Your Current Rate:</label>
+                                                        <input type="number" class="rate_all" name="rate" value="${rate}" style="width: 100%;
+                                                               padding: 10px;
+                                                               margin-bottom: 20px;
+                                                               border: 1px solid #ced4da;
+                                                               border-radius: 5px;
+                                                               font-size: 16px;
+                                                               color: #495057;">
                                                         <input type="hidden" name="mentorName" value="${mentorName}" hidden="true">
-                                                  
-                                                        </div>
-                                                   
+
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
- </form>
-                                </div>
-                                </div></div></div></div>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
+                                </form>
+                            </div>
+                        </div></div></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </main>
+    <div id="overlayer">
+        <div class="loader-overlay">
+            <div class="dm-spin-dots spin-lg">
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
             </div>
-                                </main>
-                                <div id="overlayer">
-                                    <div class="loader-overlay">
-                                        <div class="dm-spin-dots spin-lg">
-                                            <span class="spin-dot badge-dot dot-primary"></span>
-                                            <span class="spin-dot badge-dot dot-primary"></span>
-                                            <span class="spin-dot badge-dot dot-primary"></span>
-                                            <span class="spin-dot badge-dot dot-primary"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="overlay-dark-sidebar"></div>
-                                <div class="customizer-overlay"></div>
-                                        <script>
-                                            document.getElementById('set-rate-as1').addEventListener('click', function() {
-                                                document.querySelector('.as1').classList.add('hidden');
-                                                document.querySelector('.as2').classList.remove('hidden');
-                                            });
+        </div>
+    </div>
+    <div class="overlay-dark-sidebar"></div>
+    <div class="customizer-overlay"></div>
+ <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rate = Number(document.querySelector(".rate_all").value);
+            console.log(rate);
+            if (rate <= 0) {
+                 Toastify({
+                text: ('Bạn chưa nhập Rate. Hãy điền rate !!!'),
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                }).showToast();
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('set-rate-as1').addEventListener('click', function () {
+            document.querySelector('.as1').classList.add('hidden');
+            document.querySelector('.as2').classList.remove('hidden');
+        });
 
-                                            document.getElementById('apply-cv-as2').addEventListener('click', function() {
-                                                document.querySelector('.as2').classList.add('hidden');
-                                                document.querySelector('.as1').classList.remove('hidden');
-                                            });
-                                        </script>
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        var emailInput = document.getElementById('email');
-                                        var emailError = document.getElementById('emailError');
-                                        var mailcv = document.getElementById('mailcv');
-                                        var mailcvErr = document.getElementById('mailcvErr');
-                                        var phoneInput = document.getElementById('phoneNumber');
-                                        var phoneError = document.getElementById('phoneError');
-                                        var nameInput = document.getElementById('fullname');
-                                        var nameError = document.getElementById('nameError');
-                                        var dobInput = document.getElementById('dob');
-                                        var dobError = document.getElementById('dobError');
-                                        var dobcv = document.getElementById('dobcv');
-                                        var dobcvErr = document.getElementById('dobcvErr');
-                                        var submitForm = document.getElementById('submitForm');
-                                        var addressInput = document.getElementById('address');
-                                        var addressError = document.getElementById('addressError');
+        document.getElementById('apply-cv-as2').addEventListener('click', function () {
+            document.querySelector('.as2').classList.add('hidden');
+            document.querySelector('.as1').classList.remove('hidden');
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var emailInput = document.getElementById('email');
+            var emailError = document.getElementById('emailError');
+            var mailcv = document.getElementById('mailcv');
+            var mailcvErr = document.getElementById('mailcvErr');
+            var phoneInput = document.getElementById('phoneNumber');
+            var phoneError = document.getElementById('phoneError');
+            var nameInput = document.getElementById('fullname');
+            var nameError = document.getElementById('nameError');
+            var dobInput = document.getElementById('dob');
+            var dobError = document.getElementById('dobError');
+            var dobcv = document.getElementById('dobcv');
+            var dobcvErr = document.getElementById('dobcvErr');
+            var submitForm = document.getElementById('submitForm');
+            var addressInput = document.getElementById('address');
+            var addressError = document.getElementById('addressError');
 
-                                        var emailInput2 = document.getElementById('email2');
-                                        var emailError2 = document.getElementById('emailError2');
-                                        var nameInput2 = document.getElementById('fullname2');
-                                        var nameError2 = document.getElementById('nameError2');
-                                        var dobInput2 = document.getElementById('dob2');
-                                        var dobError2 = document.getElementById('dobError2');
-                                        var submitForm2 = document.getElementById('submitForm2');
-                                        var addressInput2 = document.getElementById('address2');
-                                        var addressError2 = document.getElementById('addressError2');
-                                        var sucess = document.querySelector('.color-success');
-                                        var danger = document.querySelector('.color-danger');
-                                        var warning = document.querySelector('.color-warning');
-                                        var send = document.querySelector('.sets');
+            var emailInput2 = document.getElementById('email2');
+            var emailError2 = document.getElementById('emailError2');
+            var nameInput2 = document.getElementById('fullname2');
+            var nameError2 = document.getElementById('nameError2');
+            var dobInput2 = document.getElementById('dob2');
+            var dobError2 = document.getElementById('dobError2');
+            var submitForm2 = document.getElementById('submitForm2');
+            var addressInput2 = document.getElementById('address2');
+            var addressError2 = document.getElementById('addressError2');
+            var sucess = document.querySelector('.color-success');
+            var danger = document.querySelector('.color-danger');
+            var warning = document.querySelector('.color-warning');
+            var send = document.querySelector('.sets');
 
-                                        send.addEventListener('click', (e) => {
-                                            danger.style.display = 'none';
-                                            sucess.style.display = 'block';
-                                            warning.style.display = 'none';
+            send.addEventListener('click', (e) => {
+                danger.style.display = 'none';
+                sucess.style.display = 'block';
+                warning.style.display = 'none';
 
-                                        });
-                                        submitForm2.addEventListener('click', (e) => {
-                                            danger.style.display = 'none';
-                                            sucess.style.display = 'none';
-                                            warning.style.display = 'block';
-                                        });
+            });
+            submitForm2.addEventListener('click', (e) => {
+                danger.style.display = 'none';
+                sucess.style.display = 'none';
+                warning.style.display = 'block';
+            });
 
-                                        if (addressInput) {
-                                            addressInput.addEventListener('input', function () {
-                                                var addressValue = addressInput.value;
-                                                if (addressValue === "") {
-                                                    addressError.style.display = 'block';
-                                                    submitForm.disabled = true;
-                                                } else {
-                                                    addressError.style.display = 'none';
-                                                    submitForm.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (addressInput) {
+                addressInput.addEventListener('input', function () {
+                    var addressValue = addressInput.value;
+                    if (addressValue === "") {
+                        addressError.style.display = 'block';
+                        submitForm.disabled = true;
+                    } else {
+                        addressError.style.display = 'none';
+                        submitForm.disabled = false;
+                    }
+                });
+            }
 
-                                        if (addressInput2) {
-                                            addressInput2.addEventListener('input', function () {
-                                                var addressValue = addressInput2.value;
-                                                if (addressValue === "") {
-                                                    addressError2.style.display = 'block';
-                                                    submitForm2.disabled = true;
-                                                } else {
-                                                    addressError2.style.display = 'none';
-                                                    submitForm2.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (addressInput2) {
+                addressInput2.addEventListener('input', function () {
+                    var addressValue = addressInput2.value;
+                    if (addressValue === "") {
+                        addressError2.style.display = 'block';
+                        submitForm2.disabled = true;
+                    } else {
+                        addressError2.style.display = 'none';
+                        submitForm2.disabled = false;
+                    }
+                });
+            }
 
-                                        if (emailInput) {
-                                            emailInput.addEventListener('input', function () {
-                                                var emailValue = emailInput.value;
-                                                if (!validateEmail(emailValue)) {
-                                                    emailError.style.display = 'block';
-                                                    submitForm.disabled = true;
-                                                } else {
-                                                    emailError.style.display = 'none';
-                                                    submitForm.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (emailInput) {
+                emailInput.addEventListener('input', function () {
+                    var emailValue = emailInput.value;
+                    if (!validateEmail(emailValue)) {
+                        emailError.style.display = 'block';
+                        submitForm.disabled = true;
+                    } else {
+                        emailError.style.display = 'none';
+                        submitForm.disabled = false;
+                    }
+                });
+            }
 
-                                        if (emailInput2) {
-                                            emailInput2.addEventListener('input', function () {
-                                                var emailValue = emailInput2.value;
-                                                if (!validateEmail(emailValue)) {
-                                                    emailError2.style.display = 'block';
-                                                    submitForm2.disabled = true;
-                                                } else {
-                                                    emailError2.style.display = 'none';
-                                                    submitForm2.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (emailInput2) {
+                emailInput2.addEventListener('input', function () {
+                    var emailValue = emailInput2.value;
+                    if (!validateEmail(emailValue)) {
+                        emailError2.style.display = 'block';
+                        submitForm2.disabled = true;
+                    } else {
+                        emailError2.style.display = 'none';
+                        submitForm2.disabled = false;
+                    }
+                });
+            }
 
-                                        if (phoneInput) {
-                                            phoneInput.addEventListener('input', function () {
-                                                var phoneValue = phoneInput.value;
-                                                if (!validatePhone(phoneValue)) {
-                                                    phoneError.style.display = 'block';
-                                                    submitForm.disabled = true;
-                                                } else {
-                                                    phoneError.style.display = 'none';
-                                                    submitForm.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function () {
+                    var phoneValue = phoneInput.value;
+                    if (!validatePhone(phoneValue)) {
+                        phoneError.style.display = 'block';
+                        submitForm.disabled = true;
+                    } else {
+                        phoneError.style.display = 'none';
+                        submitForm.disabled = false;
+                    }
+                });
+            }
 
-                                        if (nameInput) {
-                                            nameInput.addEventListener('input', function () {
-                                                var nameValue = nameInput.value;
-                                                if (!validateName(nameValue)) {
-                                                    nameError.style.display = 'block';
-                                                    submitForm.disabled = true;
-                                                } else {
-                                                    nameError.style.display = 'none';
-                                                    submitForm.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (nameInput) {
+                nameInput.addEventListener('input', function () {
+                    var nameValue = nameInput.value;
+                    if (!validateName(nameValue)) {
+                        nameError.style.display = 'block';
+                        submitForm.disabled = true;
+                    } else {
+                        nameError.style.display = 'none';
+                        submitForm.disabled = false;
+                    }
+                });
+            }
 
-                                        if (nameInput2) {
-                                            nameInput2.addEventListener('input', function () {
-                                                var nameValue = nameInput2.value;
-                                                if (!validateName(nameValue)) {
-                                                    nameError2.style.display = 'block';
-                                                    submitForm2.disabled = true;
-                                                } else {
-                                                    nameError2.style.display = 'none';
-                                                    submitForm2.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (nameInput2) {
+                nameInput2.addEventListener('input', function () {
+                    var nameValue = nameInput2.value;
+                    if (!validateName(nameValue)) {
+                        nameError2.style.display = 'block';
+                        submitForm2.disabled = true;
+                    } else {
+                        nameError2.style.display = 'none';
+                        submitForm2.disabled = false;
+                    }
+                });
+            }
 
-                                        if (dobInput) {
-                                            dobInput.addEventListener('input', function () {
-                                                var dobValue = dobInput.value;
-                                                if (!validateBirthDate(dobValue)) {
-                                                    dobError.style.display = 'block';
-                                                    submitForm.disabled = true;
-                                                } else {
-                                                    dobError.style.display = 'none';
-                                                    submitForm.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (dobInput) {
+                dobInput.addEventListener('input', function () {
+                    var dobValue = dobInput.value;
+                    if (!validateBirthDate(dobValue)) {
+                        dobError.style.display = 'block';
+                        submitForm.disabled = true;
+                    } else {
+                        dobError.style.display = 'none';
+                        submitForm.disabled = false;
+                    }
+                });
+            }
 
-                                        if (dobInput2) {
-                                            dobInput2.addEventListener('input', function () {
-                                                var dobValue = dobInput2.value;
-                                                if (!validateBirthDate(dobValue)) {
-                                                    dobError2.style.display = 'block';
-                                                    submitForm2.disabled = true;
-                                                } else {
-                                                    dobError2.style.display = 'none';
-                                                    submitForm2.disabled = false;
-                                                }
-                                            });
-                                        }
+            if (dobInput2) {
+                dobInput2.addEventListener('input', function () {
+                    var dobValue = dobInput2.value;
+                    if (!validateBirthDate(dobValue)) {
+                        dobError2.style.display = 'block';
+                        submitForm2.disabled = true;
+                    } else {
+                        dobError2.style.display = 'none';
+                        submitForm2.disabled = false;
+                    }
+                });
+            }
 
-                                        function validatePhone(phone) {
-                                            var re = /^(0|84)(2(0[3-9]|1[0-689]|2[0-25-9]|3[2-9]|4[0-9]|5[124-9]|6[0369]|7[0-7]|8[0-9]|9[012346789])|3[2-9]|5[25689]|7[06-9]|8[0-9]|9[012346789])([0-9]{7})$/;
-                                            return re.test(phone);
-                                        }
+            function validatePhone(phone) {
+                var re = /^(0|84)(2(0[3-9]|1[0-689]|2[0-25-9]|3[2-9]|4[0-9]|5[124-9]|6[0369]|7[0-7]|8[0-9]|9[012346789])|3[2-9]|5[25689]|7[06-9]|8[0-9]|9[012346789])([0-9]{7})$/;
+                return re.test(phone);
+            }
 
-                                        function validateEmail(email) {
-                                            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                                            return re.test(email);
-                                        }
+            function validateEmail(email) {
+                var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
 
-                                        function validateName(name) {
-                                            var re = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
-                                            return re.test(name);
-                                        }
+            function validateName(name) {
+                var re = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
+                return re.test(name);
+            }
 
-                                        function validateBirthDate(birthDate) {
-                                            var currentDate = new Date();
+            function validateBirthDate(birthDate) {
+                var currentDate = new Date();
 
-                                            var selectedDate = new Date(birthDate);
+                var selectedDate = new Date(birthDate);
 
-                                            if (selectedDate >= currentDate) {
-                                                return false;
-                                            }
-                                            return true;
-                                        }
-                                    });
+                if (selectedDate >= currentDate) {
+                    return false;
+                }
+                return true;
+            }
+        });
 
-                                    document.getElementById('file-uploadcv').addEventListener('change', function (event) {
-                                        const file = event.target.files[0];
-                                        if (file) {
-                                            const reader = new FileReader();
-                                            reader.onload = function (e) {
-                                                document.getElementById('profile-imgcv').src = e.target.result;
-                                            };
-                                            reader.readAsDataURL(file);
-                                        }
-                                    });
+        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profile-imgcv').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-                                </script>
-                                </body>
-                                </html>
+    </script>
+</body>
+</html>

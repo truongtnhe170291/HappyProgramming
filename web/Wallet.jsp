@@ -280,6 +280,8 @@ main {
 }
 
         </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
   </head>
   <body>
       <jsp:include page="header.jsp" />
@@ -296,10 +298,10 @@ main {
         <main>
           <section class="wallet-overview">
             <div class="total-balance">
-                <h1>Available: ${requestScope.wallet.avaiable_binance}<span> VND</span></h1>
+    <h3>Balance: <span id="real_binance" value="${requestScope.wallet.real_binance}">${requestScope.wallet.real_binance}</span><span> VND</span></h3>
             </div>
             <div class="total-balance">
-                <h1>Balance: ${requestScope.wallet.real_binance}<span> VND</span></h1>
+    <h3>Available: <span id="available_binance" value="${requestScope.wallet.avaiable_binance}">${requestScope.wallet.avaiable_binance}</span><span> VND</span></h3>
             </div>
 <!--            <div class="wallet-list"></div>-->
           </section>
@@ -326,10 +328,11 @@ main {
                   <div class="form-group">
                     <label for="amount">Amount</label>
                     <input name="amount"
-                      type="number"
-                      id="amount"
-                      placeholder="Enter amount"
-                      required
+                           type="number"
+                           id="amount"
+                           placeholder="Enter amount"
+                           oninput="validateAmount(this)"
+                           required
                     />
                   </div>
                   <div class="form-group">
@@ -351,6 +354,55 @@ main {
         </main>
       </div>
     </div>
+            <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+             <script>
+        function formatCurrency(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        window.onload = function() {
+            document.querySelectorAll('.test_trans').forEach(function(element) {
+                let amount = element.getAttribute('value');
+                element.innerText = element.innerText.charAt(0) + formatCurrency(amount);
+            });
+
+            let realBinance = document.getElementById('real_binance');
+            realBinance.innerText = formatCurrency(realBinance.getAttribute('value')) ;
+
+            let availableBinance = document.getElementById('available_binance');
+            availableBinance.innerText = formatCurrency(availableBinance.getAttribute('value'));
+        }
+    </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const amountInput = document.getElementById('amount');
+    const depositBtn = document.querySelector('.deposit-btn');
+
+    amountInput.addEventListener('input', function() {
+        validateAmount(this.value);
+    });
+
+    function validateAmount(value) {
+        let parsedAmount = parseInt(value);
+        if (parsedAmount < 5000 || parsedAmount > 10000000) {
+            depositBtn.disabled = true;
+            Toastify({
+                text: 'Amount must be between 5,000 and 10,000,000',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                stopOnFocus: true,
+                close: true
+            }).showToast();
+        } else {
+            depositBtn.disabled = false;
+        }
+    }
+});
+
+
+</script>
                 <script>
                     document.querySelectorAll('.transactions td:first-child').forEach(function(td) {
   td.textContent = td.textContent.replace('T', ' '); 

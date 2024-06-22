@@ -121,7 +121,7 @@
     </head>
 
     <body>
-         <div class="loader"></div>
+        <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
                 <div class="navbar-bg"></div>
@@ -166,9 +166,8 @@
                                                 class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assetss/img/user.png"
                                                                                              class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
                             <div class="dropdown-menu dropdown-menu-right pullDown">
-                                <div class="dropdown-title">Hello Sarah Smith</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+                                <div class="dropdown-title">Hello Manager</div>
+                                <a href="logoutManager" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                                     Logout
                                 </a>
                             </div>
@@ -216,7 +215,7 @@
                                     <i class="fas fa-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">Schedule</li>
-                         
+
                         </ul>
                         <div class="section-body">
                             <div class="row clearfix">
@@ -418,63 +417,63 @@
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
-         document.addEventListener('DOMContentLoaded', (e) => {
-    const eyeIcons = document.querySelectorAll(".fas.fa-eye");
-    eyeIcons.forEach(function (icon) {
-        icon.addEventListener('click', function () {
-            const modal = this.parentElement.querySelector('.modal');
-            modal.style.display = 'block';
-        });
-    });
+            document.addEventListener('DOMContentLoaded', (e) => {
+                const eyeIcons = document.querySelectorAll(".fas.fa-eye");
+                eyeIcons.forEach(function (icon) {
+                    icon.addEventListener('click', function () {
+                        const modal = this.parentElement.querySelector('.modal');
+                        modal.style.display = 'block';
+                    });
+                });
 
-    const closeButtons = document.querySelectorAll('.close');
-    closeButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const modal = this.closest('.modal');
-            modal.style.display = 'none';
-        });
-    });
+                const closeButtons = document.querySelectorAll('.close');
+                closeButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        const modal = this.closest('.modal');
+                        modal.style.display = 'none';
+                    });
+                });
 
-    window.onclick = function (event) {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
-        }
-    };
+                window.onclick = function (event) {
+                    if (event.target.classList.contains('modal')) {
+                        event.target.style.display = 'none';
+                    }
+                };
 
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-            const cvId = this.id.split('_')[1];
-            const note = document.getElementById('note_' + cvId);
-            const noteInput = document.getElementById('note_Input_' + cvId);
-            const status = document.getElementById('status_' + cvId);
-            status.value = 2;
-            noteInput.value = note.value;
-            const form = document.getElementById('form_' + cvId);
-            form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
-            form.method = 'get';
-            form.submit();
-        });
-    });
+                const editButtons = document.querySelectorAll('.edit');
+                editButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 2;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
 
-    const rejectButtons = document.querySelectorAll('.reject');
-    rejectButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-            const cvId = this.id.split('_')[1];
-            const note = document.getElementById('note_' + cvId);
-            const noteInput = document.getElementById('note_Input_' + cvId);
-            const status = document.getElementById('status_' + cvId);
-            status.value = 3;
-            noteInput.value = note.value;
-            const form = document.getElementById('form_' + cvId);
-            form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
-            form.method = 'get';
-            form.submit();
-        });
-    });
-});
+                const rejectButtons = document.querySelectorAll('.reject');
+                rejectButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 3;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+            });
 
         </script>
     </body>

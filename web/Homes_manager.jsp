@@ -155,12 +155,9 @@
               class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assetss/img/user.png"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello Sarah Smith</div>
-              <a href="profile.html" class="dropdown-item has-icon"> <i class="far
-										fa-user"></i> Profile        
-              </a>
+              <div class="dropdown-title">Hello Manager</div>
               <div class="dropdown-divider"></div>
-              <a href="loginManager.jsp" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="logoutManager" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
             </div>

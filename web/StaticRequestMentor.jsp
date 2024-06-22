@@ -169,7 +169,9 @@
         color: red;
         font-weight: bold;
     }
-
+    .contents {
+        margin-top: 400px !important;
+    }
 </style>
 
         <!-- Include Google Fonts and Font Awesome for enhanced styling and icons -->
