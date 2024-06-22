@@ -140,7 +140,7 @@
                                             <table>
                                                 <thead>
                                                     <tr>
-                                                        <th><input type="checkbox" id="selectAll" /></th>
+                                                       
                                                         <th>STT</th>
                                                         <th>ID</th>
                                                         <th>Name</th>
@@ -151,7 +151,7 @@
                                                 <tbody>
                                                     <c:forEach var="skill" items="${skills}" varStatus="status">
                                                         <tr>
-                                                            <td><input type="checkbox" /></td>
+                                                           
                                                             <td>${status.index + 1}</td>
                                                             <td>${skill.skillID}</td>
                                                             <td>${skill.skillName}</td>
@@ -159,9 +159,9 @@
                                                                     ${skill.status ? 'Enable' : 'Disable'}
                                                                 </span></td>
                                                             <td class="actions">
-                                                                <button class="edit-btn">✏️</button>
+                                                                
 
-                                                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal"
+                                                                <button class="btn btn-info" style="color:#002D57;" data-bs-toggle="modal" data-bs-target="#updateModal"
                                                                         data-skillid="${skill.skillID}"
                                                                         data-skillname="${skill.skillName}"
                                                                         data-img="${skill.img}"
@@ -205,9 +205,9 @@
                                                 <form id="addForm" action="createSkill" method="post">
 
                                                     <label for="addName">Name:</label>
-                                                    <input type="text" id="addName" required />
-                                                    <label for="newImg">Image URL</label>
-                                                    <input name="img" type="text" id="newImg" required />
+                                                    <input type="text" id="addName" required name="skillName"/>
+                                                    <label for="newImg" >Image URL</label>
+                                                    <input name="img" type="text" id="newImg" required/>
                                                     <label for="newDescription" class="form-label">Description</label>
                                                     <textarea class="form-control" id="newDescription" name="description" rows="3"></textarea>
                                                     <input type="hidden" name="status" value="true">
@@ -488,36 +488,7 @@
                     });
                 });
             </script>
-            <!--update skill-->
-            <!--                <script>
-                    // JavaScript to handle modal data population
-                    var updateModal = document.getElementById('updateModal');
-                    updateModal.addEventListener('show.bs.modal', function (event) {
-                        var button = event.relatedTarget;
-                        var skillID = button.getAttribute('data-skillid');
-                        var skillName = button.getAttribute('data-skillname');
-                        var img = button.getAttribute('data-img');
-                        var description = button.getAttribute('data-description');
-                        var status = button.getAttribute('data-status');
-            
-                        var modalTitle = updateModal.querySelector('.modal-title');
-                        var skillIDInput = updateModal.querySelector('#skillID');
-                        var skillNameInput = updateModal.querySelector('#skillName');
-                        var imgInput = updateModal.querySelector('#img');
-                        var descriptionInput = updateModal.querySelector('#description');
-                        var statusInput = updateModal.querySelector('#status');
-            
-                        modalTitle.textContent = 'Update Skill: ' + skillName;
-                        skillIDInput.value = skillID;
-                        skillNameInput.value = skillName;
-                        imgInput.value = img;
-                        descriptionInput.value = description;
-                        statusInput.value = status;
-                    });
-                </script>--> 
-
-
-
+           
             <script src="assetss/js/app.min.js"></script>
             <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
             <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
