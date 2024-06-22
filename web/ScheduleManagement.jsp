@@ -188,105 +188,67 @@
                 border-color: #117a8b;
             }
             .form-container {
-                display: flex;
-                justify-content: center;
-                max-width: 900px;
-                margin: 0 auto;
-                perspective: 800px;
-            }
+                        max-width: 100%;
+                        margin: 0 auto;
+                        font-family: Arial, sans-serif;
+                    }
 
-            .form-container table {
-                border-collapse: separate;
-                border-spacing: 0 15px;
-                border-radius: 20px;
-                overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                background: #fff;
-                transform-style: preserve-3d;
-                transition: transform 0.3s ease;
-            }
+                    .form-container table {
+                        width: 100%;
+                        border-collapse: separate;
+                        border-spacing: 5px;
+                        background-color: #f8f9fa;
+                    }
 
-            .form-container table:hover {
-                transform: scale(1.05);
-            }
+                    .form-container th {
+                        background-color: #e9ecef;
+                        padding: 10px;
+                        text-align: center;
+                        font-weight: bold;
+                    }
 
-            .form-container th,
-            .form-container td {
-                color: #333;
-                text-shadow: none;
-            }
+                    .form-container td {
+                        background-color: white;
+                        padding: 0;
+                        height: 80px;
+                        vertical-align: top;
+                        border: 1px solid #dee2e6;
+                    }
 
-            .form-container td.booked {
-                background-color: rgba(255, 0, 0, 0.5);
-                color: #fff;
-            }
+                    .form-container td:first-child {
+                        background-color: #e9ecef;
+                        font-weight: bold;
+                        text-align: center;
+                        vertical-align: middle;
+                    }
 
-            .form-container th {
-                background-color: transparent;
-                font-weight: bold;
-                letter-spacing: 2px;
-                transform: translateZ(50px);
-            }
+                    .form-container td > div {
+                        background-color: #e6f3ff;
+                        margin: 5px;
+                        padding: 5px;
+                        border-radius: 5px;
+                        height: calc(100% - 10px);
+                        font-size: 14px;
+                    }
 
-            .form-container td {
-                background-color: rgba(255, 255, 255, 0.2);
-                backdrop-filter: blur(10px);
-                transition: background-color 0.3s ease, transform 0.3s ease;
-                border: 1px solid #ADD8E6; /* Thêm ???ng vi?n cho các ô td */
-            }
+                    .form-container td > div > div:first-child {
+                        font-weight: bold;
+                        color: #0056b3;
+                    }
 
-            .form-container td:hover {
-                background-color: #ADD8E6;
-                transform: scale(1.1);
-            }
+                    .form-container td > div > div:nth-child(2) {
+                        color: #28a745;
+                    }
 
-            .over {
-                background-color: #ADD8E6;
-            }
+                    .form-container td > div > div:nth-child(3) {
+                        color: #6c757d;
+                    }
 
-            .form-container select {
-                padding: 10px 15px;
-                border: none;
-                border-radius: 10px;
-                background-color: #ccc;
-                color: #000;
-                font-weight: bold;
-                backdrop-filter: blur(10px);
-                margin-bottom: 20px;
-            }
-            .form-container td {
-                position: relative;
-                padding: 0;
-            }
-
-            .form-container td div {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                padding: 8px 12px;
-                background-color: #f2f2f2;
-                border-radius: 4px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                font-size: 14px;
-                font-weight: bold;
-                color: #333;
-                white-space: nowrap;
-            }
-
-            .form-container td div.booked {
-                background-color: rgba(255, 0, 0, 0.8);
-                color: #fff;
-            }
-
-            .form-container td div a {
-                color: inherit;
-                text-decoration: none;
-            }
-
-            .form-container td div a:hover {
-                text-decoration: underline;
-            }
+                    .form-container select {
+                        width: 100%;
+                        padding: 5px;
+                        margin-top: 5px;
+                    }
         </style>
     </head>
 
@@ -441,13 +403,8 @@
                                                                                 <table border="1" width="100%">
                                                                                     <tr class="over">
                                                                                         <th rowspan="2">
-                                                                                            WEEK</br>
-                                                                                            <select>
-<!--                                                                                                <option>10/6 To 16/6</option>
-                                                                                                <option>17/6 To 23/6</option>
-                                                                                                <option>24/6 To 30/6</option>
-                                                                                                <option>31/6 To 7/7</option>-->
-                                                                                            </select>
+                                                                                           <label for="week">Month</label>
+                                                                                <select id="week"></select>
                                                                                         </th>
                                                                                         <th>Monday</th>
                                                                                         <th>Tuesday</th>
@@ -473,7 +430,7 @@
                                                                                                 <c:forEach items="${schedule.list}" var="listS">
 
                                                                                                     <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day}">
-                                                                                                        <td>Booked</td>
+                                                                                                        <td class="Book">Booked</td>
                                                                                                         <c:set var="found" value="true"/>
                                                                                                     </c:if>
                                                                                                 </c:forEach>
@@ -613,9 +570,61 @@
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
+                               function getMonday(d) {
+                        d = new Date('2024-06-24');
+                        var day = d.getDay(),
+                                diff = d.getDate() - day + (day == 0 ? - 6 : 1);
+                        return new Date(d.setDate(diff));
+                        }
 
+                function formatDate(date) {
+                return (
+                                                date.getDate().toString().padStart(2, "0")
+
+                       +
+                        "-" +
+                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                        "-" +
+                          date.getFullYear().toString().padStart(4, "0")
+                        );
+                }
+                                
+                                                               function getWeekOptions() {
+                const startDate = new Date('2024-06-24');
+                const options = [];
+                for (let week = 0; week < 4; week++) {
+                const mondayOfWeek = new Date(startDate);
+                mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                const sundayOfWeek = new Date(mondayOfWeek);
+                sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                options.push({value: week + 1, text: optionText});
+                }
+                return options;
+                }
+
+                const weekSelect = document.getElementById("week");
+                const weekOptions = getWeekOptions();
+                weekOptions.forEach((option) => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.textContent = option.text;
+                weekSelect.appendChild(optionElement);
+                });
                                                                                 function openModal(userName) {
                                                                                     document.getElementById('modal-' + userName).style.display = 'block';
+                                                                                  const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
+                                                                                        bookedSlots.forEach(slot => {
+                                                                                            const newDiv = document.createElement('div');
+                                                                                            newDiv.innerHTML = `
+                                                                                                <div>SWR302</div>
+                                                                                                <div>View Materials</div>
+                                                                                                <div>at BE-209</div>
+                                                                                            `;
+                                                                                            slot.innerHTML = '';
+                                                                                            slot.appendChild(newDiv);
+                                                                                            slot.classList.remove('Book');
+                                                                                        });
                                                                                 }
 
                                                                                 function closeModal(userName) {

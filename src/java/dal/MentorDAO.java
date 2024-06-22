@@ -412,8 +412,8 @@ public ArrayList<Day> listDays() {
 
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
-      ArrayList<Day> days = dao.listDays();
-        System.out.println(days);
+      int rate = dao.getRateOfMentor("abc");
+        System.out.println(rate);
     }
 
 }
