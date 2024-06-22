@@ -431,8 +431,8 @@
                                             </div>
                                             <div class="row mt-5">
                                                 <div class="col-lg-9">
-                                                    <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
-                                                    <button id="Save_status" class="btn btn-primary">Save</button>
+                                                    <button type="submit" id="notify_btn" class="btn btn-primary" style="color: #fff;">Send Request</button>
+                                                    <button id="Save_status" class="btn btn-primary " style="color: #fff;">Save</button>
                                                 </div>
                                             </div>
                                         </form>
