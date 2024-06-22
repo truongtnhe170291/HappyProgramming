@@ -72,8 +72,7 @@ public class UpdateStatusSkill extends HttpServlet {
     throws ServletException, IOException {
   String skillIdStr = request.getParameter("skillID");
     String statusStr = request.getParameter("status");
-        System.out.println(statusStr);
-         System.out.println(skillIdStr);
+        
     if (skillIdStr == null || statusStr == null) {
         response.getWriter().write("Missing skill ID or status parameter.");
         return; // exit the method early
@@ -84,6 +83,7 @@ public class UpdateStatusSkill extends HttpServlet {
         boolean status = Boolean.parseBoolean(statusStr);
 
         SkillDAO skillDAO = new SkillDAO();
+        // cập nhật status vào update
         boolean updateSuccess = skillDAO.updateSkillStatus(skillId, status);
         
         if (updateSuccess) {
@@ -92,8 +92,7 @@ public class UpdateStatusSkill extends HttpServlet {
           
             response.getWriter().write("Failed to update skill status.");
         }
-    } catch (NumberFormatException e) {
-        
+    } catch (NumberFormatException e) {   
         response.getWriter().write("Invalid skill ID or status value.");
     } catch (Exception e) {
         response.getWriter().write("Error updating skill status: " + e.getMessage());

@@ -68,6 +68,7 @@ public class SkillsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Skill> skills = skillDAO.getAllSkills();
+        //đặt danh sách các kỹ năng (được lưu trong biến skills) làm thuộc tính của yêu cầu 
         request.setAttribute("skills", skills);
        // request.getRequestDispatcher("SkillsManagement.jsp").forward(request, response);
         request.getRequestDispatcher("Manager_Skill.jsp").forward(request, response);
