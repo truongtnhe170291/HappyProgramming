@@ -3,14 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentee/RequestServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Mentee_Request.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/ListRequest.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/vnp/ajaxServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Menter_Request.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Wallet.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/vnp/TransactionServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/vnp/WalletServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/dal/MentorDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/controller/manager/SkillsController.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/models/Mentor.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/web/listCV.jsp</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/web/SkillsManagement.jsp</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/controller/mentor/SetRateController.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/models/Skill.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/web/Mentor_SetRate.jsp</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/dal/SkillDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/web/ListRequest.jsp</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/HappyProgramming/src/java/controller/manager/CreateSkillController.java</file>
         </group>
     </open-files>
 </project-private>
