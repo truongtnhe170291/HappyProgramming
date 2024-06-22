@@ -84,7 +84,7 @@ public class SetRateController extends HttpServlet {
             rate = mentorDAO.getRateOfMentor(acc.getUserName());
             request.setAttribute("rate", rate);
             request.setAttribute("mentorName", acc.getUserName());
-            request.getRequestDispatcher("Mentor_SetRate.jsp").forward(request, response);
+            request.getRequestDispatcher("cv").forward(request, response);
         }
     }
 
@@ -102,7 +102,7 @@ public class SetRateController extends HttpServlet {
         int rate = Integer.parseInt(request.getParameter("rate"));
         String mentorName = request.getParameter("mentorName");
         mentorDAO.changeMentorRate(mentorName, rate);
-        response.sendRedirect("SetRate");
+        response.sendRedirect("cv");
 
     }
 
