@@ -69,8 +69,8 @@ public class SkillsController extends HttpServlet {
             throws ServletException, IOException {
         List<Skill> skills = skillDAO.getAllSkills();
         request.setAttribute("skills", skills);
-        request.getRequestDispatcher("SkillsManagement.jsp").forward(request, response);
-
+       // request.getRequestDispatcher("SkillsManagement.jsp").forward(request, response);
+        request.getRequestDispatcher("Manager_Skill.jsp").forward(request, response);
     }
 
     /**
