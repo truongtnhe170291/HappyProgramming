@@ -372,7 +372,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Deadline Hour</label>
-                                                        <input id="deadlineHour" value="${requestScope.requestMentee.deadlineHour}" name="deadlineHour" type="time" class="form-control notification-message" placeholder="" required="" rows="5" />
+                                                        <input id="deadlineHour" value="${requestScope.requestMentee.deadlineHour}" name="deadlineHour" type="time" class="form-control notification-message" placeholder="" required rows="5" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Price/Slot: &nbsp; ${rate}</label>
@@ -431,8 +431,8 @@
                                             </div>
                                             <div class="row mt-5">
                                                 <div class="col-lg-9">
-                                                    <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
-                                                    <button id="Save_status" class="btn btn-primary">Save</button>
+                                                    <button type="submit" id="notify_btn" class="btn btn-primary" style="color: #fff;">Send Request</button>
+                                                    <button id="Save_status" class="btn btn-primary " style="color: #fff;">Save</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -556,10 +556,7 @@
                 classEnd.setHours(endHour, endMinute, 0);
                 return currentDate >= classStart && currentDate < classEnd;
                 }
-                if (${wallet} < document.getElementById("totalPriceInput").value){
-                notifyBtn.disabled = true;
-                showToastMessage("Bạn không đủ tiền.");
-                } 
+                
                 function updateSchedule() {
                 const selectedWeek = weekSelect.value;
                 const monday = getMonday(
@@ -789,62 +786,7 @@
                         });
                 }
 
-                document.getElementById("notify_btn").addEventListener("click", function(event) {
-                event.preventDefault();
-                const formData = getFormValues();
-                formData.action = "rescheduled";
-                currentAction = "rescheduled";
-                const selectedSlots = [];
-                const tbody = document.querySelector("#scheduleTable tbody");
-                const monday = getMonday(new Date());
-                for (let row = 0; row < tbody.rows.length; row++) {
-                for (let col = 1; col < tbody.rows[row].cells.length; col++) {
-                const cell = tbody.rows[row].cells[col];
-                const statusElement = cell.querySelector(".status");
-                if (statusElement && statusElement.classList.contains("selected")) {
-                const slotDate = new Date(monday);
-                slotDate.setDate(slotDate.getDate() + col - 1);
-                const slotData = {
-                slot: row + 1,
-                        day: formatDate(slotDate)
-                };
-                selectedSlots.push(slotData);
-                }
-                }
-                }
-
-                const requestData = {
-                ...formData,
-                        selectedSlots: selectedSlots
-                };
-                fetch("request", {
-                method: "POST",
-                        headers: {
-                        "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(requestData)
-                })
-                        .then((response) => {
-                        if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                        }
-                        return response.text();
-                        })
-                        .then((data) => {
-                        console.log("Response from server:", data);
-                        updateStatusIndicator('Rescheduled');
-                        Toastify({
-                        text: "Gửi yêu cầu thành công! Bạn sẽ được chuyển hướng về home",
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "#FF6347",
-                                stopOnFocus: true,
-                        }).showToast();
-                        });
-                })
-
+               
                 document.getElementById("notify_btn").addEventListener("click", function(event) {
                 event.preventDefault();
                 const formData = getFormValues();
@@ -933,8 +875,9 @@
                 const totalPriceInput = document.getElementById("totalPriceInput");
                 const totalPrice = document.getElementById("totalPrice");
                 const rate = ${rate}; 
-                const balance = ${wallet};  
-                
+                const balance = ${wallet}; 
+                console.log(totalPriceInput.textContent+' oke '+totalPrice.textContent+ ' oke 2 '+totalPrice.value + 'oke 3 ' +${wallet} +' oke 4 '+totalPriceInput.value);
+                console.log(${wallet} < totalPriceInput.value);
                 function getSundayOfWeek() {
                 const currentDate = new Date('${start}');
                 const dayOfWeek = currentDate.getDay();
@@ -943,9 +886,8 @@
                 sundayDate.setDate(currentDate.getDate() + daysUntilSunday);
                 return sundayDate.toISOString().split('T')[0];
                 }
-               
                 function getFormattedCurrentDate() {
-                const currentDate = new Date();
+                const currentDate = new Date('${start}');
                 return currentDate.toISOString().split('T')[0];
                 }
 
@@ -966,20 +908,33 @@
                 function countSelectedSkills() {
                 return [...skillRadios].filter(radio => radio.checked).length;
                 }
+                console.log(deadlineInput.value);
+                const currentDates = getFormattedCurrentDate(new Date('${start}'));
+                console.log(currentDates);
                 function validateForm() {
                 const deadlineDate = deadlineInput.value;
-                const currentDate = getFormattedCurrentDate();
+                const currentDate = getFormattedCurrentDate('${start}');
                 const sundayOfWeek = getSundayOfWeek();
                 const checkedSchedules = countCheckedSchedules();
                 const selectedSkills = countSelectedSkills();
-                if (deadlineDate < currentDate || deadlineDate > sundayOfWeek) {
+                if (deadlineDate >= currentDate || deadlineDate > sundayOfWeek) {
                 notifyBtn.disabled = true;
-                showToastMessage("Please select a valid deadline date.");
+                showToastMessage("Hãy nhập đúng ngày !!!.");
                 return false;
                 }    
+                 else if(totalPriceInput.value <= 0){
+                    notifyBtn.disabled = true;
+                    showToastMessage("Hãy chọn ít nhất 1 slot!!!");
+                                return false;
+                } 
                 else if (selectedSkills === 0) {
                 notifyBtn.disabled = true;
-                showToastMessage("Please select at least one skill.");
+                showToastMessage("Hãy chọn skill để book lịch.");
+                return false;
+                }
+                else if(${wallet} < totalPriceInput.value){
+                 notifyBtn.disabled = true;
+                showToastMessage("Bạn không đủ tiền để Book lịch học.Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
                 return false;
                 }
                 else{

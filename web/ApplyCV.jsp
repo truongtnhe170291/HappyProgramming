@@ -189,6 +189,59 @@
                 width: 100px;
                 height: 50px;
             }
+            .feedback-container {
+                margin-top: 20px;
+                padding: 15px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                background-color: #f1f1f1;
+            }
+           .feedback-container img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+            .feedback-content {
+                flex: 1;
+            }
+            .feedback-content strong {
+                display: block;
+                margin-bottom: 10px;
+                font-size: 16px;
+                color: #333;
+            }
+            .feedback-content p {
+                margin: 0;
+                font-size: 14px;
+                color: #555;
+            }
+            .hidden {
+            display: none;
+        }
+        h4 {
+           
+            cursor: pointer;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            color: #fff;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        #set-rate-as1, #apply-cv-as2 {
+             margin: 6px 12px;
+            background-color: #a6e9f4;
+        }
+        #set-rate-as1:hover, #apply-cv-as2:hover {
+            background-color: #5a6268;
+        }
+        #apply-cv-as1, #set-rate-as2 {
+            background-color: #a6e9f4;
+        }
+        #apply-cv-as1:hover, #set-rate-as2:hover {
+            background-color: #138496;
+        }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -212,11 +265,13 @@
 
             <div class="contents">
 
-                <div class="container-fluid">
+                <div class="container-fluid as1">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex align-items-center user-member__title mb-30 mt-30">
-                                <h4 class="text-capitalize">Apply CV</h4>
+                                <h4 class="text-capitalize" id="apply-cv-as1">Apply CV</h4>
+                                <h4 class="text-capitalize" id="set-rate-as1">Set Rate</h4>
+    
                             </div>
                         </div>
                     </div>
@@ -499,9 +554,228 @@
                                             </div>
                                         </div>
                                     </div>
-                                <div><strong>Feedback From Manager:</strong>  ${cv.note}</div>
-
+                                         <div class="feedback-container">
+                                            <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
+                                            <div class="feedback-content">
+                                                <strong>Feedback From Manager:</strong>
+                                                <p>${cv.note}</p>
+                                            </div>
+                                        </div>
                                 </div>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                       <div class="container-fluid as2 hidden">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="d-flex align-items-center user-member__title mb-30 mt-30">
+                                 
+    <h4 class="text-capitalize" id="apply-cv-as2">Apply CV</h4>
+    <h4 class="text-capitalize" id="set-rate-as2">Set Rate</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="user-info-tab w-100 bg-white global-shadow radius-xl mb-50">
+                                <div class="ap-tab-wrapper border-bottom ">
+                                    <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                        <li class="nav-item hes">
+                                                
+                                                            <form action="SetRate" method="post">
+                                                <button type="submit" class="sets">
+                                                    Set Rate
+                                                    <div class="star-1">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xml:space="preserve"
+                                                            version="1.1"
+                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                                            viewBox="0 0 784.11 815.53"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            >
+                                                        <defs></defs>
+                                                        <g id="Layer_x0020_1">
+                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                        <path
+                                                            class="fil0"
+                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                            ></path>
+                                                        </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="star-2">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xml:space="preserve"
+                                                            version="1.1"
+                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                                            viewBox="0 0 784.11 815.53"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            >
+                                                        <defs></defs>
+                                                        <g id="Layer_x0020_1">
+                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                        <path
+                                                            class="fil0"
+                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                            ></path>
+                                                        </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="star-3">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xml:space="preserve"
+                                                            version="1.1"
+                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                                            viewBox="0 0 784.11 815.53"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            >
+                                                        <defs></defs>
+                                                        <g id="Layer_x0020_1">
+                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                        <path
+                                                            class="fil0"
+                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                            ></path>
+                                                        </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="star-4">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xml:space="preserve"
+                                                            version="1.1"
+                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                                            viewBox="0 0 784.11 815.53"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            >
+                                                        <defs></defs>
+                                                        <g id="Layer_x0020_1">
+                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                        <path
+                                                            class="fil0"
+                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                            ></path>
+                                                        </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="star-5">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xml:space="preserve"
+                                                            version="1.1"
+                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                                            viewBox="0 0 784.11 815.53"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            >
+                                                        <defs></defs>
+                                                        <g id="Layer_x0020_1">
+                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                        <path
+                                                            class="fil0"
+                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                            ></path>
+                                                        </g>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="star-6">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xml:space="preserve"
+                                                            version="1.1"
+                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                                            viewBox="0 0 784.11 815.53"
+                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                            >
+                                                        <defs></defs>
+                                                        <g id="Layer_x0020_1">
+                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                                        <path
+                                                            class="fil0"
+                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                                            ></path>
+                                                        </g>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                                    
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                        <div class="row justify-content-center">
+                                            <div class="col-xxl-4 col-10">
+                                                
+                                               
+                                                    
+                                                     
+                                                        <div class="edit-profile__body">
+                                                         <label for="rate" style="font-size: 14px;
+                font-weight: 500;
+                color: #495057;
+                margin-bottom: 5px;
+                display: block;;">Your Current Rate:</label>
+                <input type="number" name="rate" value="${rate}" style="width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #495057;">
+                                                        <input type="hidden" name="mentorName" value="${mentorName}" hidden="true">
+                                                  
+                                                        </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+ </form>
+                                </div>
+                                </div></div></div></div>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+            </div>
                                 </main>
                                 <div id="overlayer">
                                     <div class="loader-overlay">
@@ -515,7 +789,17 @@
                                 </div>
                                 <div class="overlay-dark-sidebar"></div>
                                 <div class="customizer-overlay"></div>
+                                        <script>
+                                            document.getElementById('set-rate-as1').addEventListener('click', function() {
+                                                document.querySelector('.as1').classList.add('hidden');
+                                                document.querySelector('.as2').classList.remove('hidden');
+                                            });
 
+                                            document.getElementById('apply-cv-as2').addEventListener('click', function() {
+                                                document.querySelector('.as2').classList.add('hidden');
+                                                document.querySelector('.as1').classList.remove('hidden');
+                                            });
+                                        </script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var emailInput = document.getElementById('email');
