@@ -70,23 +70,33 @@ public class UpdateStatusSkill extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       // Đọc các tham số từ request
-    int skillId = Integer.parseInt(request.getParameter("skillID"));
-    boolean status = Boolean.parseBoolean(request.getParameter("status"));
+  String skillIdStr = request.getParameter("skillID");
+    String statusStr = request.getParameter("status");
+        System.out.println(statusStr);
+         System.out.println(skillIdStr);
+    if (skillIdStr == null || statusStr == null) {
+        response.getWriter().write("Missing skill ID or status parameter.");
+        return; // exit the method early
+    }
 
-    // Gọi DAO để cập nhật trường status của kỹ năng trong cơ sở dữ liệu
-    SkillDAO skillDAO = new SkillDAO(); // Thay thế bằng tên của lớp DAO thực tế
     try {
-        skillDAO.updateSkillStatus(skillId, status);
+        int skillId = Integer.parseInt(skillIdStr);
+        boolean status = Boolean.parseBoolean(statusStr);
+
+        SkillDAO skillDAO = new SkillDAO();
+        boolean updateSuccess = skillDAO.updateSkillStatus(skillId, status);
         
-        // Chuyển hướng người dùng sau khi cập nhật thành công (nếu cần)
-        response.sendRedirect("skills"); // Điều hướng đến trang quản lý kỹ năng
+        if (updateSuccess) {
+            response.sendRedirect("skills");
+        } else {
+          
+            response.getWriter().write("Failed to update skill status.");
+        }
+    } catch (NumberFormatException e) {
+        
+        response.getWriter().write("Invalid skill ID or status value.");
     } catch (Exception e) {
-        e.printStackTrace();
-        // Xử lý lỗi và thông báo cho người dùng nếu có lỗi xảy ra
-        // Ví dụ:
-        request.setAttribute("errorMessage", "Error updating skill status: " + e.getMessage());
-        request.getRequestDispatcher("error.jsp").forward(request, response);
+        response.getWriter().write("Error updating skill status: " + e.getMessage());
     }
     }
 
