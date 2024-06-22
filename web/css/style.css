@@ -4019,7 +4019,7 @@ ul.avatars > li:not(:last-child) { margin-right: -0.25rem; }
 -------------------------------------------------------------------------*/
 a:not([href]):not([tabindex]):not(.btn) { color: none; }
 
-button.btn, .btn:not(.close):not(.mfp-close), a.btn:not([href]):not([tabindex]) { display: inline-block; font-family: inherit; border-radius: 0.42rem 0.42rem 0.42rem 0.42rem; font-size: 12px; font-weight: 600; letter-spacing: .5px; text-decoration: none; outline: none; padding: 12px 18px; position: relative; text-transform: uppercase; background-color: #2250fc; border-color: #2250fc; border-width: 1px; border-style: solid; color: #fff; -webkit-transition: all 0.3s; transition: all 0.3s; margin-bottom: 6px; outline: none; line-height: 14px; cursor: pointer; }
+button.btn, .btn:not(.close):not(.mfp-close), a.btn:not([href]):not([tabindex]) { display: inline-block; font-family: inherit; border-radius: 0.42rem 0.42rem 0.42rem 0.42rem; font-size: 12px; font-weight: 600; letter-spacing: .5px; text-decoration: none; outline: none; padding: 12px 18px; position: relative; text-transform: uppercase; background-color: #fff; margin-right: 6px;  border-width: 1px; border-style: solid; color:  #2250fc; -webkit-transition: all 0.3s; transition: all 0.3s; margin-bottom: 6px; outline: none; line-height: 14px; cursor: pointer; }
 
 button.btn:after, .btn:not(.close):not(.mfp-close):after, a.btn:not([href]):not([tabindex]):after { content: ''; position: absolute; z-index: -1; -webkit-transition: all 0.3s; transition: all 0.3s; }
 
