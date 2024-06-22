@@ -5,140 +5,175 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Statistic Requests Mentor</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-            }
+   <style>
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-            h1 {
-                text-align: center;
-                margin-bottom: 20px;
-            }
+    .container {
+        
+        background-color: #fff;
+        width: 90%;
+        max-width: 1200px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
 
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
+    h1 {
+       
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        color: #333;
+    }
 
-            th, td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-            }
+    .statistics {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-            th {
-                background-color: #f4f4f4;
-            }
+    .statistics div {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background-color: #f8f9fa;
+        width: calc(33.33% - 40px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-            tr:hover {
-                background-color: #f5f5f5;
-            }
+    .statistics div:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
 
-            ul {
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-            }
+    .statistics div strong {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
 
-            li {
-                margin-bottom: 5px;
-            }
+    .statistics div span {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
 
-            .status-open {
-                color: green;
-            }
+    .accepted {
+        background-color: #d4edda;
+    }
 
-            .status-processing {
-                color: orange;
-            }
+    .invited {
+        background-color: #cce5ff;
+    }
 
-            .status-cancel, .status-closed {
-                color: red;
-            }
+    .canceled {
+        background-color: #f8d7da;
+    }
 
-            .statistics {
-                margin-bottom: 20px;
-                display: flex;
-                justify-content: space-around;
-                flex-wrap: wrap;
-            }
+    .cancel-percentage {
+        background-color: #e2e3e5;
+    }
 
-            .statistics div {
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                flex: 1;
-                margin: 5px;
-                text-align: center;
-            }
+    .percentage {
+        background-color: #fff3cd;
+    }
 
-            .statistics div strong {
-                display: block;
-                font-size: 18px;
-                margin-bottom: 5px;
-            }
+    .rating {
+        background-color: #f8f9fa;
+    }
 
-            .statistics div span {
-                font-size: 24px;
-            }
+    .star-rating {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 10px;
+    }
 
-            .accepted {
-                background-color: #d4edda;
-                color: #155724;
-            }
+    .star-rating i {
+        font-size: 24px; 
+        color: #ffc107;
+        transition: transform 0.2s ease;
+    }
 
-            .invited {
-                background-color: #cce5ff;
-                color: #004085;
-            }
+    .star-rating i.far {
+        color: #ccc; 
+    }
 
-            .canceled {
-                background-color: #f8d7da;
-                color: #721c24;
-            }
+    .star-rating i:hover {
+        transform: scale(1.2);
+    }
 
-            .percentage {
-                background-color: #fff3cd;
-                color: #856404;
-            }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
 
-            .cancel-percentage {
-                background-color: #e2e3e5;
-                color: #383d41;
-            }
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        color: #333;
+    }
 
-            .rating {
-                background-color: #FFFFFF;
-                color: #FF9933;
-            }
+    th {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 
-            .star-icon {
-                color: #ffc107;
-                font-size: 24px;
-            }
-            .star-rating {
-                display: flex;
-                color: #ffc107;
-            }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
 
-            .star-rating i {
-                font-size: 24px; 
-            }
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
 
-            .star-rating i.fas {
-                color: #FF9933; 
-            }
+    li {
+        margin-bottom: 5px;
+        color: #666;
+    }
 
-            .star-rating i.far {
-                color: #ccc; 
-            }
+    .status-open {
+        color: green;
+        font-weight: bold;
+    }
 
-        </style>
-        <!-- Include Font Awesome for star icons -->
+    .status-processing {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .status-cancel, .status-closed {
+        color: red;
+        font-weight: bold;
+    }
+
+</style>
+
+        <!-- Include Google Fonts and Font Awesome for enhanced styling and icons -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     </head>
     <body>
@@ -146,7 +181,9 @@
         <main class="main-content">
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <h1>Statistic Requests Mentor</h1>
+                <h1 style="
+    margin-top: 80px;
+    margin-bottom: 30px;">Statistic Requests Mentor</h1>
                 <div class="statistics">
                     <div class="accepted">
                         <strong>Completed Requests:</strong>

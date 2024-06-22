@@ -19,22 +19,39 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+            border-collapse: separate;
+            border-spacing: 0;
+            color: white;
+          }
 
-        th, td {
+          th, td {
+            border: 1px solid #ffffff;
             padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+            text-align: center;
+          }
 
+          th {
+            background-color: #4285f4;
+            font-weight: bold;
+            border-bottom: 2px solid #ffffff;
+          }
 
+          td {
+            background-color: #ffffff;
+            color: #333;
+            vertical-align: top;
+            height: 100px;
+            border-bottom: 1px solid #e0e0e0;
+          }
 
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+          /* Đường kẻ dọc giữa các ngày */
+          td + td {
+            border-left: 1px solid #e0e0e0;
+          }
 
+          tr + tr td {
+            border-top: 1px solid #e0e0e0;
+          }
         ul {
             list-style-type: none;
             padding: 0;
@@ -137,7 +154,78 @@
            height: 50px !important;
           color: red !important;
       }
+      .custom_modal{
+          transform: translateX(50px);
+          max-width: 100% !important;
+          width: 90% !important;
+      }
+      .week-selector {
+            background-color: #4285f4;
+            color: white;
+            padding: 5px;
+            border: none;
+          }
 
+          .slot-info {
+            background-color: #e8f0fe;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+          }
+
+          .class-code {
+            font-weight: bold;
+            color: #4285f4;
+          }
+
+          .view-materials, .edu-next {
+            display: inline-block;
+            padding: 2px 5px;
+            margin: 2px;
+            font-size: 10px;
+            border-radius: 3px;
+          }
+
+          .view-materials {
+            background-color: #fbbc05;
+            color: white;
+          }
+
+          .edu-next {
+            background-color: #4285f4;
+            color: white;
+          }
+
+          .room-info {
+            color: #4285f4;
+          }
+
+          .attendance {
+            font-style: italic;
+          }
+
+          .attendance.attended {
+            color: #4285f4;
+          }
+
+          .attendance.absent {
+            color: #ea4335;
+          }
+          .hd{
+              background-color: #4285f4 !important;
+          }
+          .time-info {
+            
+             display: flex;
+             justify-content: center;
+            font-size: 11px;
+            color: #80e27e;
+          }
+
+          .empty-cell {
+            height: 100%;
+          }
     </style>
     </head>
         <body class="layout-light side-menu">
@@ -159,7 +247,7 @@
                 <div class="table-responsive">
                     <table class="table mb-0 table-borderless">
 
-                        <thead>
+                        <thead class="hd">
                             <tr class="userDatatable-header">
                                 <th>
                                     <span class="userDatatable-title">Title</span>
@@ -216,8 +304,8 @@
                                                  tabindex="-1" aria-hidden="true">
 
                                                 <div
-                                                    class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                    <div class="modal-content radius-xl">
+                                                    class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
+                                                    <div class="modal-content radius-xl custom_modal">
                                             <div class="modal-body pb-sm-50 pb-30">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -237,12 +325,7 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th rowspan="2">WEEK
-                                                                                    <select>
-                                                                                        <option>10/6 To 16/6</option>
-                                                                                        <option>17/6 To 23/6</option>
-                                                                                        <option>24/6 To 30/6</option>
-                                                                                        <option>31/6 To 7/7</option>
-                                                                                    </select>
+                                                                                <select id="week"></select>
                                                                                 </th>
                                                                                 <c:forEach var="day"
                                                                                     items="${listDays}">
@@ -275,31 +358,21 @@
                                                                                                     test="${scheduleItem.dayOfSlot == day.date1 && scheduleItem.slotId == slot.slot_id}">
                                                                                                     <div
                                                                                                         class="slot-info">
-                                                                                                        day:
-                                                                                                        ${scheduleItem.nameOfDay},<br>
-                                                                                                        slot:
-                                                                                                        ${scheduleItem.slotId.substring(5)},<br>
-                                                                                                        class:
-                                                                                                        SWR302,<br>
-                                                                                                        room:
-                                                                                                        BE-209,<br>
-                                                                                                        status:
-                                                                                                        not-selected,<br>
-                                                                                                        time:
-                                                                                                        ${scheduleItem.slot_name},<br>
-                                                                                                        startTime:
-                                                                                                        ${scheduleItem.startTime},<br>
-                                                                                                        endTime:
-                                                                                                        ${scheduleItem.endTime}<br>
-                                                                                                        day Of slot:
-                                                                                                        ${scheduleItem.dayOfSlot}<br>
+                                                                                                        <c:forEach var="skill"
+                                                                                                                items="${request.listSkills}">
+                                                                                                                <div class="class-code"> ${skill.skillName}</div>
+                                                                                                            </c:forEach>
+                                                                                                        <span class="view-materials">View Materials</span>
+                                                                                                        <span class="edu-next">EduNext</span>
+                                                                                                        <div class="room-info" >startTime:${scheduleItem.startTime}</div>
+                                                                                                        <div class="attendance attended">endTime: ${scheduleItem.endTime}</div>
+                                                                                                        <div class="time-info">${scheduleItem.slot_name}</div>
                                                                                                     </div>
                                                                                                     <c:set var="found"
                                                                                                         value="true" />
                                                                                                 </c:if>
                                                                                             </c:forEach>
                                                                                             <c:if test="${not found}">
-                                                                                                <!-- If no schedule is found for this day and slot, display an empty cell -->
                                                                                                 <div class="empty-cell">
                                                                                                 </div>
                                                                                             </c:if>
@@ -313,15 +386,7 @@
                                                                         name="selectedSlots" value="">
                                                                 </div>
 
-                                                                <!-- Displaying Skills -->
-                                                                <div class="skills-container">
-                                                                    <h3>Skills</h3>
-                                                                    <c:forEach var="skill"
-                                                                        items="${request.listSkills}">
-                                                                        <div>Skill: ${skill.skillName}</div>
-                                                                    </c:forEach>
-                                                                </div>
-                                                                <br />
+             
                                                             </div>
                                             </div>
                                         </div>
@@ -362,9 +427,67 @@
                 </div>
             </div>
         </div>
-     
+     <script>document.addEventListener("DOMContentLoaded", function() {
+    const roomInfos = document.querySelectorAll('.room-info');
+    
+    if (roomInfos.length === 0) return; // Nếu không có room-info nào, kết thúc sớm
+
+    const firstRoomInfo = roomInfos[0];
+    const time_start = firstRoomInfo.textContent.trim();
+
+    function formatDate(date) {
+        return (
+            date.getFullYear().toString().padStart(4, "0") +
+            "-" +
+            (date.getMonth() + 1).toString().padStart(2, "0") +
+            "-" +
+            date.getDate().toString().padStart(2, "0")
+        );
+    }
+
+    function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(d.setDate(diff));
+    }
+
+    function getWeekOptions(startDate) {
+        const options = [];
+        for (let week = 0; week < 4; week++) {
+            const mondayOfWeek = new Date(startDate);
+            mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+            const sundayOfWeek = new Date(mondayOfWeek);
+            sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+            const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+            options.push({ value: week + 1, text: optionText });
+        }
+        return options;
+    }
+
+    const startDate = new Date(time_start);
+    const weekSelect = document.createElement("select");
+    weekSelect.id = "week";
+
+    const weekOptions = getWeekOptions(startDate);
+
+    weekOptions.forEach((option) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.value;
+        optionElement.textContent = option.text;
+        weekSelect.appendChild(optionElement);
+    });
+
+    // Chỉ thêm <select> vào <th> một lần
+    const thElement = document.querySelector("th[rowspan='2']");
+    if (thElement) {
+        thElement.appendChild(weekSelect);
+    }
+});
+</script>
             <script>
             document.addEventListener("DOMContentLoaded", function() {
+             
                 const statusCells = document.querySelectorAll(".status-cell");
                   
                 statusCells.forEach(cell => {

@@ -186,7 +186,7 @@
                 }
 
                 th.equal-width {
-                    width: 100%; /* hoặc một giá trị khác tùy theo bạn muốn */
+                    width: 40%; 
                 }
 
 
@@ -204,7 +204,6 @@
                 .slot-label {
                     display: inline-block;
                     padding: 5px 10px;
-                    background-color: #f0f0f0;
                     color: #333;
                     border-radius: 4px;
                     transition: background-color 0.3s ease;
@@ -271,6 +270,55 @@
                 #notify_btn{
                     margin-right: 12px;
                 }
+                .schedule-slot {
+                    border: 1px solid #e0e0e0;
+                    padding: 5px;
+                    min-height: 80px;
+                    position: relative;
+                  }
+
+                  .slot-content {
+                    background-color: #e8f0fe;
+                    padding: 5px;
+                    border-radius: 3px;
+                    height: 100%;
+                  }
+
+                  .course-code {
+                    font-weight: bold;
+                    color: #1a73e8;
+                  }
+
+                  .view-materials {
+                    background-color: #fbbc04;
+                    color: white;
+                    padding: 2px 5px;
+                    border-radius: 3px;
+                    display: inline-block;
+                    margin: 2px 0;
+                    font-size: 0.8em;
+                  }
+
+                  .location {
+                    font-size: 0.9em;
+                    color: #5f6368;
+                  }
+
+                  .slot-select {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 5px;
+                    font-size: 0.8em;
+                    color: #1a73e8;
+                  }
+
+                  .slot-checkbox {
+                    margin-right: 3px;
+                  }
+
+                  .schedule-slot:hover {
+                    background-color: #f8f9fa;
+                  }
             </style>
         </head>
 
@@ -438,23 +486,20 @@ const okeSlots = Array.from(slotLabels).filter(slot =>
 
 okeSlots.forEach(slot => {
     const newDiv = document.createElement('div');
-    newDiv.style.backgroundColor = '#e6f3ff';
-    newDiv.style.padding = '5px';
-    newDiv.style.marginRight = '-10px';
-    newDiv.style.borderRadius = '5px';
-    newDiv.style.fontSize = '15px';
-    newDiv.style.textAlign = 'left';
+   newDiv.classList.add('slot-content');
 
     newDiv.innerHTML = `
-        <div style="font-weight: bold; color: #FF9900;">SWR302</div>
-        <div style="color: #006600;">View Materials</div>
-        <div>at BE-209</div>
+        <div class="course-code">SWR302</div>
+        <div class="view-materials">View Materials</div>
+        <div class="location">at BE-209</div>
     `;
+
 
     slot.innerHTML = '';
     slot.appendChild(newDiv);
     
-    slot.style = '';
+        slot.classList.add('schedule-slot');
+
 });
                 </script>
 
