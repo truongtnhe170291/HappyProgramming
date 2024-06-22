@@ -61,6 +61,9 @@ public class TransactionServlet extends HttpServlet {
                         response.sendRedirect("wallet");
                     }
                 }
+            }else{
+                response.sendRedirect("wallet");
+                return;
             }
         } catch (NumberFormatException e) {
         }

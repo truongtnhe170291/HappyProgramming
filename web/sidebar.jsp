@@ -81,9 +81,6 @@
                                 <li class="">
                                     <a href="cv">Apply CV</a>
                                 </li>
-                                <li class="">
-                                    <a href="SetRate">Set Rate</a>
-                                </li>
                             </ul>
                         </li>
                         

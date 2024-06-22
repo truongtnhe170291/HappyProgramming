@@ -11548,11 +11548,11 @@ body.top-menu .navbar-left .customizer-trigger + .top-menu {
 }
 .userDatatable table thead tr:not(.footable-filtering) th:first-child {
   border-left: 1px solid var(--border-color);
-  border-radius: 10px 0 0 10px;
+  
+  
 }
 .userDatatable table thead tr:not(.footable-filtering) th:last-child {
   border-right: 1px solid var(--border-color);
-  border-radius: 0 10px 10px 0 !important;
 }
 .userDatatable table tbody tr:first-child td {
   padding-top: 11px;
@@ -18609,9 +18609,7 @@ td.order-summery .total > div {
 }
 .payment-invoice-table table thead tr th:last-child {
   border-right: 1px solid var(--border-color);
-  border-radius: 0 10px 10px 0 !important;
   border-right: 1px solid var(--border-color);
-  border-radius: 0 10px 10px 0 !important;
 }
 .payment-invoice-table .table {
   border-collapse: separate;

@@ -2,4 +2,9 @@
 /build/
 nbproject/private/private.properties
 nbproject/private/private.xml
-/nbproject/private/
+nbproject/private/private.properties
+nbproject/private/private.xml
+nbproject/private/private.xml
+nbproject/private/private.xml
+nbproject/private/private.properties
+src/java/dal/DBContext.java
