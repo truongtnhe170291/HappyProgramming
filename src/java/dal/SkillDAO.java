@@ -35,7 +35,7 @@ public class SkillDAO {
 
     //Lấy ra danh sách skill của hệ thống
     public List<Skill> getSkills() {
-        String sql = "select * from Skills order by skill_name";
+        String sql = "select * from Skills s where s.[status] = 1 order by s.skill_name";
         List<Skill> list = new ArrayList<>();
         try {
             ps = con.prepareStatement(sql);

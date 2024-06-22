@@ -188,9 +188,10 @@
                             </li>
                             <li class="menu-header">Request</li>
                             <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>CV Management</span></a>
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Management</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="listCV">List CV</a></li>
+                                    <li><a class="nav-link" href="skills">List Skills</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -222,7 +223,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4>List Schedule Mentor</h4>
+                                            <h4>List CV Mentor</h4>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
