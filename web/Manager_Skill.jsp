@@ -1,13 +1,3 @@
-<%-- 
-    Document   : Manager_Skill
-    Created on : Jun 15, 2024, 11:33:45 PM
-    Author     : DIEN MAY XANH
---%>
-<%-- 
-    Document   : Wallet
-    Created on : Jun 14, 2024, 10:52:41 PM
-    Author     : 84979
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -359,6 +349,7 @@
                     </div>
                 </div>
             </div>
+            
             <script>
                 document.body.classList.remove('modal-open');
                 document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
@@ -396,20 +387,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    // Select all checkboxes
-                    const selectAllCheckbox = document.querySelector("#selectAll");
-                    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-                    selectAllCheckbox.addEventListener("change", function () {
-                        checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
-                    });
-                    checkboxes.forEach(checkbox => {
-                        checkbox.addEventListener("change", function () {
-                            if (!this.checked) {
-                                selectAllCheckbox.checked = false;
-                            }
-                        });
-                    });
-                    // Edit button functionality
+                    
                     const editButtons = document.querySelectorAll(".edit-btn");
                     const editPopup = document.querySelector("#editPopup");
                     const editNameInput = document.querySelector("#editName");

@@ -40,7 +40,7 @@ public class TransactionServlet extends HttpServlet {
             WalletDAO dao = new WalletDAO();
             Account acc = (Account) request.getSession().getAttribute("user");
             String userName = acc.getUserName();
-            long amount = Long.parseLong(request.getParameter("vnp_Amount"));
+            long amount = Long.parseLong(request.getParameter("vnp_Amount")) / 100;
             String vnp_OrderInfo = request.getParameter("vnp_OrderInfo");
             String vnp_OrderDate = request.getParameter("vnp_PayDate");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
