@@ -10,11 +10,13 @@ import java.util.List;
  *
  * @author Admin
  */
-public class ScheduleDTO{
+public class ScheduleDTO {
     private int cycleId;
     private String mentorName;
     private Date deadline;
     private String status;
+    private Date startTime;
+    private Date endTime;
     private List<SchedulePublic> list;
 
     public ScheduleDTO() {
@@ -31,6 +33,35 @@ public class ScheduleDTO{
         this.status = status;
         this.cycleId = cycleId;
     }
+
+    public ScheduleDTO(String mentorName, Date deadline, String status, Date startTime, Date endTime, int cycleId) {
+        
+        this.mentorName = mentorName;
+        this.deadline = deadline;
+        this.status = status;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.cycleId = cycleId;
+    }
+
+   
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+    
     
     public String getMentorName() {
         return mentorName;
@@ -74,7 +105,9 @@ public class ScheduleDTO{
 
     @Override
     public String toString() {
-        return "ScheduleDTO{" + "cycleId=" + cycleId + ", mentorName=" + mentorName + ", deadline=" + deadline + ", status=" + status + ", list=" + list.size() + '}';
+        return "ScheduleDTO{" + "cycleId=" + cycleId + ", mentorName=" + mentorName + ", deadline=" + deadline + ", status=" + status + ", startTime=" + startTime + ", endTime=" + endTime + ", list=" + list + '}';
     }
+
+    
     
 }

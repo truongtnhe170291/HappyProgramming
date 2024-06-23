@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 <!-- Skills list will be populated here -->
-                <c:forEach var="skill" items="${skills}" varStatus="status">
+                <c:forEach  items="${skills}" var="skill" varStatus="status">
                     <tr>
                         <td><input type="checkbox" /></td>
                         <td>${status.index + 1}</td>

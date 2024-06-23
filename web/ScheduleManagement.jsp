@@ -398,6 +398,8 @@
                                                                             <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
                                                                             <h2>Schedule Details</h2>
                                                                             <p><strong>Mentor Name:</strong> <span id="modalMentorName">${schedule.mentorName}</span></p>
+                                                                            <p><strong>Start Time:</strong> <span id="modalMentorName">${schedule.startTime}</span></p>
+                                                                            <p><strong>End Time:</strong> <span id="modalMentorName">${schedule.endTime}</span></p>
                                                                             <p><strong>Details Schedule</strong>
                                                                             <div class="form-container">
                                                                                 <table border="1" width="100%">

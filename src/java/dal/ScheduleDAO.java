@@ -39,9 +39,9 @@ public class ScheduleDAO {
     }
 
     public List<ScheduleDTO> getAllRequestByMentorByStatus(int status) {
-        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name from"
-                + "  Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id join Status_Selected sta on sta.status_id = ss.status_id "
-                + "  where ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)";
+        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time from\n"
+                + "                Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id join Status_Selected sta on sta.status_id = ss.status_id \n"
+                + "                 where ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)";
         List<ScheduleDTO> list = new ArrayList<>();
         try {
             ps = con.prepareStatement(sql);
@@ -52,6 +52,8 @@ public class ScheduleDAO {
                         rs.getString(2),
                         rs.getDate(3),
                         rs.getString(4),
+                        rs.getDate(5),        
+                        rs.getDate(6), 
                         rs.getInt(1)));
             }
             for (ScheduleDTO s : list) {
