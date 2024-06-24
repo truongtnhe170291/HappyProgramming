@@ -184,12 +184,23 @@
                 justify-content: end;
             }
             .statusol{
-
+                
                 line-height: 20px;
                 text-align: center;
                 margin-top: 20px;
-                width: 100px;
-                height: 50px;
+                width: fit-content;
+                display: flex;
+                justify-content: center;
+                margin-right: 50px;
+                font-size: 18px;
+            }
+            .statusol span{
+                margin-left: 10px;
+                margin-top: -3px;
+            }
+            .status-bar{
+                display: flex;
+                justify-content: center;
             }
             .feedback-container {
                 margin-top: 20px;
@@ -284,9 +295,15 @@
                                     <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
                                         <li class="nav-item hes">
-
-                                            <form action="aplly" method="post">
+                                            
+                                            <form action="aplly" method="post" class="status-bar">
                                                 <input type="hidden" name="cvId" value="${cv.cvId}"/>
+                                                <div class="statusol">
+                                                    CV Status: 
+                                                    <span class="bg-opacity-success color-success userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
+                                                    <span class="bg-opacity-danger color-danger userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
+                                                    <span class="bg-opacity-warning color-warning userDatatable-content-status" style="font-size: 15px;">${requestScope.cv.status.statusName}</span>
+                                                </div>
                                                 <button type="submit" class="sets">
                                                     Apply CV
                                                     <div class="star-1">
@@ -414,11 +431,7 @@
                                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
-                                                <div class="statusol">
-                                                    <span class="bg-opacity-success color-success userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
-                                                    <span class="bg-opacity-danger color-danger userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
-                                                    <span class="bg-opacity-warning color-warning userDatatable-content-status" style="font-size: 15px;">${requestScope.cv.status.statusName}</span>
-                                                </div>
+                                                
                                                 <div class="mt-40 mb-50">
                                                     <div class="user-tab-info-title mb-35 text-capitalize">
                                                         <h5 class="fw-500">CV Information</h5>
