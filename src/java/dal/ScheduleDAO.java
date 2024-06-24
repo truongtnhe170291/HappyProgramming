@@ -121,23 +121,36 @@ public class ScheduleDAO {
         return true;
     }
 
-    public boolean rejectRequest(int cycleId) {
-        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
+public boolean rejectRequest(int cycleId, String rejectReason) {
+    String updateSlotSql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
+    String updateCycleSql = "UPDATE [dbo].[Cycle] SET [note] = ? WHERE cycle_id = ?";
 
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, cycleId);
-
-            int row = ps.executeUpdate();
-            if (row != 1) {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
+    try {
+        // Update status in Selected_Slot table
+        PreparedStatement updateSlotPs = con.prepareStatement(updateSlotSql);
+        updateSlotPs.setInt(1, cycleId);
+        int slotRow = updateSlotPs.executeUpdate();
+        if (slotRow != 1) {
+            return false;
         }
-        return true;
+
+        // Update note in Cycle table
+        PreparedStatement updateCyclePs = con.prepareStatement(updateCycleSql);
+        updateCyclePs.setString(1, rejectReason);
+        updateCyclePs.setInt(2, cycleId);
+        int cycleRow = updateCyclePs.executeUpdate();
+        if (cycleRow != 1) {
+            return false;
+        }
+
+    } catch (SQLException e) {
+        System.out.println(e);
+        return false;
     }
+    return true;
+}
+
+
 
     public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
 

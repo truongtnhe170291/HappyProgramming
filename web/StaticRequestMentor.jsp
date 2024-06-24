@@ -31,7 +31,7 @@
        
         text-align: center;
         font-size: 2.5em;
-        margin-bottom: 30px;
+        margin-top: 300px;
         color: #333;
     }
 

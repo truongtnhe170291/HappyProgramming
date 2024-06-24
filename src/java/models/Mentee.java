@@ -14,6 +14,10 @@ public class Mentee extends Account{
     
     public Mentee() {
     }
+    
+    public Mentee(String userName) {
+        super(userName);
+    }
 
     public Mentee(String userName, String gmail, String fullName, String password, Date dob, boolean sex, String address, String phone, String avatar, int roleId, int statusId) {
         super(userName, gmail, fullName, password, dob, sex, address, phone, avatar, roleId, statusId);

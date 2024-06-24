@@ -20,9 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.Day;
+import models.Mentee;
+import models.Mentor;
 import models.RequestDTO;
 import models.SchedulePublic;
 import models.Slot;
+import models.Status;
 
 /**
  *
@@ -49,7 +52,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         List<RequestDTO> requests = rdao.getRequestOfMentorInDeadlineByStatus(mentorName);
 
         ArrayList<Slot> listSlots = mentorDao.listSlots();
+        
         ArrayList<Day> listDays = mentorDao.listDays();
+        List<Mentee> mentee1 = rdao.getMenteeByRequest(mentorName);
+        List<Status> listStatus = rdao.getAllStatuses();
 
         // Lọc lịch trình của mentor theo từng tuần
         for (RequestDTO requestDTO : requests) {
@@ -61,6 +67,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         // Lọc danh sách các ngày trong tuần hiện tại
         ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
+        request.setAttribute("mentee1", mentee1);
+        request.setAttribute("listStatus", listStatus);
         request.setAttribute("requests", requests);
         request.setAttribute("listSlots", listSlots);
         request.setAttribute("listDays", oneWeekDays);
@@ -70,6 +78,12 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throw new ServletException(e);
     }
 }
+    public static void main(String[] args) throws SQLException {
+      MentorDAO mentorDao = new MentorDAO();
+      RequestDAO rdao = new RequestDAO();
+         List<RequestDTO> requests = rdao.getRequestOfMentorInDeadlineByStatus("son");
+           System.out.println(requests);
+    }
 
 // Hàm để lọc lịch trình theo tuần
 private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Mentee;
 import models.Mentor;
 import models.Request;
 import models.RequestDTO;
@@ -79,7 +80,7 @@ public class RequestDAO {
 //        // Trả về danh sách request
 //        return requests;
 //    }
-   public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
+    public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         try {
             String sql = " SELECT * "
@@ -104,7 +105,52 @@ public class RequestDAO {
                 request.setCvId(rs.getInt("cv_id"));
                 // Fetch status using fetchStatusById method
                 int statusId = rs.getInt("status_id");
-                Status status = fetchStatusById(statusId, con);     
+                Status status = fetchStatusById(statusId, con);
+                request.setStatus(status);
+
+                requests.add(request);
+            }
+
+            for (RequestDTO requ : requests) {
+                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+                requ.setListSkills(skills);
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                requ.setListSchedule(listSchedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
+        }
+
+        return requests;
+    }
+
+    public List<RequestDTO> getRequestOfMentorInDeadlineByStatus(String mentorName) throws SQLException {
+        List<RequestDTO> requests = new ArrayList<>();
+        try {
+            String sql = " SELECT * "
+                    + " FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name\n"
+                    + " WHERE r.mentor_name = ?\n"
+                    + " order by [deadline_date] DESC";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+                request.setCvId(rs.getInt("cv_id"));
+                // Fetch status using fetchStatusById method
+                int statusId = rs.getInt("status_id");
+                Status status = fetchStatusById(statusId, con);
                 request.setStatus(status);
 
                 requests.add(request);
@@ -156,86 +202,84 @@ public class RequestDAO {
     }
 
     public List<RequestDTO> getRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
-    List<RequestDTO> requests = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+        List<RequestDTO> requests = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-    try {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM RequestsFormMentee WHERE mentee_name = ?");
-        
-        // Thêm điều kiện vào câu truy vấn dựa trên các tham số đầu vào
-        if (statusId != null && statusId != -1) {
-            sqlBuilder.append(" AND status_id = ?");
+        try {
+            StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM RequestsFormMentee WHERE mentee_name = ?");
+
+            // Thêm điều kiện vào câu truy vấn dựa trên các tham số đầu vào
+            if (statusId != null && statusId != -1) {
+                sqlBuilder.append(" AND status_id = ?");
+            }
+            if (mentorName != null && !mentorName.isEmpty()) {
+                sqlBuilder.append(" AND mentor_name = ?");
+            }
+            if (startTime != null && endTime != null) {
+                sqlBuilder.append(" AND deadline_date BETWEEN ? AND ?");
+            } else if (startTime != null) {
+                sqlBuilder.append(" AND deadline_date >= ?");
+            } else if (endTime != null) {
+                sqlBuilder.append(" AND deadline_date <= ?");
+            }
+
+            ps = con.prepareStatement(sqlBuilder.toString());
+            int paramIndex = 1;
+            ps.setString(paramIndex++, menteeName);
+
+            // Đặt các tham số vào câu truy vấn
+            if (statusId != null && statusId != -1) {
+                ps.setInt(paramIndex++, statusId);
+            }
+            if (mentorName != null && !mentorName.isEmpty()) {
+                ps.setString(paramIndex++, mentorName);
+            }
+            if (startTime != null && endTime != null) {
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
+            } else if (startTime != null) {
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
+            } else if (endTime != null) {
+                ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
+            }
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+
+                Status status = fetchStatusById(rs.getInt("status_id"), con); // Lấy status từ rs
+                request.setStatus(status);
+
+                requests.add(request);
+            }
+
+            // Lấy danh sách kỹ năng và lịch trình cho từng request
+            for (RequestDTO requ : requests) {
+                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+                requ.setListSkills(skills);
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                requ.setListSchedule(listSchedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestsByMenteeStatusMentorTime SQL Error: " + e.getMessage());
+            e.printStackTrace();
         }
-        if (mentorName != null && !mentorName.isEmpty()) {
-            sqlBuilder.append(" AND mentor_name = ?");
-        }
-        if (startTime != null && endTime != null) {
-            sqlBuilder.append(" AND deadline_date BETWEEN ? AND ?");
-        } else if (startTime != null) {
-            sqlBuilder.append(" AND deadline_date >= ?");
-        } else if (endTime != null) {
-            sqlBuilder.append(" AND deadline_date <= ?");
-        }
 
-        ps = con.prepareStatement(sqlBuilder.toString());
-        int paramIndex = 1;
-        ps.setString(paramIndex++, menteeName);
-
-        // Đặt các tham số vào câu truy vấn
-        if (statusId != null && statusId != -1) {
-            ps.setInt(paramIndex++, statusId);
-        }
-        if (mentorName != null && !mentorName.isEmpty()) {
-            ps.setString(paramIndex++, mentorName);
-        }
-        if (startTime != null && endTime != null) {
-            ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
-            ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
-        } else if (startTime != null) {
-            ps.setDate(paramIndex++, java.sql.Date.valueOf(startTime));
-        } else if (endTime != null) {
-            ps.setDate(paramIndex++, java.sql.Date.valueOf(endTime));
-        }
-
-        rs = ps.executeQuery();
-
-        while (rs.next()) {
-            RequestDTO request = new RequestDTO();
-            request.setRequestId(rs.getInt("request_id"));
-            request.setMentorName(rs.getString("mentor_name"));
-            request.setMenteeName(rs.getString("mentee_name"));
-            request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
-            request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
-            request.setDescription(rs.getString("description"));
-            request.setTitle(rs.getString("title"));
-            request.setPrice(rs.getInt("price"));
-            request.setNote(rs.getString("note"));
-
-            Status status = fetchStatusById(rs.getInt("status_id"), con); // Lấy status từ rs
-            request.setStatus(status);
-
-            requests.add(request);
-        }
-
-        // Lấy danh sách kỹ năng và lịch trình cho từng request
-        for (RequestDTO requ : requests) {
-            List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
-            requ.setListSkills(skills);
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
-            requ.setListSchedule(listSchedule);
-        }
-    } catch (SQLException e) {
-        System.out.println("getRequestsByMenteeStatusMentorTime SQL Error: " + e.getMessage());
-        e.printStackTrace();
-    } 
-
-    return requests;
-}
-
-
-
+        return requests;
+    }
+    
     public void updateExpiredRequestsStatus() throws SQLException {
         PreparedStatement ps = null;
         try {
@@ -293,7 +337,29 @@ public class RequestDAO {
         return mentors;
     }
 
-    public List<Status> getAllStatuses() throws SQLException {
+    public List<Mentee> getMenteeByRequest(String mentorName) {
+        List<Mentee> mentees = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT DISTINCT mentee_name FROM RequestsFormMentee WHERE mentor_name = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String menteeName = rs.getString("mentee_name");
+                Mentee mentee = new Mentee(menteeName);
+                mentees.add(mentee);
+            }
+        } catch (SQLException e) {
+            System.out.println("getMenteeByRequest: " + e.getMessage());
+        }
+        return mentees;
+    }
+
+    public List<Status> getAllStatuses(){
         List<Status> statuses = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -341,108 +407,59 @@ public class RequestDAO {
         return requestList;
     }
 
-    public List<RequestDTO> getRequestOfMentorInDeadlineByStatus(String mentorName) throws SQLException {
-        List<RequestDTO> requests = new ArrayList<>();
-        try {
-            String sql = "SELECT r.*, rs.status_name \n" +
-"                    FROM RequestsFormMentee r \n" +
-"                    JOIN RequestStatuses rs ON r.status_id = rs.status_id \n" +
-"                    WHERE r.mentor_name = ? \n" +
-"					order by r.deadline_date DESC";
-            ps = con.prepareStatement(sql);
+    public StaticMentor getStaticRequestMentor(String mentorName) throws SQLException {
+        StaticMentor stats = null;
+        String sql = "SELECT "
+                + "COUNT(DISTINCT request_id) AS TotalRequests, "
+                + "SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) AS AcceptedRequests, "
+                + "COUNT(DISTINCT request_id) AS InvitedRequests, "
+                + "SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) AS CanceledRequests, "
+                + "ROUND(SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCanceledRequests, "
+                + "ROUND(SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCompletedRequests "
+                + "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
+                + "WHERE mentor_name = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, mentorName);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                RequestDTO request = new RequestDTO();
-                request.setRequestId(rs.getInt("request_id"));
-                request.setMentorName(rs.getString("mentor_name"));
-                request.setMenteeName(rs.getString("mentee_name"));
-                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
-                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
-                request.setDescription(rs.getString("description"));
-                request.setTitle(rs.getString("title"));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int acceptedRequests = rs.getInt("AcceptedRequests");
+                    int invitedRequests = rs.getInt("InvitedRequests");
+                    int canceledRequests = rs.getInt("CanceledRequests");
+                    double cancelPercentage = rs.getDouble("PercentCanceledRequests");
+                    double completePercentage = rs.getDouble("PercentCompletedRequests");
 
-                int status_id = rs.getInt("status_id");
-                String status_name = rs.getString("status_name");
-                Status status = new Status(status_id, status_name);
-                request.setStatus(status);
+                    double ratingStars = getAverageStar(mentorName);
 
-                requests.add(request);
+                    stats = new StaticMentor(acceptedRequests, invitedRequests, canceledRequests, cancelPercentage, completePercentage, ratingStars);
+                }
             }
-            if (requests.isEmpty()) {
-                return requests;
-            }
-            for (RequestDTO requ : requests) {
-                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
-                requ.setListSkills(skills);
-                ScheduleDAO scheduleDAO = new ScheduleDAO();
-                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
-                requ.setListSchedule(listSchedule);
-            }
-
         } catch (SQLException e) {
-            System.out.println("getRequestOfMentorInDeadlineByStatus: " + e.getMessage());
+            System.out.println("getStaticRequestMentor: " + e.getMessage());
+            throw e;
         }
 
-        return requests;
+        return stats;
     }
-    
-    
-   public StaticMentor getStaticRequestMentor(String mentorName) throws SQLException {
-    StaticMentor stats = null;
-    String sql = "SELECT "
-           + "COUNT(DISTINCT request_id) AS TotalRequests, "
-           + "SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) AS AcceptedRequests, "
-           + "COUNT(DISTINCT request_id) AS InvitedRequests, "
-           + "SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) AS CanceledRequests, "
-           + "ROUND(SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCanceledRequests, "
-           + "ROUND(SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCompletedRequests "
-           + "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
-           + "WHERE mentor_name = ?";
 
-    
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, mentorName);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                int acceptedRequests = rs.getInt("AcceptedRequests");
-                int invitedRequests = rs.getInt("InvitedRequests");
-                int canceledRequests = rs.getInt("CanceledRequests");
-                double cancelPercentage = rs.getDouble("PercentCanceledRequests");
-                double completePercentage = rs.getDouble("PercentCompletedRequests");
-                
-                double ratingStars = getAverageStar(mentorName);
+    public double getAverageStar(String mentorName) throws SQLException {
+        String sql = "SELECT AVG(star) AS average_star FROM dbo.FeedBacks WHERE mentor_name = ?";
 
-                stats = new StaticMentor(acceptedRequests, invitedRequests, canceledRequests, cancelPercentage, completePercentage, ratingStars);
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, mentorName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("average_star");
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("getAverageStar: " + e.getMessage());
+            throw e;
         }
-    } catch (SQLException e) {
-        System.out.println("getStaticRequestMentor: " + e.getMessage());
-        throw e;
-    }
-    
-    return stats;
-}
 
-public double getAverageStar(String mentorName) throws SQLException {
-    String sql = "SELECT AVG(star) AS average_star FROM dbo.FeedBacks WHERE mentor_name = ?";
-    
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, mentorName);
-        
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getDouble("average_star");
-            }
-        }
-    } catch (SQLException e) {
-        System.out.println("getAverageStar: " + e.getMessage());
-        throw e;
+        return 0.0; // Return 0.0 if no feedback is found
     }
-    
-    return 0.0; // Return 0.0 if no feedback is found
-}
-
 
     public int getRequestId() {
         String sql = "select TOP 1 r.request_id from RequestsFormMentee r order by r.request_id desc";
@@ -583,7 +600,7 @@ public double getAverageStar(String mentorName) throws SQLException {
             ps.setInt(1, skillId);
             ps.setInt(2, requestId);
             int result = ps.executeUpdate();
-            if(result == 1){
+            if (result == 1) {
                 return true;
             }
         } catch (SQLException ex) {
@@ -609,8 +626,8 @@ public double getAverageStar(String mentorName) throws SQLException {
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
             int result3 = ps.executeUpdate();
-            
-            if(result1 >=1 && result2 >=1 && result3>=1){
+
+            if (result1 >= 1 && result2 >= 1 && result3 >= 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -674,7 +691,7 @@ public double getAverageStar(String mentorName) throws SQLException {
         StaticMentor s = rdao.getStaticRequestMentor("son");
         System.out.println(s);
 
-        }
+    }
 
 //        List<RequestDTO> rList = rdao.getRequestsByMenteeAndStatus("hieu",3);
 //        for (RequestDTO rq : rList) {
@@ -683,8 +700,6 @@ public double getAverageStar(String mentorName) throws SQLException {
 //        }
 //        List<Mentor> mList = rdao.getMentorByRequest("truong");
 //        System.out.println(mList);
-    
-
     public Request getRequestByStatusSaved(String menteeName, String mentorName) {
         try {
             String sql = "select r.* from RequestsFormMentee r join Cycle c on r.mentor_name = c.mentor_name where r.status_id = 6 and r.mentee_name = ? and r.mentor_name = ?";
@@ -692,7 +707,7 @@ public double getAverageStar(String mentorName) throws SQLException {
             ps.setString(1, menteeName);
             ps.setString(2, mentorName);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Request r = new Request();
                 r.setRequestId(rs.getInt(1));
                 r.setMentorName(rs.getString(2));
@@ -706,9 +721,9 @@ public double getAverageStar(String mentorName) throws SQLException {
                 r.setNote(rs.getString(10));
                 return r;
             }
-            
+
         } catch (SQLException e) {
-            System.out.println("getRequestByStatusSaved " +e.getMessage());
+            System.out.println("getRequestByStatusSaved " + e.getMessage());
         }
         return null;
     }
