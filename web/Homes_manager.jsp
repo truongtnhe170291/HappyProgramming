@@ -181,6 +181,7 @@
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Management</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="listCV">List CV</a></li>
+                
                 <li><a class="nav-link" href="skills">List Skills</a></li>
               </ul>
             </li>

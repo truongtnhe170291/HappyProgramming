@@ -367,6 +367,7 @@ s<!DOCTYPE html>
                                                             <th><span class="userDatatable-title">Deadline</span></th>
                                                             <th><span class="userDatatable-title">Status</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
+                                                            
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -375,24 +376,67 @@ s<!DOCTYPE html>
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
+                                                                <td><div class="userDatatable-content">
+                                                                        <input type="text" name="message"/>
+                                                                    </div></td>
+                                                                <td> 
+                                                                    <div class="btn-group">
+                                                                        <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </button>
+                                                                        <form action="HandleSlotMentor" method="post">
+                                                                            <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
+                                                                            <c:if test="${not empty schedule.list}">
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                            </c:if>
+                                                                            <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
+                                                                                <i class="fas fa-check"></i>
+                                                                            </button>
+                                                                            <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </button>
+                                                                            <c:if test="${param.action == '3'}">
+                                                                                <textarea name="rejectReason" placeholder="Enter reason for rejection" class="reject-reason-textarea"></textarea>
+                                                                            </c:if>
+                                                                        </form>
+                                                                    </div>
 
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                            <form action="HandleSlotMentor" method="post">
-                                                                <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
-                                                                <c:if test="${not empty schedule.list}">
-                                                                    <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
-                                                                </c:if>
-                                                                <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
-                                                                    <i class="fas fa-check"></i>
-                                                                </button>
-                                                                <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
-                                                                    <i class="fas fa-times"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
+
+                                                                    <div id="modal-${schedule.mentorName}" class="modal">
+                                                                        <div class="modal-content">
+                                                                            <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
+                                                                            <h2>Schedule Details</h2>
+                                                                            <p><strong>Mentor Name:</strong> <span id="modalMentorName">${schedule.mentorName}</span></p>
+                                                                            <p><strong>Start Time:</strong> <span id="modalMentorName">${schedule.startTime}</span></p>
+                                                                            <p><strong>End Time:</strong> <span id="modalMentorName">${schedule.endTime}</span></p>
+                                                                            <p><strong>Details Schedule</strong>
+                                                                            <div class="form-container">
+                                                                                <table border="1" width="100%">
+                                                                                    <tr class="over">
+                                                                                        <th rowspan="2">
+                                                                                            <label for="week">Month</label>
+                                                                                            <select id="week"></select>
+                                                                                        </th>
+                                                                                        <th>Monday</th>
+                                                                                        <th>Tuesday</th>
+                                                                                        <th>Wednesday</th>
+                                                                                        <th>Thursday</th>
+                                                                                        <th>Friday</th>
+                                                                                        <th>Saturday</th>
+                                                                                        <th>Sunday</th>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <c:forEach items="${listDays}" var="day">
+                                                                                            <c:if test="${day.cycle == 1}">
+                                                                                                <td>${day.dateValue}</td>
+                                                                                            </c:if>
+                                                                                        </c:forEach>
+                                                                                    </tr>
+                                                                                    <c:forEach items="${listSlot}" var="slot">
+                                                                                        <tr>
+                                                                                            <td>${slot.slot_id}</td>
+                                                                                            <c:forEach items="${listDay}" var="day">
+                                                                                                <c:set var="found" value="false"/>
 
                                                         <div id="modal-${schedule.mentorName}" class="modal">
                                                             <div class="modal-content">

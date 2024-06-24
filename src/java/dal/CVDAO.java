@@ -346,6 +346,47 @@ public class CVDAO {
         }
         return cvList;
     }
+    
+    public List<CVDTO> getAllCV() {
+    String sql = "select c.*, m.rate from CV c join Mentors m on c.mentor_name = m.mentor_name";
+    List<CVDTO> cvList = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            CVDTO cv = new CVDTO();
+            cv.setCvId(rs.getInt(1));
+            cv.setUserName(rs.getString("mentor_name"));
+            cv.setAddress(rs.getString("address"));
+            cv.setGmail(rs.getString("gmail"));
+            cv.setFullName(rs.getString("full_name"));
+            cv.setDob(rs.getDate("dob"));
+            cv.setSex(rs.getBoolean("sex"));
+            cv.setProfession(rs.getString("profession"));
+            cv.setProfessionIntro(rs.getString("profession_intro"));
+            cv.setAchievementDescription(rs.getString("achievement_description"));
+            cv.setServiceDescription(rs.getString("service_description"));
+            cv.setImgcv(rs.getString("avatar"));
+            int statusId = rs.getInt("status_id");
+            cv.setRate(rs.getInt("rate"));
+            cv.setStattusId(statusId);
+            cvList.add(cv);
+        }
+        if (cvList.isEmpty()) {
+            return cvList;
+        }
+        for (CVDTO cv : cvList) {
+            cv.setStatus(getStatusById(cv.getStattusId()));
+            cv.setListSkill(getSkillsByCVId(cv.getCvId()));
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+        return null;
+    }
+    return cvList;
+}
+
 
     public List<Skill> getSkillsByCVId(int cvId) {
         String sql = "SELECT s.[skill_id], s.[skill_name], s.[description] FROM CVSkills cs JOIN Skills s ON cs.skill_id = s.skill_id\n"

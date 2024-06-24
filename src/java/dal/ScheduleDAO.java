@@ -39,9 +39,9 @@ public class ScheduleDAO {
     }
 
     public List<ScheduleDTO> getAllRequestByMentorByStatus(int status) {
-        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name from"
-                + "  Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id join Status_Selected sta on sta.status_id = ss.status_id "
-                + "  where ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)";
+        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time from\n"
+                + "                Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id join Status_Selected sta on sta.status_id = ss.status_id \n"
+                + "                 where ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)";
         List<ScheduleDTO> list = new ArrayList<>();
         try {
             ps = con.prepareStatement(sql);
@@ -52,6 +52,8 @@ public class ScheduleDAO {
                         rs.getString(2),
                         rs.getDate(3),
                         rs.getString(4),
+                        rs.getDate(5),        
+                        rs.getDate(6), 
                         rs.getInt(1)));
             }
             for (ScheduleDTO s : list) {
@@ -111,23 +113,37 @@ public class ScheduleDAO {
         return true;
     }
 
-    public boolean rejectRequest(int cycleId) {
-        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
+public boolean rejectRequest(int cycleId, String rejectReason) {
+    String updateSlotSql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
+    String updateCycleSql = "UPDATE [dbo].[Cycle] SET [note] = ? WHERE cycle_id = ?";
 
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, cycleId);
-
-            int row = ps.executeUpdate();
-            if (row != 1) {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e);
+    try {
+        // Update status in Selected_Slot table
+        PreparedStatement updateSlotPs = con.prepareStatement(updateSlotSql);
+        updateSlotPs.setInt(1, cycleId);
+        int slotRow = updateSlotPs.executeUpdate();
+        if (slotRow != 1) {
+            return false;
         }
-        return true;
+
+        // Update note in Cycle table
+        PreparedStatement updateCyclePs = con.prepareStatement(updateCycleSql);
+        updateCyclePs.setString(1, rejectReason);
+        updateCyclePs.setInt(2, cycleId);
+        int cycleRow = updateCyclePs.executeUpdate();
+        if (cycleRow != 1) {
+            return false;
+        }
+
+    } catch (SQLException e) {
+        System.out.println(e);
+        return false;
     }
+    return true;
+}
+
+
+
 
     public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
 
