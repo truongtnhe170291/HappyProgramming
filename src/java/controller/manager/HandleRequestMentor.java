@@ -83,7 +83,7 @@ public class HandleRequestMentor extends HttpServlet {
         }
         MentorDAO mentorDao = new MentorDAO();
         ArrayList<Slot> listSlot = mentorDao.listSlots();
-        //ArrayList<Day> listDay = mentorDao.listDays();
+//        ArrayList<Day> listDay = mentorDao.listDays();
         List<String> daysOfWeek = Arrays.asList(
             "MONDAY", 
             "TUESDAY", 
@@ -143,6 +143,7 @@ public class HandleRequestMentor extends HttpServlet {
         // Lấy mentorName, cycleId và action từ request
         int cycleId = Integer.parseInt(request.getParameter("cycleID"));
         int action = Integer.parseInt(request.getParameter("action"));
+        String message = request.getParameter("message");
         System.out.println(cycleId + ""+ action);
         // Kiểm tra action và gọi hàm tương ứng
         if (action == 2) {

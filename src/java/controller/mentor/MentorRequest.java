@@ -87,13 +87,22 @@ public class MentorRequest extends HttpServlet {
             ArrayList<Day> listCurrentDays = mentorDao.listCurrentDays();
 
             LocalDate startDate = LocalDate.parse(listCurrentDays.get(0).getDateValue());
-            LocalDate endDate = startDate.plusDays(27);
+//            LocalDate endDate = startDate.plusDays(27);
 
-            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName(), java.sql.Date.valueOf(startDate), java.sql.Date.valueOf(endDate));
+            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName());
             if (!listSchedule.isEmpty()) {
-                String status = listSchedule.get(0).getStatus();
-                request.setAttribute("isSend", status);
+                LocalDate endDateString = LocalDate.parse(listSchedule.get(0).getEndTime().toString());
+                LocalDate avaiableBookingDate = endDateString.minusWeeks(1).minusDays(6);
+                request.setAttribute("avaiableBookingDate", avaiableBookingDate);
+                LocalDate today = LocalDate.now();
+                if (today.isAfter(avaiableBookingDate)) {
+                    request.setAttribute("status", "Out of date");
+                } else {
+                    int status = Integer.parseInt(listSchedule.get(0).getStatus()) ;
+                    request.setAttribute("status", statusString(status));
+                }
             }
+
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("listDays", listCurrentDays);
             request.setAttribute("listSchedule", listSchedule);
@@ -200,6 +209,41 @@ public class MentorRequest extends HttpServlet {
             response.sendRedirect("MentorRequest?send=ok");
         }
 
+    }
+    
+    public String statusString(int status){
+        String output = "";
+        switch (status) {
+            case 1:{
+                output += "Pending";
+                break;
+            }
+            case 2:{
+                output += "Approved";
+                break;
+            }
+            case 3:{
+                output += "Rejected";
+                break;
+            }
+            case 4:{
+                output += "Not yet";
+                break;
+            }
+            case 5:{
+                output += "Attended";
+                break;
+            }
+            case 6:{
+                output += "Saved";
+                break;
+            }
+            default:
+                throw new AssertionError();
+        }
+        
+        return output;
+        
     }
 
     /**

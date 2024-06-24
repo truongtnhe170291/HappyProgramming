@@ -188,67 +188,67 @@ s<!DOCTYPE html>
                 border-color: #117a8b;
             }
             .form-container {
-                        max-width: 100%;
-                        margin: 0 auto;
-                        font-family: Arial, sans-serif;
-                    }
+                max-width: 100%;
+                margin: 0 auto;
+                font-family: Arial, sans-serif;
+            }
 
-                    .form-container table {
-                        width: 100%;
-                        border-collapse: separate;
-                        border-spacing: 5px;
-                        background-color: #f8f9fa;
-                    }
+            .form-container table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 5px;
+                background-color: #f8f9fa;
+            }
 
-                    .form-container th {
-                        background-color: #e9ecef;
-                        padding: 10px;
-                        text-align: center;
-                        font-weight: bold;
-                    }
+            .form-container th {
+                background-color: #e9ecef;
+                padding: 10px;
+                text-align: center;
+                font-weight: bold;
+            }
 
-                    .form-container td {
-                        background-color: white;
-                        padding: 0;
-                        height: 80px;
-                        vertical-align: top;
-                        border: 1px solid #dee2e6;
-                    }
+            .form-container td {
+                background-color: white;
+                padding: 0;
+                height: 80px;
+                vertical-align: top;
+                border: 1px solid #dee2e6;
+            }
 
-                    .form-container td:first-child {
-                        background-color: #e9ecef;
-                        font-weight: bold;
-                        text-align: center;
-                        vertical-align: middle;
-                    }
+            .form-container td:first-child {
+                background-color: #e9ecef;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: middle;
+            }
 
-                    .form-container td > div {
-                        background-color: #e6f3ff;
-                        margin: 5px;
-                        padding: 5px;
-                        border-radius: 5px;
-                        height: calc(100% - 10px);
-                        font-size: 14px;
-                    }
+            .form-container td > div {
+                background-color: #e6f3ff;
+                margin: 5px;
+                padding: 5px;
+                border-radius: 5px;
+                height: calc(100% - 10px);
+                font-size: 14px;
+            }
 
-                    .form-container td > div > div:first-child {
-                        font-weight: bold;
-                        color: #0056b3;
-                    }
+            .form-container td > div > div:first-child {
+                font-weight: bold;
+                color: #0056b3;
+            }
 
-                    .form-container td > div > div:nth-child(2) {
-                        color: #28a745;
-                    }
+            .form-container td > div > div:nth-child(2) {
+                color: #28a745;
+            }
 
-                    .form-container td > div > div:nth-child(3) {
-                        color: #6c757d;
-                    }
+            .form-container td > div > div:nth-child(3) {
+                color: #6c757d;
+            }
 
-                    .form-container select {
-                        width: 100%;
-                        padding: 5px;
-                        margin-top: 5px;
-                    }
+            .form-container select {
+                width: 100%;
+                padding: 5px;
+                margin-top: 5px;
+            }
         </style>
     </head>
 
@@ -365,6 +365,7 @@ s<!DOCTYPE html>
                                                             <th><span class="userDatatable-title">User Name</span></th>
                                                             <th><span class="userDatatable-title">Deadline</span></th>
                                                             <th><span class="userDatatable-title">Status</span></th>
+                                                            <th><span class="userDatatable-title">Message</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
                                                         </tr>
                                                     </thead>
@@ -374,6 +375,9 @@ s<!DOCTYPE html>
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
+                                                                <td><div class="userDatatable-content">
+                                                                        <input type="text" name="message"/>
+                                                                    </div></td>
                                                                 <td> 
                                                                     <div class="btn-group">
                                                                         <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
@@ -403,8 +407,8 @@ s<!DOCTYPE html>
                                                                                 <table border="1" width="100%">
                                                                                     <tr class="over">
                                                                                         <th rowspan="2">
-                                                                                           <label for="week">Month</label>
-                                                                                <select id="week"></select>
+                                                                                            <label for="week">Month</label>
+                                                                                            <select id="week"></select>
                                                                                         </th>
                                                                                         <th>Monday</th>
                                                                                         <th>Tuesday</th>
@@ -570,61 +574,61 @@ s<!DOCTYPE html>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
-                               function getMonday(d) {
-                        d = new Date('2024-06-24');
-                        var day = d.getDay(),
-                                diff = d.getDate() - day + (day == 0 ? - 6 : 1);
-                        return new Date(d.setDate(diff));
-                        }
+                                                                                function getMonday(d) {
+                                                                                    d = new Date('2024-06-24');
+                                                                                    var day = d.getDay(),
+                                                                                            diff = d.getDate() - day + (day == 0 ? -6 : 1);
+                                                                                    return new Date(d.setDate(diff));
+                                                                                }
 
-                function formatDate(date) {
-                return (
-                                                date.getDate().toString().padStart(2, "0")
+                                                                                function formatDate(date) {
+                                                                                    return (
+                                                                                            date.getDate().toString().padStart(2, "0")
 
-                       +
-                        "-" +
-                        (date.getMonth() + 1).toString().padStart(2, "0") +
-                        "-" +
-                          date.getFullYear().toString().padStart(4, "0")
-                        );
-                }
-                                
-                                                               function getWeekOptions() {
-                const startDate = new Date('2024-06-24');
-                const options = [];
-                for (let week = 0; week < 4; week++) {
-                const mondayOfWeek = new Date(startDate);
-                mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
-                const sundayOfWeek = new Date(mondayOfWeek);
-                sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
-                const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
-                options.push({value: week + 1, text: optionText});
-                }
-                return options;
-                }
+                                                                                            +
+                                                                                            "-" +
+                                                                                            (date.getMonth() + 1).toString().padStart(2, "0") +
+                                                                                            "-" +
+                                                                                            date.getFullYear().toString().padStart(4, "0")
+                                                                                            );
+                                                                                }
 
-                const weekSelect = document.getElementById("week");
-                const weekOptions = getWeekOptions();
-                weekOptions.forEach((option) => {
-                const optionElement = document.createElement("option");
-                optionElement.value = option.value;
-                optionElement.textContent = option.text;
-                weekSelect.appendChild(optionElement);
-                });
+                                                                                function getWeekOptions() {
+                                                                                    const startDate = new Date('2024-06-24');
+                                                                                    const options = [];
+                                                                                    for (let week = 0; week < 4; week++) {
+                                                                                        const mondayOfWeek = new Date(startDate);
+                                                                                        mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                                                                                        const sundayOfWeek = new Date(mondayOfWeek);
+                                                                                        sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                                                                                        const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                                                                                        options.push({value: week + 1, text: optionText});
+                                                                                    }
+                                                                                    return options;
+                                                                                }
+
+                                                                                const weekSelect = document.getElementById("week");
+                                                                                const weekOptions = getWeekOptions();
+                                                                                weekOptions.forEach((option) => {
+                                                                                    const optionElement = document.createElement("option");
+                                                                                    optionElement.value = option.value;
+                                                                                    optionElement.textContent = option.text;
+                                                                                    weekSelect.appendChild(optionElement);
+                                                                                });
                                                                                 function openModal(userName) {
                                                                                     document.getElementById('modal-' + userName).style.display = 'block';
-                                                                                  const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
-                                                                                        bookedSlots.forEach(slot => {
-                                                                                            const newDiv = document.createElement('div');
-                                                                                            newDiv.innerHTML = `
+                                                                                    const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
+                                                                                    bookedSlots.forEach(slot => {
+                                                                                        const newDiv = document.createElement('div');
+                                                                                        newDiv.innerHTML = `
                                                                                                 <div>SWR302</div>
                                                                                                 <div>View Materials</div>
                                                                                                 <div>at BE-209</div>
                                                                                             `;
-                                                                                            slot.innerHTML = '';
-                                                                                            slot.appendChild(newDiv);
-                                                                                            slot.classList.remove('Book');
-                                                                                        });
+                                                                                        slot.innerHTML = '';
+                                                                                        slot.appendChild(newDiv);
+                                                                                        slot.classList.remove('Book');
+                                                                                    });
                                                                                 }
 
                                                                                 function closeModal(userName) {

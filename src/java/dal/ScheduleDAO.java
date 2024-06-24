@@ -64,14 +64,6 @@ public class ScheduleDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        ScheduleDAO dao = new ScheduleDAO();
-        List<ScheduleDTO> list = dao.getAllRequestByMentorByStatus(1);
-        for (ScheduleDTO s : list) {
-            System.out.println(s);
-        }
-    }
-
     public List<SchedulePublic> getSlotDetail(String mentorName, int statusId) {
         String sql = "SELECT * from "
                 + "Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
@@ -158,16 +150,22 @@ public class ScheduleDAO {
         return list;
     }
 
-    public List<SchedulePublic> getListSchedulePublic(String userName, Date startTime, Date endTime) {
+    public List<SchedulePublic> getListSchedulePublic(String userName) {
         List<SchedulePublic> list = new ArrayList<>();
         try {
-            String sql = "SELECT * from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id\n"
-                    + "Where c.mentor_name = ? and c.start_time = ? and c.end_time = ?";
+            String sql = "SELECT * \n"
+                    + "FROM Selected_Slot ss\n"
+                    + "JOIN Cycle c ON ss.cycle_id = c.cycle_id\n"
+                    + "WHERE c.mentor_name = ? \n"
+                    + "AND c.cycle_id = (\n"
+                    + "    SELECT MAX(cycle_id) \n"
+                    + "    FROM Cycle\n"
+                    + "    WHERE mentor_name = ?\n"
+                    + ");";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
-            ps.setDate(2, startTime);
-            ps.setDate(3, endTime);
+            ps.setString(2, userName);
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new SchedulePublic(
@@ -184,6 +182,14 @@ public class ScheduleDAO {
             System.out.println(e.getMessage());
         }
         return list;
+    }
+    
+    public static void main(String[] args) {
+        ScheduleDAO dao = new ScheduleDAO();
+        List<SchedulePublic> list = dao.getListSchedulePublic("son");
+        for (SchedulePublic s : list) {
+            System.out.println(s);
+        }
     }
 
     public String getSelectedSlotStatus(String userName, Date startTime, Date endTime) {
@@ -207,20 +213,7 @@ public class ScheduleDAO {
         return status;
     }
 
-//    public static void main(String[] args) {
-//        ScheduleDAO aO = new ScheduleDAO();
-////        LocalDate today = LocalDate.now();
-////        // Tìm ngày tiếp theo có thể là thứ 2
-////        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-////        // Tìm ngày Chủ Nhật của tuần tiếp theo
-////        LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-//        List<ScheduleDTO> list = aO.getAllRequestByMentorByStatus(1);
-//        for (ScheduleDTO schedulePublic : list) {
-//            System.out.println(schedulePublic);
-//        }
-////        List<SchedulePublic> list = aO.getSlotDetail("son");
-////        System.out.println(list);
-//    }
+
     public List<SchedulePublic> getScheduleByRequestId(int requestId) {
         List<SchedulePublic> list = new ArrayList<>();
         try {

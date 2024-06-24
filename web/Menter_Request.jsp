@@ -403,9 +403,9 @@
                                 <div class="status_check">
                                     <h5 style="color: #ffbf00">${error}</h5>
                                         <div class="status-box">
-                                            <p style="color: #cccc00">${requestScope.isSend}</p>
+                                            <p style="color: #cccc00">${status}</p>
                                         </div>
-                                        
+
                                     </div>
 
                                     <form id="slotForm" action="MentorRequest" method="post">
@@ -481,6 +481,9 @@
                                                                 <li>Your selection of week will select for <span class="highlight"> hole month </span></li>
                                                                 <li>You cannot booking a schedule on <span class="highlight"> Saturday </span> and <span class="highlight"> Sunday </span></li>
                                                                 <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight"> Pending </span></li>
+                                                                    <c:if test="${status eq 'Approved'}">
+                                                                    <li>You will available to booking schedule at<span class="highlight"> ${avaiableBookingDate} </span></li>
+                                                                    </c:if>
                                                             </ul>
                                                         </div>  
                                                         <div class="feedback-container">
