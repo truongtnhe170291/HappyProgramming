@@ -98,7 +98,7 @@
                                                     <label for="editStatus">Status:</label>
                                                     <select id="editStatus" name="status">
                                                         <option value="true">Enable</option>
-                                                        <option value="fales">Disable</option>
+                                                        <option value="false">Disable</option>
                                                     </select>
 
                                                     <div class="popup-buttons">

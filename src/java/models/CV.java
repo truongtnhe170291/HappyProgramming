@@ -200,8 +200,10 @@ public class CV {
 
     @Override
     public String toString() {
-        return "CV{" + "cvId=" + cvId + ", userName=" + userName + ", mentor=" + mentor + ", gmail=" + gmail + ", fullName=" + fullName + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", profession=" + profession + ", professionIntro=" + professionIntro + ", achievementDescription=" + achievementDescription + ", serviceDescription=" + serviceDescription + ", skills=" + skills + ", imgcv=" + imgcv + ", stattusId=" + stattusId + '}';
+        return "CV{" + "cvId=" + cvId + ", userName=" + userName + ", mentor=" + mentor + ", gmail=" + gmail + ", fullName=" + fullName + ", dob=" + dob + ", sex=" + sex + ", address=" + address + ", profession=" + profession + ", professionIntro=" + professionIntro + ", achievementDescription=" + achievementDescription + ", serviceDescription=" + serviceDescription + ", skills=" + skills + ", imgcv=" + imgcv + ", stattusId=" + stattusId + ", status=" + status + ", note=" + note + '}';
     }
+
+ 
     
     
     

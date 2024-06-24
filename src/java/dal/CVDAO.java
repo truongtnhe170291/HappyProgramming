@@ -208,8 +208,8 @@ public class CVDAO {
 //            System.out.println("Not OK");
 //        }
         //cvdao.updateCV(c);
-        List<CVDTO> list = cvdao.getCVByStatus(1);
-        System.out.println(list.get(1).getRate());
+        
+        
     }
 
     public CV getCVByCVId(int cvId) {
@@ -305,18 +305,48 @@ public class CVDAO {
 
         return skillsArray;
     }
+    public int getTotalCVCount() {
+    String sql = "SELECT COUNT(*) FROM CV";
+    try (PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
 
-    public List<CVDTO> getCVByStatus(int status_Id) {
-        String sql = "select c.*, m.rate from CV c join Mentors m on c.mentor_name = m.mentor_name where c.status_id = ?";
-        List<CVDTO> cvList = new ArrayList<>();
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, status_Id);
+public int getTotalCVCountByStatus(int statusId) {
+    String sql = "SELECT COUNT(*) FROM CV WHERE status_id = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, statusId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
 
-            rs = ps.executeQuery();
+
+    public List<CVDTO> getCVByStatus(int statusId, int page, int pageSize) {
+    int offset = (page - 1) * pageSize;
+    String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name " +
+                 "WHERE c.status_id = ? ORDER BY c.cv_id OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+    List<CVDTO> cvList = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, statusId);
+        ps.setInt(2, offset);
+        ps.setInt(3, pageSize);
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 CVDTO cv = new CVDTO();
-                cv.setCvId(rs.getInt(1));
+                cv.setCvId(rs.getInt("cv_id")); // Ensure the column names match your database schema
                 cv.setUserName(rs.getString("mentor_name"));
                 cv.setAddress(rs.getString("address"));
                 cv.setGmail(rs.getString("gmail"));
@@ -328,24 +358,89 @@ public class CVDAO {
                 cv.setAchievementDescription(rs.getString("achievement_description"));
                 cv.setServiceDescription(rs.getString("service_description"));
                 cv.setImgcv(rs.getString("avatar"));
-                int statusId = rs.getInt("status_id");
                 cv.setRate(rs.getInt("rate"));
-                cv.setStattusId(statusId);
+                cv.setStattusId(rs.getInt("status_id"));
+                cv.setNote(rs.getString("note"));
                 cvList.add(cv);
             }
-            if (cvList.isEmpty()) {
-                return cvList;
-            }
-            for (CVDTO cv : cvList) {
-                cv.setStatus(getStatusById(cv.getStattusId()));
-                cv.setListSkill(getSkillsByCVId(cv.getCvId()));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-            return null;
         }
-        return cvList;
+        if (cvList.isEmpty()) {
+            return cvList;
+        }
+        for (CVDTO cv : cvList) {
+            cv.setStatus(getStatusById(cv.getStattusId()));
+            cv.setListSkill(getSkillsByCVId(cv.getCvId()));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return cvList;
+}
+
+    
+    public List<Status> getAllStatuses() {
+    String sql = "select * from CVStatus";
+    List<Status> statusList = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Status status = new Status();
+            status.setStatusId(rs.getInt("status_id"));
+            status.setStatusName(rs.getString("status_name"));
+            statusList.add(status);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return statusList;
+}
+
+    
+    public List<CVDTO> getAllCV(int page, int pageSize) {
+    int offset = (page - 1) * pageSize;
+    String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name " +
+                 "ORDER BY c.cv_id OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+    List<CVDTO> cvList = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, offset);
+        ps.setInt(2, pageSize);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                CVDTO cv = new CVDTO();
+                cv.setCvId(rs.getInt("cv_id")); // Ensure the column names match your database schema
+                cv.setUserName(rs.getString("mentor_name"));
+                cv.setAddress(rs.getString("address"));
+                cv.setGmail(rs.getString("gmail"));
+                cv.setFullName(rs.getString("full_name"));
+                cv.setDob(rs.getDate("dob"));
+                cv.setSex(rs.getBoolean("sex"));
+                cv.setProfession(rs.getString("profession"));
+                cv.setProfessionIntro(rs.getString("profession_intro"));
+                cv.setAchievementDescription(rs.getString("achievement_description"));
+                cv.setServiceDescription(rs.getString("service_description"));
+                cv.setImgcv(rs.getString("avatar"));
+                cv.setRate(rs.getInt("rate"));
+                cv.setStattusId(rs.getInt("status_id"));
+                cv.setNote(rs.getString("note"));
+                cvList.add(cv);
+            }
+        }
+        if (cvList.isEmpty()) {
+            return cvList;
+        }
+        for (CVDTO cv : cvList) {
+            cv.setStatus(getStatusById(cv.getStattusId()));
+            cv.setListSkill(getSkillsByCVId(cv.getCvId()));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;
+    }
+    return cvList;
+}
+
+
 
     public List<Skill> getSkillsByCVId(int cvId) {
         String sql = "SELECT s.[skill_id], s.[skill_name], s.[description] FROM CVSkills cs JOIN Skills s ON cs.skill_id = s.skill_id\n"

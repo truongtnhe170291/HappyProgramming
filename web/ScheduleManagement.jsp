@@ -288,6 +288,7 @@ s<!DOCTYPE html>
                                                             <th><span class="userDatatable-title">Status</span></th>
                                                             <th><span class="userDatatable-title">Message</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
+                                                            
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -315,14 +316,20 @@ s<!DOCTYPE html>
                                                                             <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
                                                                                 <i class="fas fa-times"></i>
                                                                             </button>
+                                                                            <c:if test="${param.action == '3'}">
+                                                                                <textarea name="rejectReason" placeholder="Enter reason for rejection" class="reject-reason-textarea"></textarea>
+                                                                            </c:if>
                                                                         </form>
                                                                     </div>
+
 
                                                                     <div id="modal-${schedule.mentorName}" class="modal">
                                                                         <div class="modal-content">
                                                                             <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
                                                                             <h2>Schedule Details</h2>
                                                                             <p><strong>Mentor Name:</strong> <span id="modalMentorName">${schedule.mentorName}</span></p>
+                                                                            <p><strong>Start Time:</strong> <span id="modalMentorName">${schedule.startTime}</span></p>
+                                                                            <p><strong>End Time:</strong> <span id="modalMentorName">${schedule.endTime}</span></p>
                                                                             <p><strong>Details Schedule</strong>
                                                                             <div class="form-container">
                                                                                 <table border="1" width="100%">
