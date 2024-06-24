@@ -96,7 +96,7 @@
                     padding: 20px;
                     border-radius: 10px;
                     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                    max-width: 1000px;
+                    max-width: 1300px;
                     width: 100%;
                 }
 
@@ -169,28 +169,32 @@
                 }
 
                 table {
+                    width: 100%;
                     border-collapse: collapse;
-                    width: 80%;
-                    margin: 20px 0;
                 }
 
-                th, td {
+                th,
+                td {
                     border: 1px solid #ddd;
-                    padding: 8px;
+                    padding: 10px;
                     text-align: center;
+                    vertical-align: top;
                 }
 
                 th {
-                    background-color: #8B0000;
+                    background-color: #4a86e8;
                     color: white;
+                    font-weight: normal;
                 }
 
                 th.equal-width {
-                    width: 40%; 
+                    width: 100%;
                 }
 
 
                 .slot {
+                    width: 125px !important;
+                    background-color: transparent !important;
                     display: block;
                     text-align: center;
                     padding: 10px;
@@ -202,6 +206,8 @@
                 }
 
                 .slot-label {
+                    height: 88.2px;
+                    width: 100px;
                     display: inline-block;
                     padding: 5px 10px;
                     color: #333;
@@ -257,68 +263,123 @@
                 .slot-checkbox:checked + label.highlighted {
                     background-color: #d1e7dd;
                 }
-                table {
+
+                #notify_btn{
+                    margin-right: 12px;
+                }
+                .class-block {
+                    transform: translateX(-28px);
+                    width: 125px;
+                    background-color: #e6f3ff;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin-bottom: 5px;
+                    text-align: left !important;
+                }
+
+
+
+                .view-materials,
+                .edu-next {
+                    display: inline-block;
+                    padding: 2px 5px;
+                    margin: 2px;
+                    border-radius: 3px;
+                    font-size: 0.8em;
+                    cursor: pointer;
+                }
+
+                .view-materials {
+                    background-color: #ffa500;
+                    color: white;
+                }
+
+                .edu-next {
+                    background-color: #4682b4;
+                    color: white;
+                }
+                .note-container {
+                    background-color: #ccc;
+                    border-radius: 8px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    margin-top: 40px;
                     width: 100%;
+                }
+                h2 {
+                    color: #ff0000;
+                    margin-top: 0;
+                    margin-bottom: 15px;
+                }
+                ul {
+                    list-style-type: none;
+                    padding-left: 0;
+                    margin: 0;
+                }
+                li {
+                    margin-bottom: 10px;
+                    color: #666;
+                    display: flex;
+                    align-items: flex-start;
+                }
+                li::before {
+                    content: "•";
+                    color: #666;
+                    display: inline-block;
+                    width: 1em;
+                    margin-right: 0.5em;
+                }
+                .highlight {
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    color: #4a86e8;
+                    font-weight: bold;
+                }
+                .feedback-container {
+                    margin-top: 20px;
+                    padding: 15px;
+                    border: 1px solid #ced4da;
+                    border-radius: 5px;
+                    background-color: #f1f1f1;
+                }
+                .feedback-container img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    margin-right: 15px;
+                }
+                .feedback-content {
+                    flex: 1;
+                }
+                .feedback-content strong {
+                    display: block;
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                    color: #333;
+                }
+                .feedback-content p {
+                    margin: 0;
+                    font-size: 14px;
+                    color: #555;
+                }
+                .not_selected_classblock{
+                    background-color: rgba(255, 99, 71, 0.5);
+                }
+                .content-box {
+                    max-width: 100%;
+                    overflow-x: auto;
+                }
+
+                table {
+                    min-width: 100%;
                     table-layout: fixed;
                 }
 
                 th, td {
-                    width: 20%;
-                    padding: 8px;
-                    text-align: center;
+                    min-width: 300px !important;
+                    word-wrap: break-word;
                 }
-                #notify_btn{
-                    margin-right: 12px;
-                }
-                .schedule-slot {
-                    border: 1px solid #e0e0e0;
-                    padding: 5px;
-                    min-height: 80px;
-                    position: relative;
-                  }
 
-                  .slot-content {
-                    background-color: #e8f0fe;
-                    padding: 5px;
-                    border-radius: 3px;
-                    height: 100%;
-                  }
-
-                  .course-code {
-                    font-weight: bold;
-                    color: #1a73e8;
-                  }
-
-                  .view-materials {
-                    background-color: #fbbc04;
-                    color: white;
-                    padding: 2px 5px;
-                    border-radius: 3px;
-                    display: inline-block;
-                    margin: 2px 0;
-                    font-size: 0.8em;
-                  }
-
-                  .location {
-                    font-size: 0.9em;
-                    color: #5f6368;
-                  }
-
-                  .slot-select {
-                    position: absolute;
-                    bottom: 5px;
-                    right: 5px;
-                    font-size: 0.8em;
-                    color: #1a73e8;
-                  }
-
-                  .slot-checkbox {
-                    margin-right: 3px;
-                  }
-
-                  .schedule-slot:hover {
-                    background-color: #f8f9fa;
-                  }
             </style>
         </head>
 
@@ -341,16 +402,10 @@
                             <div class="container">
                                 <div class="status_check">
                                     <h5 style="color: #ffbf00">${error}</h5>
-                                        <c:if test="${status != ''}">
-                                            <div class="status-box">
-                                                <p style="color: #cccc00">${status}</p>
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${status == ''}">
-                                            <div class="status-box">
-                                                <p style="color: #cccc00">Selected</p>
-                                            </div>
-                                        </c:if>
+                                        <div class="status-box">
+                                            <p style="color: #cccc00">${requestScope.isSend}</p>
+                                        </div>
+                                        
                                     </div>
 
                                     <form id="slotForm" action="MentorRequest" method="post">
@@ -386,7 +441,13 @@
 
                                                                                                     <c:forEach items="${listSchedule}" var="listS"> 
                                                                                                         <c:if test="${listS.slotId eq slot.slot_id && listS.dayOfSlot eq day.dateValue}">
-                                                                                                            <divclass="slot-label" data-slot-id="${listS.slotId}" data-day-of-slot="${listS.dayOfSlot}">oke</div>
+                                                                                                            <div class="slot-labels" data-slot-id="${listS.slotId}" data-day-of-slot="${listS.dayOfSlot}">
+                                                                                                                <div class="class-block">
+                                                                                                                    <div>FER202 </div>
+                                                                                                                    <div class="view-materials">View Materials</div>
+                                                                                                                    <div class="edu-next">EduNext</div>
+                                                                                                                </div>
+                                                                                                            </div>
 
                                                                                                         </c:if>
                                                                                                     </c:forEach>
@@ -396,7 +457,7 @@
                                                                                                                    checked
                                                                                                                </c:if>
                                                                                                            </c:forEach> type="checkbox" name="schedule" value="${slot.slot_id} ${day.dateValue}">
-                                                                                                    SELECT
+                                                                                                    <span class="select-text">SELECT</span>
                                                                                                 </span>
                                                                                             </label>
                                                                                         </td>
@@ -409,101 +470,121 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-5">
-                                                    <div class="col" style="display: flex;
-                                                    justify-content: end;">
-                                                    <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
-                                                        <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> id="saveButton" class="btn btn-primary">Save</button>
+                                                        <div class="note-container">
+                                                            <h2>Note:</h2>
+                                                            <ul>
+                                                                <li>SLOT01:<span class="highlight"> 7:00 - 9:00 </span></li>
+                                                                <li>SLOT02:<span class="highlight"> 9:00 - 11:00 </span></li>
+                                                                <li>SLOT03:<span class="highlight"> 13:00 - 15:00 </span></li>
+                                                                <li><span class="highlight">For selected slots</span>, clicking on the <span class="highlight">slot frame</span> will deselect that slot</li>
+                                                                <li>SLOT04:<span class="highlight"> 15:00 - 17:00 </span></li>
+                                                                <li>Your selection of week will select for <span class="highlight"> hole month </span></li>
+                                                                <li>You cannot booking a schedule on <span class="highlight"> Saturday </span> and <span class="highlight"> Sunday </span></li>
+                                                                <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight"> Pending </span></li>
+                                                            </ul>
+                                                        </div>  
+                                                        <div class="feedback-container">
+                                                            <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
+                                                            <div class="feedback-content">
+                                                                <strong>Feedback From Manager:</strong>
+                                                                <p>${cv.note}</p>
+                                                            </div>
                                                         </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-5">
+                                                <div class="col" style="display: flex;
+                                                justify-content: end;">
+                                                <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
+                                                    <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> id="saveButton" class="btn btn-primary">Save</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
                                     </div>
-                                </section>
+                                    </form>
                             </div>
+                            </section>
                         </div>
-                    </main>
+                    </div>
+                </main>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const slots = document.querySelectorAll('.slot-label');
+                        slots.forEach(slot => {
+                            const classBlock = slot.querySelector('.class-block');
+                            const selectText = slot.querySelector('.select-text');
+                            if (classBlock) {
+                                if (selectText) {
+                                    selectText.style.display = 'none';
+                                }
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const slots = document.querySelectorAll('.slot');
-                            const colors = ['#8BC34A', '#64B5F6', '#FFB74D', '#EC407A'];
-
-                            slots.forEach((slot, index) => {
-                                const checkbox = slot.querySelector('.slot-checkbox');
-                                const label = slot.querySelector('.slot-label');
-                                const slotIndex = index % 4;
-
-                                checkbox.addEventListener('change', function () {
-                                    if (checkbox.checked) {
-                                        label.style.backgroundColor = colors[slotIndex];
-                                    } else {
-                                        label.style.backgroundColor = '#f0f0f0';
-                                    }
-                                });
-                            });
-                        });
-                    </script>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function (e) {
-                            e.preventDefault();
-                            var action = document.getElementById("action");
-                            var sendButton = document.getElementById("sendButton");
-                            var saveButton = document.getElementById("saveButton");
-
-                            sendButton.addEventListener('click', function () {
-                                action.value = 'send';
-                            })
-
-                            saveButton.addEventListener('click', function () {
-                                action.value = 'save';
-                            })
-
-                            console.log(action.value);
-                        })
-                    </script>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            var error = "${error}";
-                            var notifyBtn = document.getElementById("notify_btn");
-
-                            if (error && error.trim() !== "") {
-                                notifyBtn.disabled = false;
-                            } else {
-                                notifyBtn.disabled = false;
                             }
                         });
+                    });
                 </script>
                 <script>
-const slotLabels = document.querySelectorAll('.slot-label');
+                    document.addEventListener('DOMContentLoaded', function () {
 
-const okeSlots = Array.from(slotLabels).filter(slot => 
-    slot.textContent.includes('oke')
-);
+                        const slots = document.querySelectorAll('.slot');
+                        const class_block = document.querySelectorAll('.class-block');
+                        class_block.forEach((cl_bl) => {
+                            cl_bl.addEventListener("click", function () {
+                                cl_bl.classList.toggle('not_selected_classblock');
+                            });
+                        });
+                        const colors = ['#e6f3ff', '#e6f3ff', '#e6f3ff', '#e6f3ff'];
 
-okeSlots.forEach(slot => {
-    const newDiv = document.createElement('div');
-   newDiv.classList.add('slot-content');
+                        slots.forEach((slot, index) => {
+                            const checkbox = slot.querySelector('.slot-checkbox');
+                            const label = slot.querySelector('.slot-label');
+                            const slotIndex = index % 4;
 
-    newDiv.innerHTML = `
-        <div class="course-code">SWR302</div>
-        <div class="view-materials">View Materials</div>
-        <div class="location">at BE-209</div>
-    `;
-
-
-    slot.innerHTML = '';
-    slot.appendChild(newDiv);
-    
-        slot.classList.add('schedule-slot');
-
-});
+                            checkbox.addEventListener('change', function () {
+                                if (checkbox.checked) {
+                                    label.style.backgroundColor = colors[slotIndex];
+                                } else {
+                                    label.style.backgroundColor = '#fff';
+                                }
+                            });
+                        });
+                    });
                 </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function (e) {
+                        e.preventDefault();
+                        var action = document.getElementById("action");
+                        var sendButton = document.getElementById("sendButton");
+                        var saveButton = document.getElementById("saveButton");
 
-            </body>
+                        sendButton.addEventListener('click', function () {
+                            action.value = 'send';
+                        });
 
-        </html>
+                        saveButton.addEventListener('click', function () {
+                            action.value = 'save';
+                        })
+
+                        console.log(action.value);
+                    })
+                </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var error = "${error}";
+                        var notifyBtn = document.getElementById("notify_btn");
+
+                        if (error && error.trim() !== "") {
+                            notifyBtn.disabled = true;
+                        } else {
+                            notifyBtn.disabled = false;
+                        }
+                    });
+            </script>
+
+
+        </body>
+
+    </html>
 
