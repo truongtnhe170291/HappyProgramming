@@ -12,6 +12,10 @@ public class Status {
     private int statusId;
     private String statusName;
 
+    public Status() {
+    }
+    
+
     public Status(int statusId, String statusName) {
         this.statusId = statusId;
         this.statusName = statusName;
