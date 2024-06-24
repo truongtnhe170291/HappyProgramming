@@ -64,7 +64,7 @@ public class ListCVController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CVDAO dao = new CVDAO();
-        List<CVDTO> list = dao.getCVByStatus(1);
+        List<CVDTO> list = dao.getAllCV();
         request.setAttribute("cvList", list);
         request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }
@@ -81,7 +81,7 @@ public class ListCVController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CVDAO dao = new CVDAO();
-        List<CVDTO> list = dao.getCVByStatus(1);
+        List<CVDTO> list = dao.getAllCV();
 
         request.setAttribute("cvList", list);
         request.getRequestDispatcher("listCV.jsp").forward(request, response);

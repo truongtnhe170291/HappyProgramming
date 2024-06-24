@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -365,6 +365,7 @@
                                                             <th><span class="userDatatable-title">User Name</span></th>
                                                             <th><span class="userDatatable-title">Deadline</span></th>
                                                             <th><span class="userDatatable-title">Status</span></th>
+                                                            <th><span class="userDatatable-title">Message</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
                                                             
                                                         </tr>
@@ -375,6 +376,9 @@
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
+                                                                <td><div class="userDatatable-content">
+                                                                        <input type="text" name="message"/>
+                                                                    </div></td>
                                                                 <td> 
                                                                     <div class="btn-group">
                                                                         <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">

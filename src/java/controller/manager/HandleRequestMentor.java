@@ -69,6 +69,7 @@ public class HandleRequestMentor extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+      
 
         ScheduleDAO scheduleDAO = new ScheduleDAO();
 
@@ -82,7 +83,7 @@ public class HandleRequestMentor extends HttpServlet {
         }
         MentorDAO mentorDao = new MentorDAO();
         ArrayList<Slot> listSlot = mentorDao.listSlots();
-        //ArrayList<Day> listDay = mentorDao.listDays();
+//        ArrayList<Day> listDay = mentorDao.listDays();
         List<String> daysOfWeek = Arrays.asList(
             "MONDAY", 
             "TUESDAY", 
@@ -139,8 +140,18 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     ScheduleDAO scheduleDAO = new ScheduleDAO();
 
-    int cycleId = Integer.parseInt(request.getParameter("cycleID"));
-    int action = Integer.parseInt(request.getParameter("action"));
+        // Lấy mentorName, cycleId và action từ request
+        int cycleId = Integer.parseInt(request.getParameter("cycleID"));
+        int action = Integer.parseInt(request.getParameter("action"));
+        String message = request.getParameter("message");
+        System.out.println(cycleId + ""+ action);
+        // Kiểm tra action và gọi hàm tương ứng
+        if (action == 2) {
+            scheduleDAO.approveRequest(cycleId);
+        } else if (action == 3) {
+                  String rejectReason = request.getParameter("rejectReason");
+                  scheduleDAO.rejectRequest(cycleId, rejectReason);
+        }
 
     if (action == 2) {
         scheduleDAO.approveRequest(cycleId);
