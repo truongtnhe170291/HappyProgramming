@@ -246,7 +246,7 @@
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
 
-                        <div class="filter-container">
+<!--                        <div class="filter-container">
                             <form method="POST" action="FilterStatusMentorServlet">
                                 <label for="statusFilter">Filter by Status: </label>
                                 <select id="statusFilter" name="statusFilter">
@@ -276,7 +276,7 @@
 
                                 <button type="submit">Filter</button>
                             </form>
-                        </div>
+                        </div>-->
 
                         <table class="table mb-0 table-borderless">
 
