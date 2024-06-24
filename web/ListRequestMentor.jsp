@@ -245,39 +245,6 @@
                 <h1>List of Requests</h1>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
-
-<!--                        <div class="filter-container">
-                            <form method="POST" action="FilterStatusMentorServlet">
-                                <label for="statusFilter">Filter by Status: </label>
-                                <select id="statusFilter" name="statusFilter">
-                                    <option value="all" ${statusId == -1 ? 'selected' : ''}>All</option>
-                                    <c:forEach var="status" items="${listStatus}">
-                                        <option value="${status.statusId}" ${statusId == status.statusId ? 'selected' : ''}>
-                                            ${status.statusName}
-                                        </option>
-                                    </c:forEach>
-                                </select>
-
-                                <label for="mentorNameFilter">Filter by Mentee Name: </label>
-                                <select id="mentorNameFilter" name="menteeNameFilter">
-                                    <option value="all" ${mentorName == '' ? 'selected' : ''}>All</option>
-                                    <c:forEach var="mentee" items="${mentee}">
-                                        <option value="${mentee.userName}" ${mentorName == mentee.userName ? 'selected' : ''}>
-                                            ${mentee.userName}
-                                        </option>
-                                    </c:forEach>
-                                </select>
-
-                                <label for="startTimeFilter">Filter by Start Time: </label>
-                                <input type="date" id="startTimeFilter" name="startTimeFilter" value="${startTime == null ? '' : startTime}">
-
-                                <label for="endTimeFilter">Filter by End Time: </label>
-                                <input type="date" id="endTimeFilter" name="endTimeFilter" value="${endTime == null ? '' : endTime}">
-
-                                <button type="submit">Filter</button>
-                            </form>
-                        </div>-->
-
                         <table class="table mb-0 table-borderless">
 
                             <thead class="hd">
@@ -387,7 +354,7 @@
                                                                                                     var="scheduleItem"
                                                                                                     items="${request.listSchedule}">
                                                                                                     <c:if
-                                                                                                        test="${scheduleItem.dayOfSlot == day.date1 && scheduleItem.slotId == slot.slot_id}">
+                                                                                                        test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
                                                                                                         <div
                                                                                                             class="slot-info">
                                                                                                             <c:forEach var="skill"
