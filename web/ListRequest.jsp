@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List of Requests</title>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-vP0MSTlp4tfcX8OYKTBOCCi0A+zjRgw4ADYz2F0tL4J4/lA/FW5V6hfEjNUtAeECb6dJwyuV4EjZ1lkl9EP0dQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-vP0MSTlp4tfcX8OYKTBOCCi0A+zjRgw4ADYz2F0tL4J4/lA/FW5V6hfEjNUtAeECb6dJwyuV4EjZ1lkl9EP0dQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <style>
             body {
@@ -648,18 +648,26 @@
                                                 <form method="POST" action="EditOrDeleteRequest" onsubmit="return confirm('Are you sure you want to delete this request?');">
                                                     <input type="hidden" name="requestId" value="${request.requestId}" />
                                                     <button type="submit" class="edit-btn btn " style="width: 59.5px; height: 41px;border-radius: 0.42rem;">                      
-                                                         <i class="fas fa-trash-alt"></i> </button>
+                                                        <i class="fas fa-trash-alt"></i> </button>
                                                 </form>
                                             </c:if>
 
+                                            <c:if test="${request.status.statusId == 3}">
+                                                <form method="GET" action="request" ">
+                                                    <input type="hidden" name="cvId" value="${request.cvId}" />
+                                                    <button type="submit" class="edit-btn btn " style="width: 59.5px; height: 41px;border-radius: 0.42rem;" ">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </c:if>
 
                                             <!-- Payment button for 'Wait For Payment' status -->
                                             <c:if test="${request.status.statusName == 'Wait For Payment'}">
                                                 <form method="POST" action="payment">
                                                     <input type="hidden" name="requestId" value="${request.requestId}" />
                                                     <button type="submit"style="
-    width: 59.5px;
-    height: 41px; border-radius: 0.42rem; align-items: center; text-align: center; font-size: 20px; font-weight: bold;" >
+                                                            width: 59.5px;
+                                                            height: 41px; border-radius: 0.42rem; align-items: center; text-align: center; font-size: 20px; font-weight: bold;" >
                                                         <li>
                                                             <a href="#" class="pay">
                                                                 <i class="uil uil-credit-card"></i> 

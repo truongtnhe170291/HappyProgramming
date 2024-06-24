@@ -67,6 +67,7 @@
                                                 <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                                 <li><a href="StaticRequest">REQUEST STATIC</a></li>
                                                 <li><a href="ListRequest">History Request</a></li>
+                                                <li><a href="Schedule_General_Mentee">General Schedule</a></li>
                                                 </c:if>
                                         </ul>
                                     </li>
