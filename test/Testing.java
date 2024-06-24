@@ -34,7 +34,7 @@ public class Testing {
         LocalDate startDate = LocalDate.parse(listCurrentDays.get(0).getDateValue());
         LocalDate endDate = startDate.plusDays(27);
         LocalDate deadLineDate = LocalDate.now().plusDays(5);
-        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic("son", java.sql.Date.valueOf(startDate), java.sql.Date.valueOf(endDate));
+        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic("son");
    
         for (SchedulePublic schedulePublic : listSchedule) {
             System.out.println(schedulePublic);
