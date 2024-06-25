@@ -50,9 +50,11 @@ public class WalletServlet extends HttpServlet {
         } else {
             request.setAttribute("wallet", wallet);
         }
+        int numPage = dao.getNumberPageByUserName(user.getUserName());
         request.setAttribute("userInfo", user.getUserName());
-        List<Transaction> list = dao.getTransactionsByUserName(user.getUserName());
-        request.setAttribute("list", list);
+        List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), 1);
+        request.setAttribute("listTran", list);
+        request.setAttribute("numPage", numPage);
         request.getRequestDispatcher("Wallet.jsp").forward(request, response);
 
     }

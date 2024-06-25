@@ -4,6 +4,7 @@
  */
 package controller.manager;
 
+import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,7 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import models.Account;
+import models.Transaction;
 import services.AccountService;
 
 /**
@@ -89,7 +92,7 @@ public class LoginManager extends HttpServlet {
 
             AccountService accountService = AccountService.getInstance();
             Account acc = accountService.getAccount(username, password); // Lấy thông tin tài khoản từ username
-
+            WalletDAO dao = new WalletDAO();
             // Check if account exists
             if (acc == null) {
                 request.setAttribute("mess", "Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại thông tin và thử lại");
@@ -110,7 +113,11 @@ public class LoginManager extends HttpServlet {
                 request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
             } else if (acc.getRoleId() == 3) {
                 session.setAttribute("user", acc);
-                response.sendRedirect("Homes_manager.jsp");
+                List<Transaction> list = dao.getTransactionByPaging(acc.getUserName(), 1);
+                int numPage = dao.getNumberPageByUserName(acc.getUserName());
+                request.setAttribute("listTran", list);
+                request.setAttribute("numPage", numPage);
+                request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
                 // Phân quyền manager cho trang này
                 // ...
             }

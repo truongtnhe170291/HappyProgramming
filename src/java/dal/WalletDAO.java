@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import models.Transaction;
@@ -19,6 +20,7 @@ import models.Wallet;
  * @author Admin
  */
 public class WalletDAO {
+
     private Connection con;
 
     PreparedStatement ps;
@@ -30,6 +32,53 @@ public class WalletDAO {
         } catch (Exception e) {
         }
     }
+
+    public static void main(String[] args) {
+        WalletDAO dao = new WalletDAO();
+        List<Transaction> list = dao.getTransactionByPaging("manager", 2);
+        System.out.println(list.size());
+    }
+    public List<Transaction> getTransactionByPaging(String user, int index) {
+        List<Transaction> list = new ArrayList<>();
+        try {
+            String sql = "select * from Transactions t where t.user_receive = ? or t.user_send = ? order by t.create_date desc"
+                    + " OFFSET ? ROWS FETCH FIRST 10 ROWS ONLY";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, user);
+            ps.setString(2, user);
+            ps.setInt(3, (index-1)*10);
+            
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Transaction(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4).toLocalDateTime(), rs.getLong(5), rs.getString(6)));
+            }
+        } catch (SQLException e) {
+            System.out.println("getWalletByUsenName " + e.getMessage());
+        }
+        return list;
+    }
+
+    public int getNumberPageByUserName(String username) {
+        try {
+            String sql = "select count(*) from Transactions t where t.user_receive = ? or t.user_send = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int total = rs.getInt(1);
+                int countPage = 0;
+                countPage = total / 10;
+                if (total % 10 != 0) {
+                    countPage++;
+                }
+                return countPage;
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
     public Wallet getWalletByUsenName(String userName) {
         try {
             String sql = "select * from Wallet w where w.wallet_id = ?";

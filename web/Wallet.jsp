@@ -313,7 +313,7 @@
                         </div>
                         <div id="historyContent" class="tab-content active">
                             <table class="transactions">
-                                <c:forEach items="${requestScope.list}" var="tran">
+                                <c:forEach items="${requestScope.listTran}" var="tran">
                                     <tr>
                                         <td>${tran.create_date}</td>
                                         <td>${tran.message}</td>
@@ -321,6 +321,11 @@
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <div>
+                                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+                                    <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
+                                </c:forEach>
+                            </div>
                         </div>
                         <div id="depositContent" class="tab-content">
                             <div class="deposit-form">
