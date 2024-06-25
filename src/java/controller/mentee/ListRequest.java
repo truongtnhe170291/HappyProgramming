@@ -85,6 +85,12 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throw new ServletException(e);
     }
 }
+    public static void main(String[] args) throws SQLException {
+         RequestDAO rdao = new RequestDAO();
+
+          List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus("truong");
+          
+    }
 
 private ArrayList<Day> getOneWeekDays(ArrayList<Day> list) {
     ArrayList<Day> listOne = new ArrayList<>();

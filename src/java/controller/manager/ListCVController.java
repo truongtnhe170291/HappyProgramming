@@ -61,23 +61,32 @@ public class ListCVController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+  @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     String statusFilter = request.getParameter("statusFilter");
+    String pageParam = request.getParameter("page");
+    int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+    int pageSize = 3; // Number of CVs per page
+
     CVDAO dao = new CVDAO();
     List<CVDTO> list;
+    int totalCVs;
     if (statusFilter == null || statusFilter.isEmpty()) {
-        list = dao.getAllCV();
+        list = dao.getAllCV(page, pageSize);
+        totalCVs = dao.getTotalCVCount(); // Method to count all CVs
     } else {
         int statusId = Integer.parseInt(statusFilter);
-        list = dao.getCVByStatus(statusId);
+        list = dao.getCVByStatus(statusId, page, pageSize);
+        totalCVs = dao.getTotalCVCountByStatus(statusId); // Method to count CVs by status
     }
-    request.setAttribute("cvList", list);
+    int totalPages = (int) Math.ceil((double) totalCVs / pageSize);
 
-    // Fetch all statuses to populate the dropdown
-    List<Status> statusList = dao.getAllStatuses();
-    request.setAttribute("statusList", statusList);
+    request.setAttribute("cvList", list);
+    request.setAttribute("statusList", dao.getAllStatuses());
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.setAttribute("statusFilter", statusFilter);
 
     request.getRequestDispatcher("listCV.jsp").forward(request, response);
 }
@@ -101,7 +110,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CVDAO dao = new CVDAO();
-        List<CVDTO> list = dao.getAllCV();
+        List<CVDTO> list = dao.getAllCV(1,3);
         request.setAttribute("cvList", list);
         request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }

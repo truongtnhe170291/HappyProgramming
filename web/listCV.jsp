@@ -117,6 +117,55 @@
                 font-size: 12px;
                 color: #333;
             }
+            /* Style for the popup container */
+            .popup {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+
+            /* Style for the popup content */
+            .popup-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-height: 80%;
+                overflow-y: auto; /* Enable vertical scrolling */
+            }
+
+            /* Close button style */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .note-section {
+                border: 2px solid #007bff;
+                background-color: #e9f7fd;
+                padding: 10px;
+                margin-top: 10px;
+            }
+
+            .note-section strong {
+                color: #007bff;
+            }
+
         </style>
     </head>
 
@@ -280,6 +329,13 @@
                                                                                         </c:forEach>
                                                                                     </span>
                                                                                 </p>
+
+                                                                                <c:if test="${not empty cv.note}">
+                                                                                    <div class="note-section">
+                                                                                        <strong>Note:</strong>
+                                                                                        <p>${cv.note}</p>
+                                                                                    </div>
+                                                                                </c:if>
                                                                             </div>
                                                                         </div>
                                                                     </button>
@@ -287,9 +343,11 @@
                                                                         <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm"><i class="fas fa-check"></i></button>
                                                                         <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm" data-cv-id="${cv.cvId}"><i class="fas fa-times"></i></button>
                                                                         </c:if>
+
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -308,6 +366,27 @@
                                                     <button type="submit" class="btn btn-danger">Submit</button>
                                                 </form>
                                             </div>
+                                        </div>
+
+
+
+                                        <div>
+                                            <c:if test="${currentPage > 1}">
+                                                <a href="listCV?page=${currentPage - 1}&statusFilter=${statusFilter}">Previous</a>
+                                            </c:if>
+                                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                                <c:choose>
+                                                    <c:when test="${i == currentPage}">
+                                                        <span>${i}</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="listCV?page=${i}&statusFilter=${statusFilter}">${i}</a>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                            <c:if test="${currentPage < totalPages}">
+                                                <a href="listCV?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
+                                            </c:if>
                                         </div>
 
 
@@ -475,7 +554,7 @@
                 rejectButtons.forEach(button => {
                     button.addEventListener('click', function (event) {
                         event.preventDefault();
-                        const cvId = this.dataset.cvId;
+                        const cvId = this.getAttribute('data-cv-id');
                         const popup = document.getElementById('notePopup');
                         const popupCvId = document.getElementById('popupCvId');
                         popupCvId.value = cvId;
@@ -493,6 +572,8 @@
                     }
                 });
             });
+
+
 
         </script>
     </body>
