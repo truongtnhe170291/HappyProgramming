@@ -25,8 +25,8 @@ public class SignUpDAO {
         if (isDuplicateAccount(account.getUserName())) {
             return false; 
         }
-         MD_5 md5 = new MD_5();
-        String hashedPassword = md5.getMd5(account.getPassword());
+//         MD_5 md5 = new MD_5();
+//        String hashedPassword = md5.getMd5(account.getPassword());
 
         
        String sql = "INSERT INTO Accounts ([user_name], gmail, full_name, pass_word, dob, sex, address, phone, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -35,7 +35,7 @@ public class SignUpDAO {
             statement.setString(1, account.getUserName());
             statement.setString(2, account.getGmail());
             statement.setString(3, account.getFullName());
-            statement.setString(4, hashedPassword);
+            statement.setString(4, account.getPassword());
             statement.setDate(5, account.getDob());
             statement.setBoolean(6, account.isSex());
             statement.setString(7, account.getAddress());
