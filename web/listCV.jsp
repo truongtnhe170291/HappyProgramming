@@ -329,7 +329,7 @@
                                                                                         </c:forEach>
                                                                                     </span>
                                                                                 </p>
-                                                                             
+
                                                                                 <c:if test="${not empty cv.note}">
                                                                                     <div class="note-section">
                                                                                         <strong>Note:</strong>
@@ -341,8 +341,9 @@
                                                                     </button>
                                                                     <c:if test="${cv.status.statusId == 1}">
                                                                         <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                                                        <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                                                        <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm" data-cv-id="${cv.cvId}"><i class="fas fa-times"></i></button>
                                                                         </c:if>
+
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
@@ -366,6 +367,7 @@
                                                 </form>
                                             </div>
                                         </div>
+
 
 
                                         <div>
@@ -552,7 +554,7 @@
                 rejectButtons.forEach(button => {
                     button.addEventListener('click', function (event) {
                         event.preventDefault();
-                        const cvId = this.dataset.cvId;
+                        const cvId = this.getAttribute('data-cv-id');
                         const popup = document.getElementById('notePopup');
                         const popupCvId = document.getElementById('popupCvId');
                         popupCvId.value = cvId;
@@ -570,6 +572,8 @@
                     }
                 });
             });
+
+
 
         </script>
     </body>

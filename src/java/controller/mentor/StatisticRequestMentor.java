@@ -76,7 +76,7 @@ throws ServletException, IOException {
         RequestDAO rdao = new RequestDAO();
         
         // Gọi hàm getRequestOfMentorInDeadlineByStatus để lấy danh sách các yêu cầu
-        List<RequestDTO> requests = rdao.getRequestOfMentorInDeadlineByStatus(mentorName);
+        List<RequestDTO> requests = rdao.getRequestOfMentorInDeadlineByStatus1(mentorName);
         
         // Gọi hàm getStaticRequestMentor để lấy các thông tin thống kê của mentor
         StaticMentor staticMentor = rdao.getStaticRequestMentor(mentorName);
