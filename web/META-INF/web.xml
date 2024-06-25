@@ -8,6 +8,10 @@
         <servlet-name>UpdateStatusSkill</servlet-name>
         <servlet-class>controller.manager.UpdateStatusSkill</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BanAcount</servlet-name>
+        <servlet-class>controller.manager.BanAccount</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DeleteSkill</servlet-name>
         <url-pattern>/DeleteSkill</url-pattern>
@@ -15,5 +19,9 @@
     <servlet-mapping>
         <servlet-name>UpdateStatusSkill</servlet-name>
         <url-pattern>/UpdateStatusSkill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BanAcount</servlet-name>
+        <url-pattern>/BanAcount</url-pattern>
     </servlet-mapping>
 </web-app>
