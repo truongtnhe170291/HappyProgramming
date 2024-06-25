@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+\<!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -247,6 +248,7 @@
                                                                         <input type="hidden" name="cvId" value="${cv.cvId}" />
                                                                         <input id="status_${cv.cvId}" type="hidden" name="status" value="" />
                                                                         <input id="note_Input_${cv.cvId}" type="hidden" name="note" value="" />
+                                                                      
                                                                     </form>
                                                                 </td>
                                                                 <td>
