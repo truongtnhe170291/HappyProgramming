@@ -425,9 +425,18 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th class="equal-width">Time Line</th>
+
+                                                                                <c:if test="${status == '' || status != 'Approved' || status != 'Pending'  }">
                                                                                     <c:forEach var="day" items="${listDays}">
-                                                                                    <th class="equal-width" value="${day.dateName}">${day.dateName} <br/> ${day.dateValue}</th>
-                                                                                    </c:forEach>
+                                                                                        <th class="equal-width" value="${day.dateName}">${day.dateName} <br/> ${day.dateValue}</th>
+                                                                                        </c:forEach>
+                                                                                    </c:if>
+
+                                                                                <c:if test="${status != '' || status == 'Approved' || status == 'Pending' }">
+                                                                                    <c:forEach var="d" items="${listDayByCycle}">
+                                                                                        <th class="equal-width" value="${d.dateName}">${d.dateName} <br/> ${d.dateValue}</th>
+                                                                                        </c:forEach>
+                                                                                    </c:if>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -490,7 +499,7 @@
                                                             <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
                                                             <div class="feedback-content">
                                                                 <strong>Feedback From Manager:</strong>
-                                                                <p>${cv.note}</p>
+                                                                <p>${rejectMessage}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -501,8 +510,8 @@
                                             <div class="row mt-5">
                                                 <div class="col" style="display: flex;
                                                 justify-content: end;">
-                                                <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
-                                                    <button type="submit" <c:if test="${isSend eq '1'}">disabled</c:if> id="saveButton" class="btn btn-primary">Save</button>
+                                                <button type="submit" <c:if test="${status eq 'Pending' || status eq 'Approved'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
+                                                    <button type="submit" <c:if test="${status eq 'Pending' || status eq 'Approved'}">disabled</c:if> id="saveButton" class="btn btn-primary">Save</button>
                                                     </div>
                                                 </div>
                                             </div>

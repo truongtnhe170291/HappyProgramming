@@ -9,6 +9,10 @@ s<!DOCTYPE html>
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
         <link rel="stylesheet" href="assetss/css/custom.css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
             .table {
@@ -286,9 +290,8 @@ s<!DOCTYPE html>
                                                             <th><span class="userDatatable-title">User Name</span></th>
                                                             <th><span class="userDatatable-title">Deadline</span></th>
                                                             <th><span class="userDatatable-title">Status</span></th>
-                                                            <th><span class="userDatatable-title">Message</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
-                                                            
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -297,9 +300,8 @@ s<!DOCTYPE html>
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
-                                                                <td><div class="userDatatable-content">
-                                                                        <input type="text" name="message"/>
-                                                                    </div></td>
+
+
                                                                 <td> 
                                                                     <div class="btn-group">
                                                                         <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
@@ -313,15 +315,11 @@ s<!DOCTYPE html>
                                                                             <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
                                                                                 <i class="fas fa-check"></i>
                                                                             </button>
-                                                                            <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
+                                                                            <button type="button" onclick="handleMessage()" name="action" value="3" class="btn btn-danger btn-sm">
                                                                                 <i class="fas fa-times"></i>
                                                                             </button>
-                                                                            <c:if test="${param.action == '3'}">
-                                                                                <textarea name="rejectReason" placeholder="Enter reason for rejection" class="reject-reason-textarea"></textarea>
-                                                                            </c:if>
                                                                         </form>
                                                                     </div>
-
 
                                                                     <div id="modal-${schedule.mentorName}" class="modal">
                                                                         <div class="modal-content">
@@ -376,12 +374,22 @@ s<!DOCTYPE html>
                                                                                 </table>           
 
                                                                                 <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
-
                                                                             </div>
                                                                             </p>
                                                                         </div>
                                                                     </div>
                                                                 </td>
+                                                                <td><div id="messageContainer" style="display: none; margin-top: 20px;">
+                                                                        <span id="MessageTitle" style="display: none" class="userDatatable-title">Reject Message</span><br/>
+                                                                        <form action="HandleSlotMentor" method="post">
+                                                                            <c:if test="${not empty schedule.list}">
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                            </c:if>
+                                                                            <input type="hidden" name="action" value="3"/>
+                                                                            <textarea id="messageInput" name="messageInput" class="form-control" rows="4" placeholder="Enter your message here..."></textarea>
+                                                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                                                        </form>
+                                                                    </div></td>
                                                             </tr>
                                                         </c:forEach>
 
@@ -502,101 +510,117 @@ s<!DOCTYPE html>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
-                                                                                function getMonday(d) {
-                                                                                    d = new Date('2024-06-24');
-                                                                                    var day = d.getDay(),
-                                                                                            diff = d.getDate() - day + (day == 0 ? -6 : 1);
-                                                                                    return new Date(d.setDate(diff));
+                                                                                function handleMessage() {
+                                                                                    var messageContainer = document.getElementById('messageContainer');
+                                                                                    var messageTitle = document.getElementById('MessageTitle');
+                                                                                    messageContainer.style.display = 'block';
+                                                                                    messageTitle.style.display = 'inherit';
                                                                                 }
 
-                                                                                function formatDate(date) {
-                                                                                    return (
-                                                                                            date.getDate().toString().padStart(2, "0")
-
-                                                                                            +
-                                                                                            "-" +
-                                                                                            (date.getMonth() + 1).toString().padStart(2, "0") +
-                                                                                            "-" +
-                                                                                            date.getFullYear().toString().padStart(4, "0")
-                                                                                            );
-                                                                                }
-
-                                                                                function getWeekOptions() {
-                                                                                    const startDate = new Date('2024-06-24');
-                                                                                    const options = [];
-                                                                                    for (let week = 0; week < 4; week++) {
-                                                                                        const mondayOfWeek = new Date(startDate);
-                                                                                        mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
-                                                                                        const sundayOfWeek = new Date(mondayOfWeek);
-                                                                                        sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
-                                                                                        const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
-                                                                                        options.push({value: week + 1, text: optionText});
+                                                                                function submitMessage() {
+                                                                                    var message = document.getElementById('messageInput').value;
+                                                                                    if (message == null) {
+                                                                                        alert('Please enter reject message!');
                                                                                     }
-                                                                                    return options;
+                                                                                    // You can add additional logic to handle the message submission
                                                                                 }
+        </script>
+        <script>
+            function getMonday(d) {
+                d = new Date('2024-06-24');
+                var day = d.getDay(),
+                        diff = d.getDate() - day + (day == 0 ? -6 : 1);
+                return new Date(d.setDate(diff));
+            }
 
-                                                                                const weekSelect = document.getElementById("week");
-                                                                                const weekOptions = getWeekOptions();
-                                                                                weekOptions.forEach((option) => {
-                                                                                    const optionElement = document.createElement("option");
-                                                                                    optionElement.value = option.value;
-                                                                                    optionElement.textContent = option.text;
-                                                                                    weekSelect.appendChild(optionElement);
-                                                                                });
-                                                                                function openModal(userName) {
-                                                                                    document.getElementById('modal-' + userName).style.display = 'block';
-                                                                                    const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
-                                                                                    bookedSlots.forEach(slot => {
-                                                                                        const newDiv = document.createElement('div');
-                                                                                        newDiv.innerHTML = `
+            function formatDate(date) {
+                return (
+                        date.getDate().toString().padStart(2, "0")
+
+                        +
+                        "-" +
+                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                        "-" +
+                        date.getFullYear().toString().padStart(4, "0")
+                        );
+            }
+
+            function getWeekOptions() {
+                const startDate = new Date('2024-06-24');
+                const options = [];
+                for (let week = 0; week < 4; week++) {
+                    const mondayOfWeek = new Date(startDate);
+                    mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                    const sundayOfWeek = new Date(mondayOfWeek);
+                    sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                    const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                    options.push({value: week + 1, text: optionText});
+                }
+                return options;
+            }
+
+            const weekSelect = document.getElementById("week");
+            const weekOptions = getWeekOptions();
+            weekOptions.forEach((option) => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.textContent = option.text;
+                weekSelect.appendChild(optionElement);
+            });
+            function openModal(userName) {
+                document.getElementById('modal-' + userName).style.display = 'block';
+                const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
+                bookedSlots.forEach(slot => {
+                    const newDiv = document.createElement('div');
+                    newDiv.innerHTML = `
                                                                                                 <div>SWR302</div>
                                                                                                 <div>View Materials</div>
                                                                                                 <div>at BE-209</div>
                                                                                             `;
-                                                                                        slot.innerHTML = '';
-                                                                                        slot.appendChild(newDiv);
-                                                                                        slot.classList.remove('Book');
-                                                                                    });
-                                                                                }
+                    slot.innerHTML = '';
+                    slot.appendChild(newDiv);
+                    slot.classList.remove('Book');
+                });
+            }
 
-                                                                                function closeModal(userName) {
-                                                                                    document.getElementById('modal-' + userName).style.display = 'none';
-                                                                                }
-                                                                                document.addEventListener('DOMContentLoaded', (e) => {
+            function closeModal(userName) {
+                document.getElementById('modal-' + userName).style.display = 'none';
+            }
+            document.addEventListener('DOMContentLoaded', (e) => {
 
-                                                                                    const editButtons = document.querySelectorAll('.edit');
-                                                                                    editButtons.forEach(button => {
-                                                                                        button.addEventListener('click', function (event) {
-                                                                                            event.preventDefault();
-                                                                                            const cvId = this.id.split('_')[1];
-                                                                                            const note = document.getElementById('note_' + cvId);
-                                                                                            const noteInput = document.getElementById('note_Input_' + cvId);
-                                                                                            const status = document.getElementById('status_' + cvId);
-                                                                                            status.value = 2;
-                                                                                            noteInput.value = note.value;
-                                                                                            const form = document.getElementById('form_' + cvId);
-                                                                                            form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
-                                                                                            form.method = 'get';
-                                                                                            form.submit();
-                                                                                        });
-                                                                                    });
-                                                                                    const rejectButtons = document.querySelectorAll('.reject');
-                                                                                    rejectButtons.forEach(button => {
-                                                                                        button.addEventListener('click', function (event) {
-                                                                                            event.preventDefault();
-                                                                                            const cvId = this.id.split('_')[1];
-                                                                                            const note = document.getElementById('note_' + cvId);
-                                                                                            const noteInput = document.getElementById('note_Input_' + cvId);
-                                                                                            const status = document.getElementById('status_' + cvId);
-                                                                                            status.value = 3;
-                                                                                            noteInput.value = note.value;
-                                                                                            const form = document.getElementById('form_' + cvId);
-                                                                                            form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
-                                                                                            form.method = 'get';
-                                                                                            form.submit();
-                                                                                        });
-                                                                                    });
-                                                                                });
+                const editButtons = document.querySelectorAll('.edit');
+                editButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 2;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+                const rejectButtons = document.querySelectorAll('.reject');
+                rejectButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 3;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+            });
 
         </script>
     </body>

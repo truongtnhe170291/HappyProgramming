@@ -174,7 +174,10 @@
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
+<<<<<<< HEAD
                 <jsp:include page="header_Manager.jsp" />
+=======
+>>>>>>> dd2366f959caa43517064db1beaf139da358986c
                 <div class="navbar-bg"></div>
                 <nav class="navbar navbar-expand-lg main-navbar sticky">
                     <div class="form-inline mr-auto">
