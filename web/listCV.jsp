@@ -173,9 +173,9 @@
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
-<<<<<<< HEAD
+
                 <jsp:include page="header_Manager.jsp" />
-=======
+
                 <div class="navbar-bg"></div>
                 <nav class="navbar navbar-expand-lg main-navbar sticky">
                     <div class="form-inline mr-auto">
@@ -258,7 +258,7 @@
                         </ul>
                     </aside>
                 </div>
->>>>>>> c20f6c4bee34a91f82f6bc3d22f35f8030a44e6b
+
                 <!-- Main Content -->
                 <div class="main-content">
                     <section class="section">
