@@ -347,6 +347,25 @@ public class CVDAO {
         return cvList;
     }
     
+    public List<Status> getAllStatuses() {
+    String sql = "select * from CVStatus";
+    List<Status> statusList = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Status status = new Status();
+            status.setStatusId(rs.getInt("status_id"));
+            status.setStatusName(rs.getString("status_name"));
+            statusList.add(status);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return statusList;
+}
+
+    
     public List<CVDTO> getAllCV() {
     String sql = "select c.*, m.rate from CV c join Mentors m on c.mentor_name = m.mentor_name";
     List<CVDTO> cvList = new ArrayList<>();

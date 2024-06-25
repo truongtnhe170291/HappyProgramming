@@ -9,6 +9,10 @@ s<!DOCTYPE html>
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
         <link rel="stylesheet" href="assetss/css/custom.css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
             .table {
@@ -350,7 +354,6 @@ s<!DOCTYPE html>
                             <li class="breadcrumb-item">Schedule</li>
 
                         </ul>
-
                         <div class="section-body">
                             <div class="row clearfix">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -367,7 +370,7 @@ s<!DOCTYPE html>
                                                             <th><span class="userDatatable-title">Deadline</span></th>
                                                             <th><span class="userDatatable-title">Status</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
-                                                            
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -376,9 +379,8 @@ s<!DOCTYPE html>
                                                                 <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.deadline}</div></td>
                                                                 <td><div class="userDatatable-content">${schedule.status}</div></td>
-                                                                <td><div class="userDatatable-content">
-                                                                        <input type="text" name="message"/>
-                                                                    </div></td>
+
+
                                                                 <td> 
                                                                     <div class="btn-group">
                                                                         <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
@@ -392,15 +394,11 @@ s<!DOCTYPE html>
                                                                             <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
                                                                                 <i class="fas fa-check"></i>
                                                                             </button>
-                                                                            <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
+                                                                            <button type="button" onclick="handleMessage()" name="action" value="3" class="btn btn-danger btn-sm">
                                                                                 <i class="fas fa-times"></i>
                                                                             </button>
-                                                                            <c:if test="${param.action == '3'}">
-                                                                                <textarea name="rejectReason" placeholder="Enter reason for rejection" class="reject-reason-textarea"></textarea>
-                                                                            </c:if>
                                                                         </form>
                                                                     </div>
-
 
                                                                     <div id="modal-${schedule.mentorName}" class="modal">
                                                                         <div class="modal-content">
@@ -438,280 +436,272 @@ s<!DOCTYPE html>
                                                                                             <c:forEach items="${listDay}" var="day">
                                                                                                 <c:set var="found" value="false"/>
 
-                                                        <div id="modal-${schedule.mentorName}" class="modal">
-                                                            <div class="modal-content">
-                                                                <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
-                                                                <h2>Schedule Details</h2>
-                                                                <p><strong>Mentor Name:</strong> <span id="modalMentorName">${schedule.mentorName}</span></p>
-                                                                <p><strong>Details Schedule</strong>
-                                                                <div class="form-container">
-                                                                    <table border="1" width="100%">
-                                                                        <tr class="over">
-                                                                            <th rowspan="2">
-                                                                                <label for="week">Month</label>
-                                                                                <select id="week"></select>
-                                                                            </th>
-                                                                            <th>Monday</th>
-                                                                            <th>Tuesday</th>
-                                                                            <th>Wednesday</th>
-                                                                            <th>Thursday</th>
-                                                                            <th>Friday</th>
-                                                                            <th>Saturday</th>
-                                                                            <th>Sunday</th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <c:forEach items="${listDays}" var="day">
-                                                                                <c:if test="${day.cycle == 1}">
-                                                                                    <td>${day.dateValue}</td>
-                                                                                </c:if>
-                                                                            </c:forEach>
-                                                                        </tr>
-                                                                        <c:forEach items="${listSlot}" var="slot">
-                                                                            <tr>
-                                                                                <td>${slot.slot_id}</td>
-                                                                                <c:forEach items="${listDay}" var="day">
-                                                                                    <c:set var="found" value="false"/>
+                                                                                                <c:forEach items="${schedule.list}" var="listS">
 
-                                                                                    <c:forEach items="${schedule.list}" var="listS">
+                                                                                                    <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day}">
+                                                                                                        <td class="Book">Booked</td>
+                                                                                                        <c:set var="found" value="true"/>
+                                                                                                    </c:if>
+                                                                                                </c:forEach>
+                                                                                                <c:if test="${not found}">
+                                                                                                    <td></td>
+                                                                                                </c:if>
+                                                                                            </c:forEach>
 
-                                                                                        <c:if test="${listS.slotId == slot.slot_id && listS.weekName == day}">
-                                                                                            <td class="Book">Booked</td>
-                                                                                            <c:set var="found" value="true"/>
-                                                                                        </c:if>
+                                                                                        </tr>
                                                                                     </c:forEach>
-                                                                                    <c:if test="${not found}">
-                                                                                        <td></td>
-                                                                                    </c:if>
-                                                                                </c:forEach>
+                                                                                </table>           
 
-                                                                            </tr>
-                                                                        </c:forEach>
-                                                                    </table>           
+                                                                                <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+                                                                            </div>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td><div id="messageContainer" style="display: none; margin-top: 20px;">
+                                                                        <span id="MessageTitle" style="display: none" class="userDatatable-title">Reject Message</span><br/>
+                                                                        <form action="HandleSlotMentor" method="post">
+                                                                            <c:if test="${not empty schedule.list}">
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                            </c:if>
+                                                                            <input type="hidden" name="action" value="3"/>
+                                                                            <textarea id="messageInput" name="messageInput" class="form-control" rows="4" placeholder="Enter your message here..."></textarea>
+                                                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                                                        </form>
+                                                                    </div></td>
+                                                            </tr>
+                                                        </c:forEach>
 
-                                                                    <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
-
-                                                                </div>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                                </td>
-                                                </tr>
-                                            </c:forEach>
-
-                                            </tbody>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
-                </div>
-                </section>
-                <!-- Dialog -->
+                    </section>
+                    <!-- Dialog -->
 
-                <div class="settingSidebar">
-                    <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-                    </a>
-                    <div class="settingSidebar-body ps-container ps-theme-default">
-                        <div class=" fade show active">
-                            <div class="setting-panel-header">Setting Panel
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <h6 class="font-medium m-b-10">Select Layout</h6>
-                                <div class="selectgroup layout-color w-50">
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                                        <span class="selectgroup-button">Light</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                                        <span class="selectgroup-button">Dark</span>
-                                    </label>
+                    <div class="settingSidebar">
+                        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
+                        </a>
+                        <div class="settingSidebar-body ps-container ps-theme-default">
+                            <div class=" fade show active">
+                                <div class="setting-panel-header">Setting Panel
                                 </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                                <div class="selectgroup selectgroup-pills sidebar-color">
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                                        <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                              data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                                        <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                              data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                                    </label>
+                                <div class="p-15 border-bottom">
+                                    <h6 class="font-medium m-b-10">Select Layout</h6>
+                                    <div class="selectgroup layout-color w-50">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
+                                            <span class="selectgroup-button">Light</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
+                                            <span class="selectgroup-button">Dark</span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <h6 class="font-medium m-b-10">Color Theme</h6>
-                                <div class="theme-setting-options">
-                                    <ul class="choose-theme list-unstyled mb-0">
-                                        <li title="white" class="active">
-                                            <div class="white"></div>
-                                        </li>
-                                        <li title="cyan">
-                                            <div class="cyan"></div>
-                                        </li>
-                                        <li title="black">
-                                            <div class="black"></div>
-                                        </li>
-                                        <li title="purple">
-                                            <div class="purple"></div>
-                                        </li>
-                                        <li title="orange">
-                                            <div class="orange"></div>
-                                        </li>
-                                        <li title="green">
-                                            <div class="green"></div>
-                                        </li>
-                                        <li title="red">
-                                            <div class="red"></div>
-                                        </li>
-                                    </ul>
+                                <div class="p-15 border-bottom">
+                                    <h6 class="font-medium m-b-10">Sidebar Color</h6>
+                                    <div class="selectgroup selectgroup-pills sidebar-color">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
+                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                                                  data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
+                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                                                  data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <div class="theme-setting-options">
-                                    <label class="m-b-0">
-                                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                               id="mini_sidebar_setting">
-                                        <span class="custom-switch-indicator"></span>
-                                        <span class="control-label p-l-10">Mini Sidebar</span>
-                                    </label>
+                                <div class="p-15 border-bottom">
+                                    <h6 class="font-medium m-b-10">Color Theme</h6>
+                                    <div class="theme-setting-options">
+                                        <ul class="choose-theme list-unstyled mb-0">
+                                            <li title="white" class="active">
+                                                <div class="white"></div>
+                                            </li>
+                                            <li title="cyan">
+                                                <div class="cyan"></div>
+                                            </li>
+                                            <li title="black">
+                                                <div class="black"></div>
+                                            </li>
+                                            <li title="purple">
+                                                <div class="purple"></div>
+                                            </li>
+                                            <li title="orange">
+                                                <div class="orange"></div>
+                                            </li>
+                                            <li title="green">
+                                                <div class="green"></div>
+                                            </li>
+                                            <li title="red">
+                                                <div class="red"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <div class="theme-setting-options">
-                                    <label class="m-b-0">
-                                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                               id="sticky_header_setting">
-                                        <span class="custom-switch-indicator"></span>
-                                        <span class="control-label p-l-10">Sticky Header</span>
-                                    </label>
+                                <div class="p-15 border-bottom">
+                                    <div class="theme-setting-options">
+                                        <label class="m-b-0">
+                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                                                   id="mini_sidebar_setting">
+                                            <span class="custom-switch-indicator"></span>
+                                            <span class="control-label p-l-10">Mini Sidebar</span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                                    <i class="fas fa-undo"></i> Restore Default
-                                </a>
+                                <div class="p-15 border-bottom">
+                                    <div class="theme-setting-options">
+                                        <label class="m-b-0">
+                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                                                   id="sticky_header_setting">
+                                            <span class="custom-switch-indicator"></span>
+                                            <span class="control-label p-l-10">Sticky Header</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
+                                    <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
+                                        <i class="fas fa-undo"></i> Restore Default
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
-    <script src="assetss/js/app.min.js"></script>
-    <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
-    <!-- JS Libraies -->
-    <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
-    <!-- Page Specific JS File -->
-    <script src="assetss/js/page/form-wizard.js"></script>
-    <!-- Template JS File -->
-    <script src="assetss/js/scripts.js"></script>
-    <!-- Custom JS File -->
-    <script src="assetss/js/custom.js"></script>
-    <script>
-                                                                    function getMonday(d) {
-                                                                        d = new Date('2024-06-24');
-                                                                        var day = d.getDay(),
-                                                                                diff = d.getDate() - day + (day == 0 ? -6 : 1);
-                                                                        return new Date(d.setDate(diff));
-                                                                    }
+        <script src="assetss/js/app.min.js"></script>
+        <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
+        <!-- JS Libraies -->
+        <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
+        <!-- Page Specific JS File -->
+        <script src="assetss/js/page/form-wizard.js"></script>
+        <!-- Template JS File -->
+        <script src="assetss/js/scripts.js"></script>
+        <!-- Custom JS File -->
+        <script src="assetss/js/custom.js"></script>
+        <script>
+                                                                                function handleMessage() {
+                                                                                    var messageContainer = document.getElementById('messageContainer');
+                                                                                    var messageTitle = document.getElementById('MessageTitle');
+                                                                                    messageContainer.style.display = 'block';
+                                                                                    messageTitle.style.display = 'inherit';
+                                                                                }
 
-                                                                    function formatDate(date) {
-                                                                        return (
-                                                                                date.getDate().toString().padStart(2, "0")
+                                                                                function submitMessage() {
+                                                                                    var message = document.getElementById('messageInput').value;
+                                                                                    if (message == null) {
+                                                                                        alert('Please enter reject message!');
+                                                                                    }
+                                                                                    // You can add additional logic to handle the message submission
+                                                                                }
+        </script>
+        <script>
+            function getMonday(d) {
+                d = new Date('2024-06-24');
+                var day = d.getDay(),
+                        diff = d.getDate() - day + (day == 0 ? -6 : 1);
+                return new Date(d.setDate(diff));
+            }
 
-                                                                                +
-                                                                                "-" +
-                                                                                (date.getMonth() + 1).toString().padStart(2, "0") +
-                                                                                "-" +
-                                                                                date.getFullYear().toString().padStart(4, "0")
-                                                                                );
-                                                                    }
+            function formatDate(date) {
+                return (
+                        date.getDate().toString().padStart(2, "0")
 
-                                                                    function getWeekOptions() {
-                                                                        const startDate = new Date('2024-06-24');
-                                                                        const options = [];
-                                                                        for (let week = 0; week < 4; week++) {
-                                                                            const mondayOfWeek = new Date(startDate);
-                                                                            mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
-                                                                            const sundayOfWeek = new Date(mondayOfWeek);
-                                                                            sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
-                                                                            const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
-                                                                            options.push({value: week + 1, text: optionText});
-                                                                        }
-                                                                        return options;
-                                                                    }
+                        +
+                        "-" +
+                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                        "-" +
+                        date.getFullYear().toString().padStart(4, "0")
+                        );
+            }
 
-                                                                    const weekSelect = document.getElementById("week");
-                                                                    const weekOptions = getWeekOptions();
-                                                                    weekOptions.forEach((option) => {
-                                                                        const optionElement = document.createElement("option");
-                                                                        optionElement.value = option.value;
-                                                                        optionElement.textContent = option.text;
-                                                                        weekSelect.appendChild(optionElement);
-                                                                    });
-                                                                    function openModal(userName) {
-                                                                        document.getElementById('modal-' + userName).style.display = 'block';
-                                                                        const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
-                                                                        bookedSlots.forEach(slot => {
-                                                                            const newDiv = document.createElement('div');
-                                                                            newDiv.innerHTML = `
-                                                                                            <div>SWR302</div>
-                                                                                            <div>View Materials</div>
-                                                                                            <div>at BE-209</div>
-                                                                                        `;
-                                                                            slot.innerHTML = '';
-                                                                            slot.appendChild(newDiv);
-                                                                            slot.classList.remove('Book');
-                                                                        });
-                                                                    }
+            function getWeekOptions() {
+                const startDate = new Date('2024-06-24');
+                const options = [];
+                for (let week = 0; week < 4; week++) {
+                    const mondayOfWeek = new Date(startDate);
+                    mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                    const sundayOfWeek = new Date(mondayOfWeek);
+                    sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                    const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                    options.push({value: week + 1, text: optionText});
+                }
+                return options;
+            }
 
-                                                                    function closeModal(userName) {
-                                                                        document.getElementById('modal-' + userName).style.display = 'none';
-                                                                    }
-                                                                    document.addEventListener('DOMContentLoaded', (e) => {
+            const weekSelect = document.getElementById("week");
+            const weekOptions = getWeekOptions();
+            weekOptions.forEach((option) => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.textContent = option.text;
+                weekSelect.appendChild(optionElement);
+            });
+            function openModal(userName) {
+                document.getElementById('modal-' + userName).style.display = 'block';
+                const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
+                bookedSlots.forEach(slot => {
+                    const newDiv = document.createElement('div');
+                    newDiv.innerHTML = `
+                                                                                                <div>SWR302</div>
+                                                                                                <div>View Materials</div>
+                                                                                                <div>at BE-209</div>
+                                                                                            `;
+                    slot.innerHTML = '';
+                    slot.appendChild(newDiv);
+                    slot.classList.remove('Book');
+                });
+            }
 
-                                                                        const editButtons = document.querySelectorAll('.edit');
-                                                                        editButtons.forEach(button => {
-                                                                            button.addEventListener('click', function (event) {
-                                                                                event.preventDefault();
-                                                                                const cvId = this.id.split('_')[1];
-                                                                                const note = document.getElementById('note_' + cvId);
-                                                                                const noteInput = document.getElementById('note_Input_' + cvId);
-                                                                                const status = document.getElementById('status_' + cvId);
-                                                                                status.value = 2;
-                                                                                noteInput.value = note.value;
-                                                                                const form = document.getElementById('form_' + cvId);
-                                                                                form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
-                                                                                form.method = 'get';
-                                                                                form.submit();
-                                                                            });
-                                                                        });
-                                                                        const rejectButtons = document.querySelectorAll('.reject');
-                                                                        rejectButtons.forEach(button => {
-                                                                            button.addEventListener('click', function (event) {
-                                                                                event.preventDefault();
-                                                                                const cvId = this.id.split('_')[1];
-                                                                                const note = document.getElementById('note_' + cvId);
-                                                                                const noteInput = document.getElementById('note_Input_' + cvId);
-                                                                                const status = document.getElementById('status_' + cvId);
-                                                                                status.value = 3;
-                                                                                noteInput.value = note.value;
-                                                                                const form = document.getElementById('form_' + cvId);
-                                                                                form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
-                                                                                form.method = 'get';
-                                                                                form.submit();
-                                                                            });
-                                                                        });
-                                                                    });
+            function closeModal(userName) {
+                document.getElementById('modal-' + userName).style.display = 'none';
+            }
+            document.addEventListener('DOMContentLoaded', (e) => {
 
-    </script>
-</body>
+                const editButtons = document.querySelectorAll('.edit');
+                editButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 2;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+                const rejectButtons = document.querySelectorAll('.reject');
+                rejectButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const cvId = this.id.split('_')[1];
+                        const note = document.getElementById('note_' + cvId);
+                        const noteInput = document.getElementById('note_Input_' + cvId);
+                        const status = document.getElementById('status_' + cvId);
+                        status.value = 3;
+                        noteInput.value = note.value;
+                        const form = document.getElementById('form_' + cvId);
+                        form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
+                        form.method = 'get';
+                        form.submit();
+                    });
+                });
+            });
+
+        </script>
+    </body>
 
 </html>

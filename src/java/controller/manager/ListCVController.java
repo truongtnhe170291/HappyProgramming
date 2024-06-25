@@ -17,6 +17,7 @@ import java.util.List;
 import models.CV;
 import models.CVDTO;
 import models.Skill;
+import models.Status;
 
 /**
  *
@@ -61,12 +62,31 @@ public class ListCVController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String statusFilter = request.getParameter("statusFilter");
+    CVDAO dao = new CVDAO();
+    List<CVDTO> list;
+    if (statusFilter == null || statusFilter.isEmpty()) {
+        list = dao.getAllCV();
+    } else {
+        int statusId = Integer.parseInt(statusFilter);
+        list = dao.getCVByStatus(statusId);
+    }
+    request.setAttribute("cvList", list);
+
+    // Fetch all statuses to populate the dropdown
+    List<Status> statusList = dao.getAllStatuses();
+    request.setAttribute("statusList", statusList);
+
+    request.getRequestDispatcher("listCV.jsp").forward(request, response);
+}
+
+    public static void main(String[] args) {
         CVDAO dao = new CVDAO();
         List<CVDTO> list = dao.getAllCV();
-        request.setAttribute("cvList", list);
-        request.getRequestDispatcher("listCV.jsp").forward(request, response);
+         List<Status> statusList = dao.getAllStatuses();
+        System.out.println(statusList);
     }
 
     /**
@@ -82,7 +102,6 @@ public class ListCVController extends HttpServlet {
             throws ServletException, IOException {
         CVDAO dao = new CVDAO();
         List<CVDTO> list = dao.getAllCV();
-
         request.setAttribute("cvList", list);
         request.getRequestDispatcher("listCV.jsp").forward(request, response);
     }
