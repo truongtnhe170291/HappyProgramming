@@ -311,11 +311,13 @@ INSERT INTO Status_Selected(status_name) VALUES
 ('Rejected'),
 ('Not yet'),
 ('attended'),
-('Saved')
+('Saved'),
+('Wait For Payment'),
+('Out Of Date')
 
 GO
 
-INSERT INTO Cycle(start_time, end_time, note, mentor_name, deadline_date) VALUES
+/*INSERT INTO Cycle(start_time, end_time, note, mentor_name, deadline_date) VALUES
 ('2024-06-24', '2024-07-22', '', 'son', '2024-06-20'),
 ('2024-06-24', '2024-07-22', '', 'minh', '2024-06-20')
 
@@ -323,18 +325,21 @@ GO
 
 INSERT INTO Selected_Slot(slot_id, cycle_id, day_of_slot, status_id)
 VALUES 
-('SLOT01', 1, '2024-06-24', 1),
-('SLOT02', 1, '2024-07-10', 1),
-('SLOT01', 1, '2024-06-30', 2),
+('SLOT02', 1, '2024-06-24', 2),
 ('SLOT02', 1, '2024-07-01', 2),
-('SLOT04', 1, '2024-06-28', 2),
-('SLOT01', 2, '2024-06-25', 2),
+('SLOT02', 1, '2024-07-08', 2),
+('SLOT02', 1, '2024-07-15', 2),
+('SLOT01', 1, '2024-06-30', 2),
+('SLOT01', 1, '2024-07-07', 2),
+('SLOT01', 1, '2024-07-14', 2),
+('SLOT01', 1, '2024-07-21', 2),
 ('SLOT03', 2, '2024-07-07', 1),
 ('SLOT02', 2, '2024-07-05', 1),
 ('SLOT01', 2, '2024-06-30', 2),
 ('SLOT04', 2, '2024-06-28', 2)
 
 GO
+*/
 -- Insert into RequestStatuses
 INSERT INTO RequestStatuses (status_name) VALUES ('Open Class');
 INSERT INTO RequestStatuses (status_name) VALUES ('Processing');
@@ -343,7 +348,7 @@ INSERT INTO RequestStatuses (status_name) VALUES ('Out Of Date');
 INSERT INTO RequestStatuses (status_name) VALUES ('Wait For Payment');
 INSERT INTO RequestStatuses (status_name) VALUES ('Saved');
 GO
-
+/*
 INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price, note)
 VALUES 
 ('son', 'truong', '2024-06-15', '08:00:00', 'Book Schedule', 'Seeking guidance on project implementation', 1, 400000, ''),
@@ -369,3 +374,14 @@ VALUES
 (4, 3),
 (4, 4)
 
+GO
+*/
+/*
+INSERT INTO Wallet(wallet_id, real_binance, avaiable_binance)
+VALUES 
+('truong', 1000000, 1000000)
+
+GO
+INSERT INTO Transactions(user_send, user_receive, create_date, amount, [message])
+VALUES
+(null, 'truong', '2024-06-15', 1000000, 'Nap tien')*/
