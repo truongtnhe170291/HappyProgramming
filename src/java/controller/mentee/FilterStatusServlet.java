@@ -122,14 +122,14 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         if (("all".equals(statusFilter) || statusFilter == null || statusFilter.isEmpty()) &&
             ("all".equals(mentorName) || mentorName.isEmpty()) &&
             (startTime != null || endTime != null)) {
-            // Case 3: statusFilter is "all" or empty, mentorName is "all" or empty, but startTime or endTime is not null
+            // Case 1: statusFilter is "all" or empty, mentorName is "all" or empty, but startTime or endTime is not null
             requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
         } else if (("all".equals(statusFilter) || statusFilter == null || statusFilter.isEmpty()) &&
                    ("all".equals(mentorName) || mentorName.isEmpty())) {
             // Case 1: statusFilter is "all" or empty, and mentorName is "all" or empty
             requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
         } else if ("all".equals(statusFilter) || statusFilter == null || statusFilter.isEmpty()) {
-            // Case 2: statusFilter is "all" or empty
+            // Case 3: statusFilter is "all" or empty
             requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
         } else {
             // Other cases

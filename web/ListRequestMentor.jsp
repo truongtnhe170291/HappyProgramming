@@ -1,7 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List of Requests</title>
@@ -23,6 +24,7 @@
                 border-spacing: 0;
                 color: white;
             }
+
             .form-container .schedule-table .tableslot th,
             .form-container .schedule-table .tableslot td {
                 border: 0.2px solid #e0e0e0 !important;
@@ -44,13 +46,14 @@
                 border-bottom: 1px solid #e0e0e0;
             }
 
-            td + td {
+            td+td {
                 border-left: 1px solid #e0e0e0;
             }
 
-            tr + tr td {
+            tr+tr td {
                 border-top: 1px solid #e0e0e0;
             }
+
             ul {
                 list-style-type: none;
                 padding: 0;
@@ -77,6 +80,7 @@
             button:hover {
                 background-color: #45a049;
             }
+
             .modal-content.radius-xl {
                 border-radius: 15px;
                 padding: 20px;
@@ -136,6 +140,7 @@
             .ticket_modal-modal label {
                 font-weight: bold;
             }
+
             .status-open {
                 width: 100px !important;
                 height: 50px !important;
@@ -148,16 +153,19 @@
                 color: yellow !important;
             }
 
-            .status-cancel, .status-closed {
+            .status-cancel,
+            .status-closed {
                 width: 100px !important;
                 height: 50px !important;
                 color: red !important;
             }
-            .custom_modal{
+
+            .custom_modal {
                 transform: translateX(50px);
                 max-width: 100% !important;
                 width: 90% !important;
             }
+
             .week-selector {
                 background-color: #4285f4;
                 color: white;
@@ -178,7 +186,8 @@
                 color: #4285f4;
             }
 
-            .view-materials, .edu-next {
+            .view-materials,
+            .edu-next {
                 display: inline-block;
                 padding: 2px 5px;
                 margin: 2px;
@@ -211,9 +220,11 @@
             .attendance.absent {
                 color: #ea4335;
             }
-            .hd{
+
+            .hd {
                 background-color: #4285f4 !important;
             }
+
             .time-info {
 
                 display: flex;
@@ -225,14 +236,15 @@
             .empty-cell {
                 height: 100%;
             }
-
         </style>
     </head>
+
     <body class="layout-light side-menu">
         <div class="mobile-search">
             <form action="/" class="search-form">
                 <img src="img/svg/search.svg" alt="search" class="svg">
-                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..."
+                       aria-label="Search">
             </form>
         </div>
         <div class="mobile-author-actions"></div>
@@ -242,12 +254,22 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
+                <form method="get" action="ListRequestMentor">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select name="statusFilter" id="statusFilter">
+                        <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
+                        <c:forEach items="${listStatus}" var="status">
+                            <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
+                                ${status.statusName}
+                            </option>
+                        </c:forEach>
+                    </select>
+                    <button type="submit">Filter</button>
+                </form>
+
                 <h1>List of Requests</h1>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
-
-                       
-
                         <table class="table mb-0 table-borderless">
 
                             <thead class="hd">
@@ -291,19 +313,23 @@
                                                 </c:forEach>
                                         </ul>
                                     </td>
-                                    <td class="status-cell" data-status="${request.status.statusName}">${request.status.statusName}</td>
+                                    <td class="status-cell" data-status="${request.status.statusName}">
+                                        ${request.status.statusName}</td>
 
                                     <td class="d-flex" style="margin-top:12px;">
                                         <form method="POST" action="ListRequest">
                                             <input type="hidden" name="requestId" value="${request.requestId}" />
                                             <div class="action-btn">
                                                 <a href="#" class="btn btn-primary align-center centaxs"
-                                                   data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#${request.menteeName}${request.requestId}"
                                                    style="background-color: #fff; border: none;">
 
-                                                    <i class="uil uil-eye  align-center" style="color: blue;"></i> </a>
+                                                    <i class="uil uil-eye  align-center" style="color: blue;"></i>
+                                                </a>
 
-                                                <div class="modal fade ticket_modal" id="${request.menteeName}${request.requestId}" role="dialog"
+                                                <div class="modal fade ticket_modal"
+                                                     id="${request.menteeName}${request.requestId}" role="dialog"
                                                      tabindex="-1" aria-hidden="true">
 
                                                     <div
@@ -311,43 +337,57 @@
                                                         <div class="modal-content radius-xl custom_modal">
                                                             <div class="modal-body pb-sm-50 pb-30">
                                                                 <div class="modal-header">
-                                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                                        <img src="img/svg/x.svg" alt="x" class="svg">
+                                                                    <button type="button" class="close"
+                                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                                        <img src="img/svg/x.svg" alt="x"
+                                                                             class="svg">
                                                                     </button>
                                                                 </div>
                                                                 <div class="ticket_modal-modal">
                                                                     <h1>Request Details</h1>
-                                                                    <div class="text-center">Title: ${request.title}</div><br>
-                                                                    <div class="text-center">Mentor Name: ${request.mentorName}</div><br>
-                                                                    <div class="text-center">Description: ${request.description}</div><br>
-                                                                    <div class="text-center">Deadline: ${request.deadlineHour}
+                                                                    <div class="text-center">Title: ${request.title}
+                                                                    </div><br>
+                                                                    <div class="text-center">Mentor Name:
+                                                                        ${request.mentorName}</div><br>
+                                                                    <div class="text-center">Description:
+                                                                        ${request.description}</div><br>
+                                                                    <div class="text-center">Deadline:
+                                                                        ${request.deadlineHour}
                                                                         ${request.deadlineDate}</div><br>
 
                                                                     <div class="form-container">
-                                                                        <table class="schedule-table" border="1" width="100%">
+                                                                        <table class="schedule-table" border="1"
+                                                                               width="100%">
                                                                             <thead>
-                                                                                <tr style=" background-color: #4a86e8;">
-                                                                                    <th rowspan="2" style=" background-color: #4a86e8;">WEEK
+                                                                                <tr
+                                                                                    style=" background-color: #4a86e8;">
+                                                                                    <th rowspan="2"
+                                                                                        style=" background-color: #4a86e8;">
+                                                                                        WEEK
                                                                                     </th>
                                                                                     <c:forEach var="day"
                                                                                                items="${listDays}">
-                                                                                        <th class="equal-width text-center" style=" background-color: #4a86e8;">
+                                                                                        <th class="equal-width text-center"
+                                                                                            style=" background-color: #4a86e8;">
                                                                                             ${day.dateName}</th>
                                                                                         </c:forEach>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <c:forEach var="day"
                                                                                                items="${listDays}">
-                                                                                        <th class="equal-width text-center" style=" background-color: #4a86e8 ;">
+                                                                                        <th class="equal-width text-center"
+                                                                                            style=" background-color: #4a86e8 ;">
                                                                                             ${day.dateValue}</th>
                                                                                         </c:forEach>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody class="tableslot">
-                                                                                <c:forEach var="slot" items="${listSlots}"
+                                                                                <c:forEach var="slot"
+                                                                                           items="${listSlots}"
                                                                                            varStatus="loop">
                                                                                     <tr>
-                                                                                        <td>Slot ${slot.slot_name}</td>
+                                                                                        <td>Slot ${slot.slot_name}
+                                                                                        </td>
                                                                                         <c:forEach var="day"
                                                                                                    items="${listDays}">
                                                                                             <c:set var="found"
@@ -360,22 +400,42 @@
                                                                                                         test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
                                                                                                         <div
                                                                                                             class="slot-info">
-                                                                                                            <c:forEach var="skill"
-                                                                                                                       items="${request.listSkills}">
-                                                                                                                <div class="class-code"> ${skill.skillName}</div>
+                                                                                                            <c:forEach
+                                                                                                                var="skill"
+                                                                                                                items="${request.listSkills}">
+                                                                                                                <div
+                                                                                                                    class="class-code">
+                                                                                                                    ${skill.skillName}
+                                                                                                                </div>
                                                                                                             </c:forEach>
-                                                                                                            <span class="view-materials">View Materials</span>
-                                                                                                            <span class="edu-next">EduNext</span>
-                                                                                                            <div class="room-info" >startTime:${scheduleItem.startTime}</div>
-                                                                                                            <div class="attendance attended">endTime: ${scheduleItem.endTime}</div>
-                                                                                                            <div class="time-info">${scheduleItem.slot_name}</div>
+                                                                                                            <span
+                                                                                                                class="view-materials">View
+                                                                                                                Materials</span>
+                                                                                                            <span
+                                                                                                                class="edu-next">EduNext</span>
+                                                                                                            <div
+                                                                                                                class="room-info">
+                                                                                                                startTime:${scheduleItem.startTime}
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="attendance attended">
+                                                                                                                endTime:
+                                                                                                                ${scheduleItem.endTime}
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="time-info">
+                                                                                                                ${scheduleItem.slot_name}
+                                                                                                            </div>
                                                                                                         </div>
-                                                                                                        <c:set var="found"
-                                                                                                               value="true" />
+                                                                                                        <c:set
+                                                                                                            var="found"
+                                                                                                            value="true" />
                                                                                                     </c:if>
                                                                                                 </c:forEach>
-                                                                                                <c:if test="${not found}">
-                                                                                                    <div class="empty-cell">
+                                                                                                <c:if
+                                                                                                    test="${not found}">
+                                                                                                    <div
+                                                                                                        class="empty-cell">
                                                                                                     </div>
                                                                                                 </c:if>
                                                                                             </td>
@@ -400,7 +460,8 @@
                                         </form>
                                         <form method="POST" action="success">
                                             <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;" type="submit">
+                                            <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
+                                                    type="submit">
                                                 <li>
                                                     <a href="#" class="edit">
                                                         <i class="uil uil-check"></i>
@@ -411,7 +472,8 @@
                                         <form method="POST" action="reject"
                                               onsubmit="return confirm('Are you sure you want to delete this request?');">
                                             <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;" type="submit">
+                                            <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
+                                                    type="submit">
                                                 <li>
                                                     <a href="#" class="remove">
                                                         <i class="uil uil-times"></i>
@@ -425,6 +487,25 @@
                                 </tr>
                             </c:forEach>
                         </table>
+
+                        <div>
+                            <c:if test="${currentPage > 1}">
+                                <a href="ListRequestMentor?page=${currentPage - 1}&statusFilter=${statusFilter}">Previous</a>
+                            </c:if>
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <c:choose>
+                                    <c:when test="${i == currentPage}">
+                                        <span>${i}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="ListRequestMentor?page=${i}&statusFilter=${statusFilter}">${i}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                            <c:if test="${currentPage < totalPages}">
+                                <a href="ListRequestMentor?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
+                            </c:if>
+                        </div>
 
                     </div>
                 </div>
@@ -501,7 +582,7 @@
                                 cell.classList.add("status-open");
                                 break;
                             case "Processing":
-                            case  "Wait For Payment":
+                            case "Wait For Payment":
                                 cell.classList.add("status-processing");
                                 break;
                             case "Out Of Date":

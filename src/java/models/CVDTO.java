@@ -29,5 +29,11 @@ public class CVDTO extends CV{
     public void setRate(int rate) {
         this.rate = rate;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CVDTO{" + "listSkill=" + listSkill + ", rate=" + rate + '}';
+    }
+    
     
 }
