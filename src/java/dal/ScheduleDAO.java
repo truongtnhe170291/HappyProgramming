@@ -353,4 +353,22 @@ public boolean rejectRequest(int cycleId, String rejectReason) {
         }
         return list;
     }
+
+    public boolean updateStatusSelectedSlot(int selectedId, int status) {
+        String sql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = ? WHERE selected_id = ?";
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, status);
+            ps.setInt(2, selectedId);
+            int row = ps.executeUpdate();
+            if (row != 1) {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return true;
+        
+    }
 }
