@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -115,48 +116,45 @@
       }
     </style>
   </head>
+  
+  
   <body>
     <div class="dashboard">
       <h1>Admin Dashboard</h1>
-      <table class="accounts-table">
-        <thead>
-          <tr>
-            <th>Mentee ID</th>
+     <table class="accounts-table">
+    <thead>
+        <tr>
+            <th>STT</th>
             <th>Name</th>
             <th>Status</th>
             <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>001</td>
-            <td>John Doe</td>
-            <td>Enabled</td>
-            <td>
-              <button class="disable-btn" onclick="showPopup('001')">
-                Disable
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>002</td>
-            <td>Jane Smith</td>
-            <td>Enabled</td>
-            <td>
-              <button class="disable-btn" onclick="showPopup('002')">
-                Disable
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="account" items="${accounts}" varStatus="status">
+            <tr>
+                <td>${status.index + 1}</td>
+                <td>${account.fullName}</td>
+                <td>${account.statusId == 1 ? 'Enabled' : 'Disabled'}</td>
+                <td>
+                    <form action="accountstatus" method="post" style="display:inline;">
+                        <input type="hidden" name="userName" value="${account.userName}">
+                        <input type="hidden" name="newStatus" value="${account.statusId == 1 ? 2 : 1}">
+                        <button type="submit">
+                            ${account.statusId == 1 ? 'Disable' : 'Enable'}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
     </div>
 
     <div id="popup" class="popup">
       <div class="popup-content">
         <span class="close-btn" onclick="closePopup()">&times;</span>
         <h2>Disable Account</h2>
-        <p>Please provide a reason for disabling the account:</p>
         <textarea id="reason" rows="4"></textarea>
         <button class="submit-btn" onclick="disableAccount()">Submit</button>
       </div>

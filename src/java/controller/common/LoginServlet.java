@@ -113,9 +113,20 @@ public class LoginServlet extends HttpServlet {
 
             // Redirect based on user role
             if (acc.getRoleId() == 1) {
+               if(acc.getStatusId()!=2){
                 response.sendRedirect("homes.jsp");
+               }else{
+                    request.setAttribute("mess", "Your account has been banned because you have violated the website's rules");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+               }
+               
             } else if (acc.getRoleId() == 2) {
+                if(acc.getStatusId()!=2){
                 response.sendRedirect("home");
+                }else{
+                    request.setAttribute("mess", "Your account has been banned because you have violated the website's rules");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+               }
             }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");
