@@ -785,6 +785,22 @@ public class RequestDAO {
         }
         return false;
     }
+    
+    public boolean updateStatusNote(int requestId, int statusId, String note) {
+    String sql = "UPDATE RequestsFormMentee SET status_id = ?, note = ? WHERE request_id = ?";
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, statusId);
+        ps.setString(2, note);
+        ps.setInt(3, requestId);
+        int affectedRows = ps.executeUpdate();
+        return affectedRows > 0;
+    } catch (SQLException e) {
+        System.out.println("updateStatusNote " + e.getMessage());
+    }
+    return false;
+}
+
 
     public void checkAndUpdateOverdueStatus() throws SQLException {
         String sql = "UPDATE RequestsFormMentee "

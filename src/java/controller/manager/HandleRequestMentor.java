@@ -143,22 +143,22 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         // Lấy mentorName, cycleId và action từ request
         int cycleId = Integer.parseInt(request.getParameter("cycleID"));
         int action = Integer.parseInt(request.getParameter("action"));
-        String message = request.getParameter("message");
+        String message = request.getParameter("messageInput");
         System.out.println(cycleId + ""+ action);
         // Kiểm tra action và gọi hàm tương ứng
+        System.out.println(message);
         if (action == 2) {
             scheduleDAO.approveRequest(cycleId);
         } else if (action == 3) {
-                  String rejectReason = request.getParameter("rejectReason");
-                  scheduleDAO.rejectRequest(cycleId, rejectReason);
+                  scheduleDAO.rejectRequestNew(cycleId, message);
         }
 
-    if (action == 2) {
-        scheduleDAO.approveRequest(cycleId);
-    } else if (action == 3) {
-        String rejectReason = request.getParameter("rejectReason");
-        scheduleDAO.rejectRequest(cycleId, rejectReason);
-    }
+//    if (action == 2) {
+//        scheduleDAO.approveRequest(cycleId);
+//    } else if (action == 3) {
+//        String rejectReason = request.getParameter("rejectReason");
+//        scheduleDAO.rejectRequest(cycleId, rejectReason);
+//    }
 
     response.sendRedirect("HandleSlotMentor");
 }

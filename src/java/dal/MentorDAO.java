@@ -237,9 +237,7 @@ public class MentorDAO {
         return monSun;
     }
 
-
-
-public ArrayList<Day> listDays() {
+    public ArrayList<Day> listDays() {
         ArrayList<Day> list = new ArrayList<>();
         try {
             LocalDate today = LocalDate.now();
@@ -272,10 +270,7 @@ public ArrayList<Day> listDays() {
         return list;
     }
 
-
-
-
-    public  ArrayList<Week> listCycleWeek() {
+    public ArrayList<Week> listCycleWeek() {
         ArrayList<Week> list = new ArrayList<>();
 
         ArrayList<Day> listDay = listDays();
@@ -318,16 +313,16 @@ public ArrayList<Day> listDays() {
             while (rs.next()) {
                 String inputDate = "" + rs.getDate(4);
                 list.add(new SelectedSlot(
-                        rs.getString(10), 
-                        rs.getString(9), 
-                        rs.getString(13), 
-                        getStringByDate(inputDate).toUpperCase(), 
-                        rs.getString(15), 
-                        rs.getDate(4), 
+                        rs.getString(10),
+                        rs.getString(9),
+                        rs.getString(13),
+                        getStringByDate(inputDate).toUpperCase(),
+                        rs.getString(15),
+                        rs.getDate(4),
                         rs.getDate(7),
-                        rs.getDate(8), 
-                        rs.getInt(6), 
-                        rs.getInt(5), 
+                        rs.getDate(8),
+                        rs.getInt(6),
+                        rs.getInt(5),
                         getSlotValue(rs.getString(2))));
             }
         } catch (SQLException e) {
@@ -335,8 +330,8 @@ public ArrayList<Day> listDays() {
         }
         return list;
     }
-    
-    public String getStringByDate(String input){
+
+    public String getStringByDate(String input) {
         LocalDate date = LocalDate.parse(input);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
@@ -364,8 +359,7 @@ public ArrayList<Day> listDays() {
         }
         return slotValue;
     }
-    
-    
+
     public ArrayList<Day> listCurrentDays() {
         ArrayList<Day> list = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -380,7 +374,7 @@ public ArrayList<Day> listDays() {
         }
         return list;
     }
-    
+
     public void deleteSchedulePublic(int cycleID) {
         try {
             String query = "DELETE FROM Selected_Slot\n"
@@ -393,8 +387,8 @@ public ArrayList<Day> listDays() {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
         }
     }
-    
-     public void deleteCycle(String startDate, String endDate, String userName) {
+
+    public void deleteCycle(String startDate, String endDate, String userName) {
         try {
             String query = "DELETE FROM Cycle \n"
                     + "WHERE start_time = ? and end_time = ? and mentor_name = ?";
@@ -409,11 +403,23 @@ public ArrayList<Day> listDays() {
         }
     }
 
+    public ArrayList<Day> listDayByCycle(String startTime) {
+        ArrayList<Day> list = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+//            list.add(new Day(LocalDate.parse(startTime).plusDays(i).toString()));
+            String dateName = LocalDate.parse(startTime).plusDays(i).getDayOfWeek().toString();
+            String dateValue = LocalDate.parse(startTime).plusDays(i).toString();
+            list.add(new Day(dateName, dateValue));
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
         MentorDAO dao = new MentorDAO();
-      int rate = dao.getRateOfMentor("abc");
-        System.out.println(rate);
+        ArrayList<Day> list = dao.listDayByCycle("2024-06-25");
+        for (Day day : list) {
+            System.out.println(day);
+        }
     }
 
 }

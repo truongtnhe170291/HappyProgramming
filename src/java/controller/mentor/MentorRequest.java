@@ -90,21 +90,30 @@ public class MentorRequest extends HttpServlet {
 //            LocalDate endDate = startDate.plusDays(27);
 
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName());
+
+            ArrayList<Day> listDayByCycle = mentorDao.listDayByCycle(listSchedule.get(0).getStartTime().toString());
+            
             if (!listSchedule.isEmpty()) {
                 LocalDate endDateString = LocalDate.parse(listSchedule.get(0).getEndTime().toString());
                 LocalDate avaiableBookingDate = endDateString.minusWeeks(1).minusDays(6);
                 request.setAttribute("avaiableBookingDate", avaiableBookingDate);
                 LocalDate today = LocalDate.now();
                 if (today.isAfter(avaiableBookingDate)) {
+                    listSchedule = null;
                     request.setAttribute("status", "Out of date");
                 } else {
-                    int status = Integer.parseInt(listSchedule.get(0).getStatus()) ;
+                    int status = Integer.parseInt(listSchedule.get(0).getStatus());
                     request.setAttribute("status", statusString(status));
                 }
             }
 
+            request.setAttribute("rejectMessage", listSchedule.get(0).getRejectMessage());
+
             request.setAttribute("listSlots", listSlots);
+            
             request.setAttribute("listDays", listCurrentDays);
+            request.setAttribute("listDayByCycle", listDayByCycle);
+            
             request.setAttribute("listSchedule", listSchedule);
             request.getRequestDispatcher("Menter_Request.jsp").forward(request, response);
 
@@ -210,40 +219,40 @@ public class MentorRequest extends HttpServlet {
         }
 
     }
-    
-    public String statusString(int status){
+
+    public String statusString(int status) {
         String output = "";
         switch (status) {
-            case 1:{
+            case 1: {
                 output += "Pending";
                 break;
             }
-            case 2:{
+            case 2: {
                 output += "Approved";
                 break;
             }
-            case 3:{
+            case 3: {
                 output += "Rejected";
                 break;
             }
-            case 4:{
+            case 4: {
                 output += "Not yet";
                 break;
             }
-            case 5:{
+            case 5: {
                 output += "Attended";
                 break;
             }
-            case 6:{
+            case 6: {
                 output += "Saved";
                 break;
             }
             default:
                 throw new AssertionError();
         }
-        
+
         return output;
-        
+
     }
 
     /**

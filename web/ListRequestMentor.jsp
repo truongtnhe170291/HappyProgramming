@@ -469,24 +469,44 @@
                                                 </li>
                                             </button>
                                         </form>
-                                        <form method="POST" action="reject"
-                                              onsubmit="return confirm('Are you sure you want to delete this request?');">
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
-                                                    type="submit">
-                                                <li>
-                                                    <a href="#" class="remove">
-                                                        <i class="uil uil-times"></i>
-                                                    </a>
-                                                </li>
+                                        <form id="rejectForm">
+
+                                            <button type="button" class="btn btn-danger" onclick="openRejectModal()">
+                                                <i class="uil uil-times"></i> Reject
                                             </button>
                                         </form>
+
+
 
 
                                     </td>
                                 </tr>
                             </c:forEach>
                         </table>
+
+                        <div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="rejectReasonModalLabel">Lý do từ chối</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="rejectForm" method="POST" action="reject">
+                                            <input type="hidden" id="requestId" name="requestId" value="" />
+                                            <textarea id="rejectReason" name="note" class="form-control" placeholder="Nhập lý do từ chối..." required></textarea>
+                                            <!-- Thêm thuộc tính name="note" vào textarea -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-primary" onclick="submitRejectForm()">Từ chối</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <div>
                             <c:if test="${currentPage > 1}">
@@ -510,6 +530,35 @@
                     </div>
                 </div>
             </div>
+            <script type="text/javascript">
+                function openRejectModal(requestId) {
+                    // Gán giá trị requestId vào input hidden trong form
+                    document.getElementById('requestId').value = requestId;
+
+                    // Hiển thị modal
+                    const rejectModal = new bootstrap.Modal(document.getElementById('rejectReasonModal'), {
+                        keyboard: false
+                    });
+                    rejectModal.show();
+                }
+
+                function submitRejectForm() {
+                    const reasonInput = document.getElementById('rejectReason');
+                    const reason = reasonInput.value.trim();
+                    if (reason.length === 0) {
+                        alert('Vui lòng nhập lý do từ chối.');
+                        return;
+                    }
+
+                    // Form sẽ tự động submit vì nút submit có type="submit"
+                    // Đóng modal sau khi submit
+                    const rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectReasonModal'));
+                    rejectModal.hide();
+                }
+            </script>
+
+
+
             <script>document.addEventListener("DOMContentLoaded", function () {
                     const roomInfos = document.querySelectorAll('.room-info');
 
