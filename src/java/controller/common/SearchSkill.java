@@ -78,7 +78,7 @@ throws ServletException, IOException {
     String searchTerm = request.getParameter("searchTerm");
 
     // Gọi hàm searchSkills để tìm kiếm kỹ năng theo từ khóa
-    List<Skill> skills = skillDAO.searchSkills(searchTerm);
+    List<Skill> skills = skillDAO.searchSkills(searchTerm,1,2);
 
     // Lưu danh sách kỹ năng tìm được vào request
        request.setAttribute("listSkill", skills);
