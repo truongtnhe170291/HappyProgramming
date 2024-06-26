@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+\<!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -173,6 +174,10 @@
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
+<<<<<<< HEAD
+                <jsp:include page="header_Manager.jsp" />
+=======
+>>>>>>> dd2366f959caa43517064db1beaf139da358986c
                 <div class="navbar-bg"></div>
                 <nav class="navbar navbar-expand-lg main-navbar sticky">
                     <div class="form-inline mr-auto">
@@ -304,6 +309,16 @@
                                                             <tr>
                                                                 <td>${cv.cvId}</td>
                                                                 <td>${cv.fullName}</td>
+
+                                                                <td>
+                                                                    <input id="note_${cv.cvId}" required name="note" value="" class="userDatatable-content--date" type="text" />
+                                                                    <form id="form_${cv.cvId}">
+                                                                        <input type="hidden" name="cvId" value="${cv.cvId}" />
+                                                                        <input id="status_${cv.cvId}" type="hidden" name="status" value="" />
+                                                                        <input id="note_Input_${cv.cvId}" type="hidden" name="note" value="" />
+                                                                      
+                                                                    </form>
+                                                                </td>
                                                                 <td>${cv.status.statusName}</td>
                                                                 <td>
                                                                     <button class="btn btn-info btn-sm">

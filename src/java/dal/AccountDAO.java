@@ -35,7 +35,7 @@ public class AccountDAO {
             status = "Error";
         }
     }
-
+//lấy danh sách account
     public ArrayList<Account> listAccount() {
         ArrayList<Account> list = new ArrayList<>();
         try {
@@ -117,7 +117,7 @@ public class AccountDAO {
 
     return acc;
 }
-
+//đổi mất khẩu 
     public boolean changePassWord(Account a) {
         String sql = "update Accounts set pass_word=? where user_name=?";
         try (PreparedStatement pre = con.prepareStatement(sql)) {
@@ -138,7 +138,7 @@ public class AccountDAO {
         
         System.out.println(dao.getAccount("son", "c4ca4238a0b923820dcc509a6f75849b"));
     }
-
+//update thông tin account
     public void updateAccount(String username, String fullname, String dob, String sex, String address,
             String gmail, String avatar, String phone) {
         try {
@@ -182,6 +182,24 @@ public class AccountDAO {
         return false;
     }
 
-    
+    public boolean updateAccountStatus(String userName, int newStatus) {
+        boolean updated = false;
+        String query = " UPDATE Accounts SET status_id = ? WHERE user_name = ?";
+        try {
+            ps = con.prepareStatement(query);
+            ps.setInt(1, newStatus);
+            ps.setString(2, userName);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                updated = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("updateAccountStatus: " + e.getMessage());
+        } finally {
+            try { if (ps != null) ps.close(); } catch (SQLException e) { /* Ignored */ }
+            try { if (con != null) con.close(); } catch (SQLException e) { /* Ignored */ }
+        }
+        return updated;
+    }
 
 }

@@ -824,8 +824,9 @@ public class RequestDAO {
 
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
-        StaticMentor s = rdao.getStaticRequestMentor("son");
-        System.out.println(s);
+//        StaticMentor s = rdao.getStaticRequestMentor("son");
+//        System.out.println(s);
+        rdao.updateNoteRequest(1, "trung lich");
 
     }
 
@@ -862,6 +863,66 @@ public class RequestDAO {
             System.out.println("getRequestByStatusSaved " + e.getMessage());
         }
         return null;
+    }
+
+    public boolean updateNoteRequest(int requestId, String note) {
+        String sql = "UPDATE RequestsFormMentee SET note = ? WHERE request_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, note);
+            ps.setInt(2, requestId);
+            int row = ps.executeUpdate();
+            if (row != 1) {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return true;
+    }
+
+    public List<Request> getAllRequestByStatus(int statusId, String mentorName) {
+        List<Request> list = new ArrayList<>();
+        try {
+            String sql = "select * from RequestsFormMentee rm where rm.status_id = ? and rm.mentor_name = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, statusId);
+            ps.setString(2, mentorName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Request r = new Request();
+                r.setRequestId(rs.getInt(1));
+                r.setMentorName(rs.getString(2));
+                r.setMenteeName(rs.getString(3));
+                r.setDeadlineDate(rs.getDate(4).toLocalDate());
+                r.setDeadlineHour(rs.getTime(5).toLocalTime());
+                r.setTitle(rs.getString(6));
+                r.setDescription(rs.getString(7));
+                r.setStatusId(rs.getInt(8));
+                r.setPrice(rs.getInt(9));
+                r.setNote(rs.getString(10));
+                list.add(r);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+    public boolean isDuplicateSlot(int selectedId, int requestId) {
+        try {
+            String sql = "select * from RequestsFormMentee rm join RquestSelectedSlot rss on rm.request_id = rss.request_id where rss.selected_id = ? and rm.request_id =?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, selectedId);
+            ps.setInt(2, requestId);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+        }
+        return false;
     }
 
 }

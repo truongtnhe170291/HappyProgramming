@@ -170,13 +170,13 @@ public class MentorRequest extends HttpServlet {
             if (!mentorDao.checkContainCycle(acc.getUserName(), startDate.toString(), endDate.toString())) {
                 mentorDao.insertCycle(startDate.toString(), endDate.toString(), "", acc.getUserName(), deadLineDate.toString());
                 for (String string : schedule) {
-                    String slotId = string.split(" ")[0];
-                    cycleID = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate.toString(), endDate.toString());
-                    for (int i = 0; i < 4; i++) {
-                        LocalDate dateByString = LocalDate.parse(string.split(" ")[1]);
-                        mentorDao.insertSchedulePublic(slotId, cycleID, dateByString.plusWeeks(i).toString(), 6);
-//                    System.out.println("oke");
-                    }
+//                    String slotId = string.split(" ")[0];
+//                    cycleID = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate.toString(), endDate.toString());
+//                    for (int i = 0; i < 4; i++) {
+//                        LocalDate dateByString = LocalDate.parse(string.split(" ")[1]);
+//                        mentorDao.insertSchedulePublic(slotId, cycleID, dateByString.plusWeeks(i).toString(), 6);
+////                    System.out.println("oke");
+//                    }
                 }
             } else {
                 for (String string : schedule) {
