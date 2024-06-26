@@ -90,21 +90,30 @@ public class MentorRequest extends HttpServlet {
 //            LocalDate endDate = startDate.plusDays(27);
 
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic(acc.getUserName());
+
+            ArrayList<Day> listDayByCycle = mentorDao.listDayByCycle(listSchedule.get(0).getStartTime().toString());
+            
             if (!listSchedule.isEmpty()) {
                 LocalDate endDateString = LocalDate.parse(listSchedule.get(0).getEndTime().toString());
                 LocalDate avaiableBookingDate = endDateString.minusWeeks(1).minusDays(6);
                 request.setAttribute("avaiableBookingDate", avaiableBookingDate);
                 LocalDate today = LocalDate.now();
                 if (today.isAfter(avaiableBookingDate)) {
+                    listSchedule = null;
                     request.setAttribute("status", "Out of date");
                 } else {
-                    int status = Integer.parseInt(listSchedule.get(0).getStatus()) ;
+                    int status = Integer.parseInt(listSchedule.get(0).getStatus());
                     request.setAttribute("status", statusString(status));
                 }
             }
 
+            request.setAttribute("rejectMessage", listSchedule.get(0).getRejectMessage());
+
             request.setAttribute("listSlots", listSlots);
+            
             request.setAttribute("listDays", listCurrentDays);
+            request.setAttribute("listDayByCycle", listDayByCycle);
+            
             request.setAttribute("listSchedule", listSchedule);
             request.getRequestDispatcher("Menter_Request.jsp").forward(request, response);
 
@@ -161,13 +170,13 @@ public class MentorRequest extends HttpServlet {
             if (!mentorDao.checkContainCycle(acc.getUserName(), startDate.toString(), endDate.toString())) {
                 mentorDao.insertCycle(startDate.toString(), endDate.toString(), "", acc.getUserName(), deadLineDate.toString());
                 for (String string : schedule) {
-                    String slotId = string.split(" ")[0];
-                    cycleID = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate.toString(), endDate.toString());
-                    for (int i = 0; i < 4; i++) {
-                        LocalDate dateByString = LocalDate.parse(string.split(" ")[1]);
-                        mentorDao.insertSchedulePublic(slotId, cycleID, dateByString.plusWeeks(i).toString(), 6);
-//                    System.out.println("oke");
-                    }
+//                    String slotId = string.split(" ")[0];
+//                    cycleID = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate.toString(), endDate.toString());
+//                    for (int i = 0; i < 4; i++) {
+//                        LocalDate dateByString = LocalDate.parse(string.split(" ")[1]);
+//                        mentorDao.insertSchedulePublic(slotId, cycleID, dateByString.plusWeeks(i).toString(), 6);
+////                    System.out.println("oke");
+//                    }
                 }
             } else {
                 for (String string : schedule) {
@@ -210,40 +219,40 @@ public class MentorRequest extends HttpServlet {
         }
 
     }
-    
-    public String statusString(int status){
+
+    public String statusString(int status) {
         String output = "";
         switch (status) {
-            case 1:{
+            case 1: {
                 output += "Pending";
                 break;
             }
-            case 2:{
+            case 2: {
                 output += "Approved";
                 break;
             }
-            case 3:{
+            case 3: {
                 output += "Rejected";
                 break;
             }
-            case 4:{
+            case 4: {
                 output += "Not yet";
                 break;
             }
-            case 5:{
+            case 5: {
                 output += "Attended";
                 break;
             }
-            case 6:{
+            case 6: {
                 output += "Saved";
                 break;
             }
             default:
                 throw new AssertionError();
         }
-        
+
         return output;
-        
+
     }
 
     /**

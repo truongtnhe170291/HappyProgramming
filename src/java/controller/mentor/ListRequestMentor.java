@@ -35,7 +35,7 @@ import models.Status;
 public class ListRequestMentor extends HttpServlet {
 
 
-   @Override
+  @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     try {
@@ -49,40 +49,63 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         RequestDAO rdao = new RequestDAO();
         MentorDAO mentorDao = new MentorDAO();
 
-        List<RequestDTO> requests = rdao.getRequestOfMentorInDeadlineByStatus(mentorName);
+        String statusFilterParam = request.getParameter("statusFilter");
+        String pageParam = request.getParameter("page");
+        int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+        int pageSize = 3; // Number of requests per page
 
+        List<RequestDTO> requests;
+        int totalRequests;
+        if (statusFilterParam != null && !statusFilterParam.isEmpty()) {
+            int statusFilter = Integer.parseInt(statusFilterParam);
+            requests = rdao.getRequestMentorByStatus(mentorName, statusFilter, page, pageSize);
+            totalRequests = rdao.getTotalRequestMentorCountByStatus(mentorName, statusFilter);
+        } else {
+            requests = rdao.getRequestOfMentorInDeadlineByStatus(mentorName, page, pageSize);
+            totalRequests = rdao.getTotalRequestMentor(mentorName);
+        }
+        int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
+
+        // Fetch other necessary data like slots, days, mentees, and statuses
         ArrayList<Slot> listSlots = mentorDao.listSlots();
-        
         ArrayList<Day> listDays = mentorDao.listDays();
         List<Mentee> mentee1 = rdao.getMenteeByRequest(mentorName);
         List<Status> listStatus = rdao.getAllStatuses();
 
-        // Lọc lịch trình của mentor theo từng tuần
+        // Filter schedule to show only one week
         for (RequestDTO requestDTO : requests) {
             List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
             List<SchedulePublic> filteredSchedule = getOneWeek(listSchedule);
             requestDTO.setListSchedule(filteredSchedule);
         }
 
-        // Lọc danh sách các ngày trong tuần hiện tại
+        // Filter list of days to show only the current week
         ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
+        // Set attributes for JSP rendering
         request.setAttribute("mentee1", mentee1);
         request.setAttribute("listStatus", listStatus);
         request.setAttribute("requests", requests);
         request.setAttribute("listSlots", listSlots);
         request.setAttribute("listDays", oneWeekDays);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("statusFilter", statusFilterParam);
 
         request.getRequestDispatcher("ListRequestMentor.jsp").forward(request, response);
     } catch (SQLException e) {
         throw new ServletException(e);
     }
 }
+
+
     public static void main(String[] args) throws SQLException {
       MentorDAO mentorDao = new MentorDAO();
       RequestDAO rdao = new RequestDAO();
-         List<RequestDTO> requests = rdao.getRequestOfMentorInDeadlineByStatus("son");
-           System.out.println(requests);
+         List<RequestDTO> requests = rdao.getRequestMentorByStatus("son", 2,1,2);
+         int d = rdao.getTotalRequestMentorCountByStatus("son", 2);
+           System.out.println(requests.size());
+           System.out.println(d);
     }
 
 // Hàm để lọc lịch trình theo tuần

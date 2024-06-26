@@ -24,6 +24,7 @@ public class SchedulePublic {
     private String status;
     private int cycleID;
     private String weekName;
+    private String rejectMessage;
 
     public SchedulePublic() {
     }
@@ -59,7 +60,7 @@ public class SchedulePublic {
         this.slot_name = slot_name;
     }
 
-    public SchedulePublic(String mentorName, Date dayOfSlot, String slotId, Date startTime, Date endTime, int cycleID, String status) {
+    public SchedulePublic(String mentorName, Date dayOfSlot, String slotId, Date startTime, Date endTime, int cycleID, String status, String rejectMessage) {
         this.mentorName = mentorName;
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
@@ -67,6 +68,7 @@ public class SchedulePublic {
         this.endTime = endTime;
         this.cycleID = cycleID;
         this.status = status;
+        this.rejectMessage = rejectMessage;
     }
 
     public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
@@ -120,6 +122,14 @@ public class SchedulePublic {
 
     public void setWeekName(String weekName) {
         this.weekName = weekName;
+    }
+
+    public String getRejectMessage() {
+        return rejectMessage;
+    }
+
+    public void setRejectMessage(String rejectMessage) {
+        this.rejectMessage = rejectMessage;
     }
 
     public String getStatus() {
@@ -204,7 +214,7 @@ public class SchedulePublic {
 
     @Override
     public String toString() {
-        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", weekName=" + weekName + ", Status=" + status +'}';
+        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", nameOfDay=" + nameOfDay + ", status=" + status + ", cycleID=" + cycleID + ", weekName=" + weekName + ", rejectMessage=" + rejectMessage + '}';
     }
 
 }

@@ -125,7 +125,174 @@ public class RequestDAO {
         return requests;
     }
 
-    public List<RequestDTO> getRequestOfMentorInDeadlineByStatus(String mentorName) throws SQLException {
+    public List<RequestDTO> getRequestOfMentorInDeadlineByStatus(String mentorName, int page, int pageSize) throws SQLException {
+        List<RequestDTO> requests = new ArrayList<>();
+        String sql = " SELECT * \n"
+                + "                     FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name\n"
+                + "                     WHERE r.mentor_name = ?\n"
+                + "                     order by [deadline_date] DESC\n"
+                + "					 OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, mentorName);
+            ps.setInt(2, (page - 1) * pageSize);
+            ps.setInt(3, pageSize);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    RequestDTO request = new RequestDTO();
+                    request.setRequestId(rs.getInt("request_id"));
+                    request.setMentorName(rs.getString("mentor_name"));
+                    request.setMenteeName(rs.getString("mentee_name"));
+                    request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                    request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                    request.setDescription(rs.getString("description"));
+                    request.setTitle(rs.getString("title"));
+                    request.setPrice(rs.getInt("price"));
+                    request.setNote(rs.getString("note"));
+                    request.setCvId(rs.getInt("cv_id"));
+
+                    // Fetch status using fetchStatusById method
+                    int statusId = rs.getInt("status_id");
+                    Status status = fetchStatusById(statusId, con);
+                    request.setStatus(status);
+
+                    // Fetch skills and schedule for the request
+                    List<Skill> skills = fetchRequestSkills(request.getRequestId(), con);
+                    request.setListSkills(skills);
+
+                    ScheduleDAO scheduleDAO = new ScheduleDAO();
+                    List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(request.getRequestId());
+                    request.setListSchedule(listSchedule);
+
+                    requests.add(request);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestOfMentorInDeadlineByStatus: " + e.getMessage());
+            throw e; // Rethrow the exception to be handled by the caller
+        }
+
+        return requests;
+    }
+
+    public int getTotalRequestMentor(String mentorName) {
+        String sql = "SELECT COUNT(*) FROM RequestsFormMentee WHERE mentor_name = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, mentorName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<RequestDTO> getRequestMentorByStatus(String mentorName, int statusId, int page, int pageSize) throws SQLException {
+    List<RequestDTO> requests = new ArrayList<>();
+    String sql = "SELECT r.*, c.cv_id, c.mentor_name " +
+                 "FROM RequestsFormMentee r " +
+                 "JOIN CV c ON c.mentor_name = r.mentor_name " +
+                 "WHERE r.mentor_name = ? AND r.status_id = ? " +
+                 "ORDER BY r.deadline_date DESC " +
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        int offset = (page - 1) * pageSize;
+        ps.setString(1, mentorName);
+        ps.setInt(2, statusId);
+        ps.setInt(3, offset);
+        ps.setInt(4, pageSize);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+                request.setCvId(rs.getInt("cv_id"));
+
+                // Fetch status
+                int fetchedStatusId = rs.getInt("status_id");
+                Status status = fetchStatusById(fetchedStatusId, con);
+                request.setStatus(status);
+
+                // Fetch skills and schedule for the request
+                List<Skill> skills = fetchRequestSkills(request.getRequestId(), con);
+                request.setListSkills(skills);
+
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(request.getRequestId());
+                request.setListSchedule(listSchedule);
+
+                requests.add(request);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error in getRequestMentorByStatus: " + e.getMessage());
+        throw e; // Rethrow the exception to be handled by the caller
+    }
+    return requests;
+}
+
+    public int getTotalRequestMentorCountByStatus(String mentorName, int statusId) {
+    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.status_id = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, mentorName);
+        ps.setInt(2, statusId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+
+    public List<SchedulePublic> getScheduleByMenteeName(String menteeName) {
+        List<SchedulePublic> list = new ArrayList<>();
+        try {
+            String sql = "select * from Selected_Slot ss "
+                    + "join RquestSelectedSlot rs on rs.selected_id = ss.selected_id "
+                    + "join Cycle c on ss.cycle_id = c.cycle_id "
+                    + "join Slots s on s.slot_id = ss.slot_id "
+                    + "join RequestsFormMentee rfm on rs.request_id = rfm.request_id "
+                    + "where rfm.mentee_name = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, menteeName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                SchedulePublic schedule = new SchedulePublic();
+                schedule.setSelectedId(rs.getInt("selected_id"));
+                schedule.setMentorName(rs.getString("mentor_name"));
+                schedule.setSlotId(rs.getString("slot_id"));
+                schedule.setDayOfSlot(rs.getDate("day_of_slot"));
+                schedule.setStartTime(rs.getDate("start_time"));
+                schedule.setEndTime(rs.getDate("end_time"));
+                schedule.setSlot_name(rs.getString("slot_name"));
+                DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
+                schedule.setNameOfDay(nameOfDay);
+                list.add(schedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getScheduleByMenteeName: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public List<RequestDTO> getRequestOfMentorInDeadlineByStatus1(String mentorName) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         try {
             String sql = " SELECT * "
@@ -168,37 +335,6 @@ public class RequestDAO {
         }
 
         return requests;
-    }
-
-    public List<SchedulePublic> getScheduleByMenteeName(String menteeName) {
-        List<SchedulePublic> list = new ArrayList<>();
-        try {
-            String sql = "select * from Selected_Slot ss "
-                    + "join RquestSelectedSlot rs on rs.selected_id = ss.selected_id "
-                    + "join Cycle c on ss.cycle_id = c.cycle_id "
-                    + "join Slots s on s.slot_id = ss.slot_id "
-                    + "join RequestsFormMentee rfm on rs.request_id = rfm.request_id "
-                    + "where rfm.mentee_name = ?";
-            ps = con.prepareStatement(sql);
-            ps.setString(1, menteeName);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                SchedulePublic schedule = new SchedulePublic();
-                schedule.setSelectedId(rs.getInt("selected_id"));
-                schedule.setMentorName(rs.getString("mentor_name"));
-                schedule.setSlotId(rs.getString("slot_id"));
-                schedule.setDayOfSlot(rs.getDate("day_of_slot"));
-                schedule.setStartTime(rs.getDate("start_time"));
-                schedule.setEndTime(rs.getDate("end_time"));
-                schedule.setSlot_name(rs.getString("slot_name"));
-                DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
-                schedule.setNameOfDay(nameOfDay);
-                list.add(schedule);
-            }
-        } catch (SQLException e) {
-            System.out.println("getScheduleByMenteeName: " + e.getMessage());
-        }
-        return list;
     }
 
     public List<RequestDTO> getRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
@@ -279,7 +415,7 @@ public class RequestDAO {
 
         return requests;
     }
-    
+
     public void updateExpiredRequestsStatus() throws SQLException {
         PreparedStatement ps = null;
         try {
@@ -359,7 +495,7 @@ public class RequestDAO {
         return mentees;
     }
 
-    public List<Status> getAllStatuses(){
+    public List<Status> getAllStatuses() {
         List<Status> statuses = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;

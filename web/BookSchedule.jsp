@@ -245,7 +245,7 @@
             }
         </style>
     </head>
-    <body>
+   
     <body class="layout-light side-menu">
         <div class="mobile-search">
             <form action="/" class="search-form">
@@ -274,7 +274,7 @@
                                     </div>
                                     <div class="select-container">
                                         <label for="week">WEEK</label>
-                                        <select id="week" name="week"></select>
+                                        <select id="week" ></select>
                                     </div>
                                 </div>
                                 <div>${sessionScope.status}</div>
@@ -293,11 +293,12 @@
                                         <li>You can <span class="highlight">Update</span> your schedule when status is <span class="highlight">Pending</span></li>
                                     </ul>
                                 </div>  
-                                <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>      </div>
+                                <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a></div>
+                                <a href="bookSchedule" id="saveSelectedSlots">Send Schedule</a></div>
                         </form>
-<!--                        <form action="bookSchedule" method="post">
-                            <button type="submit">Saving</button>
-                        </form>-->
+                      
+                            <button id="renderButton" type="submit">Render</button>
+                       
 
                     </div>
                 </div>
@@ -305,187 +306,209 @@
 
         </main>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+ document.addEventListener("DOMContentLoaded", function () {
+    const startTimeStr = '2024-06-24';
+    const weeksData = {};
 
-                const scheduleData = [
-            <c:forEach items="${listSS}">
-                    {
-                        day: "${listSS.dayOfSlotName}",
-                        slot: ${listSS.slotId},
-                        class: "SWR302",
-                        room: "BE-209",
-                        status: "attended",
-                        time: "${listSS.slotName}",
-                        selected: true
-                    },
-            </c:forEach>
-                ];
+    function formatDate(date) {
+        return (
+            date.getDate().toString().padStart(2, "0") +
+            "-" +
+            (date.getMonth() + 1).toString().padStart(2, "0") +
+            "-" +
+            date.getFullYear().toString().padStart(4, "0")
+        );
+    }
 
-                function getMonday(d) {
-                    var day = d.getDay(),
-                            diff = d.getDate() - day + (day == 0 ? -6 : 1);
-                    return new Date(d.setDate(diff));
+    function getWeekOptions() {
+        const currentDate = new Date(startTimeStr);
+        const options = [];
+        for (let week = 0; week < 4; week++) {
+            const mondayOfWeek = new Date(currentDate);
+            mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+            mondayOfWeek.setDate(mondayOfWeek.getDate() - mondayOfWeek.getDay() + 1);
+
+            const sundayOfWeek = new Date(mondayOfWeek);
+            sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+
+            const optionText =
+                formatDate(mondayOfWeek) + ` to ` + formatDate(sundayOfWeek);
+            options.push({ value: week + 1, text: optionText });
+        }
+        return options;
+    }
+
+    const weekSelect = document.getElementById("week");
+    const weekOptions = getWeekOptions();
+    weekOptions.forEach((option) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.value;
+        optionElement.textContent = option.text;
+        weekSelect.appendChild(optionElement);
+    });
+
+    function renderWeeks() {
+        for (let week = 2; week <= 4; week++) {
+            weeksData[week] = JSON.parse(JSON.stringify(weeksData[1]));
+        }
+        updateSchedule();
+    }
+
+    function updateSchedule() {
+        const selectedWeek = parseInt(weekSelect.value);
+        const startDate = new Date(startTimeStr);
+        const monday = new Date(
+            startDate.getTime() + (selectedWeek - 1) * 7 * 24 * 60 * 60 * 1000
+        );
+
+        const dayHeaders = document.getElementById("dayHeaders");
+        if (!dayHeaders) {
+            console.error("dayHeaders element not found.");
+            return;
+        }
+
+        dayHeaders.innerHTML = "<th>WEEK</th>";
+        const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+        daysOfWeek.forEach((day, index) => {
+            const date = new Date(monday);
+            date.setDate(date.getDate() + index);
+            const th = document.createElement("th");
+            th.innerHTML = day + `<br>` + formatDate(date);
+            dayHeaders.appendChild(th);
+        });
+
+        const tbody = document.querySelector("#scheduleTable tbody");
+        if (!tbody) {
+            console.error("tbody element not found.");
+            return;
+        }
+
+        tbody.innerHTML = "";
+
+        for (let i = 0; i < 5; i++) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>Slot`+(i + 1)+`</td>` + "<td></td>".repeat(7);
+            tbody.appendChild(row);
+        }
+
+        if (!weeksData[selectedWeek]) {
+            weeksData[selectedWeek] = {};
+        }
+
+        const weekData = weeksData[selectedWeek];
+
+        Object.keys(weekData).forEach((slotKey) => {
+            const [week, day, slot, date] = slotKey.split("-");
+            const dayIndex = daysOfWeek.indexOf(day);
+            if (dayIndex === -1) {
+                console.error("Invalid dayIndex:", dayIndex);
+                return;
+            }
+            const row = tbody.rows[slot - 1];
+            if (!row) {
+                console.error("Row not found for slot:", slot);
+                return;
+            }
+            const cell = row.cells[dayIndex + 1];
+            if (!cell) {
+                console.error("Cell not found for dayIndex:", dayIndex);
+                return;
+            }
+            const item = weekData[slotKey];
+            cell.classList.add("selected");
+            createSlotListener(cell, item, parseInt(week), slotKey);
+        });
+
+        for (let row = 0; row < tbody.rows.length; row++) {
+            for (let col = 1; col < tbody.rows[row].cells.length; col++) {
+                const cell = tbody.rows[row].cells[col];
+                if (!cell.innerHTML) {
+                    const day = daysOfWeek[col - 1];
+                    const slot = row + 1;
+                    const date = new Date(monday);
+                    date.setDate(date.getDate() + (col - 1));
+                    const dateStr = formatDate(date);
+                    const slotKey =
+                        selectedWeek + "-" + day + "-" + slot + "-" + dateStr;
+                    const item =
+                        weeksData[selectedWeek][slotKey] || {
+                            class: "Class",
+                            room: "Room",
+                            time: "Time"
+                        };
+                    createSlotListener(cell, item, selectedWeek, slotKey);
                 }
+            }
+        }
+    }
 
-                function formatDate(date) {
-                    return (
-                            date.getDate().toString().padStart(2, "0") +
-                            "-" +
-                            (date.getMonth() + 1).toString().padStart(2, "0")
-                            );
-                }
+    function createSlotListener(cell, item, week, slotKey) {
+        function updateSlotStatus() {
+            if (cell.classList.contains("selected")) {
+                cell.innerHTML =
+                    '<div class="class-block selected">' +
+                    "<div>" + item.class + "</div>" +
+                    '<div class="view-materials">View Materials</div>' +
+                    '<div class="edu-next">EduNext</div>' +
+                    "<div>at " + item.room + "</div>" +
+                    '<div class="selected-text">(selected)</div>' +
+                    '<div class="time">' + item.time + "</div>" +
+                    "</div>" +
+                    '<div class="slot_active">Selected</div>';
+                weeksData[week][slotKey] = item;
+            } else {
+                cell.innerHTML = '<div class="slot-label">Not Selected</div>';
+                delete weeksData[week][slotKey];
+            }
+        }
 
-                function createSlotListener(cell, item) {
-                    const updateSlotStatus = function () {
-                        if (cell.classList.contains("selected")) {
-                            cell.innerHTML =
-                                    '<div class="class-block selected">' +
-                                    "<div>" +
-                                    item.class +
-                                    "</div>" +
-                                    '<div class="view-materials">View Materials</div>' +
-                                    '<div class="edu-next">EduNext</div>' +
-                                    "<div>at " +
-                                    item.room +
-                                    "</div>" +
-                                    '<div class="selected-text">(selected)</div>' +
-                                    '<div class="time">' +
-                                    item.time +
-                                    "</div>" +
-                                    "</div>" +
-                                    '<div class="slot_active">Selected</div>';
-                        } else {
-                            cell.innerHTML = '<div class="slot-label">Not Selected</div>';
-                        }
-                    };
+        function toggleSlot() {
+            cell.classList.toggle("selected");
+            updateSlotStatus(cell, item, week, slotKey);
+            console.log("weeksData after toggle:", weeksData);
+        }
 
-                    const toggleSlot = function () {
-                        cell.classList.toggle("selected");
-                        updateSlotStatus();
-                    };
+        updateSlotStatus();
+        cell.addEventListener("click", toggleSlot);
+    }
 
-                    updateSlotStatus();
+    document.getElementById("renderButton").addEventListener("click", renderWeeks);
 
-                    cell.addEventListener("click", toggleSlot);
-                }
+    updateSchedule();
+    weekSelect.addEventListener("change", updateSchedule);
 
-                function updateSchedule() {
-                    const monday = getMonday(new Date());
+function saveSelectedSlots(event) {
+        event.preventDefault();
+        const selectedWeek = parseInt(weekSelect.value);
+        const selectedSlotsArray = Object.values(weeksData);
 
-                    const dayHeaders = document.getElementById("dayHeaders");
-                    dayHeaders.innerHTML = "<th>WEEK</th>";
+        fetch("bookSchedule", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({slots: selectedSlotsArray }),
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.text();
+        })
+        .then(data => {
+            console.log("Response from server:", data);
+            alert("Selected slots saved successfully!");
+        })
+        .catch(error => {
+            console.error("Failed to save selected slots:", error);
+        });
 
-                    daysOfWeek.forEach((day, index) => {
-                        const date = new Date(monday);
-                        date.setDate(date.getDate() + index);
-                        const th = document.createElement("th");
-                        th.innerHTML = day + `<br>` + formatDate(date);
-                        dayHeaders.appendChild(th);
-                    });
+        return false;
+    }
+    
+    const saveButton = document.getElementById("saveSelectedSlots");
+    saveButton.addEventListener("click", saveSelectedSlots);
+});
 
-                    const tbody = document.querySelector("#scheduleTable tbody");
-                    tbody.innerHTML = "";
 
-                    for (let i = 1; i <= 4; i++) {
-                        const row = document.createElement("tr");
-                        row.innerHTML =
-                                `<td>Slot ` + i + `</td>` + daysOfWeek.map(() => "<td></td>").join("");
-                        tbody.appendChild(row);
-                    }
 
-                    scheduleData.forEach((item) => {
-                        const dayIndex = daysOfWeek.indexOf(item.day);
-                        if (dayIndex !== -1) {
-                            const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
-                            if (item.selected) {
-                                cell.classList.add("selected");
-                            }
-                            createSlotListener(cell, item);
-                        }
-                    });
-
-                    for (let row = 0; row < tbody.rows.length; row++) {
-                        for (let col = 1; col < tbody.rows[row].cells.length; col++) {
-                            const cell = tbody.rows[row].cells[col];
-                            if (!cell.innerHTML) {
-                                cell.innerHTML = '<div class="slot-label">Not Selected</div>';
-                                cell.addEventListener("click", function () {
-                                    cell.classList.toggle("selected");
-                                    if (cell.classList.contains("selected")) {
-                                        cell.innerHTML =
-                                                '<div class="class-block selected">' +
-                                                "<div>Class</div>" +
-                                                '<div class="view-materials">View Materials</div>' +
-                                                '<div class="edu-next">EduNext</div>' +
-                                                "<div>at Room</div>" +
-                                                '<div class="selected-text">(selected)</div>' +
-                                                '<div class="time">Time</div>' +
-                                                "</div>" +
-                                                '<div class="slot_active">Selected</div>';
-                                    } else {
-                                        cell.innerHTML = '<div class="slot-label">Not Selected</div>';
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-
-                updateSchedule();
-
-                function saveSelectedSlots(event) {
-
-                    const selectedSlots = [];
-                    const tbody = document.querySelector("#scheduleTable tbody");
-                    const monday = getMonday(new Date());
-
-                    for (let row = 0; row < tbody.rows.length; row++) {
-                        for (let col = 1; col < tbody.rows[row].cells.length; col++) {
-                            const cell = tbody.rows[row].cells[col];
-                            if (cell.classList.contains("selected")) {
-                                const slotDate = new Date(monday);
-                                slotDate.setDate(slotDate.getDate() + col - 1);
-
-                                const slotData = {
-                                    slot: row + 1,
-                                    day: formatDate(slotDate)
-                                };
-                                selectedSlots.push(slotData);
-                            }
-                        }
-                    }
-
-                    console.log("Selected Slots:", selectedSlots);
-
-                    fetch("testajax", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(selectedSlots),
-                    })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("Network response was not ok");
-                                }
-                                return response.text();
-                            })
-                            .then(data => {
-                                console.log("Response from server:", data);
-                                alert("Selected slots saved successfully!");
-                            })
-                            .catch(error => {
-                                console.error("Failed to save selected slots:", error);
-                                // Handle error cases if needed
-                            });
-
-                    return false;
-                }
-
-                const saveButton = document.getElementById("saveSelectedSlots");
-                saveButton.addEventListener("click", saveSelectedSlots);
-            });
 
         </script>
 

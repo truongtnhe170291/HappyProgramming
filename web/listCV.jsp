@@ -173,9 +173,6 @@
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
-<<<<<<< HEAD
-                <jsp:include page="header_Manager.jsp" />
-=======
                 <div class="navbar-bg"></div>
                 <nav class="navbar navbar-expand-lg main-navbar sticky">
                     <div class="form-inline mr-auto">
@@ -258,7 +255,6 @@
                         </ul>
                     </aside>
                 </div>
->>>>>>> c20f6c4bee34a91f82f6bc3d22f35f8030a44e6b
                 <!-- Main Content -->
                 <div class="main-content">
                     <section class="section">
@@ -333,7 +329,7 @@
                                                                                         </c:forEach>
                                                                                     </span>
                                                                                 </p>
-                                                                             
+
                                                                                 <c:if test="${not empty cv.note}">
                                                                                     <div class="note-section">
                                                                                         <strong>Note:</strong>
@@ -345,8 +341,9 @@
                                                                     </button>
                                                                     <c:if test="${cv.status.statusId == 1}">
                                                                         <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                                                        <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                                                        <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm" data-cv-id="${cv.cvId}"><i class="fas fa-times"></i></button>
                                                                         </c:if>
+
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
@@ -370,6 +367,7 @@
                                                 </form>
                                             </div>
                                         </div>
+
 
 
                                         <div>
@@ -556,7 +554,7 @@
                 rejectButtons.forEach(button => {
                     button.addEventListener('click', function (event) {
                         event.preventDefault();
-                        const cvId = this.dataset.cvId;
+                        const cvId = this.getAttribute('data-cv-id');
                         const popup = document.getElementById('notePopup');
                         const popupCvId = document.getElementById('popupCvId');
                         popupCvId.value = cvId;
@@ -574,6 +572,8 @@
                     }
                 });
             });
+
+
 
         </script>
     </body>

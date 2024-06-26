@@ -52,8 +52,8 @@ public class ScheduleDAO {
                         rs.getString(2),
                         rs.getDate(3),
                         rs.getString(4),
-                        rs.getDate(5),        
-                        rs.getDate(6), 
+                        rs.getDate(5),
+                        rs.getDate(6),
                         rs.getInt(1)));
             }
             for (ScheduleDTO s : list) {
@@ -113,37 +113,62 @@ public class ScheduleDAO {
         return true;
     }
 
-public boolean rejectRequest(int cycleId, String rejectReason) {
-    String updateSlotSql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
-    String updateCycleSql = "UPDATE [dbo].[Cycle] SET [note] = ? WHERE cycle_id = ?";
+    public boolean rejectRequest(int cycleId, String rejectReason) {
+        String updateSlotSql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
+        String updateCycleSql = "UPDATE [dbo].[Cycle] SET [note] = ? WHERE cycle_id = ?";
 
-    try {
-        // Update status in Selected_Slot table
-        PreparedStatement updateSlotPs = con.prepareStatement(updateSlotSql);
-        updateSlotPs.setInt(1, cycleId);
-        int slotRow = updateSlotPs.executeUpdate();
-        if (slotRow != 1) {
+        try {
+            // Update status in Selected_Slot table
+            PreparedStatement updateSlotPs = con.prepareStatement(updateSlotSql);
+            updateSlotPs.setInt(1, cycleId);
+            int slotRow = updateSlotPs.executeUpdate();
+            if (slotRow != 1) {
+                return false;
+            }
+
+            // Update note in Cycle table
+            PreparedStatement updateCyclePs = con.prepareStatement(updateCycleSql);
+            updateCyclePs.setString(1, rejectReason);
+            updateCyclePs.setInt(2, cycleId);
+            int cycleRow = updateCyclePs.executeUpdate();
+            if (cycleRow != 1) {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
             return false;
         }
-
-        // Update note in Cycle table
-        PreparedStatement updateCyclePs = con.prepareStatement(updateCycleSql);
-        updateCyclePs.setString(1, rejectReason);
-        updateCyclePs.setInt(2, cycleId);
-        int cycleRow = updateCyclePs.executeUpdate();
-        if (cycleRow != 1) {
-            return false;
-        }
-
-    } catch (SQLException e) {
-        System.out.println(e);
-        return false;
+        return true;
     }
-    return true;
-}
 
+    public void rejectRequestNew(int cycleId, String rejectReason) {
+        String updateSlotSql = "UPDATE [dbo].[Selected_Slot] SET [status_id] = 3 WHERE cycle_id = ?";
+        String updateCycleSql = "UPDATE [dbo].[Cycle] SET [note] = ? WHERE cycle_id = ?";
 
+        try (
+                // Update status in Selected_Slot table
+                PreparedStatement updateSlotPs = con.prepareStatement(updateSlotSql); // Update note in Cycle table
+                 PreparedStatement updateCyclePs = con.prepareStatement(updateCycleSql)) {
+            updateSlotPs.setInt(1, cycleId);
+            int slotRow = updateSlotPs.executeUpdate();
+            
 
+            updateCyclePs.setString(1, rejectReason);
+            updateCyclePs.setInt(2, cycleId);
+            int cycleRow = updateCyclePs.executeUpdate();
+                System.out.println("Error updating Cycle table for cycle_id: " + cycleId);
+
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        ScheduleDAO dao = new ScheduleDAO();
+        dao.rejectRequestNew(23, "ádfjkahkfsj");
+    }
 
     public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
 
@@ -191,21 +216,14 @@ public boolean rejectRequest(int cycleId, String rejectReason) {
                         rs.getDate(7),
                         rs.getDate(8),
                         rs.getInt(3),
-                        rs.getString(5)
+                        rs.getString(5),
+                        rs.getString(9)
                 ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return list;
-    }
-    
-    public static void main(String[] args) {
-        ScheduleDAO dao = new ScheduleDAO();
-        List<SchedulePublic> list = dao.getListSchedulePublic("son");
-        for (SchedulePublic s : list) {
-            System.out.println(s);
-        }
     }
 
     public String getSelectedSlotStatus(String userName, Date startTime, Date endTime) {
@@ -228,7 +246,6 @@ public boolean rejectRequest(int cycleId, String rejectReason) {
         }
         return status;
     }
-
 
     public List<SchedulePublic> getScheduleByRequestId(int requestId) {
         List<SchedulePublic> list = new ArrayList<>();
