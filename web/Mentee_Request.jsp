@@ -359,11 +359,11 @@
                                                 <div class="col-lg-8">
                                                     <div class="form-group">
                                                         <label>Title</label>
-                                                        <input name="title" type="text" id="notify_title" value="${requestScope.requestMentee.title}" class="form-control notification-message" required="">
+                                                        <input name="title" type="text" id="notify_title" value="${requestScope.requestMentee.title}" class="form-control notification-message" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Description</label>
-                                                        <textarea id="description" name="description" class="form-control notification-message" placeholder="Type your message here..." required="" rows="5">${requestScope.requestMentee.description}</textarea>
+                                                        <textarea id="description" name="description" class="form-control notification-message" placeholder="Type your message here..." required rows="5">${requestScope.requestMentee.description}</textarea>
                                                     </div>
 
                                                     <div class="form-group">
@@ -393,7 +393,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="select-container">
-                                                                <label for="week">Month</label>
+                                                                <label for="week">WEEK</label>
                                                                 <select id="week"></select>
                                                             </div>
                                                         </div>
@@ -401,8 +401,10 @@
                                                             <thead>
                                                                 <tr id="dayHeaders"></tr>
                                                             </thead>
-                                                            <tbody></tbody>
+                                                            <tbody>
+                                                            </tbody>
                                                         </table>
+
                                                     </div>
 
                                                     <div id="totalPriceContainer">
@@ -452,39 +454,73 @@
             <script src='plugins/moment/moment.min.js'></script>
             <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
             <script>
-                document.addEventListener('DOMContentLoaded', (et) => {
+                document.addEventListener('DOMContentLoaded', () => {
                 let currentAction = "editable";
-                const scheduleData = [
-                <c:forEach items="${requestScope.listSchedule}" var="schedule">
-                    <c:set var="isSelected" value="false"/>
-                    <c:forEach items="${requestScope.scheduleOfMentee}" var="menteeSchedule">
-                        <c:if test="${menteeSchedule.slotId == schedule.slotId}">
-                            <c:set var="isSelected" value="true"/>
-                        </c:if>
-                    </c:forEach>
-                    <c:set var="status" value="${isSelected ? 'selected' : 'not-selected'}"/>
+const scheduleData = [
+    <c:forEach items="${requestScope.listSchedule}" var="schedule">
+        <c:set var="isSelected" value="false"/>
+        <c:forEach items="${requestScope.scheduleOfMentee}" var="menteeSchedule">
+            <c:if test="${menteeSchedule.slotId == schedule.slotId && menteeSchedule.dayOfSlot == schedule.dayOfSlot}">
+                <c:set var="isSelected" value="true"/>
+            </c:if>
+        </c:forEach>
+        <c:set var="status" value="${isSelected ? 'selected' : 'not-selected'}"/>
+    {
+        week: null,
+        nameday: "${schedule.nameOfDay}",
+        slot: ${schedule.slotId.substring(5)},
+        class: "SWR302",
+        room: "BE-209",
+        status: "${status}",
+        day: "${schedule.dayOfSlot}",
+        time: "${schedule.slot_name}"
+    },
+        <c:set var="start" value="${schedule.startTime}"/>
+        <c:set var="end" value="${schedule.endTime}"/>
+    </c:forEach>
+];
+let allSelectedSlots = [];
+console.log("Initial scheduleData:", scheduleData);
 
-                {
-                day: "${schedule.nameOfDay}",
-                        slot: ${schedule.slotId.substring(5)},
-                        class: "SWR302",
-                        room: "BE-209",
-                        status: "${status}",
-                        time: "${schedule.slot_name}"
-                },
-                    <c:set var="start" value="${schedule.startTime}"/>
-                    <c:set var="end" value="${schedule.endTime}"/>
-                </c:forEach>
-                ]
+function generateWeeks(startDate) {
+    const weeks = [];
+    const start = new Date(startDate);
+    for (let i = 0; i < 4; i++) {
+        const weekStart = new Date(start);
+        weekStart.setDate(start.getDate() + i * 7);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        weeks.push({ week: i + 1, start: weekStart, end: weekEnd });
+    }
+    return weeks;
+}
 
+function getWeekNumber(date, startDate) {
+    const weeks = generateWeeks(startDate);
+    const targetDate = new Date(date);
+    for (let i = 0; i < weeks.length; i++) {
+        if (targetDate >= weeks[i].start && targetDate <= weeks[i].end) {
+            return weeks[i].week;
+        }
+    }
+    return null;
+}
 
-                        function getMonday(d) {
-                        d = new Date('${start}');
-                        var day = d.getDay(),
-                                diff = d.getDate() - day + (day == 0 ? - 6 : 1);
-                        return new Date(d.setDate(diff));
-                        }
+// Đảm bảo start là một chuỗi ngày hợp lệ, ví dụ: '2024-07-08'
+const start = '${start}'; // Hoặc dùng một ngày cụ thể nếu ${start} không hoạt động
 
+console.log("Start date:", start);
+
+scheduleData.forEach((item) => {
+    console.log("Processing item:", item);
+    item.week = getWeekNumber(item.day, start);
+    console.log("Calculated week:", item.week);
+});
+
+console.log("Updated scheduleData:", scheduleData);
+
+const tmp = scheduleData.filter(s => s.week ===  1);
+console.log("Items in week 2:", tmp);
                 function formatDate(date) {
                 return (
                         date.getFullYear().toString().padStart(4, "0") +
@@ -495,32 +531,15 @@
                         );
                 }
 
-                function updateTotalPrice() {
-                let total = 0;
-                let selectedCount = 0;
-                scheduleData.forEach((item) => {
-                if (item.status === "selected") {
-                selectedCount++;
+                function getMonday(date) {
+                date = new Date(date);
+                const day = date.getDay();
+                const diff = date.getDate() - day + (day === 0 ? - 6 : 1);
+                return new Date(date.setDate(diff));
                 }
-                });
-                total = ${rate} * selectedCount * 4;
-                const totalPriceInput = document.getElementById("totalPriceInput");
-                const totalPriceDisplay = document.getElementById("totalPrice");
-                totalPriceInput.value = total;
-                totalPriceDisplay.innerHTML = `Total Price: ` + total;
-                }
-                function showToastMessagess(message) {
-                Toastify({
-                text: message,
-                        duration: 5000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                }).showToast();
-                }
-               
-                function getWeekOptions() {
-                const startDate = new Date('${start}');
+
+                function getWeekOptions(start) {
+                const startDate = new Date(start);
                 const options = [];
                 for (let week = 0; week < 4; week++) {
                 const mondayOfWeek = new Date(startDate);
@@ -533,116 +552,14 @@
                 return options;
                 }
 
-                const weekSelect = document.getElementById("week");
-                const weekOptions = getWeekOptions();
-                weekOptions.forEach((option) => {
-                const optionElement = document.createElement("option");
-                optionElement.value = option.value;
-                optionElement.textContent = option.text;
-                weekSelect.appendChild(optionElement);
-                });
                 function isClassCurrentlyHappening(classItem, currentDate) {
-                const [startHour, startMinute] = classItem.time
-                        .split("-")[0]
-                        .split(":")
-                        .map(Number);
-                const [endHour, endMinute] = classItem.time
-                        .split("-")[1]
-                        .split(":")
-                        .map(Number);
+                const [startHour, startMinute] = classItem.time.split("-")[0].split(":").map(Number);
+                const [endHour, endMinute] = classItem.time.split("-")[1].split(":").map(Number);
                 const classStart = new Date(currentDate);
                 classStart.setHours(startHour, startMinute, 0);
                 const classEnd = new Date(currentDate);
                 classEnd.setHours(endHour, endMinute, 0);
                 return currentDate >= classStart && currentDate < classEnd;
-                }
-                
-                function updateSchedule() {
-                const selectedWeek = weekSelect.value;
-                const monday = getMonday(
-                        new Date(2024, 0, 1 + (selectedWeek - 1) * 7)
-                        );
-                const dayHeaders = document.getElementById("dayHeaders");
-                dayHeaders.innerHTML = "<th>WEEK</th>";
-                const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-                daysOfWeek.forEach((day, index) => {
-                const date = new Date(monday);
-                date.setDate(date.getDate() + index);
-                const th = document.createElement("th");
-                th.innerHTML = day + `<br>` + formatDate(date);
-                dayHeaders.appendChild(th);
-                });
-                const tbody = document.querySelector("#scheduleTable tbody");
-                tbody.innerHTML = "";
-                for (let i = 0; i < 5; i++) {
-                const row = document.createElement("tr");
-                row.innerHTML = `<td>Slot ` + (i + 1) + `</td>` + "<td></td>".repeat(7);
-                tbody.appendChild(row);
-                }
-
-                const currentDate = new Date();
-                scheduleData.forEach((item) => {
-                const dayIndex = daysOfWeek.indexOf(item.day);
-                if (dayIndex !== - 1) {
-                const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
-                if (cell) {
-                let onlineIndicator = item.online
-                        ? '<span class="online-indicator"></span>'
-                        : "";
-                const classDate = new Date(monday);
-                classDate.setDate(classDate.getDate() + dayIndex);
-                let onlineNowIndicator = "";
-                if (
-                        classDate.toDateString() === currentDate.toDateString() &&
-                        isClassCurrentlyHappening(item, currentDate)
-                        ) {
-                onlineNowIndicator = '<div class="online-now">Online</div>';
-                }
-
-                const statusClass = getStatusClass(item.status);
-                const statusText = getStatusText(item.status);
-                cell.innerHTML +=
-                        '<div class="class-block">' +
-                        '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
-                        '<div class="view-materials">View Materials</div>' +
-                        '<div class="edu-next">EduNext</div>' +
-                        '<div>at ' + item.room + '</div>' +
-                        '<div class="status ' + statusClass + '" data-day="' + item.day + '" data-slot="' + item.slot + '">' + statusText + '</div>' +
-                        '<div class="time">' + item.time + '</div>' +
-                        onlineNowIndicator +
-                        '</div>';
-                if (item.status === "selected") {
-                cell.classList.add("selected");
-                }
-                }
-                }
-                });
-                document.querySelectorAll(".status").forEach((element) => {
-                element.addEventListener("click", function () {
-                let day = this.getAttribute("data-day");
-                const slot = parseInt(this.getAttribute("data-slot"));
-                console.log(day);
-                const filteredSchedule = scheduleData.filter(
-                        (item) => item.day === day && item.slot === slot
-                        );
-                const index = scheduleData.indexOf(filteredSchedule[0]);
-                console.log(index);
-                if (index !== - 1) {
-                if (scheduleData[index].status === "not-selected") {
-                scheduleData[index].status = "selected";
-                this.textContent = "(selected)";
-                this.classList.remove("not-selected");
-                this.classList.add("selected");
-                } else if (scheduleData[index].status === "selected") {
-                scheduleData[index].status = "not-selected";
-                this.textContent = "(not selected)";
-                this.classList.remove("selected");
-                this.classList.add("not-selected");
-                }
-                }
-                updateTotalPrice();
-                });
-                });
                 }
 
                 function getStatusClass(status) {
@@ -670,8 +587,164 @@
                         return "";
                 }
                 }
+                function updateSchedule() {
+                const selectedWeek = parseInt(weekSelect.value);
+                const startDate = new Date('${start}');
+                const monday = new Date(startDate);
+                monday.setDate(monday.getDate() + (selectedWeek - 1) * 7);
+                // Update headers
+                const dayHeaders = document.getElementById("dayHeaders");
+                dayHeaders.innerHTML = "<th>WEEK</th>";
+                const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+                daysOfWeek.forEach((day, index) => {
+                const date = new Date(monday);
+                date.setDate(date.getDate() + index);
+                const th = document.createElement("th");
+                th.innerHTML = day + `<br>` + formatDate(date);
+                dayHeaders.appendChild(th);
+                });
+                // Update slots
+                const tbody = document.querySelector("#scheduleTable tbody");
+                tbody.innerHTML = "";
+                for (let i = 0; i < 5; i++) {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>Slot ` + (i + 1) + `</td>` + "<td></td>".repeat(7);
+                tbody.appendChild(row);
+                }
 
-                function getFormValues() {
+                const currentDate = new Date();
+                const weekData = scheduleData.filter(item => item.week === selectedWeek);
+                console.log(weekData);
+                weekData.forEach((item) => {
+                const dayIndex = daysOfWeek.indexOf(item.nameday.toUpperCase());
+                console.log(dayIndex);
+                if (dayIndex !== - 1) {
+                const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
+                if (cell) {
+                let onlineIndicator = item.online ? '<span class="online-indicator"></span>' : "";
+                const classDate = new Date(monday);
+                classDate.setDate(classDate.getDate() + dayIndex);
+                let onlineNowIndicator = "";
+                if (
+                        classDate.toDateString() === currentDate.toDateString() &&
+                        isClassCurrentlyHappening(item, currentDate)
+                        ) {
+                onlineNowIndicator = '<div class="online-now">Online</div>';
+                }
+
+                const statusClass = getStatusClass(item.status);
+                const statusText = getStatusText(item.status);
+                cell.innerHTML +=
+                        '<div class="class-block">' +
+                        '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
+                        '<div class="view-materials">View Materials</div>' +
+                        '<div class="edu-next">EduNext</div>' +
+                        '<div>at ' + item.room + '</div>' +
+                        '<div class="status ' + statusClass + '" data-day="' + item.day + '" data-slot="' + item.slot + '" data-week="' + item.week + '">' + statusText + '</div>' +
+                        '<div class="time">' + item.time + '</div>' +
+                        onlineNowIndicator +
+                        '</div>';
+                if (item.status === "selected") {
+                cell.classList.add("selected");
+                }
+                }
+                }
+                });
+                // Update event listeners
+               document.querySelectorAll(".status").forEach((element) => {
+        element.addEventListener("click", function () {
+            const day = this.getAttribute("data-day");
+            const slot = parseInt(this.getAttribute("data-slot"));
+            const week = parseInt(this.getAttribute("data-week"));
+            const filteredSchedule = scheduleData.find(
+                (item) => item.day === day && item.slot === slot && item.week === week
+            );
+            if (filteredSchedule) {
+                if (filteredSchedule.status === "not-selected") {
+                    filteredSchedule.status = "selected";
+                    this.textContent = getStatusText("selected");
+                    this.classList.remove("not-selected");
+                    this.classList.add("selected");
+                    this.closest('td').classList.add("selected");
+                                allSelectedSlots.push({day, slot, week});
+
+                 
+                } else if (filteredSchedule.status === "selected") {
+                    filteredSchedule.status = "not-selected";
+                    this.textContent = getStatusText("not-selected");
+                    this.classList.remove("selected");
+                    this.classList.add("not-selected");
+                    this.closest('td').classList.remove("selected");
+                     allSelectedSlots = allSelectedSlots.filter(
+                item => !(item.day === day && item.slot === slot && item.week === week)
+            );
+                
+                }
+            }
+            updateTotalPrice();
+        });
+    });
+    updateTotalPrice();
+}
+
+                function updateTotalPrice() {
+                let total = 0;
+                let selectedCount = 0;
+                scheduleData.forEach((item) => {
+                if (item.status === "selected") {
+                selectedCount++;
+                }
+                });
+                total = ${rate} * selectedCount;
+                const totalPriceInput = document.getElementById("totalPriceInput");
+                const totalPriceDisplay = document.getElementById("totalPrice");
+                totalPriceInput.value = total;
+                totalPriceDisplay.innerHTML = `Total Price: ` + total;
+                }
+ function getFormValues() {
+                const action = document.getElementById("statusIndicator").textContent;
+                const start_time = document.getElementById("setStart_time").value;
+                const end_time = document.getElementById("setEnd_time").value;
+                const mentorname = document.getElementById('mentornameInput').value;
+                const title = document.getElementById("notify_title").value;
+                const description = document.getElementById("description").value;
+                const deadlineDate = document.getElementById("notify_messages").value;
+                const deadlineHour = document.getElementById("deadlineHour").value;
+                const totalPrice = document.getElementById("totalPriceInput").value;
+                let skill;
+                const skillInputs = document.getElementsByName("skill");
+                for (let i = 0; i < skillInputs.length; i++) {
+                if (skillInputs[i].checked) {
+                skill = skillInputs[i].value;
+                break;
+                }
+                }
+
+                return {
+                startime: start_time,
+                        endtime: end_time,
+                        mentorname: mentorname,
+                        title: title,
+                        description: description,
+                        deadlineDate: deadlineDate,
+                        deadlineHour: deadlineHour,
+                        totalPrice: totalPrice,
+                        skill: skill,
+                        action: action
+                };
+                }
+                function updateStatusIndicator(status) {
+                const statusIndicator = document.getElementById('statusIndicator');
+                statusIndicator.textContent = status;
+                if (status === 'Editable') {
+                statusIndicator.style.backgroundColor = '#4CAF50';
+                statusIndicator.style.color = 'white';
+                } else if (status === 'Rescheduled') {
+                statusIndicator.style.backgroundColor = '#FFA500';
+                statusIndicator.style.color = 'white';
+                }
+                }
+function getFormValues() {
                 const action = document.getElementById("statusIndicator").textContent;
                 const start_time = document.getElementById("setStart_time").value;
                 const end_time = document.getElementById("setEnd_time").value;
@@ -716,156 +789,165 @@
                 }
                 }
 
-                function saveSelectedSlots(event) {
-                event.preventDefault();
-                const formData = getFormValues();
-                formData.action = "editable";
-                currentAction = "editable";
-                const selectedSlots = [];
-                const tbody = document.querySelector("#scheduleTable tbody");
-                const monday = getMonday(new Date());
-                for (let row = 0; row < tbody.rows.length; row++) {
-                for (let col = 1; col < tbody.rows[row].cells.length; col++) {
-                const cell = tbody.rows[row].cells[col];
-                const statusElement = cell.querySelector(".status");
-                if (statusElement && statusElement.classList.contains("selected")) {
-                const slotDate = new Date(monday);
-                slotDate.setDate(slotDate.getDate() + col - 1);
-                const slotData = {
-                slot: row + 1,
-                        day: formatDate(slotDate)
-                };
-                selectedSlots.push(slotData);
-                }
-                }
-                }
+       function saveSelectedSlots(event) {
+    event.preventDefault();
+    const formData = getFormValues();
+    formData.action = "editable";
+    currentAction = "editable";
 
-                const requestData = {
-                ...formData,
-                        selectedSlots: selectedSlots
-                };
-                fetch("request", {
-                method: "POST",
-                        headers: {
-                        "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(requestData)
-                })
-                        .then((response) => {
-                        if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                        }
-                        return response.text();
-                        })
-                        .then((data) => {
-                        console.log("Response from server:", data);
-                        updateStatusIndicator('Editable');
-                        updateSchedule(); // Cập nhật lại lịch trình sau khi lưu
-                        updateTotalPrice();
-                        Toastify({
-                        text: "Lưu thành công!",
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "#4CAF50",
-                                stopOnFocus: true,
-                        }).showToast();
-                        })
-                        .catch((error) => {
-                        console.error("Failed to save:", error);
-                        Toastify({
-                        text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "#FF6347",
-                                stopOnFocus: true,
-                        }).showToast();
-                        });
-                }
+    const startDate = new Date('${start}');
+    const selectedSlots = allSelectedSlots.map(item => ({
+        slot: item.slot,
+        day: item.day,
+        week: item.week
+    }));
+
+    if (!formData.title || !formData.description || !formData.deadlineDate || !formData.deadlineHour || !formData.skill) {
+        Toastify({
+            text: "Vui lòng điền đầy đủ thông tin.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+        return;
+    }
+
+    if (selectedSlots.length === 0) {
+        Toastify({
+            text: "Vui lòng chọn ít nhất một slot.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+        return;
+    }
+
+    const requestData = {
+        ...formData,
+        selectedSlots: selectedSlots
+    };
+    console.log('Sending data to server:', requestData);
+
+    fetch("request", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Response from server:", data);
+        updateStatusIndicator('Editable');
+        updateSchedule();
+        updateTotalPrice();
+        Toastify({
+            text: "Lưu thành công!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#4CAF50",
+            stopOnFocus: true,
+        }).showToast();
+    })
+    .catch(error => {
+        console.error("Failed to save:", error);
+        Toastify({
+            text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+    });
+}
 
                
-                document.getElementById("notify_btn").addEventListener("click", function(event) {
-                event.preventDefault();
-                const formData = getFormValues();
-                formData.action = "rescheduled";
-                currentAction = "rescheduled";
-                const selectedSlots = [];
-                const tbody = document.querySelector("#scheduleTable tbody");
-                const monday = getMonday(new Date());
-                for (let row = 0; row < tbody.rows.length; row++) {
-                for (let col = 1; col < tbody.rows[row].cells.length; col++) {
-                const cell = tbody.rows[row].cells[col];
-                const statusElement = cell.querySelector(".status");
-                if (statusElement && statusElement.classList.contains("selected")) {
-                const slotDate = new Date(monday);
-                slotDate.setDate(slotDate.getDate() + col - 1);
-                const slotData = {
-                slot: row + 1,
-                        day: formatDate(slotDate)
-                };
-                selectedSlots.push(slotData);
-                }
-                }
-                }
+            document.getElementById("notify_btn").addEventListener("click", function(event) {
+     event.preventDefault();
+    const formData = getFormValues();
+    formData.action = "Rescheduled";
+    currentAction = "Rescheduled";
 
-                const requestData = {
-                ...formData,
-                        selectedSlots: selectedSlots
-                };
-                fetch("request", {
-                method: "POST",
-                        headers: {
-                        "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(requestData)
-                })
-                        .then((response) => {
-                        if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                        }
-                        return response.text();
-                        })
-                        .then((data) => {
-                        console.log("Response from server:", data);
-                        updateStatusIndicator('Rescheduled');
-                        Toastify({
-                        text: "Gửi yêu cầu thành công! Bạn sẽ được chuyển hướng về home",
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "#4CAF50",
-                                stopOnFocus: true,
-                                callback: function () {
-                                window.location.href = "homes.jsp";
-                                }
-                        }).showToast();
-                        })
-                        .catch((error) => {
-                        console.error("Failed to send request:", error);
-                        Toastify({
-                        text: "Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại.",
-                                duration: 3000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "#FF6347",
-                                stopOnFocus: true,
-                        }).showToast();
-                        });
+    const startDate = new Date('${start}');
+    const selectedSlots = allSelectedSlots.map(item => ({
+        slot: item.slot,
+        day: item.day,
+        week: item.week
+    }));
+
+    
+
+    const requestData = {
+        ...formData,
+        selectedSlots: selectedSlots
+    };
+    console.log('Sending data to server:', requestData);
+
+    fetch("request", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Response from server:", data);
+         updateStatusIndicator('Rescheduled');
+        updateSchedule();
+        updateTotalPrice();
+        Toastify({
+            text: "Gửi yêu cầu thành công! Bạn sẽ được chuyển hướng về home",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#4CAF50",
+            stopOnFocus: true,
+            callback: function () {
+                window.location.href = "homes.jsp";
+            }
+        }).showToast();
+    })
+    .catch(error => {
+        console.error("Failed to save:", error);
+        Toastify({
+            text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+    });
+});
+                const weekSelect = document.getElementById("week");
+                const weekOptions = getWeekOptions('${start}');
+                weekOptions.forEach((option) => {
+                const opt = document.createElement("option");
+                opt.value = option.value;
+                opt.textContent = option.text;
+                weekSelect.appendChild(opt);
                 });
-                const saveButton = document.getElementById("Save_status");
-                saveButton.addEventListener("click", saveSelectedSlots);
+               
                 weekSelect.addEventListener("change", updateSchedule);
                 updateSchedule();
-                setInterval(updateSchedule, 60000);
-                updateStatusIndicator('Editable');
+                const saveButton = document.querySelector("#Save_status");
+                saveButton.addEventListener("click", saveSelectedSlots);
                 });
             </script>
-            <script>
+ <script>
                 document.addEventListener('DOMContentLoaded', (et) => {
 
                 const deadlineInput = document.getElementById('notify_messages');
