@@ -67,6 +67,7 @@
                                                 <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                                 <li><a href="StaticRequest">REQUEST STATIC</a></li>
                                                 <li><a href="ListRequest">History Request</a></li>
+                                                <li><a href="Schedule_General_Mentee">General Schedule</a></li>
                                                 </c:if>
                                         </ul>
                                     </li>
@@ -97,7 +98,13 @@
                                                     <a href="UpdateAccountServlet">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
-
+                                                
+                                                <li>
+                                                    <a href="wallet">
+                                                        <i class="uil uil-key-skeleton"></i> Your Wallet
+                                                    </a>
+                                                </li>
+                                                
                                                 <li>
                                                     <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password

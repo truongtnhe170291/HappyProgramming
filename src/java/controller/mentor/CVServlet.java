@@ -4,6 +4,8 @@
  */
 package controller.mentor;
 
+import dal.AccountDAO;
+import dal.MentorDAO;
 import dal.SkillDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -54,6 +56,8 @@ public class CVServlet extends HttpServlet {
             CVService cVService = CVService.getInstance();
             request.setAttribute("cv", cVService.getCVByUserName(curentAccount.getUserName()));
             
+            MentorDAO dao = new MentorDAO();
+            request.setAttribute("rate", dao.getRateOfMentor(curentAccount.getUserName()));
             List<Skill> list = skillDAO.getSkills();
             request.setAttribute("skills", list);
             request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);

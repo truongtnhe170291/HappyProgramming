@@ -11,14 +11,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- Document title -->
         <title>Fmaster</title>
-        <link href="plugins/bootstrap-switch/bootstrap-switch.css" rel="stylesheet">
-        <link href='plugins/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
-        <link href="css/plugins.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
             .calendar {
-                max-width: 600px;
+                max-width: 900px;
                 margin: 0 auto;
                 background-color: #fff;
                 border-radius: 8px;
@@ -100,7 +96,7 @@
                     padding: 20px;
                     border-radius: 10px;
                     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                    max-width: 800px;
+                    max-width: 1300px;
                     width: 100%;
                 }
 
@@ -173,46 +169,68 @@
                 }
 
                 table {
+                    width: 100%;
                     border-collapse: collapse;
-                    width: 80%;
-                    margin: 20px 0;
                 }
 
-                th, td {
+                th,
+                td {
                     border: 1px solid #ddd;
-                    padding: 8px;
+                    padding: 10px;
                     text-align: center;
+                    vertical-align: top;
                 }
 
                 th {
-                    background-color: #007bff;
+                    background-color: #4a86e8;
                     color: white;
+                    font-weight: normal;
                 }
 
                 th.equal-width {
-                    width: 100%; /* hoặc một giá trị khác tùy theo bạn muốn */
+                    width: 100%;
                 }
 
 
                 .slot {
-                    background-color: #f9f9f9;
+                    width: 125px !important;
+                    background-color: transparent !important;
+                    display: block;
+                    text-align: center;
                     padding: 10px;
                     cursor: pointer;
-                    transition: background-color 0.3s;
                 }
 
-                .slot.selected {
-                    background-color: #1a5218;
-                    color: white;
+                .slot-checkbox {
+                    display: none;
                 }
 
+                .slot-label {
+                    height: 88.2px;
+                    width: 100px;
+                    display: inline-block;
+                    padding: 5px 10px;
+                    color: #333;
+                    border-radius: 4px;
+                    transition: background-color 0.3s ease;
+                }
+
+                .slot-checkbox:checked + .slot-label {
+                    background-color: #4CAF50;
+                    color: #fff;
+                }
+
+                .slot-checkbox:focus + .slot-label {
+                    outline: none;
+                    box-shadow: none;
+                }
                 .form-container {
                     text-align: center;
                 }
 
                 .form-container button {
                     padding: 10px 20px;
-                    background-color: #007bff;
+                    background-color: #8B0000;
                     color: white;
                     border: none;
                     border-radius: 5px;
@@ -223,11 +241,13 @@
                 .form-container button:hover {
                     background-color: #0056b3;
                 }
+                .status_check{
+                    display: flex;
+                    justify-content: space-between;
+                }
 
                 .status-box {
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
+                    height: 50px;
                     padding: 10px;
                     background-color: #f8f9fa;
                     border: 1px solid #ddd;
@@ -236,142 +256,331 @@
                 .highlighted {
                     background-color: #d1e7dd;
                 }
+                .slot-checkbox:checked + label {
+                    background-color: #f0f0f0;
+                }
+
+                .slot-checkbox:checked + label.highlighted {
+                    background-color: #d1e7dd;
+                }
+
+                #notify_btn{
+                    margin-right: 12px;
+                }
+                .class-block {
+                    transform: translateX(-28px);
+                    width: 125px;
+                    background-color: #e6f3ff;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin-bottom: 5px;
+                    text-align: left !important;
+                }
+
+
+
+                .view-materials,
+                .edu-next {
+                    display: inline-block;
+                    padding: 2px 5px;
+                    margin: 2px;
+                    border-radius: 3px;
+                    font-size: 0.8em;
+                    cursor: pointer;
+                }
+
+                .view-materials {
+                    background-color: #ffa500;
+                    color: white;
+                }
+
+                .edu-next {
+                    background-color: #4682b4;
+                    color: white;
+                }
+                .note-container {
+                    background-color: #ccc;
+                    border-radius: 8px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    margin-top: 40px;
+                    width: 100%;
+                }
+                h2 {
+                    color: #ff0000;
+                    margin-top: 0;
+                    margin-bottom: 15px;
+                }
+                ul {
+                    list-style-type: none;
+                    padding-left: 0;
+                    margin: 0;
+                }
+                li {
+                    margin-bottom: 10px;
+                    color: #666;
+                    display: flex;
+                    align-items: flex-start;
+                }
+                li::before {
+                    content: "•";
+                    color: #666;
+                    display: inline-block;
+                    width: 1em;
+                    margin-right: 0.5em;
+                }
+                .highlight {
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    color: #4a86e8;
+                    font-weight: bold;
+                }
+                .feedback-container {
+                    margin-top: 20px;
+                    padding: 15px;
+                    border: 1px solid #ced4da;
+                    border-radius: 5px;
+                    background-color: #f1f1f1;
+                }
+                .feedback-container img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    margin-right: 15px;
+                }
+                .feedback-content {
+                    flex: 1;
+                }
+                .feedback-content strong {
+                    display: block;
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                    color: #333;
+                }
+                .feedback-content p {
+                    margin: 0;
+                    font-size: 14px;
+                    color: #555;
+                }
+                .not_selected_classblock{
+                    background-color: rgba(255, 99, 71, 0.5);
+                }
+                .content-box {
+                    max-width: 100%;
+                    overflow-x: auto;
+                }
+
+                table {
+                    min-width: 100%;
+                    table-layout: fixed;
+                }
+
+                th, td {
+                    min-width: 300px !important;
+                    word-wrap: break-word;
+                }
+
             </style>
         </head>
 
-        <body>
-            <jsp:include page="header.jsp" />
-            <section id="page-title">
-                <div class="container">
-                    <div class="page-title">
-                        <h1>Mentor Request</h1>
-                    </div>
-                    <div class="breadcrumb">
-                        <ul>
-                            <li><a href="home.jsp">Home</a> </li>
-                            <li class="active"><a href="Menter_Request.jsp">Mentor Request</a> </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-            <div class="wrapper">
-                <div class="content-box">
-                    <div class="">
+        <body class="layout-light side-menu">
+            <div class="mobile-search">
+                <form action="/" class="search-form">
+                    <img src="img/svg/search.svg" alt="search" class="svg">
+                    <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+                </form>
+            </div>
+            <div class="mobile-author-actions"></div>
+            <jsp:include page="control_nav.jsp" />
+
+            <main class="main-content">
+
+                <jsp:include page="sidebar.jsp" />
+                <div class="wrapper contents">
+                    <div class="content-box">
                         <section id="page-content">
                             <div class="container">
-                                <div>
+                                <div class="status_check">
                                     <h5 style="color: #ffbf00">${error}</h5>
-                                    </div>
-                                    <c:if test="${status != ''}">
                                         <div class="status-box">
                                             <p style="color: #cccc00">${status}</p>
                                         </div>
-                                    </c:if>
-                                    <c:if test="${status == ''}">
-                                        <div class="status-box">
-                                            <p style="color: #cccc00">Selected</p>
-                                        </div>
-                                    </c:if>
+
+                                    </div>
+
                                     <form id="slotForm" action="MentorRequest" method="post">
                                         <div class="row">
-                                            <!-- content -->
                                             <div class="content col-lg-9">
-                                                <!-- form -->
                                                 <div class="row">
                                                     <div class="container">
-                                                        <!-- Calendar -->
                                                         <div class="row mb-5">
                                                             <div class="col-lg-6">
+                                                                <!-- Các phần tử khác có thể được thêm vào đây -->
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-12">
-
                                                                 <div class="form-container">
-
                                                                     <table>
                                                                         <thead>
                                                                             <tr>
                                                                                 <th class="equal-width">Time Line</th>
+
+                                                                                <c:if test="${status == '' || status != 'Approved' || status != 'Pending'  }">
                                                                                     <c:forEach var="day" items="${listDays}">
-                                                                                    <th class="equal-width">${day.dateName} <br/> ${day.dateValue}</th>
-                                                                                    </c:forEach>
+                                                                                        <th class="equal-width" value="${day.dateName}">${day.dateName} <br/> ${day.dateValue}</th>
+                                                                                        </c:forEach>
+                                                                                    </c:if>
+
+                                                                                <c:if test="${status != '' || status == 'Approved' || status == 'Pending' }">
+                                                                                    <c:forEach var="d" items="${listDayByCycle}">
+                                                                                        <th class="equal-width" value="${d.dateName}">${d.dateName} <br/> ${d.dateValue}</th>
+                                                                                        </c:forEach>
+                                                                                    </c:if>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                             <c:forEach var="slot" items="${listSlots}" varStatus="loop">
                                                                                 <tr>
-                                                                                    <td>${slot.slot_name}</td>
+                                                                                    <td>${slot.slot_id}</td>
                                                                                     <c:forEach var="day" items="${listDays}">
                                                                                         <td>
-                                                                                            <input type="checkbox" class="slot-checkbox" name="schedule" 
-                                                                                                   <c:forEach items="${listSchedule}" var="shedule">
-                                                                                                       <c:if test="${shedule.slotId eq slot.slot_id && shedule.getdayOfSlotString() eq day.dateValue}">checked</c:if>
-                                                                                                   </c:forEach>
-                                                                                                   value="${slot.slot_id} ${day.dateName} ${day.dateValue}">
+                                                                                            <label class="slot">
+                                                                                                <span class="slot-label">  
+
+                                                                                                    <c:forEach items="${listSchedule}" var="listS"> 
+                                                                                                        <c:if test="${listS.slotId eq slot.slot_id && listS.dayOfSlot eq day.dateValue}">
+                                                                                                            <div class="slot-labels" data-slot-id="${listS.slotId}" data-day-of-slot="${listS.dayOfSlot}">
+                                                                                                                <div class="class-block">
+                                                                                                                    <div>FER202 </div>
+                                                                                                                    <div class="view-materials">View Materials</div>
+                                                                                                                    <div class="edu-next">EduNext</div>
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                        </c:if>
+                                                                                                    </c:forEach>
+
+                                                                                                    <input class="slot-checkbox" <c:forEach items="${listSchedule}" var="listS"> 
+                                                                                                               <c:if test="${listS.slotId eq slot.slot_id && listS.dayOfSlot eq day.dateValue}">
+                                                                                                                   checked
+                                                                                                               </c:if>
+                                                                                                           </c:forEach> type="checkbox" name="schedule" value="${slot.slot_id} ${day.dateValue}">
+                                                                                                    <span class="select-text">SELECT</span>
+                                                                                                </span>
+                                                                                            </label>
                                                                                         </td>
                                                                                     </c:forEach>
                                                                                 </tr>
                                                                             </c:forEach>
                                                                         </tbody>
                                                                     </table>
-                                                                    <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
-
+                                                                    <input type="hidden" id="action" name="action" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!-- end: Calendar -->
+                                                        <div class="note-container">
+                                                            <h2>Note:</h2>
+                                                            <ul>
+                                                                <li>SLOT01:<span class="highlight"> 7:00 - 9:00 </span></li>
+                                                                <li>SLOT02:<span class="highlight"> 9:00 - 11:00 </span></li>
+                                                                <li>SLOT03:<span class="highlight"> 13:00 - 15:00 </span></li>
+                                                                <li><span class="highlight">For selected slots</span>, clicking on the <span class="highlight">slot frame</span> will deselect that slot</li>
+                                                                <li>SLOT04:<span class="highlight"> 15:00 - 17:00 </span></li>
+                                                                <li>Your selection of week will select for <span class="highlight"> hole month </span></li>
+                                                                <li>You cannot booking a schedule on <span class="highlight"> Saturday </span> and <span class="highlight"> Sunday </span></li>
+                                                                <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight"> Pending </span></li>
+                                                                    <c:if test="${status eq 'Approved'}">
+                                                                    <li>You will available to booking schedule at<span class="highlight"> ${avaiableBookingDate} </span></li>
+                                                                    </c:if>
+                                                            </ul>
+                                                        </div>  
+                                                        <div class="feedback-container">
+                                                            <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
+                                                            <div class="feedback-content">
+                                                                <strong>Feedback From Manager:</strong>
+                                                                <p>${rejectMessage}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                 </div>
-                                                <div class="row mt-5">
-                                                    <div class="col" style="display: flex;
-                                                    justify-content: end">
+                                            </div>
 
-                                                        <c:if test="${status == 'Pending'}">
-                                                            <button type="submit" id="notify_btn_Update" class="btn btn-primary">Update</button>
-                                                        </c:if>
-                                                        <c:if test="${status != 'Pending'}">
-                                                            <button type="submit" id="notify_btn" class="btn btn-primary">Send Request</button>
-                                                        </c:if>
-                                                        <button type="reset" class="btn btn-primary">Reset</button>
+                                            <div class="row mt-5">
+                                                <div class="col" style="display: flex;
+                                                justify-content: end;">
+                                                <button type="submit" <c:if test="${status eq 'Pending' || status eq 'Approved'}">disabled</c:if> style="margin: 0px 5px" id="sendButton" class="btn btn-primary">Send Request</button>
+                                                    <button type="submit" <c:if test="${status eq 'Pending' || status eq 'Approved'}">disabled</c:if> id="saveButton" class="btn btn-primary">Save</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                    </div>
                                     </form>
-                                </div>
+                            </div>
                             </section>
                         </div>
                     </div>
-
-                </div>
-                <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
-                <!--Plugins-->
-                <script src="js/jquery.js"></script>
-                <script src="js/plugins.js"></script>
-                <script src="js/functions.js"></script>
-                <script src="plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
-                <script src='plugins/moment/moment.min.js'></script>
-                <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+                </main>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        const checkboxes = document.querySelectorAll('.slot-checkbox');
-                        const statusText = document.getElementById('status-text');
-
-                        checkboxes.forEach(checkbox => {
-                            checkbox.addEventListener('change', function () {
-                                if (checkbox.checked) {
-                                    checkbox.parentElement.classList.add('highlighted');
-                                } else {
-                                    checkbox.parentElement.classList.remove('highlighted');
+                        const slots = document.querySelectorAll('.slot-label');
+                        slots.forEach(slot => {
+                            const classBlock = slot.querySelector('.class-block');
+                            const selectText = slot.querySelector('.select-text');
+                            if (classBlock) {
+                                if (selectText) {
+                                    selectText.style.display = 'none';
                                 }
 
-                                const selected = document.querySelectorAll('.slot-checkbox:checked');
-                                statusText.textContent = `${selected.length} slots selected`;
+                            }
+                        });
+                    });
+                </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+
+                        const slots = document.querySelectorAll('.slot');
+                        const class_block = document.querySelectorAll('.class-block');
+                        class_block.forEach((cl_bl) => {
+                            cl_bl.addEventListener("click", function () {
+                                cl_bl.classList.toggle('not_selected_classblock');
+                            });
+                        });
+                        const colors = ['#e6f3ff', '#e6f3ff', '#e6f3ff', '#e6f3ff'];
+
+                        slots.forEach((slot, index) => {
+                            const checkbox = slot.querySelector('.slot-checkbox');
+                            const label = slot.querySelector('.slot-label');
+                            const slotIndex = index % 4;
+
+                            checkbox.addEventListener('change', function () {
+                                if (checkbox.checked) {
+                                    label.style.backgroundColor = colors[slotIndex];
+                                } else {
+                                    label.style.backgroundColor = '#fff';
+                                }
                             });
                         });
                     });
+                </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function (e) {
+                        e.preventDefault();
+                        var action = document.getElementById("action");
+                        var sendButton = document.getElementById("sendButton");
+                        var saveButton = document.getElementById("saveButton");
+
+                        sendButton.addEventListener('click', function () {
+                            action.value = 'send';
+                        });
+
+                        saveButton.addEventListener('click', function () {
+                            action.value = 'save';
+                        })
+
+                        console.log(action.value);
+                    })
                 </script>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
@@ -379,24 +588,15 @@
                         var notifyBtn = document.getElementById("notify_btn");
 
                         if (error && error.trim() !== "") {
-                            notifyBtn.disabled = false;
+                            notifyBtn.disabled = true;
                         } else {
                             notifyBtn.disabled = false;
                         }
                     });
-                </script>
-                <script>
-                    document.querySelectorAll('.btn.btn-light').forEach(function (label) {
-                        label.addEventListener('click', function () {
-                            const checkbox = this.querySelector('input[type="checkbox"]');
-                            this.classList.toggle('active');
-                            checkbox.remove();
-                        });
-                    });
-                </script>
+            </script>
 
 
-            </body>
+        </body>
 
-        </html>
+    </html>
 

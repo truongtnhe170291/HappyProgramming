@@ -4,28 +4,38 @@
  */
 package controller.mentee;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import dal.CVDAO;
 import dal.MentorDAO;
 import dal.RequestDAO;
 import dal.ScheduleDAO;
 import dal.SkillDAO;
+import dal.WalletDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.CV;
+import models.FormData;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
+import models.Slot;
+import models.Wallet;
 
 /**
  *
@@ -43,40 +53,56 @@ public class RequestServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            CVDAO cvdao = new CVDAO();
-            int cvId = Integer.parseInt(request.getParameter("cvId"));
+            WalletDAO walletDAO = new WalletDAO();
             SkillDAO skillDAO = new SkillDAO();
+            CVDAO cvdao = new CVDAO();
+            MentorDAO mentorDAO = new MentorDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+
+            int cvId = Integer.parseInt(request.getParameter("cvId"));
             List<Skill> list = skillDAO.getSkillByCVId(cvId);
-            request.setAttribute("skills", list);
-
-            LocalDate today = LocalDate.now();
-            // Tìm ngày tiếp theo có thể là thứ 2
-            LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-            // Tìm ngày Chủ Nhật của tuần tiếp theo
-            LocalDate nextSunday = nextMonday.with(DayOfWeek.SUNDAY);
-
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-            
             //get rate of mentor
-            MentorDAO mentorDAO = new MentorDAO();
             int rate = mentorDAO.getRateOfMentor(userName);
-            request.setAttribute("rate", rate);
-            
             // get Schedule public by user mentor name
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorName(userName, java.sql.Date.valueOf(nextMonday), java.sql.Date.valueOf(nextSunday));
-            if(listSchedule.isEmpty()){
+            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
+            if (listSchedule.isEmpty()) {
                 response.sendRedirect("homes.jsp");
                 return;
             }
+
             for (SchedulePublic s : listSchedule) {
                 DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
                 s.setNameOfDay(nameOfDay);
             }
             request.setAttribute("listSchedule", listSchedule);
-            // set attribute CV
+            RequestDAO dao = new RequestDAO();
+            Request requ = dao.getRequestByStatusSaved(acc.getUserName(), userName);
+            if (requ != null) {
+                request.setAttribute("Editable", "Editable");
+                Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
+                List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                request.setAttribute("scheduleOfMentee", listScheduleByMentee);
+                request.setAttribute("skillOfMentee", s);
+                request.setAttribute("requestMentee", requ);
+            }
+            Wallet wallet = walletDAO.getWalletByUsenName(acc.getUserName());
+            if (wallet == null) {
+                if (walletDAO.insertWallet(new Wallet(acc.getUserName(), 0, 0))) {
+                    request.setAttribute("wallet", 0);
+                }
+            } else {
+                request.setAttribute("wallet", wallet.getAvaiable_binance());
+            }
             CV cv = cvdao.getCVByCVId(cvId);
+
+            List<Slot> listSlot = mentorDAO.listSlots();
+            // set attribute
+            request.setAttribute("mon", listSchedule.get(0).getStartTime());
+            request.setAttribute("listSlot", listSlot);
+            request.setAttribute("skills", list);
+            request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);
             request.getRequestDispatcher("Mentee_Request.jsp").forward(request, response);
 
@@ -93,72 +119,193 @@ public class RequestServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            WalletDAO wdao = new WalletDAO();
             Account acc = (Account) request.getSession().getAttribute("user");
             if (acc == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            int skill = Integer.parseInt(request.getParameter("skill"));
-            List<Integer> skills = new ArrayList<>();
-            skills.add(skill);
-            String mentorName = request.getParameter("mentorname");
+            Wallet wallet = wdao.getWalletByUsenName(acc.getUserName());
+            StringBuilder jsonBuffer = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonBuffer.append(line);
+                }
+            }
+
+            String jsonString = jsonBuffer.toString();
+
+            Gson gson = new Gson();
+            FormData formData = gson.fromJson(jsonString, FormData.class);
+
+            for (FormData.Slot slot : formData.getSelectedSlots()) {
+                System.out.println(slot.getSlot() + " " + slot.getDay());
+            }
+            System.out.println("break");
+            String title = formData.getTitle();
+            String description = formData.getDescription();
+            String deadlineDate_raw = formData.getDeadlineDate();
+            String deadlineHour_raw = formData.getDeadlineHour();
+            int skillId = Integer.parseInt(formData.getSkill());
+            int totalPrice = formData.getTotalPrice();
+            String mentorName = formData.getMentorname();
             String menteeName = acc.getUserName();
-            String title = request.getParameter("title");
-            String rawDatelineDate = request.getParameter("deadlineDate");
-            LocalDate dateLineDate = LocalDate.parse(rawDatelineDate);
-            String rawTime = request.getParameter("deadlineHour");
-            LocalTime deadlineHour = LocalTime.parse(rawTime);
-            String description = request.getParameter("description");
-            //get selected Slot
-            String[] selectedSlots = request.getParameterValues("schedule");
-            List<Integer> listSelected = new ArrayList<>();
-            for (String paramValue : selectedSlots) {
-                listSelected.add(Integer.valueOf(paramValue));
-            }
-            int price = Integer.parseInt(request.getParameter("totalPrice"));
-            Request re = new Request(mentorName, menteeName, dateLineDate, title, description, 2, deadlineHour);
-            re.setPrice(price);
+            String action = formData.getAction();
+            String startTime = formData.getStartime();
+            String endTime = formData.getEndtime();
+            LocalDate deadlineDate = LocalDate.parse(deadlineDate_raw);
+            LocalTime deadlineHour = LocalTime.parse(deadlineHour_raw);
+
+            //print
+            System.out.println("Title: " + title);
+            System.out.println("Description: " + description);
+            System.out.println("Raw Deadline Date: " + deadlineDate_raw);
+            System.out.println("Raw Deadline Hour: " + deadlineHour_raw);
+            System.out.println("Skill ID: " + skillId);
+            System.out.println("Total Price: " + totalPrice);
+            System.out.println("Mentor Name: " + mentorName);
+            System.out.println("Mentee Name: " + menteeName);
+            System.out.println("Action: " + action);
+            System.out.println("Start Time: " + startTime);
+            System.out.println("End Time: " + endTime);
+            System.out.println("Parsed Deadline Date: " + deadlineDate);
+            System.out.println("Parsed Deadline Hour: " + deadlineHour);
+
             RequestDAO dao = new RequestDAO();
-            if (dao.insertRequest(re, skills, listSelected)) {
-                System.out.println("Insert thành công");
-                response.sendRedirect("ListRequest");
-            } else {
-                System.out.println("insert fails");
+            ScheduleDAO sdao = new ScheduleDAO();
+            Request re = new Request(mentorName, menteeName, deadlineDate, title, description, 2, deadlineHour);
+            re.setPrice(totalPrice);
+            if (action.equalsIgnoreCase("Editable")) {
+                Request requ = dao.getRequestByStatusSaved(menteeName, mentorName);
+                if (requ != null) {
+                    // update request này
+                    if (dao.deleteRequest(requ.getRequestId())) {
+                        re.setStatusId(6);
+                        int requestId = dao.insertRequestReturnRequestId(re);
+                        //insert skill request
+                        dao.insertRequestSkills(requestId, skillId);
+                        int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                        List<Integer> listSelectSlot = new ArrayList<>();
+                        List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                        for (FormData.Slot slot : formData.getSelectedSlots()) {
+                            for (SchedulePublic sp : listS) {
+                                // check the same slot id and date
+                                if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getDayOfSlot().toString().equals(slot.getDay())) {
+                                    System.out.println("check trùng ngày" + sp.getDayOfSlot());
+                                    listSelectSlot.add(sp.getSelectedId());
+                                }
+                            }
+                        }
+                        if (!listSelectSlot.isEmpty()) {
+                            for (Integer i : listSelectSlot) {
+                                dao.insertRquestSelectedSlot(requestId, i);
+                            }
+                        }
+                    }
+                } else {
+                    re.setStatusId(6);
+                    int requestId = dao.insertRequestReturnRequestId(re);
+                    //insert skill request
+                    dao.insertRequestSkills(requestId, skillId);
+                    int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                    List<Integer> listSelectSlot = new ArrayList<>();
+                    List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                    for (FormData.Slot slot : formData.getSelectedSlots()) {
+                        for (SchedulePublic sp : listS) {
+                            // check the same slot id and name of date
+                            if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getDayOfSlot().toString().equals(slot.getDay())) {
+                                System.out.println("check trùng ngày" + sp.getDayOfSlot());
+                                listSelectSlot.add(sp.getSelectedId());
+                            }
+                        }
+                    }
+                    if (!listSelectSlot.isEmpty()) {
+                        for (Integer i : listSelectSlot) {
+                            dao.insertRquestSelectedSlot(requestId, i);
+                        }
+                    }
+                }
+            } else { // Send request
+                Request requ = dao.getRequestByStatusSaved(menteeName, mentorName);
+                if (requ != null) {
+                    if (dao.deleteRequest(requ.getRequestId())) {
+                        re.setStatusId(2);
+                        int requestId = dao.insertRequestReturnRequestId(re);
+                        //insert skill request
+                        dao.insertRequestSkills(requestId, skillId);
+                        int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                        List<Integer> listSelectSlot = new ArrayList<>();
+                        List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                        for (FormData.Slot slot : formData.getSelectedSlots()) {
+                            for (SchedulePublic sp : listS) {
+                                // check the same slot id and date
+                                if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getDayOfSlot().toString().equals(slot.getDay())) {
+                                    System.out.println("check trùng ngày" + sp.getDayOfSlot());
+                                    listSelectSlot.add(sp.getSelectedId());
+                                }
+                            }
+                        }
+                        if (!listSelectSlot.isEmpty()) {
+                            for (Integer i : listSelectSlot) {
+                                dao.insertRquestSelectedSlot(requestId, i);
+                            }
+                        }
+                    }
+
+                    // update request này
+                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
+                    wdao.updateWallet(wallet);
+                } else {
+                    re.setStatusId(2);
+                    int requestId = dao.insertRequestReturnRequestId(re);
+                    //insert skill request
+                    dao.insertRequestSkills(requestId, skillId);
+                    int cycleId = sdao.getCycleIdInTime(mentorName, startTime, endTime);
+                    List<Integer> listSelectSlot = new ArrayList<>();
+                    List<SchedulePublic> listS = sdao.getListSheduleByCycleAndStatus(cycleId, 2);
+                    for (FormData.Slot slot : formData.getSelectedSlots()) {
+                        for (SchedulePublic sp : listS) {
+                            // check the same slot id and name of date
+                            if (sp.getSlotId().contains(slot.getSlot() + "") && sp.getDayOfSlot().toString().equals(slot.getDay())) {
+                                System.out.println("check trùng ngày" + sp.getDayOfSlot());
+                                listSelectSlot.add(sp.getSelectedId());
+                            }
+                        }
+                    }
+                    if (!listSelectSlot.isEmpty()) {
+                        for (Integer i : listSelectSlot) {
+                            dao.insertRquestSelectedSlot(requestId, i);
+                        }
+                    }
+                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
+                    wdao.updateWallet(wallet);
+                }
             }
-        } catch (NumberFormatException e) {
+//            //insert request
+//            //get selected Slot
+//            String[] selectedSlots = request.getParameterValues("schedule");
+//            List<Integer> listSelected = new ArrayList<>();
+//            for (String paramValue : selectedSlots) {
+//                listSelected.add(Integer.valueOf(paramValue));
+//            }
+//            if (requestId != 0) {
+//                if (dao.insertRequestSkills(requestId, skillId)) {
+//
+//                }
+//                response.setContentType("application/json");
+//                response.setCharacterEncoding("UTF-8");
+//                JsonObject responseJson = new JsonObject();
+//                responseJson.addProperty("status", "success" + t);
+//                response.getWriter().write(responseJson.toString());
+//            } else {
+//                System.out.println("insert fails");
+//            }
+        } catch (JsonSyntaxException | IOException e) {
+            System.out.println(e.getMessage());
         }
 
     }
-
-    /*
-    <form action="RequestServlet" method="post">
-        <label for="mentorName">Mentor Name:</label>
-        <input type="text" id="mentorName" name="mentorName" value="user2" required><br>
-        
-        <label for="gMailMentee">Mentee Name:</label>
-        <input type="text" id="menteeName" name="menteeName" value="user1" required><br>
-        
-        <label for="deadlineDate">Deadline Date:</label>
-        <input type="date" id="deadlineDate" name="deadlineDate" required><br>
-        
-        <label for="deadlineHour">Deadline Hour:</label>
-        <input type="time" id="deadlineHour" name="deadlineHour" required><br>
-        
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required><br>
-        
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea><br>
-        
-        <label for="skills">Select Skills:</label><br>
-        <c:forEach var="skill" items="${skills}">
-            <input type="checkbox" id="skill${skill.skillID}" name="skills" value="${skill.skillID}">
-            <label for="skill${skill.skillID}">${skill.skillName}</label><br>
-        </c:forEach>
-        
-        <input type="submit" value="Submit">
-    </form>*/
 }

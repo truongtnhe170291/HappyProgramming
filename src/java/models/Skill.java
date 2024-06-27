@@ -71,7 +71,7 @@ public class Skill {
         this.status = status;
     }
 
-   
+    
 
     @Override
     public String toString() {

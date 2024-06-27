@@ -22,14 +22,15 @@
         <!-- Stylesheets & Fonts -->
         <link href="css/plugins.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
-          <style>
-               .dev {
-            background-size: cover;
-        }
+        <style>
+            .dev {
+                background-size: cover;
+            }
+            
 
-    </style>
+        </style>
     </head>
-  
+
     <body>
         <div class="body-inner">
             <!-- Header -->
@@ -128,7 +129,7 @@
                             <div class="portfolio-item-wrap">
                                 <div class="portfolio-image">
                                     <a href="#"><img class="test" src="img/C.jpg" alt=""></a>
-                                    
+
                                 </div>
                                 <div class="portfolio-description">
                                     <a title="Paper Pouch!" data-lightbox="image" href="img/C.jpg"><i class="icon-maximize"></i></a>
@@ -142,7 +143,7 @@
                             <div class="portfolio-item-wrap">
                                 <div class="portfolio-image">
                                     <a href="#"><img class="test" src="img/JSs.jpg" alt=""></a>
-                                    
+
                                 </div>
                                 <div class="portfolio-description">
                                     <a title="Paper Pouch!" data-lightbox="image" href="img/C.jpg"><i class="icon-maximize"></i></a>
@@ -260,133 +261,58 @@
             <section class="background-grey">
                 <div class="container">
                     <div class="heading-text heading-section text-center">
-                        <h2>MEET OUR TEAM</h2>
-                        <p>Meet the Dream Team: The People Powering Our Vision.
-                        </p>
+                        <h2>TOP 5 MENTOR WE SUGGEST</h2>
+                        <p>Meet the Dream Team: The People Powering Our Vision.</p>
                     </div>
                     <div class="row team-members">
-                        <div class="col-lg-3">
-                            <div class="team-member">
-                                <div class="team-image">
-                                    <img class="dev" src="img/emhiu.jpg" width="257" height="257">
-                                </div>
-                                <div class="team-desc">
-                                    <h3>Em Hius</h3>
-                                    <span>Software Developer</span>
-                                    <p>7 years of work experience. </p>
-                                    <div class="align-center">
-                                        <a class="btn btn-xs btn-slide btn-light" href="#">
-                                            <i class="fab fa-facebook-f"></i>
-                                            <span>Facebook</span>
+                        <c:forEach items="${requestScope.topMentors}" var="member">
+                            <div class="col-lg-3">
+                                <div class="team-member">
+                                    <div class="team-image">
+                                        <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                            <img src="./img/${member.avatar}" alt="${member.mentorName}">
                                         </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                            <i class="fab fa-twitter"></i>
-                                            <span>Twitter</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>Instagram</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                            <i class="icon-mail"></i>
-                                            <span>Mail</span>
-                                        </a>
+                                    </div>
+                                    <div class="team-desc">
+                                        <h3>
+                                            <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">${member.getFullName()}</a>
+                                        </h3>
+                                        <div>
+                                            <c:forEach items="${member.listSkills}" var="skill">
+                                                <p>${skill.skillName}</p>
+                                            </c:forEach>
+                                        </div>
+                                        <div id="te" class="rating">
+                                            <div class="star-rating" data-rating="${member.starAVG}">
+
+                                            </div>
+                                        </div>
+                                        <div class="align-center">
+                                            <a class="btn btn-xs btn-slide btn-light" href="#">
+                                                <i class="fab fa-facebook-f"></i>
+                                                <span>Facebook</span>
+                                            </a>
+                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
+                                                <i class="fab fa-twitter"></i>
+                                                <span>Twitter</span>
+                                            </a>
+                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
+                                                <i class="fab fa-instagram"></i>
+                                                <span>Instagram</span>
+                                            </a>
+                                            <a class="btn btn-xs btn-slide btn-light" href="#" data-width="80">
+                                                <i class="icon-mail"></i>
+                                                <span>Mail</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="team-member">
-                                <div class="team-image">
-                                    <img src="img/son.jpg" alt="">
-                                </div>
-                                <div class="team-desc">
-                                    <h3>Son Pham</h3>
-                                    <span>Software Developer</span>
-                                    <p>7 years of work experience. </p>
-                                    <div class="align-center">
-                                        <a class="btn btn-xs btn-slide btn-light" href="#">
-                                            <i class="fab fa-facebook-f"></i>
-                                            <span>Facebook</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                            <i class="fab fa-twitter"></i>
-                                            <span>Twitter</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>Instagram</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                            <i class="icon-mail"></i>
-                                            <span>Mail</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="team-member">
-                                <div class="team-image">
-                                    <img src="img/truong (1).jpg" width="257" height="257" alt="">
-                                </div>
-                                <div class="team-desc">
-                                    <h3>Nam Truong</h3>
-                                    <span>Software Developer</span>
-                                    <p>4 years of work experience. Leader</p>
-                                    <div class="align-center">
-                                        <a class="btn btn-xs btn-slide btn-light" href="#">
-                                            <i class="fab fa-facebook-f"></i>
-                                            <span>Facebook</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                            <i class="fab fa-twitter"></i>
-                                            <span>Twitter</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>Instagram</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                            <i class="icon-mail"></i>
-                                            <span>Mail</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="team-member">
-                                <div class="team-image">
-                                    <img src="img/minh.jpg" width="257" height="257" alt="">
-                                </div>
-                                <div class="team-desc">
-                                    <h3>Quang Minh</h3>
-                                    <span>UI Developer</span>
-                                    <p>5 years of work experience. </p>
-                                    <div class="align-center">
-                                        <a class="btn btn-xs btn-slide btn-light" href="#">
-                                            <i class="fab fa-facebook-f"></i>
-                                            <span>Facebook</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                            <i class="fab fa-twitter"></i>
-                                            <span>Twitter</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>Instagram</span>
-                                        </a>
-                                        <a class="btn btn-xs btn-slide btn-light" href="mailto:#" data-width="80">
-                                            <i class="icon-mail"></i>
-                                            <span>Mail</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
-                </div>
+
+
+
             </section>
             <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
             <script src="js/jquery.js"></script>

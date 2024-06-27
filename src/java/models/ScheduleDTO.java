@@ -11,44 +11,80 @@ import java.util.List;
  * @author Admin
  */
 public class ScheduleDTO {
-    private String userName;
-    private Date startDate;
-    private Date endDate;
+    private int cycleId;
+    private String mentorName;
+    private Date deadline;
+    private String status;
+    private Date startTime;
+    private Date endTime;
     private List<SchedulePublic> list;
 
     public ScheduleDTO() {
     }
 
+    public ScheduleDTO(String mentorName, Date deadline, String status) {
+        this.mentorName = mentorName;
+        this.deadline = deadline;
+        this.status = status;
+    }
+    public ScheduleDTO(String mentorName, Date deadline, String status, int cycleId) {
+        this.mentorName = mentorName;
+        this.deadline = deadline;
+        this.status = status;
+        this.cycleId = cycleId;
+    }
+
+    public ScheduleDTO(String mentorName, Date deadline, String status, Date startTime, Date endTime, int cycleId) {
+        
+        this.mentorName = mentorName;
+        this.deadline = deadline;
+        this.status = status;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.cycleId = cycleId;
+    }
+
+   
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
     
-    public ScheduleDTO(String userName, Date startDate, Date endDate, List<SchedulePublic> list) {
-        this.userName = userName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.list = list;
+    
+    public String getMentorName() {
+        return mentorName;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public Date getDeadline() {
+        return deadline;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public String getStatus() {
+        return status;
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<SchedulePublic> getList() {
@@ -59,12 +95,19 @@ public class ScheduleDTO {
         this.list = list;
     }
 
+    public int getCycleId() {
+        return cycleId;
+    }
+
+    public void setCycleId(int cycleId) {
+        this.cycleId = cycleId;
+    }
+
     @Override
     public String toString() {
-        return "ScheduleDTO{" + "userName=" + userName + ", startDate=" + startDate + ", endDate=" + endDate + ", list=" + list + '}';
+        return "ScheduleDTO{" + "cycleId=" + cycleId + ", mentorName=" + mentorName + ", deadline=" + deadline + ", status=" + status + ", startTime=" + startTime + ", endTime=" + endTime + ", list=" + list + '}';
     }
-    
-    
+
     
     
 }

@@ -17,14 +17,44 @@ public class RequestDTO extends Request{
     private List<Skill> listSkills;
     private List<SchedulePublic> listSchedule;
     private Status status;
+    private String note;
+    private int cvId;
     public RequestDTO() {
     }
-     public RequestDTO(List<Skill> listSkills, String mentorName, LocalDate deadlineDate, String title, LocalTime deadlineHour) {
+
+    public RequestDTO(List<Skill> listSkills, List<SchedulePublic> listSchedule, Status status, String note, int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
+        super(requestId, mentorName, menteeName, deadlineDate, title, description, statusId, deadlineHour);
+        this.listSkills = listSkills;
+        this.listSchedule = listSchedule;
+        this.status = status;
+        this.note = note;
+    }
+
+   
+    public RequestDTO(List<Skill> listSkill, String mentorName, LocalDate deadlineDate, String title, LocalTime deadlineHour) {
         super(mentorName, deadlineDate, title, deadlineHour);
         this.listSkills = listSkills;
+        
+    }
+
+    public int getCvId() {
+        return cvId;
+    }
+
+    public void setCvId(int cvId) {
+        this.cvId = cvId;
+    }
+
+    
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
     
-
+     
     public Status getStatus() {
         return status;
     }
@@ -47,6 +77,11 @@ public class RequestDTO extends Request{
 
     public void setListSchedule(List<SchedulePublic> listSchedule) {
         this.listSchedule = listSchedule;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "RequestDTO{" + "listSkills=" + listSkills + ", listSchedule=" + listSchedule + ", status=" + status + ", note=" + note + '}';
     }
     
     

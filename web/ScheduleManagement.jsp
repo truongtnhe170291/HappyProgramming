@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -9,6 +9,9 @@
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
         <link rel="stylesheet" href="assetss/css/custom.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
             .table {
@@ -37,11 +40,11 @@
 
             .modal-content {
                 background-color: #fefefe;
-                top:25%;
-                left: 40%;
+                top:15%;
+                left: 25%;
                 padding: 20px;
                 border: 1px solid #888;
-                width: 40%;
+                width: 60%;
             }
 
             .close {
@@ -115,78 +118,140 @@
                 font-size: 12px;
                 color: #333;
             }
-                        #modalMentorName, #modalStartDate, #modalEndDate {
-              display: inline-block;
-              margin-right: 10px;
-              font-weight: bold;
-              color: #333;
+            #modalMentorName, #modalStartDate, #modalEndDate {
+                display: inline-block;
+                margin-right: 10px;
+                font-weight: bold;
+                color: #333;
             }
 
-                        #modalDetails {
-              max-width: 800px;
-              margin: 50px auto;
-              background-color: #fff;
-              border-radius: 10px;
-              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-              overflow: hidden;
-              padding: 20px;
+            #modalDetails {
+                max-width: 800px;
+                margin: 50px auto;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                padding: 20px;
             }
 
             #modalMentorName, #modalStartDate, #modalEndDate {
-              background: linear-gradient(135deg, #7e57c2, #ab47bc);
-              color: #fff;
-              padding: 10px;
-              text-align: center;
-              text-transform: uppercase;
-              letter-spacing: 2px;
-              border-radius: 5px;
-              margin-bottom: 20px;
+                background: linear-gradient(135deg, #7e57c2, #ab47bc);
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                border-radius: 5px;
+                margin-bottom: 20px;
             }
 
             p {
-              margin-bottom: 20px;
-              padding: 20px;
-              background-color: #f9f9f9;
-              border-radius: 5px;
-              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-              transition: all 0.3s ease;
+                margin-bottom: 20px;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
             }
 
             p:hover {
-              transform: translateY(-5px);
-              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             }
 
             p strong {
-              font-weight: bold;
-              color: #7e57c2;
+                font-weight: bold;
+                color: #7e57c2;
             }
-           .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-    .btn-sm {
-        margin-left: 5px;
-        padding: 5px 10px;
-        font-size: 12px;
-    }
-    .btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        color: white;
-    }
-    .btn-info:hover {
-        background-color: #138496;
-        border-color: #117a8b;
-    }
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .btn-sm {
+                margin-left: 5px;
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            .btn-info {
+                background-color: #17a2b8;
+                border-color: #17a2b8;
+                color: white;
+            }
+            .btn-info:hover {
+                background-color: #138496;
+                border-color: #117a8b;
+            }
+            .form-container {
+                max-width: 100%;
+                margin: 0 auto;
+                font-family: Arial, sans-serif;
+            }
+
+            .form-container table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 5px;
+                background-color: #f8f9fa;
+            }
+
+            .form-container th {
+                background-color: #e9ecef;
+                padding: 10px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .form-container td {
+                background-color: white;
+                padding: 0;
+                height: 80px;
+                vertical-align: top;
+                border: 1px solid #dee2e6;
+            }
+
+            .form-container td:first-child {
+                background-color: #e9ecef;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .form-container td > div {
+                background-color: #e6f3ff;
+                margin: 5px;
+                padding: 5px;
+                border-radius: 5px;
+                height: calc(100% - 10px);
+                font-size: 14px;
+            }
+
+            .form-container td > div > div:first-child {
+                font-weight: bold;
+                color: #0056b3;
+            }
+
+            .form-container td > div > div:nth-child(2) {
+                color: #28a745;
+            }
+
+            .form-container td > div > div:nth-child(3) {
+                color: #6c757d;
+            }
+
+            .form-container select {
+                width: 100%;
+                padding: 5px;
+                margin-top: 5px;
+            }
         </style>
     </head>
 
@@ -194,86 +259,7 @@
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
-                <div class="navbar-bg"></div>
-                <nav class="navbar navbar-expand-lg main-navbar sticky">
-                    <div class="form-inline mr-auto">
-                        <ul class="navbar-nav mr-3">
-                            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-                                   collapse-btn"> <i data-feather="align-justify"></i></a></li>
-                            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
-                                    <i data-feather="maximize"></i>
-                                </a></li>
-                            <li>
-                                <form class="form-inline mr-auto">
-                                    <div class="search-element">
-                                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" data-width="200">
-                                        <button class="btn" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                    <ul class="navbar-nav navbar-right">
-
-                        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                                                                     class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
-                                <div class="dropdown-header">
-                                    Notifications
-                                    <div class="float-right">
-                                        <a href="#">Mark All As Read</a>
-                                    </div>
-                                </div>
-                                <div class="dropdown-footer text-center">
-                                    <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="dropdown"><a href="#" data-toggle="dropdown"
-                                                class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assetss/img/user.png"
-                                                                                             class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
-                            <div class="dropdown-menu dropdown-menu-right pullDown">
-                                <div class="dropdown-title">Hello Sarah Smith</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="main-sidebar sidebar-style-2">
-                    <aside id="sidebar-wrapper">
-
-                        <ul class="sidebar-menu">
-                            <li class="menu-header">Main</li>
-                            <li class="dropdown active">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                        data-feather="monitor"></i><span>Dashboard</span></a>
-                                <ul class="dropdown-menu">
-                                    <li class="active"><a class="nav-link" href="Homes_manager.jsp">Dashboard 1</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-header">Request</li>
-                            <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>CV Management</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listCV">List CV</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </aside>
-                </div>
+                <jsp:include page="header_Manager.jsp" />
                 <!-- Main Content -->
                 <div class="main-content">
                     <section class="section">
@@ -286,7 +272,7 @@
                                     <i class="fas fa-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">Schedule</li>
-                         
+
                         </ul>
                         <div class="section-body">
                             <div class="row clearfix">
@@ -301,60 +287,93 @@
                                                     <thead>
                                                         <tr class="userDatatable-header">
                                                             <th><span class="userDatatable-title">User Name</span></th>
-                                                            <th><span class="userDatatable-title">Start Time</span></th>
-                                                            <th><span class="userDatatable-title">End Time</span></th>
+                                                            <th><span class="userDatatable-title">Deadline</span></th>
+                                                            <th><span class="userDatatable-title">Status</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                       <c:forEach var="slot" items="${listSlot}">
-        <tr>
-            <td><div class="userDatatable-content">${slot.userName}</div></td>
-            <td><div class="userDatatable-content">${slot.startDate}</div></td>
-            <td><div class="userDatatable-content">${slot.endDate}</div></td>
-            <td>
-                <div class="btn-group">
-                    <button class="btn btn-info btn-sm" onclick="openModal('${slot.userName}')">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <form action="HandleSlotMentor" method="post">
-                        <input type="hidden" name="mentorName" value="${slot.userName}" />
-                        <c:if test="${not empty slot.list}">
-                            <input type="hidden" name="cycleID" value="${slot.list[0].cycleID}" />
-                        </c:if>
-                        <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button type="submit" name="action" value="3" class="btn btn-danger btn-sm">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </form>
-                </div>
+                                                        <c:forEach var="schedule" items="${list}">
+                                                            <tr>
+                                                                <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
+                                                                <td><div class="userDatatable-content">${schedule.deadline}</div></td>
+                                                                <td><div class="userDatatable-content">${schedule.status}</div></td>
 
-                <div id="modal-${slot.userName}" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeModal('${slot.userName}')">&times;</span>
-                        <h2>Schedule Details</h2>
-                        <p><strong>Mentor Name:</strong> <span id="modalMentorName">${slot.userName}</span></p>
-                        <p><strong>Start Date:</strong> <span id="modalStartDate">${slot.startDate}</span></p>
-                        <p><strong>End Date:</strong> <span id="modalEndDate">${slot.endDate}</span></p>
-                        <p><strong>Details Slot:</strong>
-                            <span id="modalDetails">
-                                <c:forEach items="${slot.list}" var="details">
-                                    <p><strong>SelectedID:</strong> ${details.selectedId}</p>
-                                    <p><strong>Day Of Slot:</strong> ${details.dayOfSlot}</p>
-                                    <p><strong>Slot ID:</strong> ${details.slotId}</p>  
-                                    <p><strong>Slot Name:</strong> ${details.slot_name}</p> 
-                                    <p><strong>Name Of Day:</strong> ${details.nameOfDay}</p> 
-                                    <p><strong>Cycle ID:</strong> ${details.cycleID}</p> 
-                                </c:forEach>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </c:forEach>
+
+                                                                <td> 
+                                                                    <div class="btn-group">
+                                                                        <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </button>
+                                                                        <form action="HandleSlotMentor" method="post">
+                                                                            <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
+                                                                            <c:if test="${not empty schedule.list}">
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                            </c:if>
+                                                                            <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
+                                                                                <i class="fas fa-check"></i>
+                                                                            </button>
+                                                                            <button type="button" onclick="handleMessage()" name="action" value="3" class="btn btn-danger btn-sm">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div id="modal-${schedule.mentorName}" class="modal customer_value" value="${schedule.mentorName}">
+                                                                        <div class="modal-content">
+                                                                            <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
+                                                                            <h2>Schedule Details</h2>
+                                                                            <p><strong>Mentor Name:</strong> <span id="modalMentorName" class="name_mentor" value="${schedule.mentorName}">${schedule.mentorName}</span></p>
+                                                                            <p><strong>Start Time:</strong> <span id="modalMentorName">${schedule.startTime}</span></p>
+                                                                            <p><strong>End Time:</strong> <span id="modalMentorName">${schedule.endTime}</span></p>
+                                                                            <p><strong>Details Schedule</strong>
+                                                                            <div class="form-container">
+                                                                                  <div class="schedule-container">
+                                                        <div class="header">
+                                                            <div class="select-container">
+                                                                <label for="year">YEAR</label>
+                                                                <select id="year">
+                                                                    <option value="2024">2024</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="select-container">
+                                                                <div id="statusIndicator" class="status-indicator">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="select-container">
+                                                                <label for="week">WEEK</label>
+                                                                <select id="week"></select>
+                                                            </div>
+                                                        </div>
+                                                        <table id="scheduleTable">
+                                                            <thead>
+                                                                <tr id="dayHeaders"></tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                                                <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+                                                                            </div>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td><div id="messageContainer" style="display: none; margin-top: 20px;">
+                                                                        <span id="MessageTitle" style="display: none" class="userDatatable-title">Reject Message</span><br/>
+                                                                        <form action="HandleSlotMentor" method="post">
+                                                                            <c:if test="${not empty schedule.list}">
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                            </c:if>
+                                                                            <input type="hidden" name="action" value="3"/>
+                                                                            <textarea id="messageInput" name="messageInput" class="form-control" rows="4" placeholder="Enter your message here..."></textarea>
+                                                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                                                        </form>
+                                                                    </div></td>
+                                                            </tr>
+                                                        </c:forEach>
 
                                                     </tbody>
                                                 </table>
@@ -460,6 +479,7 @@
                     </div>
                 </div>
 
+                
             </div>
         </div>
         <script src="assetss/js/app.min.js"></script>
@@ -473,16 +493,296 @@
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
         <script>
+      
+    function handleMessage() {
+                                                                                  
+              
             
-  function openModal(userName) {
-        document.getElementById('modal-' + userName).style.display = 'block';
-    }
+                                                                                    var messageContainer = document.getElementById('messageContainer');
+                                                                                    var messageTitle = document.getElementById('MessageTitle');
+                                                                                    messageContainer.style.display = 'block';
+                                                                                    messageTitle.style.display = 'inherit';
+                                                                                }
 
-    function closeModal(userName) {
-        document.getElementById('modal-' + userName).style.display = 'none';
+                                                                                function submitMessage() {
+                                                                                    var message = document.getElementById('messageInput').value;
+                                                                                    if (message == null) {
+                                                                                        alert('Please enter reject message!');
+                                                                                    }
+                                                                                    // You can add additional logic to handle the message submission
+                                                                                }
+        </script>
+        <script>
+           
+            function openModal(userName) {
+                document.getElementById('modal-' + userName).style.display = 'block';
+                const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
+                 
+                   let t = document.querySelector('.name_mentor').textContent;
+console.log(t);
+                let currentAction = "editable";
+const scheduleData = [
+    <c:forEach items="${requestScope.list}" var="mentor">
+                 if('${mentor.mentorName}' === userName){
+        <c:forEach var="schedule" items="${mentor.list}">
+           
+            {
+        week:  1,
+        nameday: "${schedule.nameOfDay}",
+        slot: ${schedule.slotId.substring(5)},
+        mentorName: "${mentor.mentorName}",
+        class: "SWR302",
+        room: "BE-209",
+        status: "${status}",
+        day: "${schedule.dayOfSlot}",
+        time: "${schedule.slot_name}"
+    },
+        
+        </c:forEach>
     }
-            document.addEventListener('DOMContentLoaded', (e) => {
+        <c:set var="start" value="${mentor.startTime}"/>
+        <c:set var="end" value="${mentor.endTime}"/>
+    </c:forEach>
+];
+console.log(scheduleData)
+let allSelectedSlots = [];
+console.log("Initial scheduleData:", scheduleData);
+
+function generateWeeks(startDate) {
+    const weeks = [];
+    const start = new Date(startDate);
+    for (let i = 0; i < 4; i++) {
+        const weekStart = new Date(start);
+        weekStart.setDate(start.getDate() + i * 7);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        weeks.push({ week: i + 1, start: weekStart, end: weekEnd });
+    }
+    return weeks;
+}
+
+function getWeekNumber(date, startDate) {
+    const weeks = generateWeeks(startDate);
+    const targetDate = new Date(date);
+    for (let i = 0; i < weeks.length; i++) {
+        if (targetDate >= weeks[i].start && targetDate <= weeks[i].end) {
+            return weeks[i].week;
+        }
+    }
+    return null;
+}
+
+const start = '${start}';
+
+console.log("Start date:", start);
+
+scheduleData.forEach((item) => {
+    console.log("Processing item:", item);
+    item.week = getWeekNumber(item.day, start);
+    console.log("Calculated week:", item.week);
+});
+
+console.log("Updated scheduleData:", scheduleData);
+
+let tmp = scheduleData.filter(s => s.week ===  1 );
+console.log("Items in week 2:", tmp);
+                function formatDate(date) {
+                return (
+                        date.getFullYear().toString().padStart(4, "0") +
+                        "-" +
+                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                        "-" +
+                        date.getDate().toString().padStart(2, "0")
+                        );
+                }
+
+                function getMonday(date) {
+                date = new Date(date);
+                const day = date.getDay();
+                const diff = date.getDate() - day + (day === 0 ? - 6 : 1);
+                return new Date(date.setDate(diff));
+                }
+
+                function getWeekOptions(start) {
+                const startDate = new Date(start);
+                const options = [];
+                for (let week = 0; week < 4; week++) {
+                const mondayOfWeek = new Date(startDate);
+                mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                const sundayOfWeek = new Date(mondayOfWeek);
+                sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                options.push({value: week + 1, text: optionText});
+                }
+                return options;
+                }
+
+                function isClassCurrentlyHappening(classItem, currentDate) {
+                const [startHour, startMinute] = classItem.time.split("-")[0].split(":").map(Number);
+                const [endHour, endMinute] = classItem.time.split("-")[1].split(":").map(Number);
+                const classStart = new Date(currentDate);
+                classStart.setHours(startHour, startMinute, 0);
+                const classEnd = new Date(currentDate);
+                classEnd.setHours(endHour, endMinute, 0);
+                return currentDate >= classStart && currentDate < classEnd;
+                }
+
+                function getStatusClass(status) {
+                switch (status) {
+                case "chosen":
+                        return "chosen";
+                case "selected":
+                        return "selected";
+                case "not-selected":
+                        return "not-selected";
+                default:
+                        return "";
+                }
+                }
+
+                function getStatusText(status) {
+                switch (status) {
+                case "chosen":
+                        return "(chosen)";
+                case "selected":
+                        return "(selected)";
+                case "not-selected":
+                        return "(not selected)";
+                default:
+                        return "";
+                }
+                }
+                function updateSchedule() {
+                const selectedWeek = parseInt(weekSelect.value);
+                const startDate = new Date('${start}');
+                const monday = new Date(startDate);
+                monday.setDate(monday.getDate() + (selectedWeek - 1) * 7);
+                // Update headers
+                const dayHeaders = document.getElementById("dayHeaders");
+                dayHeaders.innerHTML = "<th>WEEK</th>";
+                const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+                daysOfWeek.forEach((day, index) => {
+                const date = new Date(monday);
+                date.setDate(date.getDate() + index);
+                const th = document.createElement("th");
+                th.innerHTML = day + `<br>` + formatDate(date);
+                dayHeaders.appendChild(th);
+                });
+                // Update slots
+                const tbody = document.querySelector("#scheduleTable tbody");
+                tbody.innerHTML = "";
+                for (let i = 0; i < 5; i++) {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>Slot ` + (i + 1) + `</td>` + "<td></td>".repeat(7);
+                tbody.appendChild(row);
+                }
+
+                const currentDate = new Date();
+                const weekData = scheduleData.filter(item => item.week === selectedWeek);
+                console.log(weekData);
+                weekData.forEach((item) => {
+                const dayIndex = daysOfWeek.indexOf(item.nameday.toUpperCase());
+                console.log(dayIndex);
+                if (dayIndex !== - 1) {
+                const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
+                if (cell) {
+                let onlineIndicator = item.online ? '<span class="online-indicator"></span>' : "";
+                const classDate = new Date(monday);
+                classDate.setDate(classDate.getDate() + dayIndex);
+                let onlineNowIndicator = "";
+                if (
+                        classDate.toDateString() === currentDate.toDateString() &&
+                        isClassCurrentlyHappening(item, currentDate)
+                        ) {
+                onlineNowIndicator = '<div class="online-now">Online</div>';
+                }
+
+                const statusClass = getStatusClass(item.status);
+                const statusText = getStatusText(item.status);
+                cell.innerHTML +=
+                        '<div class="class-block">' +
+                        '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
+                        '<div class="view-materials">View Materials</div>' +
+                        '<div class="edu-next">EduNext</div>' +
+                        '<div>at ' + item.room + '</div>' +
+                        '<div class="status ' + statusClass + '" data-day="' + item.day + '" data-slot="' + item.slot + '" data-week="' + item.week + '">' + statusText + '</div>' +
+                        '<div class="time">' + item.time + '</div>' +
+                        onlineNowIndicator +
+                        '</div>';
+                if (item.status === "selected") {
+                cell.classList.add("selected");
+                }
+                }
+                }
+                });
+                // Update event listeners
+               document.querySelectorAll(".status").forEach((element) => {
+        element.addEventListener("click", function () {
+            const day = this.getAttribute("data-day");
+            const slot = parseInt(this.getAttribute("data-slot"));
+            const week = parseInt(this.getAttribute("data-week"));
+            const filteredSchedule = scheduleData.find(
+                (item) => item.day === day && item.slot === slot && item.week === week
+            );
+            if (filteredSchedule) {
+                if (filteredSchedule.status === "not-selected") {
+                    filteredSchedule.status = "selected";
+                    this.textContent = getStatusText("selected");
+                    this.classList.remove("not-selected");
+                    this.classList.add("selected");
+                    this.closest('td').classList.add("selected");
+                                allSelectedSlots.push({day, slot, week});
+
+                 
+                } else if (filteredSchedule.status === "selected") {
+                    filteredSchedule.status = "not-selected";
+                    this.textContent = getStatusText("not-selected");
+                    this.classList.remove("selected");
+                    this.classList.add("not-selected");
+                    this.closest('td').classList.remove("selected");
+                     allSelectedSlots = allSelectedSlots.filter(
+                item => !(item.day === day && item.slot === slot && item.week === week)
+            );
                 
+                }
+            }
+        });
+    });
+}
+
+    
+console.log(allSelectedSlots);
+          
+                const weekSelect = document.getElementById("week");
+                const weekOptions = getWeekOptions('${start}');
+                weekOptions.forEach((option) => {
+                const opt = document.createElement("option");
+                opt.value = option.value;
+                opt.textContent = option.text;
+                weekSelect.appendChild(opt);
+                });
+               
+                weekSelect.addEventListener("change", updateSchedule);
+                updateSchedule();
+                
+                bookedSlots.forEach(slot => {
+                    const newDiv = document.createElement('div');
+                    newDiv.innerHTML = `
+                          <div>SWR302</div>
+                           <div>View Materials</div>
+                           <div>at BE-209</div>
+                                                                                            `;
+                    slot.innerHTML = '';
+                    slot.appendChild(newDiv);
+                    slot.classList.remove('Book');
+                });
+            }
+
+            function closeModal(userName) {
+                document.getElementById('modal-' + userName).style.display = 'none';
+            }
+            document.addEventListener('DOMContentLoaded', (e) => {
+
                 const editButtons = document.querySelectorAll('.edit');
                 editButtons.forEach(button => {
                     button.addEventListener('click', function (event) {
@@ -516,6 +816,7 @@
                     });
                 });
             });
+
         </script>
     </body>
 

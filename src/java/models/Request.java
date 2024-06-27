@@ -20,6 +20,7 @@ public class Request {
     private int statusId;
     private java.time.LocalTime deadlineHour;
     private int price;
+    private String note;
     // Default constructor
     public Request() {}
 
@@ -50,6 +51,14 @@ public class Request {
         this.description = description;
         this.statusId = statusId;
         this.deadlineHour = deadlineHour;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public int getPrice() {
