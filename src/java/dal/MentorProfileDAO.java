@@ -41,16 +41,16 @@ public class MentorProfileDAO {
 
     public List<MentorProfile> getAllMentors() throws SQLException {
         // Tạo câu truy vấn SQL để lấy thông tin từ các bảng CV, Accounts và FeedBacks
-        String sql = "SELECT DISTINCT c.full_name, c.avatar, a.user_name, f.avg_star, c.cv_id\n" +
-"                FROM dbo.CV c\n" +
-"                INNER JOIN dbo.Accounts a ON c.mentor_name = a.user_name\n" +
-"                LEFT JOIN (\n" +
-"              SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star\n" +
-"              FROM dbo.FeedBacks\n" +
-"                 GROUP BY mentor_name)\n" +
-"               f ON c.mentor_name = f.mentor_name\n" +
-"			   where c.status_id =2\n" +
-"                ORDER BY f.avg_star DESC;";
+        String sql = "SELECT DISTINCT c.full_name, c.avatar, a.user_name, f.avg_star, c.cv_id\n"
+                + "                FROM dbo.CV c\n"
+                + "                INNER JOIN dbo.Accounts a ON c.mentor_name = a.user_name\n"
+                + "                LEFT JOIN (\n"
+                + "              SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star\n"
+                + "              FROM dbo.FeedBacks\n"
+                + "                 GROUP BY mentor_name)\n"
+                + "               f ON c.mentor_name = f.mentor_name\n"
+                + "			   where c.status_id =2\n"
+                + "                ORDER BY f.avg_star DESC;";
 
         // Chuẩn bị câu truy vấn SQL
         PreparedStatement ps = con.prepareStatement(sql);
@@ -95,6 +95,77 @@ public class MentorProfileDAO {
 
         // Trả về danh sách mentor có kỹ năng cần tìm
         return mentorsWithSkill;
+    }
+
+    public List<MentorProfileDTO> getTop5Mentors() throws SQLException {
+        String sql = "    SELECT TOP (5) A.[user_name]\n" +
+"     , A.[gmail]\n" +
+"     , c.cv_id\n" +
+"     , A.[full_name]\n" +
+"     , A.[pass_word]\n" +
+"     , A.[dob]\n" +
+"     , A.[sex]\n" +
+"     , A.[address]\n" +
+"     , A.[phone]\n" +
+"     , A.[avatar]\n" +
+"     , A.[role_id]\n" +
+"     , A.[status_id]\n" +
+"     , m.rate\n" +
+"     , c.profession\n" +
+"     , c.profession_intro\n" +
+"     , c.achievement_description\n" +
+"     , c.service_description\n" +
+"     , ISNULL(f.avg_star, 0) AS avg_star\n" +
+"FROM [HappyProgrammingDB].[dbo].[Accounts] A\n" +
+"JOIN [HappyProgrammingDB].[dbo].[RequestsFormMentee] RFM\n" +
+"     ON A.[user_name] = RFM.[mentor_name]\n" +
+"JOIN CV c on c.mentor_name = A.[user_name]\n" +
+"JOIN Mentors m on m.mentor_name = A.[user_name]\n" +
+"LEFT JOIN (\n" +
+"    SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star\n" +
+"    FROM dbo.FeedBacks\n" +
+"    GROUP BY mentor_name\n" +
+") f ON A.[user_name] = f.mentor_name\n" +
+"WHERE A.[role_id] = 2 \n" +
+"  AND RFM.[status_id] = 1\n" +
+"GROUP BY A.[user_name], A.[gmail], A.[full_name], A.[pass_word], A.[dob], A.[sex], A.[address], A.[phone], A.[avatar], A.[role_id], A.[status_id], c.cv_id, m.rate, c.profession,\n" +
+"         c.profession_intro, c.achievement_description, c.service_description, f.avg_star\n" +
+"ORDER BY m.rate DESC;";
+
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+
+        List<MentorProfileDTO> mentors = new ArrayList<>();
+        while (rs.next()) {
+            MentorProfileDTO mentor = new MentorProfileDTO();
+            mentor.setRate(rs.getFloat("rate"));
+            mentor.setCvID(rs.getInt("cv_id"));
+            mentor.setGmail(rs.getString("gmail"));
+            mentor.setFullName(rs.getString("full_name"));
+            mentor.setSex(rs.getBoolean("sex"));
+            mentor.setAddress(rs.getString("address"));
+            mentor.setPhone(rs.getString("phone"));
+            mentor.setDob(rs.getDate("dob"));
+            mentor.setAvatar(rs.getString("avatar"));
+            mentor.setProfession(rs.getString("profession"));
+            mentor.setProfessionIntro(rs.getString("profession_intro"));
+            mentor.setAchievementDescription(rs.getString("achievement_description"));
+            mentor.setService_description(rs.getString("service_description"));
+            mentor.setMentorName(rs.getString("user_name"));
+            mentor.setStarAVG(rs.getFloat("avg_star"));
+
+            // Fetch skills for this mentor
+            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
+            mentor.setListSkills(skills);
+
+            // Fetch feedbacks for this mentor
+            List<FeedBackDTO> feedbacks = fetchFeedbacks(rs.getString("user_name"), con);
+            mentor.setFeedBacks(feedbacks);
+
+            mentors.add(mentor);
+        }
+
+        return mentors;
     }
 
     public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
@@ -182,58 +253,11 @@ public class MentorProfileDAO {
     }
 
     public static void main(String[] args) throws SQLException {
-       
-        Connection con = new DBContext().connection; // Assuming DBContext provides connection
 
-        // Create a MentorDAO instance
         MentorProfileDAO dao = new MentorProfileDAO();
 
-        // Retrieve the mentor profile using "user2" as the mentor name
-        MentorProfileDTO mentorProfile = dao.getOneMentor("user5");
+        List<MentorProfileDTO> mentorProfile = dao.getTop5Mentors();
+        System.out.println(mentorProfile);
 
-        if (mentorProfile != null) {
-            System.out.println("Mentor Profile:");
-            System.out.println("Rate: " + mentorProfile.getRate());
-            System.out.println("CV ID: " + mentorProfile.getCvID());
-            System.out.println("Gmail: " + mentorProfile.getGmail());
-            System.out.println("Full Name: " + mentorProfile.getFullName());
-            System.out.println("Sex: " + mentorProfile.isSex());
-            System.out.println("Address: " + mentorProfile.getAddress());
-            System.out.println("Phone: " + mentorProfile.getPhone());
-            System.out.println("Date of Birth: " + mentorProfile.getDob());
-            System.out.println("Avatar: " + mentorProfile.getAvatar());
-            System.out.println("Profession: " + mentorProfile.getProfession());
-            System.out.println("Profession Intro: " + mentorProfile.getProfessionIntro());
-            System.out.println("Achievement Description: " + mentorProfile.getAchievementDescription());
-            System.out.println("Service Description: " + mentorProfile.getService_description());
-
-            // Print skills
-            System.out.println("\nSkills:");
-            for (Skill skill : mentorProfile.getListSkills()) {
-                System.out.println("Skill ID: " + skill.getSkillID());
-                System.out.println("Skill Name: " + skill.getSkillName());
-            }
-
-            // Print feedbacks
-            System.out.println("\nFeedbacks:");
-            for (FeedBackDTO feedback : mentorProfile.getFeedBacks()) {
-                System.out.println("Mentee Name: " + feedback.getMenteeName());
-                System.out.println("Star: " + feedback.getStar());
-                System.out.println("Comment: " + feedback.getComment());
-                System.out.println("Time Feedback: " + feedback.getTimeFeedBack());
-                System.out.println("Mentee Avatar: " + feedback.getAvatar());
-            }
-        } else {
-            System.out.println("Mentor with name '' not found.");
-        }
-
-        // Close the database connection (replace with your closing logic)
-        con.close();
-//        MentorProfileDAO dao = new MentorProfileDAO();
-//        List<MentorProfile> list = dao.getAllMentorBySkillID(2);
-//        for (var a : list) {
-//            System.out.println(a.getMentorName());
-//        }
-}
-
+    }
 }
