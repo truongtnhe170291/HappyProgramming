@@ -281,8 +281,15 @@
                                         <select id="week" ></select>
                                     </div>
                                     <div class="select-container">
-                                        <label for="year">Status: ${requestScope.status}</label>
-                                        
+
+                                        <c:if test="${status != ''}">
+                                            <label for="year">Status: ${status}</label>
+                                        </c:if>
+                                        <c:if test="${status eq ''}">
+                                            <label for="year">Status: Booking Schedule</label>
+                                        </c:if>
+
+
                                     </div>
                                 </div>
                                 <table id="scheduleTable">
@@ -297,14 +304,23 @@
                                     <ul>
                                         <li>Your selection of week will select for <span class="highlight">hole month</span></li>
                                         <li>You cannot booking a schedule on <span class="highlight">Saturday</span> and <span class="highlight">Sunday</span></li>
-                                        <li>You can <span class="highlight">Update</span> your schedule when status is <span class="highlight">Pending</span></li>
-                                        <c:forEach items="${requestScope.listSlot}" var="slot">
+                                        <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight">Pending</span></li>
+                                        <li><span class="highlight">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight"> first week</span></li>
+                                            <c:forEach items="${requestScope.listSlot}" var="slot">
                                             <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
                                             </c:forEach>
                                     </ul>
                                 </div>  
-                                <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a></div>
+
+
+
+                                <a href="bookSchedule"
+                                   <c:if test="${status != 'Saved' || status != ''}">
+                                       style="pointer-events: none"
+                                   </c:if> id="saveSelectedSlots">Save Selected Slots</a></div>
+
                             <a href="bookSchedule" id="sendSelectedSlots">Send Schedule</a></div>
+
                     </form>
 
                     <button id="renderButton" type="submit">Render</button>

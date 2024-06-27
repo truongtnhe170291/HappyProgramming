@@ -1,8 +1,11 @@
 
+import dal.MentorDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import models.SchedulePublic;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,12 +18,11 @@ import java.util.Date;
  */
 public class Test {
     public static void main(String[] args) {
-        String key = "1-TUE-3-25-06-2024";
-        if (key != null) {
-            String[] keyParts = key.split("-");
-            String slotId = keyParts[2];  // 3
-            String date = keyParts[3] + "-" + keyParts[4]+ "-" + keyParts[5];
-            System.out.println(slotId + " ok " + LocalDate.parse(convertDateFormat(date)));
+        MentorDAO mentorDao = new MentorDAO();
+        
+        List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor("son", "", "");
+        for (SchedulePublic schedulePublic : listsp) {
+            System.out.println(schedulePublic);
         }
     }
 
