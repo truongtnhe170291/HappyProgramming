@@ -93,9 +93,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     public static void main(String[] args) {
         CVDAO dao = new CVDAO();
-        //List<CVDTO> list = dao.getAllCV();
+        List<CVDTO> list = dao.getAllCV(1, 5);
          List<Status> statusList = dao.getAllStatuses();
-        System.out.println(statusList);
+        System.out.println(list);
     }
 
     /**

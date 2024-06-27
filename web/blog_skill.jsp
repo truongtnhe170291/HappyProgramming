@@ -83,67 +83,56 @@
             <!-- end: Header -->
             <!-- Content -->
             <section id="page-content">
-                <div class="container">
-                    <form action="SearchSkill" method="post" class="search-form">
-                        <img src="img/svg/search.svg" alt="search" class="svg">
-                        <input class="form-control me-sm-2 box-shadow-none" type="search" name="searchTerm" placeholder="Search..." aria-label="Search">
-                        <button type="submit" class="bu1">Search</button>
-                    </form>
+               <div class="container">
+    <form action="skill" method="get" class="search-form">
+        <img src="img/svg/search.svg" alt="search" class="svg">
+        <input class="form-control me-sm-2 box-shadow-none" type="search" name="searchTerm" placeholder="Search..." aria-label="Search" value="${searchTerm}">
+        <button type="submit" class="bu1">Search</button>
+    </form>
 
-
-                    <!-- post content -->
-                    <!-- Portfolio Filter -->
-                    <nav class="grid-filter gf-outline" data-layout="#blog">
-                        <ul>
-                            <li class="active"><a href="#" data-category="*">Show All</a></li>
-                            <li><a href="#" data-category=".bc-general">General</a></li>
-                            <li><a href="#" data-category=".bc-music">Music</a></li>
-                            <li><a href="#" data-category=".bc-economics">Economics</a></li>
-                            <li><a href="#" data-category=".bc-medical">medical</a></li>
-                            <li><a href="#" data-category=".bc-sport">Sport</a></li>
-                            <li><a href="#" data-category=".bc-science">Science</a></li>
-                        </ul>
-                    </nav> 
-                    <!-- end: Portfolio Filter -->
-                    <!-- Blog -->
-                    <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
-                        <c:forEach items="${requestScope.listSkill}" var="skill" varStatus="status">
-                            <a href="showmentor?id=${skill.skillID}">
-                                <div class="post-item border bc-general bc-music bc-economics">
-                                    <div class="post-item-wrap">
-                                        <div class="post-image">
-                                            <img alt="" src="./img/${skill.img}">
-                                            <span class="post-meta-category"><a href=""></a></span>
-                                        </div>
-                                        <div class="post-item-description">
-                                            <h2><a href="showmentor?id=${skill.skillID}">${status.index + 1}. ${skill.skillName}</a></h2>
-                                            <p>${skill.description}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </c:forEach>
-
-
-                        <!-- end: Post item-->
+    <!-- Blog -->
+    <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
+        <c:forEach items="${requestScope.listSkill}" var="skill" varStatus="status">
+            <a href="showmentor?id=${skill.skillID}">
+                <div class="post-item border bc-general bc-music bc-economics">
+                    <div class="post-item-wrap">
+                        <div class="post-image">
+                            <img alt="" src="./img/${skill.img}">
+                            <span class="post-meta-category"><a href=""></a></span>
+                        </div>
+                        <div class="post-item-description">
+                            <h2><a href="showmentor?id=${skill.skillID}">${status.index + 1}. ${skill.skillName}</a></h2>
+                            <p>${skill.description}</p>
+                        </div>
                     </div>
-                    <!-- end: Blog -->
-                    <!-- Pagination -->
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
                 </div>
-                <!-- end: post content -->
-            </section>
-            <!-- end: Content -->
+            </a>
+        </c:forEach>
+    </div>
+    <!-- end: Blog -->
 
-        </div>
+    <!-- Pagination -->
+    <ul class="pagination">
+        <c:if test="${currentPage > 1}">
+            <li class="page-item"><a class="page-link" href="skill?page=${currentPage - 1}&searchTerm=${searchTerm}"><i class="fa fa-angle-left"></i></a></li>
+        </c:if>
+        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+            <c:choose>
+                <c:when test="${loop.index == currentPage}">
+                    <li class="page-item active"><span class="page-link">${loop.index}</span></li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item"><a class="page-link" href="skill?page=${loop.index}&searchTerm=${searchTerm}">${loop.index}</a></li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:if test="${currentPage < totalPages}">
+            <li class="page-item"><a class="page-link" href="skill?page=${currentPage + 1}&searchTerm=${searchTerm}"><i class="fa fa-angle-right"></i></a></li>
+        </c:if>
+    </ul>
+    <!-- end: Pagination -->
+</div>
+
         <!-- end: Body Inner -->
         <!-- Scroll top -->
         <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>

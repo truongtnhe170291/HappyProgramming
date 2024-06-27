@@ -410,15 +410,54 @@ public class MentorDAO {
         }
     }
 
-    public void deleteCycle(String startDate, String endDate, String userName) {
+    public ArrayList<SchedulePublic> listSlotsCycleByMentor(String mentorName, int status) {
+
+        ArrayList<SchedulePublic> list = new ArrayList<>();
+
         try {
-            String query = "DELETE FROM Cycle \n"
-                    + "WHERE start_time = ? and end_time = ? and mentor_name = ?";
+
+            String query = "select * from Cycle c join Selected_Slot ss on c.cycle_id = ss.cycle_id " +
+"join Status_Selected st on st.status_id = ss.status_id where ss.status_id = ? and c.mentor_name = ?";
             con = new DBContext().connection;// mo ket noi voi sql
+
             ps = con.prepareStatement(query);
-            ps.setString(1, startDate);
-            ps.setString(2, endDate);
-            ps.setString(3, userName);
+
+            ps.setInt(1, status);
+
+            ps.setString(2, mentorName);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                list.add(new SchedulePublic(
+
+                        rs.getDate("day_of_slot"),
+
+                        rs.getString("slot_id"), 
+
+                        rs.getInt("selected_id"),
+
+                        rs.getInt("cycle_id"), 
+                        rs.getString("status_name")));
+
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("listSlots: " + e.getMessage());
+
+        }
+
+        return list;
+
+    }
+    
+    public void deleteCycle(int cycleId) {
+        try {
+            String query = "DELETE FROM Cycle WHERE cycle_id = ?";
+            ps = con.prepareStatement(query);
+            ps.setInt(1, cycleId);
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
@@ -442,6 +481,22 @@ public class MentorDAO {
         for (Day day : list) {
             System.out.println(day);
         }
+    }
+
+    public boolean checkContainSelectSlotSave(String userName, int statusId) {
+        String sql = "select * from Cycle c join Selected_Slot ss on c.cycle_id = ss.cycle_id where ss.status_id = ? and c.mentor_name = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, statusId);
+            ps.setString(2, userName);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("checkContainSelectSlotSave: " + e.getMessage());
+        }
+        return false;
     }
 
 }

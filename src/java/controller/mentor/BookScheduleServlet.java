@@ -17,15 +17,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import models.Account;
 import models.FormData;
+import models.SchedulePublic;
 import models.Slot;
 import models.SlotData;
 
@@ -38,6 +42,7 @@ public class BookScheduleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private Gson gson = new Gson();
+    private MentorDAO mentorDao = new MentorDAO();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
     // + sign on the left to edit the code.">
@@ -53,18 +58,33 @@ public class BookScheduleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // check login
-//        Account acc = (Account) request.getSession().getAttribute("user");
-//        if (acc == null) {
-//            response.sendRedirect("login.jsp");
-//            return;
-//        }
+        Account acc = (Account) request.getSession().getAttribute("user");
+        if (acc == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
         // get thu 2 của tuan sau nua
         LocalDate today = LocalDate.now();
         LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
         LocalDate nextNextMonday = nextMonday.plusWeeks(1);
-
+        String status="";
+        //get list schdule
+        if(mentorDao.checkContainSelectSlotSave(acc.getUserName(), 6)){
+            List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), 6);
+            for(SchedulePublic s : listsp){
+                LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
+                s.setNameOfDay(date.getDayOfWeek());
+                status = s.getStatus();
+            }
+            
+            for(SchedulePublic s : listsp){
+                System.out.println(s.getNameOfDay());
+            }
+            request.setAttribute("listScheduleSave", listsp);
+        }
+        request.setAttribute("status", status);
+        
         // get list Slot
-        MentorDAO mentorDao = new MentorDAO();
         List<Slot> listSlot = mentorDao.listSlots();
 
 //        int cycleID = mentorDao.getCycleIdByMentor(acc.getUserName(), getStartDate().toString(),
@@ -92,6 +112,14 @@ public class BookScheduleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+<<<<<<< HEAD
+=======
+        Account acc = (Account) request.getSession().getAttribute("user");
+        if (acc == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+>>>>>>> e9c0818bae49b34d8885a8b986e489d0b94ec91e
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -102,62 +130,198 @@ public class BookScheduleServlet extends HttpServlet {
                 jsonBuffer.append(line);
             }
         }
-
+        String requestBody = jsonBuffer.toString();
         JsonObject jsonObject = gson.fromJson(jsonBuffer.toString(), JsonObject.class);
 
         JsonObject[] slots = gson.fromJson(jsonObject.get("slots"), JsonObject[].class);
-//        List<SlotData> listSchedule = new ArrayList<>();
+//        for (JsonObject s : slots) {
+//            System.out.println(s);
+//        }
+        String status = "";
+        Map<String, Object> jsonData = parseJson(requestBody);
+        if (jsonData.get("status") instanceof String) {
+            status = (String) jsonData.get("status");
+        }
+
+        String endDate = "";
+        if (jsonData.get("endDate") instanceof String) {
+            endDate = (String) jsonData.get("endDate");
+        }
+        String startDate = "";
+        if (jsonData.get("startDate") instanceof String) {
+            startDate = (String) jsonData.get("startDate");
+        }
+        List<SlotData> listSchedule = new ArrayList<>();
         for (JsonObject slot : slots) {
             for (Map.Entry<String, JsonElement> entry : slot.entrySet()) {
                 String key = entry.getKey();
-                System.out.println(key);
-//                listSchedule.add(getSlotDataByKey(key));
+                listSchedule.add(getSlotDataByKey(key));
+            }
+        }
+        LocalDate deadLineDate = LocalDate.now().plusDays(5);
+        if (status.equals("save")) {
+            if (!mentorDao.checkContainSelectSlotSave(acc.getUserName(), 6)) {
+                if (!listSchedule.isEmpty()) {
+                    mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
+                    int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);
+                    for (SlotData s : listSchedule) {
+                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 6);
+                    }
+                }
+            } else {
+                // delete schedule old
+                List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), 6);
+                if (!listsp.isEmpty()) {
+                    int cycleID = listsp.get(0).getCycleID();
+                    mentorDao.deleteSchedulePublic(cycleID);
+                    mentorDao.deleteCycle(cycleID);
+                }
+                
+                if (!listSchedule.isEmpty()) {
+                    mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
+                    int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);
+                    for (SlotData s : listSchedule) {
+                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 6);
+                    }
+                }
+
+            }
+        }else{
+            if (!mentorDao.checkContainSelectSlotSave(acc.getUserName(), 6)) {
+                if (!listSchedule.isEmpty()) {
+                    mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
+                    int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);
+                    for (SlotData s : listSchedule) {
+                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 1);
+                    }
+                }
+            }else{
+                List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), 6);
+                if (!listsp.isEmpty()) {
+                    int cycleID = listsp.get(0).getCycleID();
+                    mentorDao.deleteSchedulePublic(cycleID);
+                    mentorDao.deleteCycle(cycleID);
+                }
+                
+                if (!listSchedule.isEmpty()) {
+                    mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
+                    int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);
+                    for (SlotData s : listSchedule) {
+                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 1);
+                    }
+                }
             }
         }
         
-        
-        
+        System.out.println("Status: " + status);
+        System.out.println("start: " + startDate);
+        System.out.println("End Date: " + endDate);
 
+//        
+//        
+//            
+//            
+//        }
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("status", "success");
-        //jsonResponse.addProperty("week", week);
 
         PrintWriter out = response.getWriter();
         out.print(jsonResponse.toString());
         out.flush();
     }
 
-    public String getSlotName(int value) {
-        String slotName = "";
-        switch (value) {
-            case 1: {
-                slotName = "SLOT01";
-                break;
-            }
-            case 2: {
-                slotName = "SLOT02";
-                break;
-            }
-            case 3: {
-                slotName = "SLOT03";
-                break;
-            }
-            case 4: {
-                slotName = "SLOT04";
-                break;
+    private Map<String, Object> parseJson(String json) {
+        Map<String, Object> map = new HashMap<>();
+        json = json.trim();
+        if (json.startsWith("{") && json.endsWith("}")) {
+            json = json.substring(1, json.length() - 1);
+            String[] pairs = json.split(",");
+            for (String pair : pairs) {
+                String[] keyValue = pair.split(":", 2);
+                if (keyValue.length == 2) {
+                    String key = keyValue[0].trim().replace("\"", "");
+                    String value = keyValue[1].trim();
+                    if (value.startsWith("{") && value.endsWith("}")) {
+                        map.put(key, parseJson(value));
+                    } else if (value.startsWith("[") && value.endsWith("]")) {
+                        map.put(key, parseJsonArray(value));
+                    } else if (value.startsWith("\"") && value.endsWith("\"")) {
+                        map.put(key, value.substring(1, value.length() - 1));
+                    } else {
+                        map.put(key, value);
+                    }
+                }
             }
         }
-        return slotName;
+        return map;
     }
 
-    private SlotData getSlotDataByKey(String key) {
-        if (key != null) {
-            String[] keyParts = key.split("-");
-            String slotId = keyParts[2];  // 3
-            String date = keyParts[3] + "-" + keyParts[4];
-            return new SlotData(slotId, LocalDate.parse(date));
+    private List<Object> parseJsonArray(String jsonArray) {
+        List<Object> list = new ArrayList<>();
+        jsonArray = jsonArray.trim();
+        if (jsonArray.startsWith("[") && jsonArray.endsWith("]")) {
+            jsonArray = jsonArray.substring(1, jsonArray.length() - 1);
+            String[] items = jsonArray.split(",");
+            for (String item : items) {
+                item = item.trim();
+                if (item.startsWith("{") && item.endsWith("}")) {
+                    list.add(parseJson(item));
+                } else if (item.startsWith("[") && item.endsWith("]")) {
+                    list.add(parseJsonArray(item));
+                } else if (item.startsWith("\"") && item.endsWith("\"")) {
+                    list.add(item.substring(1, item.length() - 1));
+                } else {
+                    list.add(item);
+                }
+            }
+        }
+        return list;
+    }
+
+    public String getSlotName(int value) {
+        switch (value) {
+            case 1: {
+                return "SLOT01";
+            }
+            case 2: {
+                return "SLOT02";
+            }
+            case 3: {
+                return "SLOT03";
+            }
+            case 4: {
+                return "SLOT04";
+            }
         }
         return null;
     }
 
+    private SlotData getSlotDataByKey(String key) {
+        try {
+            if (key != null) {
+                String[] keyParts = key.split("-");
+                String slotId_raw = keyParts[2];  // 3
+                String slotId = getSlotName(Integer.parseInt(slotId_raw));
+                String date = keyParts[3] + "-" + keyParts[4] + "-" + keyParts[5];
+                return new SlotData(slotId, LocalDate.parse(convertDateFormat(date)));
+            }
+            return null;
+        } catch (NumberFormatException e) {
+            System.out.println("getSlotDataByKey" + e.getMessage());
+        }
+        return null;
+    }
+
+    private String convertDateFormat(String date) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = "";
+        try {
+            Date parsedDate = inputFormat.parse(date);
+            formattedDate = outputFormat.format(parsedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
+    }
 }

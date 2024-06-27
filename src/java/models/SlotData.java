@@ -18,10 +18,6 @@ public class SlotData {
         this.slotId = slotId;
         this.date = date;
     }
-    
-    public SlotData() {
-        
-    }
 
     public String getSlotId() {
         return slotId;
