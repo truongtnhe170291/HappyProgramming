@@ -310,10 +310,11 @@ INSERT INTO Status_Selected(status_name) VALUES
 ('Approved'),
 ('Rejected'),
 ('Not yet'),
-('attended'),
+('Attended'),
 ('Saved'),
 ('Wait For Payment'),
-('Out Of Date')
+('Out Of Date'),
+('Absent')
 
 GO
 
