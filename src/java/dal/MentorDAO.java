@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.util.Locale;
 import models.Account;
 import models.BookSchedule;
+import models.Cycle;
 import models.Day;
 import models.SchedulePublic;
 import models.SelectedSlot;
@@ -59,6 +60,28 @@ public class MentorDAO {
         }
         return list;
     }
+
+//    public ArrayList<SchedulePublic> listSlotsCycleByMentor(String mentorName, int status) {
+//        ArrayList<SchedulePublic> list = new ArrayList<>();
+//        try {
+//            String query = "select * from Cycle c join Selected_Slot ss on c.cycle_id = ss.cycle_id where ss.status_id = ? and c.mentor_name = ?";
+//            con = new DBContext().connection;// mo ket noi voi sql
+//            ps = con.prepareStatement(query);
+//            ps.setInt(1, status);
+//            ps.setString(2, mentorName);
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                list.add(new SchedulePublic(
+//                        rs.getDate(10),
+//                        rs.getString(8),
+//                        rs.getInt(7),
+//                        rs.getInt(1)));
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("listSlots: " + e.getMessage());
+//        }
+//        return list;
+//    }
     // public List<Mentor> getMentors() {
     // String sql = "select * from mentors m join Accounts a on m.mentor_name =
     // a.user_name";
@@ -86,7 +109,6 @@ public class MentorDAO {
     // System.out.println(m.getUserName());
     // }
     // }
-
     public boolean changeMentorRate(String mentorName, int rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
                 + "SET [rate] = ?\n"
@@ -388,15 +410,81 @@ public class MentorDAO {
         }
     }
 
-    public void deleteCycle(String startDate, String endDate, String userName) {
+    public ArrayList<SchedulePublic> listSlotsCycleByMentor(String mentorName, String start, String end) {
+
+        ArrayList<SchedulePublic> list = new ArrayList<>();
+
         try {
-            String query = "DELETE FROM Cycle \n"
-                    + "WHERE start_time = ? and end_time = ? and mentor_name = ?";
+
+            String query = "select * from Cycle c join Selected_Slot ss on c.cycle_id = ss.cycle_id \n"
+                    + "join Status_Selected st on st.status_id = ss.status_id \n"
+                    + "where c.mentor_name = ? and c.start_time = ? and c.end_time = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+
+            ps = con.prepareStatement(query);
+
+            ps.setString(1, mentorName);
+
+            ps.setString(2, start);
+
+            ps.setString(3, end);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                list.add(new SchedulePublic(
+                        rs.getDate("day_of_slot"),
+                        rs.getString("slot_id"),
+                        rs.getInt("selected_id"),
+                        rs.getInt("cycle_id"),
+                        rs.getString("status_name")));
+
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("listSlots: " + e.getMessage());
+
+        }
+
+        return list;
+
+    }
+
+    public Cycle getNewCycleByUser(String userName) {
+        Cycle c = new Cycle();
+        try {
+            String query = "SELECT TOP 1 * FROM Cycle c\n"
+                    + "WHERE c.mentor_name = ?\n"
+                    + "ORDER BY c.cycle_id DESC";
             con = new DBContext().connection;// mo ket noi voi sql
             ps = con.prepareStatement(query);
-            ps.setString(1, startDate);
-            ps.setString(2, endDate);
-            ps.setString(3, userName);
+            ps.setString(1, userName);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                c = new Cycle(
+                        rs.getString(2), 
+                        rs.getString(3), 
+                        rs.getString(5));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return c;
+    }
+    
+    public static void main(String[] args) {
+        MentorDAO dao = new MentorDAO();
+        System.out.println(dao.getNewCycleByUser("son"));
+    }
+
+    public void deleteCycle(int cycleId) {
+        try {
+            String query = "DELETE FROM Cycle WHERE cycle_id = ?";
+            ps = con.prepareStatement(query);
+            ps.setInt(1, cycleId);
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("deleteSchedulePublic: " + e.getMessage());
@@ -414,12 +502,20 @@ public class MentorDAO {
         return list;
     }
 
-    public static void main(String[] args) {
-        MentorDAO dao = new MentorDAO();
-        ArrayList<Day> list = dao.listDayByCycle("2024-06-25");
-        for (Day day : list) {
-            System.out.println(day);
+    public boolean checkContainSelectSlotSave(String userName, int statusId) {
+        String sql = "select * from Cycle c join Selected_Slot ss on c.cycle_id = ss.cycle_id where ss.status_id = ? and c.mentor_name = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, statusId);
+            ps.setString(2, userName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("checkContainSelectSlotSave: " + e.getMessage());
         }
+        return false;
     }
 
 }

@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <servlet>
-        <servlet-name>DeleteSkill</servlet-name>
-        <servlet-class>controller.manager.DeleteSkill</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateStatusSkill</servlet-name>
-        <servlet-class>controller.manager.UpdateStatusSkill</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BanAcount</servlet-name>
-        <servlet-class>controller.manager.BanAccount</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DeleteSkill</servlet-name>
-        <url-pattern>/DeleteSkill</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateStatusSkill</servlet-name>
-        <url-pattern>/UpdateStatusSkill</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BanAcount</servlet-name>
-        <url-pattern>/BanAcount</url-pattern>
-    </servlet-mapping>
+
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+	 version="6.0">
+       <session-config>
+            <session-timeout>
+            60
+        </session-timeout>      
+    </session-config>
+<welcome-file-list>
+        <welcome-file>homes.jsp</welcome-file>
+        </welcome-file-list>
 </web-app>
