@@ -1,294 +1,283 @@
-<%-- 
-    Document   : courseListSkillDetail
-    Created on : May 21, 2024, 3:39:50 PM
-    Author     : 84979
---%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<!DOCTYPE html>
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if IE 9 ]><html class="ie ie9" lang="en"> <![endif]-->
 <html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="INSPIRO" />
+    <meta name="description" content="Themeforest Template Polo, html template">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Document title -->
+    <title>POLO | The Multi-Purpose HTML5 Template</title>
+    <!-- Stylesheets & Fonts -->
+    <link href="css/plugins.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
 
-    <head>
-        <meta charset="utf-8">
-        <title>Fmaster</title>
-        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-        <!-- Favicons-->
-        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
-        <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-        <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
-        <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
-        <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
 
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+        }
 
+        .slider {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
 
-        <!-- CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/superfish.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
-        <link href="fontello/css/fontello.css" rel="stylesheet">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
+        .slide {
+            flex: 0 0 25%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
 
-            .col-item {
-                background: #fff;
-                border: 1px solid #e1e1e1;
-                border-radius: 5px;
-                overflow: hidden;
-                margin: 15px 0;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                transition: transform 0.3s ease;
-            }
+        .slide img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
 
-            .col-item:hover {
-                transform: translateY(-5px);
-            }
+        .slide h3 {
+            margin: 10px 0 5px;
+            font-size: 16px;
+        }
 
-            .ribbon_course {
-                width: 100px;
-                height: 30px;
-                background: #f44336;
-                position: absolute;
-                top: 10px;
-                left: -10px;
-                text-align: center;
-                line-height: 30px;
-                color: #fff;
-                font-size: 14px;
-                transform: rotate(-45deg);
-            }
+        .slide p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
 
-            .photo img {
-                width: 100%;
-                height: auto;
-                border-bottom: 1px solid #e1e1e1;
-            }
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: none;
+            padding: 15px 10px;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 10;
+        }
 
-            .cat_row {
-                background: #f7f7f7;
-                padding: 10px;
-                border-top: 1px solid #e1e1e1;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
+        .arrow:hover {
+            background: rgba(0,0,0,0.5);
+        }
 
-            .cat_row a {
-                color: #007bff;
-                text-decoration: none;
-            }
+        .left {
+            left: 0;
+        }
+        .right {
+            right: 0;
+        }
+    </style>
+</head>
 
-            .info {
-                padding: 15px;
-            }
-
-            .info h4 {
-                font-size: 20px;
-                margin-bottom: 10px;
-                color: #333;
-            }
-
-            .info p {
-                font-size: 14px;
-                color: #666;
-                margin-bottom: 10px;
-            }
-
-            .rating i {
-                color: #ff9800;
-                margin-right: 2px;
-            }
-
-            .price {
-                font-size: 18px;
-                font-weight: bold;
-                color: #f44336;
-            }
-
-            .separator {
-                border-top: 1px solid #e1e1e1;
-                padding-top: 10px;
-                margin-top: 10px;
-                display: flex;
-                justify-content: space-between;
-            }
-
-            .btn-add a, .btn-details a {
-                color: #fff;
-                text-decoration: none;
-                display: inline-block;
-                padding: 10px 20px;
-                border-radius: 25px;
-                transition: background 0.3s ease;
-            }
-
-            .btn-add a {
-                background: #4caf50;
-            }
-
-            .btn-add a:hover {
-                background: #45a049;
-            }
-
-            .btn-details a {
-                background: #007bff;
-            }
-
-            .btn-details a:hover {
-                background: #0069d9;
-            }
-
-        </style>
-
-    </head>
-
-    <body>
-        <jsp:include page="header.jsp"/>
-
-
-        <section id="main_content">
+<body>
+    <div class="body-inner">
+        <jsp:include page="header.jsp" />
+        <section id="page-content" class="sidebar-right">
             <div class="container">
+                <div class="row">
+                    <!-- content -->
+                    <div class="content col-lg-9">
+                        <!-- Blog -->
+                        <div id="blog" class="single-post">
+                            <!-- Post item-->
+                            <div class="post-item">
+                                <div class="post-item-wrap">
+                                    <div class="post-image">
+                                        <a href="#">
+                                            <img alt="" src="images/blog/1.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="post-item-description">
+                                        <h2>Standard post with a single image</h2>
 
-                <section class="background-grey">
-                    <div class="container">
-                        <div class="heading-text heading-section text-center">
-                            <h2>MEET OUR MENTOR</h2>
-                            <p>Lorem ipsum dolor sit amet, consecte adipiscing elit. Suspendisse condimentum porttitor cursumus.
-                            </p>
+                                        <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet. Ut nec metus a mi ullamcorper hendrerit. Nulla facilisi. Pellentesque
+                                            sed nibh a quam accumsan dignissim quis quis urna. The most happiest time of the day!. Praesent id dolor dui, dapibus gravida elit. Donec consequat laoreet sagittis. Suspendisse ultricies ultrices viverra. Morbi
+                                            rhoncus laoreet tincidunt. Mauris interdum convallis metus.M</p>
+                                        <div class="blockquote">
+                                            <p>The world is a dangerous place to live; not because of the people who are evil, but because of the people who don't do anything about it.</p>
+                                            <small>by <cite>Albert Einstein</cite></small>
+                                        </div>
+                                        <p> The most happiest time of the day!. Praesent id dolor dui, dapibus gravida elit. Donec consequat laoreet sagittis. Suspendisse ultricies ultrices viverra. Morbi rhoncus laoreet tincidunt. Mauris interdum convallis
+                                            metus. Suspendisse vel lacus est, sit amet tincidunt erat. Etiam purus sem, euismod eu vulputate eget, porta quis sapien. Donec tellus est, rhoncus vel scelerisque id, iaculis eu nibh.</p>
+                                        <p>Donec posuere bibendum metus. Quisque gravida luctus volutpat. Mauris interdum, lectus in dapibus molestie, quam felis sollicitudin mauris, sit amet tempus velit lectus nec lorem. Nullam vel mollis neque. The most
+                                            happiest time of the day!. Nullam vel enim dui. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed tincidunt accumsan massa id viverra. Sed sagittis, nisl sit amet imperdiet
+                                            convallis, nunc tortor consequat tellus, vel molestie neque nulla non ligula. Proin tincidunt tellus ac porta volutpat. Cras mattis congue lacus id bibendum. Mauris ut sodales libero. Maecenas feugiat sit amet
+                                            enim in accumsan.</p>
+                                        <p>Duis vestibulum quis quam vel accumsan. Nunc a vulputate lectus. Vestibulum eleifend nisl sed massa sagittis vestibulum. Vestibulum pretium blandit tellus, sodales volutpat sapien varius vel. Phasellus tristique
+                                            cursus erat, a placerat tellus laoreet eget. Fusce vitae dui sit amet lacus rutrum convallis. Vivamus sit amet lectus venenatis est rhoncus interdum a vitae velit.</p>
+                                    </div>
+                                    <div class="post-tags">
+                                        <a href="#">Life</a>
+                                        <a href="#">Sport</a>
+                                        <a href="#">Tech</a>
+                                        <a href="#">Travel</a>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="row team-members">
-                            <c:forEach items="${requestScope.mentors}" var="member">
-                                <div class="col-lg-3">
-                                    <div class="team-member">
-                                        <div class="team-image">
-                                            <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
-                                                <img src="./img/${member.avatar}" alt="${member.mentorName}">
-                                            </a>
-                                        </div>
-                                        <div class="team-desc">
-                                            <h3>
-                                                <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">${member.getFull_name()}</a>
-                                            </h3>
-                                            <div>
-                                                <c:forEach items="${member.listSkills}" var="skill">
-                                                    <p>${skill.skillName}</p>
-                                                </c:forEach>
-                                            </div>
-                                            <div id="te" class="rating">
-                                            <div class="star-rating" data-rating="${member.starAVG}">
-                                               
-                                            </div>
-                                        </div>
-                                            <div class="align-center">
-                                                <a class="btn btn-xs btn-slide btn-light" href="#">
-                                                    <i class="fab fa-facebook-f"></i>
-                                                    <span>Facebook</span>
-                                                </a>
-                                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="100">
-                                                    <i class="fab fa-twitter"></i>
-                                                    <span>Twitter</span>
-                                                </a>
-                                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="118">
-                                                    <i class="fab fa-instagram"></i>
-                                                    <span>Instagram</span>
-                                                </a>
-                                                <a class="btn btn-xs btn-slide btn-light" href="#" data-width="80">
-                                                    <i class="icon-mail"></i>
-                                                    <span>Mail</span>
-                                                </a>
-                                            </div>
-                                        </div>
+                        <!-- end: Post item-->
+                    </div>
+                    <!-- end: content -->
+                    <!-- Sidebar-->
+                    <div class="sidebar sticky-sidebar col-lg-3">
+                        <!--Tabs with Posts-->
+                        <div class="widget">
+                            <h4 class="widget-title">Recent Posts</h4>
+                            <div class="post-thumbnail-list">
+                                <div class="post-thumbnail-entry">
+                                    <img alt="" src="images/blog/thumbnail/5.jpg">
+                                    <div class="post-thumbnail-content">
+                                        <a href="#">A true story, that never been told!</a>
+                                        <span class="post-date"><i class="icon-clock"></i> 6m ago</span>
+                                        <span class="post-category"><i class="fa fa-tag"></i> Technology</span>
                                     </div>
                                 </div>
-                            </c:forEach>
+                                <div class="post-thumbnail-entry">
+                                    <img alt="" src="images/blog/thumbnail/6.jpg">
+                                    <div class="post-thumbnail-content">
+                                        <a href="#">Beautiful nature, and rare feathers!</a>
+                                        <span class="post-date"><i class="icon-clock"></i> 24h ago</span>
+                                        <span class="post-category"><i class="fa fa-tag"></i> Lifestyle</span>
+                                    </div>
+                                </div>
+                                <div class="post-thumbnail-entry">
+                                    <img alt="" src="images/blog/thumbnail/7.jpg">
+                                    <div class="post-thumbnail-content">
+                                        <a href="#">Lorem ipsum dolor sit amet</a>
+                                        <span class="post-date"><i class="icon-clock"></i> 11h ago</span>
+                                        <span class="post-category"><i class="fa fa-tag"></i> Lifestyle</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-
-
                     </div>
+                    <div class="container">
+                        <h2>FEATURED TEMPLATES</h2>
+                        <div class="slider-container">
+                            <button class="arrow left" id="leftArrow">&lt;</button>
+                            <div class="slider">
+                                <c:forEach items="${requestScope.mentors}" var="member"> 
+                                    <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                        <div class="slide">
+                                            <img src="./img/${member.avatar}" alt="Template 1"/>
+                                            <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                                <h3>${member.getFull_name()}</h3>
+                                            </a>
+                                            <c:forEach items="${member.listSkills}" var="skill">
+                                                <p>${skill.skillName}</p>
+                                            </c:forEach>
+                                            <div class="star-rating" data-rating="${member.starAVG}">
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </c:forEach>
+                            </div>
+                            <button class="arrow right" id="rightArrow">&gt;</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-    </div><!-- End row -->
-    <hr>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <ul class="pagination">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
+
     </div>
 
-</div><!-- End container -->
-</section><!-- End main_content -->
+    <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
+    <!--Plugins-->
+    <script src="js/jquery.js"></script>
+    <script src="js/plugins.js"></script>
+    <!--Template functions-->
+    <script src="js/functions.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const leftBtn = document.getElementById('leftArrow');
+        const rightBtn = document.getElementById('rightArrow');
+        let currentIndex = 0;
+        const totalSlides = slides.length;
 
-
-<div id="toTop">Back to top</div>
-
-<!-- JQUERY -->
-<script src="jss/jquery-2.2.4.min.js"></script>
-
-
-<!-- OTHER JS --> 
-<style>
-    .team-image img {
-        width: 100%; /* Đặt chiều rộng của ảnh bằng với chiều rộng của khung chứa */
-        height: auto; /* Đặt chiều cao tự động để giữ tỉ lệ ảnh */
-        border-radius: 50%; /* Làm cho ảnh tròn */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Thêm hiệu ứng đổ bóng */
-    }
-</style>
-<script src="jss/superfish.js"></script>
-<script src="jss/bootstrap.min.js"></script>
-<script src="jss/retina.min.js"></script>
-<script src="assets/validate.js"></script>
-<script src="jss/jquery.placeholder.js"></script>
-<script src="jss/functions.js"></script>
-<script src="jss/classie.js"></script>
-<script src="jss/uisearch.js"></script>
-<script>new UISearch(document.getElementById('sb-search'));</script>
-  <script>
-   
-    document.querySelectorAll('.star-rating').forEach(function(element) {
-       
-        var rating = parseFloat(element.getAttribute('data-rating'));
-
-        // Calculate the number of full stars, half star, and empty stars
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 !== 0;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-        // Create and append stars to the rating element
-        for (let i = 0; i < fullStars; i++) {
-            const star = document.createElement('i');
-            star.classList.add('fas', 'fa-star');
-            element.appendChild(star);
+        function updateSlider() {
+            slider.style.transform = `translateX(-` + currentIndex * 25 + `%)`;
         }
-        if (hasHalfStar) {
-            const halfStar = document.createElement('i');
-            halfStar.classList.add('fas', 'fa-star-half-alt');
-            element.appendChild(halfStar);
+
+        function slideLeft() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateSlider();
         }
-        for (let i = 0; i < emptyStars; i++) {
-            const emptyStar = document.createElement('i');
-            emptyStar.classList.add('far', 'fa-star');
-            element.appendChild(emptyStar);
+
+        function slideRight() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSlider();
         }
+
+        leftBtn.addEventListener('click', slideLeft);
+        rightBtn.addEventListener('click', slideRight);
+
+        updateSlider();
+
+        console.log('Script loaded');
+        console.log('Left button:', leftBtn);
+        console.log('Right button:', rightBtn);
     });
-</script>
 
 
+    </script>
+    <script>
+        document.querySelectorAll('.star-rating').forEach(function (element) {
 
+            var rating = parseFloat(element.getAttribute('data-rating'));
+
+            // Calculate the number of full stars, half star, and empty stars
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+            // Create and append stars to the rating element
+            for (let i = 0; i < fullStars; i++) {
+                const star = document.createElement('i');
+                star.classList.add('fas', 'fa-star');
+                element.appendChild(star);
+            }
+            if (hasHalfStar) {
+                const halfStar = document.createElement('i');
+                halfStar.classList.add('fas', 'fa-star-half-alt');
+                element.appendChild(halfStar);
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                const emptyStar = document.createElement('i');
+                emptyStar.classList.add('far', 'fa-star');
+                element.appendChild(emptyStar);
+            }
+        });
+    </script>
 </body>
+
 </html>

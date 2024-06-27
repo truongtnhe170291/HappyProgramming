@@ -309,10 +309,27 @@
                     <section class="transaction-history">
                         <div class="tabs">
                             <button class="active" id="historyBtn">History</button>
+                            <button  id="holdBtn">Hold</button>
                             <button id="depositBtn">Deposit</button>
                         </div>
                         <div id="historyContent" class="tab-content active">
                             <table class="transactions">
+                                <c:forEach items="${requestScope.listTran}" var="tran">
+                                    <tr>
+                                        <td>${tran.create_date}</td>
+                                        <td>${tran.message}</td>
+                                        <td class="test_trans" value="${tran.amount}">${tran.user_send == sessionScope.user.userName?"-":"+"}${tran.amount}</td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                            <div>
+                                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+                                    <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <div id="holdContent" class="tab-content">
+                            <table class="hold_history">
                                 <c:forEach items="${requestScope.listTran}" var="tran">
                                     <tr>
                                         <td>${tran.create_date}</td>
@@ -357,6 +374,7 @@
                             </div>
                         </div>
                     </section>
+                        
                 </main>
             </div>
         </div>
