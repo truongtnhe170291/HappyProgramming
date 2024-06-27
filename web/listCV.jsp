@@ -205,14 +205,141 @@
                 </div>
                 <ul class="navbar-nav navbar-right">
 
-                    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                            class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
-                            <div class="dropdown-header">
-                                Notifications
-                                <div class="float-right">
-                                    <a href="#">Mark All As Read</a>
+                        </ul>
+                        <div class="section-body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="card">
+                                        <form method="get" action="listCV">
+                                            <label for="statusFilter">Filter by Status:</label>
+                                            <select name="statusFilter" id="statusFilter">
+                                                <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
+                                                <c:forEach items="${statusList}" var="status">
+                                                    <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
+                                                        ${status.statusName}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                            <button type="submit">Filter</button>
+                                        </form>
+                                        <div class="card-header">
+                                            <h4>List CV Mentor</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>NO</th>
+                                                            <th>Mentor</th>
+                                                            <th>Comment</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach items="${requestScope.cvList}" var="cv">
+                                                            <tr>
+                                                                <td>${cv.cvId}</td>
+                                                                <td>${cv.fullName}</td>
+
+                                                                <td>
+                                                                    <input id="note_${cv.cvId}" required name="note" value="" class="userDatatable-content--date" type="text" />
+                                                                    <form id="form_${cv.cvId}">
+                                                                        <input type="hidden" name="cvId" value="${cv.cvId}" />
+                                                                        <input id="status_${cv.cvId}" type="hidden" name="status" value="" />
+                                                                        <input id="note_Input_${cv.cvId}" type="hidden" name="note" value="" />
+                                                                      
+                                                                    </form>
+                                                                </td>
+                                                                <td>${cv.status.statusName}</td>
+                                                                <td>
+                                                                    <button class="btn btn-info btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                        <div id="requestDetailsPopup_${cv.cvId}" class="popup">
+                                                                            <div class="popup-content">
+                                                                                <span class="close">&times;</span>
+                                                                                <h2>CV Details</h2>
+                                                                                <p><strong>Mentor Name:</strong> <span id="popupMentorName_${cv.cvId}">${cv.userName}</span></p>
+                                                                                <p><strong>Email:</strong> <span id="popupEmail_${cv.cvId}">${cv.gmail}</span></p>
+                                                                                <p><strong>Full name:</strong> <span id="popupFullName_${cv.cvId}">${cv.fullName}</span></p>
+                                                                                <p><strong>DoB:</strong> <span id="popupDoB_${cv.cvId}">${cv.dob}</span></p>
+                                                                                <p><strong>Gender:</strong> <span id="popupGender_${cv.cvId}">${cv.sex ? "Male" : "Female"}</span></p>
+                                                                                <p><strong>Address:</strong> <span id="popupAddress_${cv.cvId}">${cv.address}</span></p>
+                                                                                <p><strong>Profession:</strong> <span id="popupProfession_${cv.cvId}">${cv.profession}</span></p>
+                                                                                <p><strong>Profession Introduction:</strong> <span id="popupProfessionIntro_${cv.cvId}">${cv.professionIntro}</span></p>
+                                                                                <p><strong>Achievement Description:</strong> <span id="popupAchievementDescription_${cv.cvId}">${cv.achievementDescription}</span></p>
+                                                                                <p><strong>Service Description:</strong> <span id="popupServiceDescription_${cv.cvId}">${cv.serviceDescription}</span></p>
+                                                                                <p><strong>Skills:</strong>
+                                                                                    <span id="popupSkills_${cv.cvId}">
+                                                                                        <c:forEach items="${cv.listSkill}" var="skill">
+                                                                                            <p>${skill.skillName}</p>
+                                                                                        </c:forEach>
+                                                                                    </span>
+                                                                                </p>
+
+                                                                                <c:if test="${not empty cv.note}">
+                                                                                    <div class="note-section">
+                                                                                        <strong>Note:</strong>
+                                                                                        <p>${cv.note}</p>
+                                                                                    </div>
+                                                                                </c:if>
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                    <c:if test="${cv.status.statusId == 1}">
+                                                                        <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                                                        <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm" data-cv-id="${cv.cvId}"><i class="fas fa-times"></i></button>
+                                                                        </c:if>
+
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- Popup for note input -->
+                                        <div id="notePopup" class="popup">
+                                            <div class="popup-content">
+                                                <span class="close">&times;</span>
+                                                <h2>Reject CV</h2>
+                                                <form id="noteForm" method="get" action="changeStatus">
+                                                    <input type="hidden" name="cvId" id="popupCvId" value="" />
+                                                    <input type="hidden" name="status" value="3" />
+                                                    <label for="popupNote">Note:</label>
+                                                    <input type="text" name="note" id="popupNote" required />
+                                                    <button type="submit" class="btn btn-danger">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div>
+                                            <c:if test="${currentPage > 1}">
+                                                <a href="listCV?page=${currentPage - 1}&statusFilter=${statusFilter}">Previous</a>
+                                            </c:if>
+                                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                                <c:choose>
+                                                    <c:when test="${i == currentPage}">
+                                                        <span>${i}</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="listCV?page=${i}&statusFilter=${statusFilter}">${i}</a>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                            <c:if test="${currentPage < totalPages}">
+                                                <a href="listCV?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
+                                            </c:if>
+                                        </div>
+
+
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="dropdown-footer text-center">

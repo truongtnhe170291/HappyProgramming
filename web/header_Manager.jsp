@@ -167,7 +167,7 @@
               <a href="#" class="menu-toggle nav-link has-dropdown"><i
                   data-feather="monitor"></i><span>Dashboard</span></a>
               <ul class="dropdown-menu">
-                <li class="active"><a class="nav-link" href="Homes_manager.jsp">Dashboard 1</a></li>
+                <li class="active"><a class="nav-link" href="ManagerHomePage">Dashboard 1</a></li>
               </ul>
             </li>
             <li class="menu-header">Request</li>

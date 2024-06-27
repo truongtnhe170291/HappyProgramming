@@ -34,12 +34,12 @@
                             <li class="breadcrumb-item active">Dashboard</li>
                         </ul>
                         <div class="row">
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-4 col-sm-6">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="info-box7-block">
-                                            <h6 class="m-b-20 text-right">Orders Received</h6>
-                                            <h4 class="text-right"><i class="fas fa-cart-plus pull-left bg-indigo c-icon"></i><span>7.12K</span>
+                                            <h6 class="m-b-20 text-right">Total Request CV</h6>
+                                            <h4 class="text-right"><i class="fas fa-address-card pull-left bg-indigo c-icon"></i><span>${totalCVs} CVs</span>
                                             </h4>
                                             <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-green m-r-5"></i><span
                                                     class="text-success font-weight-bold">23%</span> then previous month</p>
@@ -47,12 +47,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-4 col-sm-6">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="info-box7-block">
                                             <h6 class="m-b-20 text-right">Registered Users</h6>
-                                            <h4 class="text-right"><i class="fas fa-users pull-left bg-cyan c-icon"></i><span>22.3K</span>
+                                            <h4 class="text-right"><i class="fas fa-users pull-left bg-cyan c-icon"></i><span>${totalAcc} Accounts</span>
                                             </h4>
                                             <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-red m-r-5"></i><span
                                                     class="col-red font-weight-bold">3%</span> then previous month</p>
@@ -60,21 +60,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="card">
-                                    <div class="card-statistic-4">
-                                        <div class="info-box7-block">
-                                            <h6 class="m-b-20 text-right">Support Tickets</h6>
-                                            <h4 class="text-right"><i
-                                                    class="fas fa-ticket-alt pull-left bg-deep-orange c-icon"></i><span>725</span>
-                                            </h4>
-                                            <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-green m-r-5"></i><span
-                                                    class="text-success font-weight-bold">21%</span> then previous month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-4 col-sm-6">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="info-box7-block">
