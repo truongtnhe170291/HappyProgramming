@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Mentee;
 import models.Mentor;
+import models.MyMenteeDTO;
 import models.Request;
 import models.RequestDTO;
 import models.SchedulePublic;
@@ -577,6 +578,39 @@ public class RequestDAO {
 
         return stats;
     }
+    
+    public List<MyMenteeDTO> getMenteeByMentorName(String mentorName) throws SQLException {
+    List<MyMenteeDTO> requests = new ArrayList<>();
+    String sql = "SELECT request_id, mentee_name, title, price "
+               + "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
+               + "WHERE mentor_name = ? AND status_id = 1";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, mentorName);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int requestId = rs.getInt("request_id");
+                String menteeName = rs.getString("mentee_name");
+                String title = rs.getString("title");
+                float price = rs.getFloat("price");
+
+                // Fetch skills for this request
+                List<Skill> skills = fetchRequestSkills(requestId, con);
+
+                MyMenteeDTO request = new MyMenteeDTO(menteeName, title, price, skills);
+                request.setSkills(skills);
+                requests.add(request);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("getRequestsByMentorName: " + e.getMessage());
+        throw e;
+    }
+    return requests;
+}
+
+    
 
     public double getAverageStar(String mentorName) throws SQLException {
         String sql = "SELECT AVG(star) AS average_star FROM dbo.FeedBacks WHERE mentor_name = ?";
