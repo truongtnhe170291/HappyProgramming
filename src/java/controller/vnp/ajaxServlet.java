@@ -22,6 +22,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import services.VietnameseConverter;
 
 /**
  *
@@ -38,7 +39,10 @@ public class ajaxServlet extends HttpServlet {
         String orderType = "other";
         long amount = Integer.parseInt(req.getParameter("amount")) * 100;
         String bankCode = req.getParameter("bankCode");
-        String message = req.getParameter("message");
+        
+        //convert msg to non diacritical vietnamese
+        VietnameseConverter converter = new VietnameseConverter();
+        String message = converter.removeDiacritics(req.getParameter("message"));
         String vnp_TxnRef = Config.getRandomNumber(8);
         String vnp_IpAddr = Config.getIpAddress(req);
         
@@ -57,9 +61,9 @@ public class ajaxServlet extends HttpServlet {
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         
         if (message != null && !message.isEmpty()) {
-            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + message);
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang: " + message);
         }else{
-            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang: " + vnp_TxnRef);
         }
         
         vnp_Params.put("vnp_OrderType", orderType);
