@@ -325,13 +325,13 @@
                                 </div>
                                     <div class="items">
                                 <div class="select-container class-set-render">
-                                        <button id="renderButton" type="submit">Render</button>
+                                        <div id="renderButton" >Render</div>
                                     </div>
                                     
                                     <div class="select-container cusstom_h">
 
                                         <c:if test="${status != ''}">
-                                            <label for="year">Status: ${status}</label>
+                                            <label for="year" class="d-flex">Status: <div class="st">${status}</div></label>
                                         </c:if>
                                         <c:if test="${status eq ''}">
                                             <label for="year">Status: Booking Schedule</label>
@@ -396,6 +396,14 @@ if(tatussss === 'Pending' || tatussss === 'Approved'){
      saveButton.classList.remove('poiter');
     sendButton.classList.remove('poiter');
 }
+saveButton.addEventListener("click", function () {
+     document.querySelector('.st').textContent = 'Saved';
+});
+sendButton.addEventListener("click", function () {
+     document.querySelector('.st').textContent = 'Pending';
+     saveButton.style.display = 'none';
+     sendButton.classList.add('poiter');
+});
         function formatDate(date) {
             return (
                     date.getDate().toString().padStart(2, "0") +
