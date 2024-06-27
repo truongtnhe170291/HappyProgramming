@@ -26,6 +26,8 @@ public class MentorProfileDTO {
        private String service_description;
        private List<FeedBackDTO> feedBacks;
        private List<Skill> listSkills;
+       private String mentorName;
+       private float starAVG;
 
     public MentorProfileDTO() {
     }
@@ -48,6 +50,29 @@ public class MentorProfileDTO {
         this.listSkills = listSkills;
     }
 
+    public MentorProfileDTO(int cvID, String gmail, String fullName, boolean sex, String address, String phone, Date dob, String avatar, float rate, String profession, String professionIntro, String achievementDescription, String service_description, List<FeedBackDTO> feedBacks, List<Skill> listSkills, String mentorName, float starAVG) {
+        this.cvID = cvID;
+        this.gmail = gmail;
+        this.fullName = fullName;
+        this.sex = sex;
+        this.address = address;
+        this.phone = phone;
+        this.dob = dob;
+        this.avatar = avatar;
+        this.rate = rate;
+        this.profession = profession;
+        this.professionIntro = professionIntro;
+        this.achievementDescription = achievementDescription;
+        this.service_description = service_description;
+        this.feedBacks = feedBacks;
+        this.listSkills = listSkills;
+        this.mentorName = mentorName;
+        this.starAVG = starAVG;
+    }
+
+   
+    
+
     public List<FeedBackDTO> getFeedBacks() {
         return feedBacks;
     }
@@ -56,6 +81,24 @@ public class MentorProfileDTO {
         this.feedBacks = feedBacks;
     }
 
+    public String getMentorName() {
+        return mentorName;
+    }
+
+    public void setMentorName(String mentorName) {
+        this.mentorName = mentorName;
+    }
+
+    public float getStarAVG() {
+        return starAVG;
+    }
+
+    public void setStarAVG(float starAVG) {
+        this.starAVG = starAVG;
+    }
+
+    
+    
         
    
 
@@ -177,8 +220,9 @@ public class MentorProfileDTO {
 
     @Override
     public String toString() {
-        return "MentorProfileDTO{" + "cvID=" + cvID + ", gmail=" + gmail + ", fullName=" + fullName + ", sex=" + sex + ", address=" + address + ", phone=" + phone + ", dob=" + dob + ", avatar=" + avatar + ", rate=" + rate + ", profession=" + profession + ", professionIntro=" + professionIntro + ", achievementDescription=" + achievementDescription + ", service_description=" + service_description + ", feedBacks=" + feedBacks + ", listSkills=" + listSkills + '}';
+        return "MentorProfileDTO{" + "cvID=" + cvID + ", gmail=" + gmail + ", fullName=" + fullName + ", sex=" + sex + ", address=" + address + ", phone=" + phone + ", dob=" + dob + ", avatar=" + avatar + ", rate=" + rate + ", profession=" + profession + ", professionIntro=" + professionIntro + ", achievementDescription=" + achievementDescription + ", service_description=" + service_description + ", feedBacks=" + feedBacks + ", listSkills=" + listSkills + ", mentorName=" + mentorName + ", starAVG=" + starAVG + '}';
     }
 
+   
        
 }

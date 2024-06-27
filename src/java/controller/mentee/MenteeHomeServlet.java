@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.common;
+package controller.mentee;
 
 import dal.MentorProfileDAO;
 import java.io.IOException;
@@ -14,16 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import models.MentorProfileDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "MentorProfileServlet", urlPatterns = {"/MentorProfileServlet"})
-public class MentorProfileServlet extends HttpServlet {
+@WebServlet(name = "MenteeHomeServlet", urlPatterns = {"/MenteeHomeServlet"})
+public class MenteeHomeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +40,10 @@ public class MentorProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MentorProfileServlet</title>");
+            out.println("<title>Servlet MenteeHomeServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MentorProfileServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MenteeHomeServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,17 +61,17 @@ public class MentorProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mentorName = request.getParameter("mentorName");
+//        processRequest(request, response);
         MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-        MentorProfileDTO mentor;
-        try {
-            mentor = mentorProfileDAO.getOneMentor(mentorName);
-            request.setAttribute("mentor", mentor);
-            request.getRequestDispatcher("Mentor.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+        try {
+            List<MentorProfileDTO> topMentors = mentorProfileDAO.getTop5Mentors();
+            request.setAttribute("topMentors", topMentors);
+            request.getRequestDispatcher("homes.jsp").forward(request, response);
+        } catch (SQLException e) {
+            throw new ServletException("Unable to retrieve top mentors", e);
+        }
+        
     }
 
     /**
@@ -84,12 +82,11 @@ public class MentorProfileServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    
-}
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
     /**
      * Returns a short description of the servlet.

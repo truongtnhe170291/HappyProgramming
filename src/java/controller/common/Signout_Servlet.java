@@ -56,7 +56,7 @@ public class Signout_Servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         request.getSession().removeAttribute("user");
-        response.sendRedirect("login.jsp");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     } 
 
     /** 

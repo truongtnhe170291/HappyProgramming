@@ -5,6 +5,7 @@
 
 package controller.mentor;
 
+import dal.MentorProfileDAO;
 import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import models.MentorProfileDTO;
 import models.Skill;
 
 /**
