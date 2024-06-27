@@ -13,36 +13,30 @@ import models.Account;
 import models.BookSchedule;
 import models.Day;
 import models.SchedulePublic;
+import models.SlotData;
 
 public class Testing {
 
     public static void main(String[] args) {
-
-        MentorDAO mentorDao = new MentorDAO();
-        ScheduleDAO scheduleDAO = new ScheduleDAO();
-//        mentorDao.insertCycle("2024-06-24", "2024-07-21", "2024-06-24", "son", "");
-//        
-//        System.out.println("OKE");
-//        System.out.println(getStartDate());
-        LocalDate today = LocalDate.now();
-        LocalDate nextMonday = today.plusDays(7).with(DayOfWeek.MONDAY);
-        LocalDate begin = nextMonday.plusWeeks(1);
-
-        System.out.println(begin.minusWeeks(1).minusDays(1).toString());
-        ArrayList<Day> listCurrentDays = mentorDao.listCurrentDays();
-        System.out.println(mentorDao.checkContainCycle("son", "2024-07-01", "2024-07-28"));
-        LocalDate startDate = LocalDate.parse(listCurrentDays.get(0).getDateValue());
-        LocalDate endDate = startDate.plusDays(27);
-        LocalDate deadLineDate = LocalDate.now().plusDays(5);
-        List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublic("son");
-   
-        for (SchedulePublic schedulePublic : listSchedule) {
-            System.out.println(schedulePublic);
-        }
         
-        mentorDao.deleteSchedulePublic(3);
-        System.out.println("oke");
+        MentorDAO dao = new MentorDAO();
         
+        
+    }
+
+    public static SlotData handleKey(String key) {
+        String result[] = convertDateString(key);
+        String slot = result[0];
+        String date = result[1];
+        SlotData slotData = new SlotData(slot, LocalDate.parse(date));
+        return slotData;
+    }
+
+    public static String[] convertDateString(String dateStr) {
+        String[] parts = dateStr.split("-");
+        String day = parts[2];
+        String yearMonthDay = parts[5] + "-" + parts[3] + "-" + parts[4];
+        return new String[] { day, yearMonthDay };
     }
 
     public static List<BookSchedule> dates = new ArrayList<>();

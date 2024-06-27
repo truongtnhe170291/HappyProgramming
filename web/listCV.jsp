@@ -300,6 +300,7 @@
                                                         <tr>
                                                             <th>NO</th>
                                                             <th>Mentor</th>
+                                                            <th>Comment</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
                                                         </tr>

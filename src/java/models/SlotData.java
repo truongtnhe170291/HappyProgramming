@@ -4,56 +4,45 @@
  */
 package models;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Admin
  */
 public class SlotData {
-    private int week;
-    private String day;
-    private int slot;
-    private String date;
+    private String slotId;
+    private LocalDate date;
 
-    // Getters and setters
-    public int getWeek() {
-        return week;
+    public SlotData(String slotId, LocalDate date) {
+        this.slotId = slotId;
+        this.date = date;
+    }
+    
+    public SlotData() {
+        
     }
 
-    public void setWeek(int week) {
-        this.week = week;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public String getDay() {
-        return day;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public int getSlot() {
-        return slot;
-    }
-
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
-
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
     @Override
     public String toString() {
-        return "SlotData{" +
-                "week=" + week +
-                ", day='" + day + '\'' +
-                ", slot=" + slot +
-                ", date='" + date + '\'' +
-                '}';
+        return "SlotData{" + "slotId=" + slotId + ", date=" + date + '}';
     }
+
+    
 }

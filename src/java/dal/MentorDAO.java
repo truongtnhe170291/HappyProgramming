@@ -59,6 +59,29 @@ public class MentorDAO {
         }
         return list;
     }
+
+    public ArrayList<SchedulePublic> listSlotsCycleByMentor(String mentorName, int status) {
+        ArrayList<SchedulePublic> list = new ArrayList<>();
+        try {
+            String query = "select * from Cycle c join Selected_Slot ss on c.cycle_id = ss.cycle_id where ss.status_id = ? and c.mentor_name = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setString(2, mentorName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new SchedulePublic(
+                        rs.getDate(10),
+                        rs.getString(8), 
+                        rs.getInt(7),
+                        rs.getInt(1)));
+            }
+        } catch (SQLException e) {
+            System.out.println("listSlots: " + e.getMessage());
+        }
+        return list;
+    }
+
     // public List<Mentor> getMentors() {
     // String sql = "select * from mentors m join Accounts a on m.mentor_name =
     // a.user_name";
@@ -86,7 +109,6 @@ public class MentorDAO {
     // System.out.println(m.getUserName());
     // }
     // }
-
     public boolean changeMentorRate(String mentorName, int rate) {
         String sql = "UPDATE [dbo].[Mentors]\n"
                 + "SET [rate] = ?\n"

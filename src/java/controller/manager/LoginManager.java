@@ -117,7 +117,7 @@ public class LoginManager extends HttpServlet {
                 int numPage = dao.getNumberPageByUserName(acc.getUserName());
                 request.setAttribute("listTran", list);
                 request.setAttribute("numPage", numPage);
-                request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
+                response.sendRedirect("ManagerHomePage");
                 // Phân quyền manager cho trang này
                 // ...
             }

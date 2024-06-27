@@ -37,6 +37,13 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
         this.cycleID = cycleID;
     }
+    
+    public SchedulePublic(Date dayOfSlot, String slotId, int selectedId, int cycleID) {
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.selectedId = selectedId;
+        this.cycleID = cycleID;
+    }
 
     public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay, int cycleID) {
         this.mentorName = mentorName;
