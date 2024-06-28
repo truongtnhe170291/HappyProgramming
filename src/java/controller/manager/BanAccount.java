@@ -58,7 +58,7 @@ public class BanAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       ArrayList<Account> accounts = accountDAO.listAccount();
+       ArrayList<Account> accounts = accountDAO.listAccount12();
         request.setAttribute("accounts", accounts);
         request.getRequestDispatcher("/AdminDashbroad.jsp").forward(request, response);
     }

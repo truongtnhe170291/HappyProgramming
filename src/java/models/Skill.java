@@ -71,12 +71,13 @@ public class Skill {
         this.status = status;
     }
 
-    
-
     @Override
     public String toString() {
-        return "Skill{" + "skillID=" + skillID + ", skillName=" + skillName + '}';
+        return "Skill{" + "skillID=" + skillID + ", skillName=" + skillName + ", img=" + img + ", description=" + description + ", status=" + status + '}';
     }
+
     
+
+   
     
 }
