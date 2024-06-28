@@ -20,28 +20,28 @@ GO
 -- Create AccountStatuses table
 CREATE TABLE AccountStatuses(
     status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name VARCHAR(100)
+    status_name NVARCHAR(100)
 );
 GO
 
 -- Create Roles table
 CREATE TABLE Roles(
     role_id INT IDENTITY(1,1) PRIMARY KEY,
-    role_name VARCHAR(100)
+    role_name NVARCHAR(100)
 );
 GO
 
 -- Create Accounts table
 CREATE TABLE Accounts(
-    [user_name] VARCHAR(200) PRIMARY KEY,
+    [user_name] NVARCHAR(200) PRIMARY KEY,
     gmail NVARCHAR(200) NOT NULL,
     full_name NVARCHAR(100),
-    [pass_word] VARCHAR(200) NOT NULL,
+    [pass_word] NVARCHAR(200) NOT NULL,
     dob DATE,
     sex BIT,
     [address] NVARCHAR(200),
-    phone VARCHAR(100),
-    avatar VARCHAR(250),
+    phone NVARCHAR(100),
+    avatar NVARCHAR(250),
     role_id INT FOREIGN KEY REFERENCES Roles(role_id),
     status_id INT FOREIGN KEY REFERENCES AccountStatuses(status_id)
 );
@@ -49,14 +49,14 @@ GO
 
 -- Create Mentees table
 CREATE TABLE Mentees(
-    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
     PRIMARY KEY (mentee_name)
 );
 GO
 
 -- Create Mentors table
 CREATE TABLE Mentors(
-    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
     rate INT,
     PRIMARY KEY (mentor_name)
 );
@@ -64,7 +64,7 @@ GO
 
 -- Create Managers table
 CREATE TABLE Managers(
-    manager_name VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    manager_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
     PRIMARY KEY (manager_name)
 );
 GO
@@ -74,30 +74,30 @@ CREATE TABLE Skills(
     skill_id INT IDENTITY(1,1) PRIMARY KEY,
     skill_name NVARCHAR(200) NOT NULL,
     img NVARCHAR(300),
-    [description] NVARCHAR(600),
+    [description] NVARCHAR(MAX),
     [status] BIT
 );
 GO
 
 CREATE TABLE CVStatus(
 	status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name VARCHAR(100)
+    status_name NVARCHAR(100)
 )
 GO
 -- Create CV table
 CREATE TABLE CV(
     cv_id INT IDENTITY(1,1) PRIMARY KEY,
-    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    gmail VARCHAR(200) NOT NULL,
+    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    gmail NVARCHAR(200) NOT NULL,
     full_name NVARCHAR(100),
     dob DATE,
     sex BIT,
     [address] NVARCHAR(200),
     profession NVARCHAR(200),
-    profession_intro NVARCHAR(1000),
-    achievement_description NVARCHAR(1000),
-    service_description NVARCHAR(1000),
-    avatar VARCHAR(250),
+    profession_intro NVARCHAR(MAX),
+    achievement_description NVARCHAR(MAX),
+    service_description NVARCHAR(MAX),
+    avatar NVARCHAR(250),
 	status_id INT FOREIGN KEY REFERENCES CVStatus(status_id),
 	note NVARCHAR(1000)
 );
@@ -114,7 +114,7 @@ GO
 
 -- Create Slots table
 CREATE TABLE Slots(
-    slot_id VARCHAR(50) PRIMARY KEY,
+    slot_id NVARCHAR(50) PRIMARY KEY,
     slot_name NVARCHAR(100)
 );
 GO
@@ -125,7 +125,7 @@ CREATE TABLE Cycle(
 	start_time DATE,
 	end_time DATE,
 	note NVARCHAR(1000),
-	mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+	mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
 	deadline_date DATE
 	UNIQUE(start_time, end_time, mentor_name)
 );
@@ -134,14 +134,14 @@ GO
 -- Create Status_Selected table
 CREATE TABLE Status_Selected(
 	status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name VARCHAR(50)
+    status_name NVARCHAR(50)
 );
 GO
 
 -- Create Selected_Slot table
 CREATE TABLE Selected_Slot(
     selected_id INT IDENTITY(1,1) PRIMARY KEY,
-    slot_id VARCHAR(50) FOREIGN KEY REFERENCES Slots(slot_id),
+    slot_id NVARCHAR(50) FOREIGN KEY REFERENCES Slots(slot_id),
     cycle_id INT FOREIGN KEY REFERENCES Cycle(cycle_id),
 	day_of_slot DATE,
     status_id INT FOREIGN KEY REFERENCES Status_Selected(status_id),
@@ -152,15 +152,15 @@ GO
 -- Create RequestStatuses table
 CREATE TABLE RequestStatuses(
     status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name VARCHAR(100)
+    status_name NVARCHAR(100)
 );
 GO
 
 -- Create RequestsFormMentee table
 CREATE TABLE RequestsFormMentee(
     request_id INT IDENTITY(1,1) PRIMARY KEY,
-    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
+    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
     deadline_date DATE,
     deadline_hour TIME,
     title NVARCHAR(200),
@@ -186,8 +186,8 @@ CREATE TABLE RequestSkills(
 GO
 -- Create FeedBacks table
 CREATE TABLE FeedBacks(
-    mentor_name VARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    mentee_name VARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
+    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
+    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
     star INT,
     comment NVARCHAR(1000),
     time_feedback DATE,
@@ -195,16 +195,25 @@ CREATE TABLE FeedBacks(
 )
 GO
 CREATE TABLE Wallet(
-	wallet_id VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	real_binance DECIMAL(15, 0),
-	avaiable_binance DECIMAL(15, 0),
+	wallet_id NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	real_balance DECIMAL(15, 0),
+	hold DECIMAL(15, 0)
 )
 
 GO
+CREATE TABLE Hold(
+	[user_name] NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
+	amount DECIMAL(15, 0),
+	create_date DATETIME,
+	[message] NVARCHAR(1000),
+	hold bit
+)
+GO
 CREATE TABLE Transactions(
 	transaction_id INT IDENTITY(1,1) PRIMARY KEY,
-	user_send VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	user_receive VARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	user_send NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+	user_receive NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
 	create_date DATETIME,
 	amount DECIMAL(15, 0),
 	[message] NVARCHAR(1000)
@@ -264,7 +273,7 @@ GO
 INSERT INTO CVStatus (status_name) VALUES ('Pending');
 INSERT INTO CVStatus (status_name) VALUES ('Approved');
 INSERT INTO CVStatus (status_name) VALUES ('Rejected');
-INSERT INTO CVStatus (status_name) VALUES ('Saveed');
+INSERT INTO CVStatus (status_name) VALUES ('Draft');
 
 GO
 -- Insert into FeedBacks

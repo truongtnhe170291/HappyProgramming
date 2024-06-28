@@ -90,6 +90,9 @@ public class ScheduleDAO {
                         dateLocal.getDayOfWeek().toString());
                 list.add(schedule);
             }
+            for(SchedulePublic s : list){
+                s.setNameOfDay(s.getDayOfSlot().toLocalDate().getDayOfWeek());
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }

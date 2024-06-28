@@ -74,58 +74,17 @@ public class HandleRequestMentor extends HttpServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
 
         List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorByStatus(1);
-        for(ScheduleDTO s : list){
-            List<SchedulePublic> listpublic = s.getList();
-            s.setList(getOneWeek(listpublic));
-        }
-        for(ScheduleDTO s : list){
-            System.out.println(s);
-        }
         MentorDAO mentorDao = new MentorDAO();
         ArrayList<Slot> listSlot = mentorDao.listSlots();
 //        ArrayList<Day> listDay = mentorDao.listDays();
-        List<String> daysOfWeek = Arrays.asList(
-            "MONDAY", 
-            "TUESDAY", 
-            "WEDNESDAY", 
-            "THURSDAY", 
-            "FRIDAY", 
-            "SATURDAY", 
-            "SUNDAY"
-        );
+        
         request.setAttribute("list", list);
-        request.setAttribute("listDay", daysOfWeek);
         request.setAttribute("listSlot", listSlot);
         
         request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
 
     }
 
-    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
-        List<SchedulePublic> listOne = new ArrayList<>();
-        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
-
-        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        // Tạo danh sách các ngày trong tuần
-        List<LocalDate> weekDates = new ArrayList<>();
-        LocalDate current = startOfWeek;
-        while (!current.isAfter(endOfWeek)) {
-            weekDates.add(current);
-            current = current.plusDays(1);
-        }
-        for (SchedulePublic s : list) {
-            for (LocalDate d : weekDates) {
-                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
-                    listOne.add(s);
-                }
-            }
-        }
-
-        return listOne;
-    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
