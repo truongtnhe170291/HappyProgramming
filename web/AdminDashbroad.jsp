@@ -121,11 +121,13 @@
   <body>
     <div class="dashboard">
       <h1>Admin Dashboard</h1>
+       
      <table class="accounts-table">
     <thead>
         <tr>
             <th>STT</th>
             <th>Name</th>
+            <th>Role</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -135,6 +137,16 @@
             <tr>
                 <td>${status.index + 1}</td>
                 <td>${account.fullName}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${account.roleId == 1}">
+                            Mentee
+                        </c:when>
+                        <c:when test="${account.roleId == 2}">
+                            Mentor
+                        </c:when>
+                    </c:choose>
+                </td>
                 <td>${account.statusId == 1 ? 'Enabled' : 'Disabled'}</td>
                 <td>
                     <form action="accountstatus" method="post" style="display:inline;">

@@ -5,6 +5,7 @@
 package controllers;
 
 import dal.MentorProfileDAO;
+import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.MentorProfile;
+import models.Skill;
 
 /**
  *
@@ -61,24 +63,30 @@ public class ShowMentors_Servlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
- @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    try {
-       int skillId = Integer.parseInt(request.getParameter("id"));
-            
-        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-        List<MentorProfile> mentors = mentorProfileDAO.getAllMentorBySkillID(skillId);
-        
-        // Set the list of mentors with matching skillId as a request attribute
-        request.setAttribute("mentors", mentors);
-        
-        // Forward to the courseListSkillDetail.jsp
-        request.getRequestDispatcher("courseListSkillDetail.jsp").forward(request, response);
-    } catch (SQLException ex) {
-            Logger.getLogger(ShowMentors_Servlet.class.getName()).log(Level.SEVERE, null, ex);    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            int skillId = Integer.parseInt(request.getParameter("id"));
+
+            MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+            List<MentorProfile> mentors = mentorProfileDAO.getAllMentorBySkillID(skillId);
+
+            SkillDAO skillDAO = new SkillDAO();
+            Skill skill = skillDAO.getSkillById(skillId);
+            List<Skill> Topskill = skillDAO.getTopSkills(skillId);
+            // Đặt đối tượng Skill vào request attribute
+            request.setAttribute("skillDetail", skill);
+            request.setAttribute("Topskill", Topskill);
+            // Set the list of mentors with matching skillId as a request attribute
+            request.setAttribute("mentors", mentors);
+
+            // Forward to the courseListSkillDetail.jsp
+            request.getRequestDispatcher("courseListSkillDetail.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ShowMentors_Servlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -88,12 +96,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    
-}
-
+ 
 
     /**
      * Returns a short description of the servlet.
@@ -105,16 +108,4 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         return "Short description";
     }// </editor-fold>
 
-    
-    public static void main(String[] args) throws SQLException {
-      MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-        List<MentorProfile> mentors = mentorProfileDAO.getAllMentorBySkillID(3);
-        for (MentorProfile mentor : mentors) {
-            System.out.println(mentor.getFull_name());
-        }
-    }
-       
-    
-          
-    
 }

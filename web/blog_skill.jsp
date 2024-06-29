@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +104,15 @@
                         </div>
                         <div class="post-item-description">
                             <h2><a href="showmentor?id=${skill.skillID}">${status.index + 1}. ${skill.skillName}</a></h2>
-                            <p>${skill.description}</p>
+                            
+                            <p><c:choose>
+                            <c:when test="${fn:length(skill.description) > 50}">
+                                ${fn:substring(skill.description, 0, 50)} ...
+                            </c:when>
+                            <c:otherwise>
+                                ${skill.description}
+                            </c:otherwise>
+                        </c:choose></p>
                         </div>
                     </div>
                 </div>
