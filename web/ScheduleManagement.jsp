@@ -193,7 +193,30 @@
                 margin: 0 auto;
                 font-family: Arial, sans-serif;
             }
+ .modal-content.radius-xl {
+                border-radius: 15px;
+                padding: 20px;
+                background-color: #fff;
+            }
 
+            .modal-body.pb-sm-50.pb-30 {
+                padding-bottom: 50px;
+            }
+
+            .ticket_modal-modal h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .ticket_modal-modal div {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .ticket_modal-modal section {
+                margin-top: 20px;
+            }
             .form-container table {
                 width: 100%;
                 border-collapse: separate;
@@ -240,6 +263,55 @@
             .form-container td > div > div:nth-child(2) {
                 color: #28a745;
             }
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-secondary, .btn-primary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
 
             .form-container td > div > div:nth-child(3) {
                 color: #6c757d;
@@ -301,6 +373,9 @@
             .note-section strong {
                 color: #007bff;
             }
+            #rejectReasonModal{
+                z-index: 9999 !important;
+            }
         </style>
     </head>
 
@@ -360,10 +435,19 @@
                                                                             <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
                                                                                 <i class="fas fa-check"></i>
                                                                             </button>
-                                                                            <button type="button" name="action" value="3" class="btn btn-danger btn-sm" id="reject_${schedule.mentorName}" data-cv-id="${schedule.mentorName}">
-                                                                                <i class="fas fa-times"></i>
-                                                                            </button>
                                                                         </form>
+
+                                                                    <div class="action-btn" style="margin-top:24px;margin-left: 7px;margin-right: 7px;">
+    <a href="#" class="btn-primary align-center centaxs" onclick="openRejectModal('${schedule.mentorName}${schedule.cycleId}')"
+       style="background-color: #fff; border: none;">
+        <i class="fas fa-times align-center" style="color: #000; width:10px;height:25px;line-height: 25px;"></i>
+    </a>
+    <form id="rejectForm${schedule.mentorName}${schedule.cycleId}" method="POST" action="reject" style="display:none;">
+        <input type="hidden" id="requestId${schedule.mentorName}${schedule.cycleId}" name="requestId" value="${request.requestId}" />
+        <textarea id="rejectReason${schedule.mentorName}${schedule.cycleId}" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
+    </form>
+</div>
+
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -376,25 +460,30 @@
                                 </div>
                             </div>
 
-                            <!-- Popup for note input -->
-                            <div id="notePopup" class="popup">
-                                <div class="popup-content">
-                                    <span class="close">&times;</span>
-                                    <h2>Reject CV</h2>
-                                    <form id="noteForm" method="get" action="changeStatus">
-                                        <input type="hidden" name="cvId" id="popupCvId" value="" />
-                                        <input type="hidden" name="status" value="3" />
-                                        <label for="popupNote">Note:</label>
-                                        <input type="text" name="note" id="popupNote" required />
-                                        <button type="submit" class="btn btn-danger">Submit</button>
-                                    </form>
-                                </div>
-                            </div>
+                            
+
 
                         </div>
                     </section>
                     <!-- Dialog -->
 
+                     <div class="modal" id="rejectReasonModal${schedule.mentorName}${schedule.cycleId}" style="display: none;">
+    <div class="modal-content" style="width: 50%; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h5 class="modal-title">Enter reason why reject</h5>
+            <button type="button" onclick="closeRejectModal('${schedule.mentorName}${schedule.cycleId}')" style="background: none; border: none; font-size: 1.5rem;">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="modalRejectForm${schedule.mentorName}${schedule.cycleId}">
+                <textarea id="modalRejectReason${schedule.mentorName}${schedule.cycleId}" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
+            </form>
+        </div>
+        <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+            <button type="button" onclick="closeRejectModal('${schedule.mentorName}${schedule.cycleId}')" class="btn-secondary">Close</button>
+            <button type="button" onclick="submitRejectForm('${schedule.mentorName}${schedule.cycleId}')" class="btn-primary">Reject</button>
+        </div>
+    </div>
+</div>
                     <div class="settingSidebar">
                         <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
                         </a>
@@ -491,6 +580,7 @@
 
             </div>
         </div>
+             
         <script src="assetss/js/app.min.js"></script>
         <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
         <!-- JS Libraies -->
@@ -501,43 +591,34 @@
         <script src="assetss/js/scripts.js"></script>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
-        <script src="site/assets/js/snippets.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', (e) => {
-            const closeButtons = document.querySelectorAll('.close');
-                    closeButtons.forEach(function (button) {
-                    button.addEventListener('click', function () {
-                    const popup = this.closest('.popup');
-                            popup.style.display = 'none';
-                    });
-                    });
-                    window.onclick = function (event) {
-                    if (event.target.classList.contains('popup')) {
-                    event.target.style.display = 'none';
-                    }
-                    };
-                    const rejectButtons = document.querySelectorAll('.reject');
-                    rejectButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                            const cvId = this.getAttribute('data-cv-id');
-                            const popup = document.getElementById('notePopup');
-                            const popupCvId = document.getElementById('popupCvId');
-                            popupCvId.value = cvId;
-                            popup.style.display = 'block';
-                    });
-                    });
-                    // Validate and submit the form
-                    const noteForm = document.getElementById('noteForm');
-                    noteForm.addEventListener('submit', function (event) {
-                    const popupNote = document.getElementById('popupNote');
-                            if (popupNote.value.trim() === "") {
-                    event.preventDefault();
-                            alert("Please enter a note.");
-                    }
-                    });
-            };
+      <script>
+       function openRejectModal(mentorCycleId) {
+    document.getElementById(`rejectReasonModal${mentorCycleId}`).style.display = 'block';
+}
+
+function closeRejectModal(mentorCycleId) {
+    document.getElementById(`rejectReasonModal${mentorCycleId}`).style.display = 'none';
+}
+
+function submitRejectForm(mentorCycleId) {
+    const reasonInput = document.getElementById(`modalRejectReason${mentorCycleId}`);
+    const reason = reasonInput.value.trim();
+    if (reason.length === 0) {
+        alert('Please enter reason.');
+        return;
+    }
+
+    document.getElementById(`rejectReason${mentorCycleId}`).value = reason;
+    document.getElementById(`rejectForm${mentorCycleId}`).submit();
+    closeRejectModal(mentorCycleId);
+}
+
         </script>
+
+
+
+
+
 
     </body>
 

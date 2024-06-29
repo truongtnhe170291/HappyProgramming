@@ -256,8 +256,8 @@ public class MentorProfileDAO {
 
         MentorProfileDAO dao = new MentorProfileDAO();
 
-        List<MentorProfileDTO> mentorProfile = dao.getTop5Mentors();
-        System.out.println(mentorProfile);
+        MentorProfileDTO mentorProfile = dao.getOneMentor("son");
+        System.out.println(mentorProfile.getAvatar());
 
     }
 }

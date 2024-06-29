@@ -20,7 +20,7 @@ import models.MentorProfileDTO;
  *
  * @author Admin
  */
-@WebServlet(name = "MenteeHomeServlet", urlPatterns = {"/MenteeHomeServlet"})
+@WebServlet(name = "MenteeHomeServlet", urlPatterns = {"/homeMentee"})
 public class MenteeHomeServlet extends HttpServlet {
 
     /**

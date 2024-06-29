@@ -418,10 +418,10 @@
                                                             <label for="hiringDateCheckbox">Skill</label>
                                                             <div class="d-flex">
                                                             <c:forEach items="${requestScope.skills}" var="skill">
-                                                                <div class="form-check text-center m-3">
+                                                                <div class="form-check text-center m-3 d-flex">
                                                                     <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
 
-                                                                    <input type="radio" ${requestScope.skillOfMentee.skillID == skill.skillID ? "checked": ""} name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translate(80px, -28px);">
+                                                                    <input type="radio" ${requestScope.skillOfMentee.skillID == skill.skillID ? "checked": ""} name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translateY(-10%)">
                                                                 </div>
 
                                                             </c:forEach>
@@ -919,18 +919,7 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
         return;
     }
 
-    if (selectedSlots.length === 0) {
-        Toastify({
-            text: "Vui lòng chọn ít nhất một slot.",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#FF6347",
-            stopOnFocus: true,
-        }).showToast();
-        return;
-    }
+   
     const requestData = {
         ...formData,
         selectedSlots: selectedSlots
@@ -993,6 +982,7 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
             </script>
  <script>
                 document.addEventListener('DOMContentLoaded', (et) => {
+                          const saveButton = document.querySelector("#Save_status");
 
                 const deadlineInput = document.getElementById('notify_messages');
                 const notifyBtn = document.getElementById("notify_btn");
@@ -1004,6 +994,7 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
                 const balance = ${wallet}; 
                 console.log(totalPriceInput.textContent+' oke '+totalPrice.textContent+ ' oke 2 '+totalPrice.value + 'oke 3 ' +${wallet} +' oke 4 '+totalPriceInput.value);
                 console.log(${wallet} < totalPriceInput.value);
+                console.log(totalPriceInput.value <= 0);
                 function getSundayOfWeek() {
                 const currentDate = new Date('${start}');
                 const dayOfWeek = currentDate.getDay();
@@ -1041,20 +1032,32 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
                 const deadlineDate = deadlineInput.value;
                 const currentDate = getFormattedCurrentDate('${start}');
                 const newDate = new Date();
+                 function formatDates(date) {
+                return (
+                        date.getFullYear().toString().padStart(4, "0") +
+                        "-" +
+                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                        "-" +
+                        date.getDate().toString().padStart(2, "0")
+                        );
+                }
+                const daybyday = formatDates(newDate);
+                console.log('test' + totalPriceInput.value);
                 const sundayOfWeek = getSundayOfWeek();
                 console.log(deadlineDate + newDate + currentDate);
                 const checkedSchedules = countCheckedSchedules();
                 const selectedSkills = countSelectedSkills();
-                if (  deadlineDate <= currentDate) {
+                
+                if ( deadlineDate < daybyday  || deadlineDate >= currentDate) {
                 notifyBtn.disabled = true;
                 showToastMessage("Hãy nhập đúng ngày !!!.");
                 return false;
                 }    
-                 else if(totalPriceInput.value <= 0){
+               else if(totalPriceInput.value <= 0){
                     notifyBtn.disabled = true;
-                    showToastMessage("Hãy chọn ít nhất 1 slot!!!");
-                                return false;
-                } 
+                showToastMessage("Hãy chọn ít nhất  slot .");
+                return false;
+               }
                 else if(${wallet} < totalPriceInput.value){
                  notifyBtn.disabled = true;
                 showToastMessage("Bạn không đủ tiền để Book lịch học.Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
@@ -1072,7 +1075,10 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
                 }
                 }
  
-
+notifyBtn.addEventListener('click', function (){
+    notifyBtn.disabled = true;
+    saveButton.disabled = true;
+})
                 deadlineInput.addEventListener('change', validateForm);
                 skillRadios.forEach(radio => {
                 radio.addEventListener('change', validateForm);

@@ -360,11 +360,11 @@
                                                                 <div class="modal-body">
 
                                                                     <input type="hidden" id="requestId" name="requestId" value="${request.requestId}" />
-                                                                    <textarea id="rejectReason" name="notes" class="form-control" placeholder="Nhập lý do từ chối..." required></textarea>
+                                                                    <textarea id="rejectReason" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                                    <button type="submit" class="btn btn-primary" onclick="submitRejectForm()">Từ chối</button>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary" onclick="submitRejectForm()">Reject</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -386,7 +386,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="rejectReasonModalLabel">Lý do từ chối</h5>
+                                    <h5 class="modal-title" id="rejectReasonModalLabel">Enter reason why reject...</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
@@ -432,7 +432,7 @@
                 const reasonInput = document.getElementById('rejectReason');
                 const reason = reasonInput.value.trim();
                 if (reason.length === 0) {
-                    alert('Vui lòng nhập lý do từ chối.');
+                    alert('Please enter reason.');
                     return;
                 }
                 const rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectReasonModal'));

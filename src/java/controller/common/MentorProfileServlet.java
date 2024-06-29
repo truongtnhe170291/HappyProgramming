@@ -77,32 +77,27 @@ public class MentorProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mentorName = request.getParameter("mentorName");
         MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
         MentorProfileDTO mentor;
         try {
 
-            Account acc = (Account) request.getSession().getAttribute("user");
-            if (acc == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-            SkillDAO skillDAO = new SkillDAO();
             CVDAO cvdao = new CVDAO();
             MentorDAO mentorDAO = new MentorDAO();
             ScheduleDAO scheduleDAO = new ScheduleDAO();
 
             int cvId = Integer.parseInt(request.getParameter("cvId"));
-            
+
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
             //get rate of mentor
             int rate = mentorDAO.getRateOfMentor(userName);
             // get Schedule public by user mentor name
             List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
-            if (listSchedule.isEmpty()) {
-                response.sendRedirect("homes.jsp");
-                return;
+            if (!listSchedule.isEmpty()) {
+                request.setAttribute("mon", listSchedule.get(0).getStartTime());
+
+//                response.sendRedirect("homes.jsp");
+//                return;
             }
 
             for (SchedulePublic s : listSchedule) {
@@ -110,29 +105,15 @@ public class MentorProfileServlet extends HttpServlet {
                 s.setNameOfDay(nameOfDay);
             }
             request.setAttribute("listSchedule", listSchedule);
-            RequestDAO dao = new RequestDAO();
-
-            Request requ = dao.getRequestByStatusSaved(acc.getUserName(), userName);
-            if (requ != null) {
-                request.setAttribute("Editable", "Editable");
-                Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
-                List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
-                request.setAttribute("scheduleOfMentee", listScheduleByMentee);
-                request.setAttribute("skillOfMentee", s);
-                request.setAttribute("requestMentee", requ);
-            }
-            
             CV cv = cvdao.getCVByCVId(cvId);
 
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
-            request.setAttribute("mon", listSchedule.get(0).getStartTime());
             request.setAttribute("listSlot", listSlot);
             request.setAttribute("rate", rate);
             request.setAttribute("cv", cv);
 
-            
-            mentor = mentorProfileDAO.getOneMentor(mentorName);
+            mentor = mentorProfileDAO.getOneMentor(userName);
             request.setAttribute("mentor", mentor);
             request.getRequestDispatcher("Mentor.jsp").forward(request, response);
         } catch (SQLException ex) {
@@ -149,12 +130,11 @@ public class MentorProfileServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    
-}
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+    }
 
     /**
      * Returns a short description of the servlet.

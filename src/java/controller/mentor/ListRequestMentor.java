@@ -52,7 +52,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String statusFilterParam = request.getParameter("statusFilter");
         String pageParam = request.getParameter("page");
         int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-        int pageSize = 3; // Number of requests per page
+        int pageSize = 10; // Number of requests per page
 
         List<RequestDTO> requests;
         int totalRequests;

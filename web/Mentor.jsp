@@ -324,7 +324,202 @@ th {
             .ac {
                 transform: translateY(-24px);
             }
+.box_style_1.profile {    
+    background-color: #ffffff;
+    border: 2px solid #007bff; 
+    border-radius: 15px; 
+    padding: 25px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px auto; 
+    max-width: 650px;
+    width: 650px;
+}
 
+.box_style_1.profile img {
+    border: 4px solid #007bff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); 
+}
+
+
+.box_style_1.profile ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.box_style_1.profile ul li {
+    padding: 12px 0;
+    font-size: 16px;
+    color: #333; 
+    border-bottom: 1px solid #ddd; 
+}
+
+.box_style_1.profile ul li:last-child {
+    border-bottom: none; 
+}
+
+.box_style_1.profile ul li strong {
+    color: #007bff; 
+}
+
+.box_style_1.profile a.btn-success {
+    background-color: #007bff; 
+    border-color: #0056b3;
+    color: white;
+    text-align: center;
+    padding: 12px 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+}
+
+.box_style_1.profile a.btn-success:hover {
+    background-color: #0056b3; 
+    border-color: #00409a; 
+}
+
+#profile_teacher {
+    background-color: #f8f9fa; 
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+#profile_teacher h3, #profile_teacher h4 {
+    color: #007bff; 
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+#profile_teacher p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333; 
+}
+
+#profile_teacher .list_3 {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+#profile_teacher .list_3 li {
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    font-size: 18px;
+    color: #ffc107; 
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comment {
+    font-style: italic;
+    color: #555; 
+}
+#courses {
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+#courses h3 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Style cho b?ng */
+#courses table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#courses table th, #courses table td {
+    padding: 12px;
+    text-align: left;
+}
+
+#courses table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #0056b3;
+}
+
+#courses table td {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+#courses table td:last-child {
+    border-bottom: none;
+}
+
+#courses .user-avatar img {
+    border: 2px solid #007bff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#courses .rating {
+    display: flex;
+    align-items: center;
+}
+
+#courses .rating .star-rating {
+    font-size: 20px;
+    color: #ffc107;
+}
+
+#courses .feedback-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#courses .feedback-item:hover {
+    background-color: #f1f1f1;
+    border-color: #007bff;
+}
+
+#courses .feedback-item .feedback-avatar {
+    float: left;
+    margin-right: 10px;
+}
+
+#courses .feedback-item .feedback-content {
+    overflow: hidden;
+}
+
+#courses .feedback-item .feedback-content .feedback-name {
+    font-weight: bold;
+    color: #007bff;
+}
+
+#courses .feedback-item .feedback-content .feedback-comment {
+    margin-top: 5px;
+    color: #333;
+}
+.col-md-4{
+    width: 100%;
+display: contents;
+}
         </style>
     </head>
 
@@ -336,112 +531,112 @@ th {
 
             <div class="container">
 
-                <ol class="breadcrumb">
+<!--                <ol class="breadcrumb">
                     <li class="active">Active page</li>
-                </ol>
+                </ol>-->
 
+             <div class="row">
+    <aside class="col-md-4">
+        <div class="box_style_1 profile">
+            <p class="text-center">
+                <img src="./img/${mentor.avatar}" alt="Teacher" class="img-circle styled">
+            </p>
+            <ul>
+                <li>Name <strong class="pull-right">
+                        <c:out value="${mentor.fullName}" />
+                    </strong> </li>
+                <li>Email <strong class="pull-right">
+                        <c:out value="${mentor.gmail}" />
+                    </strong></li>
+                <li>Telephone<strong class="pull-right">
+                        <c:out value="${mentor.phone}" />
+                    </strong></li>
+                <li>Address<strong class="pull-right">
+                        <c:out value="${mentor.address}" />
+                    </strong></li>
+                <li>Gender <strong class="pull-right">${mentor.sex ? "Male" : "Female"}</strong></li>
+
+                <li>Price <strong class="pull-right">
+                        <c:out value="${mentor.rate}" />
+                    </strong></li>
+                <li> <strong class="pull-right">
+                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success">Book</a>
+                    </strong></li>
+            </ul>
+        </div>
+    </aside>
+    <div >
+        <ul class="nav nav-tabs" id="mytabs">
+            <li class="active"><a href="#profile_teacher" data-toggle="tab">Profile</a></li>
+            <li><a href="#courses" data-toggle="tab">Feedback</a></li>
+            <li><a href="#schedule" id="schedulesss" data-toggle="tab">Schedule</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="profile_teacher">
+                <h3>About me</h3>
+                <p><strong> Profession: </strong>
+                    <c:out value="${mentor.profession}" />
+                </p>
+                <p><strong> Profession Introduction: </strong>
+                    <c:out value="${mentor.professionIntro}" />
+                </p>
+                <h4>My Achievement </h4>
+                <p>
+                    <c:out value="${mentor.achievementDescription}" />
+                </p>
+                <h4>Service Description </h4>
+                <p>
+                    <c:out value="${mentor.service_description}" />
+                </p>
+                <h4>My Skill </h4>
+
+                <c:forEach items="${mentor.listSkills}" var="skill">
+                    <p>${skill.skillName}</p>
+                </c:forEach>
                 <div class="row">
-                    <aside class="col-md-4">
-                        <div class=" box_style_1 profile">
-                            <p class="text-center"><img style="max-height: 200px; max-width: 200px; border-radius: 50%"
-                                                        src="./img/${mentor.avatar}" alt="Teacher" class="img-circle styled"></p>
-                            <ul>
-                                <li>Name <strong class="pull-right">
-                                        <c:out value="${mentor.fullName}" />
-                                    </strong> </li>
-                                <li>Email <strong class="pull-right">
-                                        <c:out value="${mentor.gmail}" />
-                                    </strong></li>
-                                <li>Telephone<strong class="pull-right">
-                                        <c:out value="${mentor.phone}" />
-                                    </strong></li>
-                                <li>Address<strong class="pull-right">
-                                        <c:out value="${mentor.address}" />
-                                    </strong></li>
-                                <li>Gender <strong class="pull-right">${mentor.sex? "Male" : "Female"}</strong></li>
-
-                                <li>Price <strong class="pull-right">
-                                        <c:out value="${mentor.rate}" />
-                                    </strong></li>
-                                <li> <strong class="pull-right">
-                                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success">Book</a>
-                                    </strong></li>
-                            </ul>
-
-                        </div>
-                    </aside>
-                    <div class="col-md-8">
-
-
-                        <ul class="nav nav-tabs" id="mytabs">
-                            <li class="active"><a href="#profile_teacher" data-toggle="tab">Profile</a></li>
-                            <li><a href="#courses" data-toggle="tab">Feedback</a></li>
-                            <li><a href="#schedule" id ="schedulesss" data-toggle="tab">Schedule</a></li>
+                    <div class="col-md-6">
+                        <ul class="list_3">
                         </ul>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="tab-content">
+            <div class="tab-pane in" id="courses">
+                <h3>Rate & Comment</h3>
 
-                            <div class="tab-pane active" id="profile_teacher">
-                                <h3 style="margin-top: 15px">About me</h3>
-                                <p><strong> Profession: </strong>
-                                    <c:out value="${mentor.profession}" />
-                                </p>
-                                <p><strong> profession Introduction: </strong>
-                                    <c:out value="${mentor.professionIntro}" />
-                                </p>
-                                <h4>My Achievement </h4>
-                                <p>
-                                    <c:out value="${mentor.achievementDescription}" />
-                                </p>
-                                <h4>Service Description </h4>
-                                <p>
-                                    <c:out value="${mentor.service_description}" />
-                                </p>
-                                <h4>My Skill </h4>
-
-                                <c:forEach items="${mentor.listSkills}" var="skill">
-                                    <p>${skill.skillName}</p>
-                                </c:forEach>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <ul class="list_3">
-
-                                        </ul>
-                                    </div>
+                <table width="100%" style="border-collapse: collapse; width: 100%;">
+                    <c:forEach items="${mentor.feedBacks}" var="feedback">
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px; width: 10%;">
+                                <div class="user-avatar" style="text-align: center;">
+                                    <img class="avatar" src="img/${feedback.avatar}" alt="User Avatar" style="border-radius: 50%; width: 50px; height: 50px;">
                                 </div>
-                            </div>
+                            </td>
+                            <td style="padding: 10px; width: 20%;">
+                                <p style="margin: 0; font-weight: bold;">
+                                    <c:out value="${feedback.menteeName}" />
+                                </p>
+                            </td>
+                            <td style="justify-content: center">
+                                <div id="te" class="rating">
+                                    <div class="star-rating" data-rating="${feedback.star}"></div>
+                                </div>
+                                <div class="rating" data-rating="${feedback.star}"> </div>
+                            </td>
+                            <td style="padding: 10px; width: 50%; text-align: end">
+                                <div class="comment">
+                                    <p style="margin: 0;">${feedback.comment}</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+      
+   
 
-                            <div class="tab-pane in" id="courses">
-                                <h3 style="margin-top: 15px">Rate & Comment</h3>
 
-                                <table width="100%" style="border-collapse: collapse; width: 100%;">
-                                    <c:forEach items="${mentor.feedBacks}" var="feedback">
-                                        <tr style="border-bottom: 1px solid #ddd;">
-                                            <td style="padding: 10px; width: 10%;">
-                                                <div class="user-avatar" style="text-align: center;">
-                                                    <img class="avatar" src="img/${feedback.avatar}" alt="User Avatar" style="border-radius: 50%; width: 50px; height: 50px;">
-                                                </div>
-                                            </td>
-                                            <td style="padding: 10px; width: 20%;">
-                                                <p style="margin: 0; font-weight: bold;">
-                                                    <c:out value="${feedback.menteeName}" />
-                                                </p>
-                                            </td>
-                                            <td style="justify-content: center">
-                                                <div id="te" class="rating">
-                                                    <div class="star-rating" data-rating="${feedback.star}"></div>
-                                                </div>
-                                                <div class="rating" data-rating="${feedback.star}"> </div>
-                                            </td>
-                                            <td style="padding: 10px; width: 50%; text-align: end">
-                                                <div class="comment" style="font-style: italic;">
-                                                    <p style="margin: 0;">${feedback.comment}</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </table>
-                            </div>
                                 <div class="tab-pane in" id="schedule">
                                  <section id="page-content" class="no-sidebar">
                                       <c:forEach items="${requestScope.listSchedule}" var="schedule">
@@ -489,14 +684,11 @@ th {
 
 
 
-
         <script src="jss/bootstrap.min.js"></script>
         <script src="jss/classie.js"></script>
         <script src="jss/uisearch.js"></script>
           <script>
                 document.addEventListener('DOMContentLoaded', () => {
-const schedule_status = document.getElementById('schedulesss').getAttribute('aria-expanded');                  
-console.log(schedule_status);
                 let currentAction = "editable";
 const scheduleData = [
     <c:forEach items="${requestScope.listSchedule}" var="schedule">
