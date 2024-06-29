@@ -271,4 +271,31 @@ public class AccountDAO {
         return nextAccount;
     }
 
+ //lấy danh sách account
+    public ArrayList<Account> listAccount12() {
+        ArrayList<Account> list = new ArrayList<>();
+        try {
+            String query = "select * from [Accounts] WHERE role_id != 3";
+            con = new DBContext().connection;//mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Account(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getDate(5),
+                        rs.getBoolean(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getInt(10),
+                        rs.getInt(11)));
+            }
+        } catch (SQLException e) {
+            System.out.println("listAccount: " + e.getMessage());
+        }
+        return list;
+    }
 }
