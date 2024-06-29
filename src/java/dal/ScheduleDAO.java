@@ -17,6 +17,7 @@ import java.util.List;
 import models.ScheduleDTO;
 import models.ScheduleCommon;
 import models.SchedulePublic;
+import models.Status;
 
 /**
  *
@@ -38,33 +39,260 @@ public class ScheduleDAO {
         }
     }
 
-    public List<ScheduleDTO> getAllRequestByMentorByStatus(int status) {
-        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time from\n"
-                + "                Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id join Status_Selected sta on sta.status_id = ss.status_id \n"
-                + "                 where ss.status_id = ? and CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)";
-        List<ScheduleDTO> list = new ArrayList<>();
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, status);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new ScheduleDTO(
-                        rs.getString(2),
-                        rs.getDate(3),
-                        rs.getString(4),
-                        rs.getDate(5),
-                        rs.getDate(6),
-                        rs.getInt(1)));
+  public List<ScheduleDTO> getAllRequestByMentorByStatus(int status, int page, int pageSize) {
+    int offset = (page - 1) * pageSize;
+    String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 "WHERE ss.status_id = ? " +  // Sửa đổi ở đây: Thêm khoảng trắng sau WHERE và trước ORDER BY
+                 "ORDER BY c.deadline_date DESC " +  // Sửa đổi ở đây: Thêm khoảng trắng sau ORDER BY
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";  // Sửa đổi ở đây: Thêm từ khóa ROWS giữa NEXT và ONLY
+
+    List<ScheduleDTO> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, status);
+        ps.setInt(2, offset);
+        ps.setInt(3, pageSize);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(new ScheduleDTO(
+                    rs.getString("mentor_name"),
+                    rs.getDate("deadline_date"),
+                    rs.getString("status_name"),
+                    rs.getDate("start_time"),
+                    rs.getDate("end_time"),
+                    rs.getInt("cycle_id")));
+        }
+        for (ScheduleDTO s : list) {
+            List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
+            s.setList(lists);
+        }
+    } catch (SQLException e) {
+        System.out.println("getAllRequestByMentorByStatus: " + e.getMessage());
+    }
+    return list;
+}
+
+
+    public List<ScheduleDTO> getAllRequestByMentor(int page, int pageSize) {
+    int offset = (page - 1) * pageSize;
+    String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 
+                 " ORDER BY c.deadline_date DESC " +
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    List<ScheduleDTO> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, offset);
+        ps.setInt(2, pageSize);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(new ScheduleDTO(
+                    rs.getString("mentor_name"),
+                    rs.getDate("deadline_date"),
+                    rs.getString("status_name"),
+                    rs.getDate("start_time"),
+                    rs.getDate("end_time"),
+                    rs.getInt("cycle_id")));
+        }
+        for (ScheduleDTO s : list) {
+            List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
+            s.setList(lists);
+        }
+    } catch (SQLException e) {
+        System.out.println("getAllRequestByMentor: " + e.getMessage());
+    }
+    return list;
+}
+    
+   public List<ScheduleDTO> searchRequestByMentorNameAndStatus(String mentorName, int statusId, int page, int pageSize) {
+    int offset = (page - 1) * pageSize;
+    String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 "WHERE c.mentor_name LIKE ? AND ss.status_id = ? " +
+                 " ORDER BY c.deadline_date DESC " +
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    List<ScheduleDTO> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setString(1, "%" + mentorName + "%"); // Using LIKE for partial matching
+        ps.setInt(2, statusId);
+        ps.setInt(3, offset);
+        ps.setInt(4, pageSize);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(new ScheduleDTO(
+                    rs.getString("mentor_name"),
+                    rs.getDate("deadline_date"),
+                    rs.getString("status_name"),
+                    rs.getDate("start_time"),
+                    rs.getDate("end_time"),
+                    rs.getInt("cycle_id")));
+        }
+        for (ScheduleDTO s : list) {
+            List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
+            s.setList(lists);
+        }
+    } catch (SQLException e) {
+        System.out.println("getAllRequestByMentor: " + e.getMessage());
+    }
+    return list;
+}
+
+    
+    public List<ScheduleDTO> getAllRequestByMentorName(String mentorName, int page, int pageSize) {
+    int offset = (page - 1) * pageSize;
+    String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 "WHERE c.mentor_name LIKE ? " +
+                 " ORDER BY c.deadline_date DESC " +
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    List<ScheduleDTO> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setString(1, "%" + mentorName + "%"); // Using LIKE for partial matching
+        ps.setInt(2, offset);
+        ps.setInt(3, pageSize);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(new ScheduleDTO(
+                    rs.getString("mentor_name"),
+                    rs.getDate("deadline_date"),
+                    rs.getString("status_name"),
+                    rs.getDate("start_time"),
+                    rs.getDate("end_time"),
+                    rs.getInt("cycle_id")));
+        }
+        for (ScheduleDTO s : list) {
+            List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
+            s.setList(lists);
+        }
+    } catch (SQLException e) {
+        System.out.println("getAllRequestByMentor: " + e.getMessage());
+    }
+    return list;
+}
+
+    public int getTotalRequestByStatus(int status) {
+    String sql = "SELECT COUNT(DISTINCT c.cycle_id) AS totalRequests " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 "WHERE ss.status_id = ? )";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, status);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("totalRequests");
             }
-            for (ScheduleDTO s : list) {
-                List<SchedulePublic> lists = getSlotDetail(s.getMentorName(), 1);
-                s.setList(lists);
+        }
+    } catch (SQLException e) {
+        System.out.println("getTotalRequestByStatus: " + e.getMessage());
+    }
+    return 0;
+}
+
+    public int getTotalRequestByMentorName(String mentorName) {
+    String sql = "SELECT COUNT(DISTINCT c.cycle_id) AS totalRequests " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 "WHERE c.mentor_name LIKE ? ";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, "%" + mentorName + "%");
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("totalRequests");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("getTotalRequestByMentorName: " + e.getMessage());
+    }
+    return 0;
+}
+
+    public int getTotalRequestByMentorNameAndStatus(String mentorName, int status) {
+    String sql = "SELECT COUNT(DISTINCT c.cycle_id) AS totalRequests " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " +
+                 "WHERE c.mentor_name LIKE ? AND ss.status_id = ? ";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, "%" + mentorName + "%");
+        ps.setInt(2, status);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("totalRequests");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("getTotalRequestByMentorNameAndStatus: " + e.getMessage());
+    }
+    return 0;
+}
+
+    public int getTotalRequests() {
+    String sql = "SELECT COUNT(DISTINCT c.cycle_id) AS totalRequests " +
+                 "FROM Selected_Slot ss " +
+                 "JOIN Cycle c ON ss.cycle_id = c.cycle_id " +
+                 "JOIN Slots s ON s.slot_id = ss.slot_id " +
+                 "JOIN Status_Selected sta ON sta.status_id = ss.status_id " 
+                 ;
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("totalRequests");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("getTotalRequests: " + e.getMessage());
+    }
+    return 0;
+}
+
+    public List<Status> getAllStatus() {
+        List<Status> statusList = new ArrayList<>();
+        String sql = "SELECT * FROM Status_Selected";
+
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Status status = new Status();
+                status.setStatusId(rs.getInt("status_id"));
+                status.setStatusName(rs.getString("status_name"));
+                statusList.add(status);
             }
         } catch (SQLException e) {
-            System.out.println("getAllRequestByMentorByStatus: " + e.getMessage());
+            System.out.println("Error while fetching status list: " + e.getMessage());
         }
-        return list;
+
+        return statusList;
     }
+
 
     public List<SchedulePublic> getSlotDetail(String mentorName, int statusId) {
         String sql = "SELECT * from "
@@ -89,6 +317,9 @@ public class ScheduleDAO {
                         rs.getString(4),
                         dateLocal.getDayOfWeek().toString());
                 list.add(schedule);
+            }
+            for(SchedulePublic s : list){
+                s.setNameOfDay(s.getDayOfSlot().toLocalDate().getDayOfWeek());
             }
         } catch (SQLException e) {
             System.out.println(e);

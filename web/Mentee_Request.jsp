@@ -389,7 +389,7 @@
                                                             </div>
                                                             <div class="select-container">
                                                                 <div id="statusIndicator" class="status-indicator">
-                                                                    Editable
+                                                                    
                                                                 </div>
                                                             </div>
                                                             <div class="select-container">

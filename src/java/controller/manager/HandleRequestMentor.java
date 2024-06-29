@@ -23,6 +23,7 @@ import models.Day;
 import models.ScheduleDTO;
 import models.SchedulePublic;
 import models.Slot;
+import models.Status;
 
 /**
  *
@@ -67,65 +68,71 @@ public class HandleRequestMentor extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-      
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    ScheduleDAO scheduleDAO = new ScheduleDAO();
+    MentorDAO mentorDao = new MentorDAO();
 
-        ScheduleDAO scheduleDAO = new ScheduleDAO();
+    // Lấy các tham số từ request
+    String mentorName = request.getParameter("mentorName");
+    String statusFilter = request.getParameter("statusFilter");
+    String pageParam = request.getParameter("page");
+    int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+    int pageSize = 3; // Số lượng item trên mỗi trang
 
-        List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorByStatus(1);
-        for(ScheduleDTO s : list){
-            List<SchedulePublic> listpublic = s.getList();
-            s.setList(getOneWeek(listpublic));
-        }
-        for(ScheduleDTO s : list){
-            System.out.println(s);
-        }
-        MentorDAO mentorDao = new MentorDAO();
-        ArrayList<Slot> listSlot = mentorDao.listSlots();
-//        ArrayList<Day> listDay = mentorDao.listDays();
-        List<String> daysOfWeek = Arrays.asList(
-            "MONDAY", 
-            "TUESDAY", 
-            "WEDNESDAY", 
-            "THURSDAY", 
-            "FRIDAY", 
-            "SATURDAY", 
-            "SUNDAY"
-        );
-        request.setAttribute("list", list);
-        request.setAttribute("listDay", daysOfWeek);
-        request.setAttribute("listSlot", listSlot);
+    List<ScheduleDTO> list;
+    int totalRequests;
+
+    // Xử lý các trường hợp search và filter
+    if (mentorName != null && !mentorName.isEmpty() && statusFilter != null && !statusFilter.isEmpty()) {
+        // Search và Filter
+        int statusId = Integer.parseInt(statusFilter);
+        list = scheduleDAO.searchRequestByMentorNameAndStatus(mentorName, statusId, page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequestByMentorNameAndStatus(mentorName, statusId);
+    } else if (mentorName != null && !mentorName.isEmpty() && statusFilter.isEmpty())  {
+        // Chỉ Search
+        list = scheduleDAO.getAllRequestByMentorName(mentorName, page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequestByMentorName(mentorName);
+    } else if (statusFilter != null && !statusFilter.isEmpty() && mentorName.isEmpty()) {
+        // Chỉ Filter
+        int statusId = Integer.parseInt(statusFilter );
+        list = scheduleDAO.getAllRequestByMentorByStatus(statusId, page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequestByStatus(statusId);
+    } else {
+        // Không Search, Không Filter
+        list = scheduleDAO.getAllRequestByMentor(page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequests();
+    }
+
+    // Tính số trang dựa trên tổng số request và pageSize
+    int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
+
+    // Lấy danh sách các Slot từ MentorDAO
+    ArrayList<Slot> listSlot = mentorDao.listSlots();
+    List<Status> statusList  = scheduleDAO.getAllStatus();
+  
         
-        request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
 
+    // Đặt các thuộc tính vào request để chuyển đến trang ScheduleManagement.jsp
+    request.setAttribute("list", list);
+    request.setAttribute("statusList", statusList);
+    request.setAttribute("listSlot", listSlot);
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.setAttribute("mentorName", mentorName);
+    request.setAttribute("statusFilter", statusFilter);
+
+    request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
+}
+
+    public static void main(String[] args) {
+          ScheduleDAO scheduleDAO = new ScheduleDAO();
+    MentorDAO mentorDao = new MentorDAO();
+    int totalRequests = scheduleDAO.getTotalRequestByMentorName("son");
+     List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorByStatus(1, 1, 5);
+        System.out.println(list.size());
     }
 
-    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
-        List<SchedulePublic> listOne = new ArrayList<>();
-        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
-
-        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        // Tạo danh sách các ngày trong tuần
-        List<LocalDate> weekDates = new ArrayList<>();
-        LocalDate current = startOfWeek;
-        while (!current.isAfter(endOfWeek)) {
-            weekDates.add(current);
-            current = current.plusDays(1);
-        }
-        for (SchedulePublic s : list) {
-            for (LocalDate d : weekDates) {
-                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
-                    listOne.add(s);
-                }
-            }
-        }
-
-        return listOne;
-    }
 
     /**
      * Handles the HTTP <code>POST</code> method.

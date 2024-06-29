@@ -57,9 +57,51 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         rdao.updateExpiredRequestsStatus();
 
-        List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+        List<RequestDTO> requests = new ArrayList<>();
         List<Status> statuses = rdao.getAllStatuses();
         List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
+
+        String statusFilter = request.getParameter("statusFilter");
+        String mentorNameFilter = request.getParameter("mentorNameFilter");
+        String startTimeFilter = request.getParameter("startTimeFilter");
+        String endTimeFilter = request.getParameter("endTimeFilter");
+
+        int statusId = -1;
+        LocalDate startTime = null;
+        LocalDate endTime = null;
+        String mentorName = mentorNameFilter != null && !mentorNameFilter.equals("all") ? mentorNameFilter : "";
+
+        if (startTimeFilter != null && !startTimeFilter.isEmpty()) {
+            startTime = LocalDate.parse(startTimeFilter);
+        }
+        if (endTimeFilter != null && !endTimeFilter.isEmpty()) {
+            endTime = LocalDate.parse(endTimeFilter);
+        }
+
+        if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) &&
+            (mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName)) &&
+            startTime == null && endTime == null) {
+            // Case 1: No filters applied
+            requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+        } else if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) &&
+                   (mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName)) &&
+                   (startTime != null || endTime != null)) {
+            // Case 2: Only time filters applied
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
+        } else if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) &&
+                   (startTime == null && endTime == null)) {
+            // Case 3: Only mentor filter applied
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
+        } else if ((mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName)) &&
+                   (startTime == null && endTime == null)) {
+            // Case 4: Only status filter applied
+            statusId = Integer.parseInt(statusFilter);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
+        } else {
+            // Case 5: Combination of filters
+            statusId = (statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) ? -1 : Integer.parseInt(statusFilter);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
+        }
 
         // Log schedules for debugging
         for (RequestDTO requestDTO : requests) {
@@ -85,10 +127,13 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throw new ServletException(e);
     }
 }
+
+
     public static void main(String[] args) throws SQLException {
          RequestDAO rdao = new RequestDAO();
-
-          List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus("truong");
+         List<RequestDTO> requests = new ArrayList<>();
+          requests = rdao.getRequestsByMenteeStatusMentorTime("truong", null, "son", null, null);
+          System.out.println(requests);
           
     }
 
