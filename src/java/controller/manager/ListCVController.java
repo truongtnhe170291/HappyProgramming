@@ -61,35 +61,58 @@ public class ListCVController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  @Override
+ @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    String statusFilter = request.getParameter("statusFilter");
-    String pageParam = request.getParameter("page");
-    int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-    int pageSize = 3; // Number of CVs per page
+    try {
+        String statusFilter = request.getParameter("statusFilter");
+        String searchName = request.getParameter("searchName");
+        String pageParam = request.getParameter("page");
+        int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+        int pageSize = 3; // Number of CVs per page
 
-    CVDAO dao = new CVDAO();
-    List<CVDTO> list;
-    int totalCVs;
-    if (statusFilter == null || statusFilter.isEmpty()) {
-        list = dao.getAllCV(page, pageSize);
-        totalCVs = dao.getTotalCVCount(); // Method to count all CVs
-    } else {
-        int statusId = Integer.parseInt(statusFilter);
-        list = dao.getCVByStatus(statusId, page, pageSize);
-        totalCVs = dao.getTotalCVCountByStatus(statusId); // Method to count CVs by status
-    }
-    int totalPages = (int) Math.ceil((double) totalCVs / pageSize);
+        CVDAO dao = new CVDAO();
+        List<CVDTO> list;
+        int totalCVs;
 
-    request.setAttribute("cvList", list);
-    request.setAttribute("statusList", dao.getAllStatuses());
-    request.setAttribute("currentPage", page);
-    request.setAttribute("totalPages", totalPages);
-    request.setAttribute("statusFilter", statusFilter);
+        if ((statusFilter == null || statusFilter.isEmpty()) && (searchName == null || searchName.isEmpty())) {
+            // Không Search, Không Filter
+            list = dao.getAllCV(page, pageSize);
+            totalCVs = dao.getTotalCVCount();
+        } else if (statusFilter == null || statusFilter.isEmpty()) {
+            // Không Filter, chỉ Search
+            list = dao.searchCVByMentorName(searchName, page, pageSize);
+            totalCVs = dao.getTotalCVCountByMentorName(searchName);
+        } else if (searchName == null || searchName.isEmpty()) {
+            // Chỉ Filter, không Search
+            int statusId = Integer.parseInt(statusFilter);
+            list = dao.getCVByStatus(statusId, page, pageSize);
+            totalCVs = dao.getTotalCVCountByStatus(statusId);
+        } else {
+            // Search và Filter
+            int statusId = Integer.parseInt(statusFilter);
+            list = dao.searchCVByMentorNameAndStatus(searchName, statusId, page, pageSize);
+            totalCVs = dao.getTotalCVCountByMentorNameAndStatus(searchName, statusId);
+        }
 
-    request.getRequestDispatcher("listCV.jsp").forward(request, response);
+        int totalPages = (int) Math.ceil((double) totalCVs / pageSize);
+
+        // Đặt các thuộc tính cho request để chuyển tiếp đến trang JSP
+        request.setAttribute("cvList", list);
+        request.setAttribute("statusList", dao.getAllStatuses());
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("statusFilter", statusFilter);
+        request.setAttribute("searchName", searchName);
+
+        // Chuyển hướng đến trang listCV.jsp
+        request.getRequestDispatcher("listCV.jsp").forward(request, response);
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new ServletException("Database error: " + e.getMessage());
+    } 
 }
+
 
     public static void main(String[] args) {
         CVDAO dao = new CVDAO();

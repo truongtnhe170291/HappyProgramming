@@ -236,6 +236,19 @@
             .empty-cell {
                 height: 100%;
             }
+
+            .filter-search-form {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .filter-search-form div {
+                display: flex;
+                flex-direction: column;
+            }
+            .filter-search-form button {
+                margin-top: 20px; /* Adjust this value as needed */
+            }
         </style>
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -276,6 +289,7 @@
                 <div class="table-responsive">
                     <table class="table mb-0 table-borderless">
 
+<<<<<<< HEAD
                         <thead class="hd">
                             <tr class="userDatatable-header">
                                 <th>
@@ -300,6 +314,34 @@
 
                                     <span class="userDatatable-title">Actions</span>
                                 </th>
+=======
+            <jsp:include page="sidebar.jsp" />
+            <div class="contents">
+                <form method="get" action="ListRequestMentor" class="filter-search-form">
+                    <div>
+                        <label for="statusFilter">Filter by Status:</label>
+                        <select name="statusFilter" id="statusFilter">
+                            <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
+                            <c:forEach items="${listStatus}" var="status">
+                                <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
+                                    ${status.statusName}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="menteeNameFilter">Search by Mentee Name:</label>
+                        <input type="text" name="menteeNameFilter" id="menteeNameFilter" value="${param.menteeNameFilter}" placeholder="Enter mentee name"/>
+                    </div>
+                    <button type="submit">Apply</button>
+                </form>
+
+
+                <h1>List of Requests</h1>
+                <div class="userDatatable userDatatable--ticket mt-1">
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+>>>>>>> f7b8c77d26dc1afeb90778fd5aa1929339501d6b
 
                             </tr>
                         </thead>

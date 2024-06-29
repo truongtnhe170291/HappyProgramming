@@ -47,6 +47,20 @@
 
                                                     <button class="add-btn">Add New Skill</button>
                                                 </div>
+
+                                                <form method="get" action="skills">
+                                                    <label for="status">Filter by Status:</label>
+                                                    <select name="status" id="status">
+                                                        <option value="" ${empty param.status ? 'selected' : ''}>All</option>
+                                                        <option value="true" ${param.status == 'true' ? 'selected' : ''}>Enable</option>
+                                                        <option value="false" ${param.status == 'false' ? 'selected' : ''}>Disable</option>
+                                                    </select>
+
+                                                    <label for="skillName">Search by Skill Name:</label>
+                                                    <input type="text" name="skillName" id="skillName" value="${param.skillName}"/>
+
+                                                    <button type="submit">Apply</button>
+                                                </form>
                                             </div>
                                             <table>
                                                 <thead>
@@ -85,6 +99,17 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
+                                            <div>
+                                                <c:if test="${currentPage > 1}">
+                                                    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}">Previous</a>
+                                                </c:if>
+
+                                                Page ${currentPage} of ${totalPages}
+
+                                                <c:if test="${currentPage < totalPages}">
+                                                    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}">Next</a>
+                                                </c:if>
+                                            </div>
                                         </div>
                                         <!-- edit ở đây -->
                                         <div id="editPopup" class="popup">
