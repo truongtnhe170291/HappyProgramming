@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-	 version="6.0">
-       <session-config>
-            <session-timeout>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>SkillDetail</servlet-name>
+        <servlet-class>controller.common.SkillDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TopSkill</servlet-name>
+        <servlet-class>controller.common.TopSkill</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SkillDetail</servlet-name>
+        <url-pattern>/SkillDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TopSkill</servlet-name>
+        <url-pattern>/TopSkill</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
             60
-        </session-timeout>      
+        </session-timeout>
     </session-config>
-<welcome-file-list>
+    <welcome-file-list>
         <welcome-file>homes.jsp</welcome-file>
-        </welcome-file-list>
+    </welcome-file-list>
 </web-app>

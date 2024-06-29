@@ -529,19 +529,19 @@
                                                             </div>
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession introduction</label>
-                                                                <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
+                                                                <textarea name="professionIntro" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
                                                             </div>
 
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
-                                                                <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
+                                                                <textarea name="achievementDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
                                                             </div>
 
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
-                                                                <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
+                                                                <textarea name="serviceDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
                                                             </div>
-
+                                                            
                                                             <div class="form-group mb-25 status-radio ">
                                                                 <label for="hiringDateCheckbox">Skill</label>
                                                                 <div class="d-flex">

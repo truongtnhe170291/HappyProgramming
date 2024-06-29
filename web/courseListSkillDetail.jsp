@@ -88,6 +88,7 @@
         .right {
             right: 0;
         }
+
     </style>
 </head>
 
@@ -104,40 +105,19 @@
                             <!-- Post item-->
                             <div class="post-item">
                                 <div class="post-item-wrap">
+
                                     <div class="post-image">
                                         <a href="#">
-                                            <img alt="" src="images/blog/1.jpg">
+                                            <img src="./img/${skillDetail.img}" alt="${skillDetail.skillName}">
                                         </a>
                                     </div>
                                     <div class="post-item-description">
-                                        <h2>Standard post with a single image</h2>
+                                        <h2>${skillDetail.skillName}</h2>
+                                        <h4>Description</h4>
+                                        <p>${skillDetail.description}</p>
 
-                                        <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat. Fusce at velit id ligula pharetra laoreet. Ut nec metus a mi ullamcorper hendrerit. Nulla facilisi. Pellentesque
-                                            sed nibh a quam accumsan dignissim quis quis urna. The most happiest time of the day!. Praesent id dolor dui, dapibus gravida elit. Donec consequat laoreet sagittis. Suspendisse ultricies ultrices viverra. Morbi
-                                            rhoncus laoreet tincidunt. Mauris interdum convallis metus.M</p>
-                                        <div class="blockquote">
-                                            <p>The world is a dangerous place to live; not because of the people who are evil, but because of the people who don't do anything about it.</p>
-                                            <small>by <cite>Albert Einstein</cite></small>
-                                        </div>
-                                        <p> The most happiest time of the day!. Praesent id dolor dui, dapibus gravida elit. Donec consequat laoreet sagittis. Suspendisse ultricies ultrices viverra. Morbi rhoncus laoreet tincidunt. Mauris interdum convallis
-                                            metus. Suspendisse vel lacus est, sit amet tincidunt erat. Etiam purus sem, euismod eu vulputate eget, porta quis sapien. Donec tellus est, rhoncus vel scelerisque id, iaculis eu nibh.</p>
-                                        <p>Donec posuere bibendum metus. Quisque gravida luctus volutpat. Mauris interdum, lectus in dapibus molestie, quam felis sollicitudin mauris, sit amet tempus velit lectus nec lorem. Nullam vel mollis neque. The most
-                                            happiest time of the day!. Nullam vel enim dui. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed tincidunt accumsan massa id viverra. Sed sagittis, nisl sit amet imperdiet
-                                            convallis, nunc tortor consequat tellus, vel molestie neque nulla non ligula. Proin tincidunt tellus ac porta volutpat. Cras mattis congue lacus id bibendum. Mauris ut sodales libero. Maecenas feugiat sit amet
-                                            enim in accumsan.</p>
-                                        <p>Duis vestibulum quis quam vel accumsan. Nunc a vulputate lectus. Vestibulum eleifend nisl sed massa sagittis vestibulum. Vestibulum pretium blandit tellus, sodales volutpat sapien varius vel. Phasellus tristique
-                                            cursus erat, a placerat tellus laoreet eget. Fusce vitae dui sit amet lacus rutrum convallis. Vivamus sit amet lectus venenatis est rhoncus interdum a vitae velit.</p>
+
                                     </div>
-                                    <div class="post-tags">
-                                        <a href="#">Life</a>
-                                        <a href="#">Sport</a>
-                                        <a href="#">Tech</a>
-                                        <a href="#">Travel</a>
-                                    </div>
-
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -147,33 +127,22 @@
                     <!-- Sidebar-->
                     <div class="sidebar sticky-sidebar col-lg-3">
                         <!--Tabs with Posts-->
+
                         <div class="widget">
                             <h4 class="widget-title">Recent Posts</h4>
                             <div class="post-thumbnail-list">
-                                <div class="post-thumbnail-entry">
-                                    <img alt="" src="images/blog/thumbnail/5.jpg">
-                                    <div class="post-thumbnail-content">
-                                        <a href="#">A true story, that never been told!</a>
-                                        <span class="post-date"><i class="icon-clock"></i> 6m ago</span>
-                                        <span class="post-category"><i class="fa fa-tag"></i> Technology</span>
+                                <c:forEach items="${requestScope.Topskill}" var="skill">
+                                    <div class="post-thumbnail-entry">
+
+                                        <img alt="" src="./img/${skill.img}">
+                                        <div class="post-thumbnail-content">
+                                            <a href="showmentor?id=${skill.skillID}">${skill.skillName}</a>
+                                            <span class="post-date"><i class="icon-clock"></i> 6m ago</span>
+                                            <span class="post-category"><i class="fa fa-tag"></i> Technology</span>
+                                        </div>
+
                                     </div>
-                                </div>
-                                <div class="post-thumbnail-entry">
-                                    <img alt="" src="images/blog/thumbnail/6.jpg">
-                                    <div class="post-thumbnail-content">
-                                        <a href="#">Beautiful nature, and rare feathers!</a>
-                                        <span class="post-date"><i class="icon-clock"></i> 24h ago</span>
-                                        <span class="post-category"><i class="fa fa-tag"></i> Lifestyle</span>
-                                    </div>
-                                </div>
-                                <div class="post-thumbnail-entry">
-                                    <img alt="" src="images/blog/thumbnail/7.jpg">
-                                    <div class="post-thumbnail-content">
-                                        <a href="#">Lorem ipsum dolor sit amet</a>
-                                        <span class="post-date"><i class="icon-clock"></i> 11h ago</span>
-                                        <span class="post-category"><i class="fa fa-tag"></i> Lifestyle</span>
-                                    </div>
-                                </div>
+                                </c:forEach>
                             </div>
                         </div>
 
@@ -216,37 +185,37 @@
     <!--Template functions-->
     <script src="js/functions.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const slider = document.querySelector('.slider');
-        const slides = document.querySelectorAll('.slide');
-        const leftBtn = document.getElementById('leftArrow');
-        const rightBtn = document.getElementById('rightArrow');
-        let currentIndex = 0;
-        const totalSlides = slides.length;
+        document.addEventListener('DOMContentLoaded', function () {
+            const slider = document.querySelector('.slider');
+            const slides = document.querySelectorAll('.slide');
+            const leftBtn = document.getElementById('leftArrow');
+            const rightBtn = document.getElementById('rightArrow');
+            let currentIndex = 0;
+            const totalSlides = slides.length;
 
-        function updateSlider() {
-            slider.style.transform = `translateX(-` + currentIndex * 25 + `%)`;
-        }
+            function updateSlider() {
+                slider.style.transform = `translateX(-` + currentIndex * 25 + `%)`;
+            }
 
-        function slideLeft() {
-            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            function slideLeft() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            }
+
+            function slideRight() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateSlider();
+            }
+
+            leftBtn.addEventListener('click', slideLeft);
+            rightBtn.addEventListener('click', slideRight);
+
             updateSlider();
-        }
 
-        function slideRight() {
-            currentIndex = (currentIndex + 1) % totalSlides;
-            updateSlider();
-        }
-
-        leftBtn.addEventListener('click', slideLeft);
-        rightBtn.addEventListener('click', slideRight);
-
-        updateSlider();
-
-        console.log('Script loaded');
-        console.log('Left button:', leftBtn);
-        console.log('Right button:', rightBtn);
-    });
+            console.log('Script loaded');
+            console.log('Left button:', leftBtn);
+            console.log('Right button:', rightBtn);
+        });
 
 
     </script>

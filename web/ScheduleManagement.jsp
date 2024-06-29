@@ -1,4 +1,4 @@
-s<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -9,9 +9,7 @@ s<!DOCTYPE html>
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
         <link rel="stylesheet" href="assetss/css/custom.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
             .table {
@@ -252,6 +250,57 @@ s<!DOCTYPE html>
                 padding: 5px;
                 margin-top: 5px;
             }
+
+            /* Style for the popup container */
+            .popup {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+
+            /* Style for the popup content */
+            .popup-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-height: 80%;
+                overflow-y: auto;
+                /* Enable vertical scrolling */
+            }
+
+            /* Close button style */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .note-section {
+                border: 2px solid #007bff;
+                background-color: #e9f7fd;
+                padding: 10px;
+                margin-top: 10px;
+            }
+
+            .note-section strong {
+                color: #007bff;
+            }
         </style>
     </head>
 
@@ -290,7 +339,6 @@ s<!DOCTYPE html>
                                                             <th><span class="userDatatable-title">Deadline</span></th>
                                                             <th><span class="userDatatable-title">Status</span></th>
                                                             <th><span class="userDatatable-title">Action</span></th>
-                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -303,9 +351,7 @@ s<!DOCTYPE html>
 
                                                                 <td> 
                                                                     <div class="btn-group">
-                                                                        <button class="btn btn-info btn-sm" onclick="openModal('${schedule.mentorName}')">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </button>
+                                                                        <a href="ViewDetailSchedule?mentorName=${schedule.mentorName}"> <button class="btn btn-info btn-sm"> <i class="fas fa-eye"></i> </button> </a>
                                                                         <form action="HandleSlotMentor" method="post">
                                                                             <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
                                                                             <c:if test="${not empty schedule.list}">
@@ -314,67 +360,14 @@ s<!DOCTYPE html>
                                                                             <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
                                                                                 <i class="fas fa-check"></i>
                                                                             </button>
-                                                                            <button type="button" onclick="handleMessage()" name="action" value="3" class="btn btn-danger btn-sm">
+                                                                            <button type="button" name="action" value="3" class="btn btn-danger btn-sm" id="reject_${schedule.mentorName}" data-cv-id="${schedule.mentorName}">
                                                                                 <i class="fas fa-times"></i>
                                                                             </button>
                                                                         </form>
                                                                     </div>
-                                                                    <div id="modal-${schedule.mentorName}" class="modal customer_value" value="${schedule.mentorName}">
-                                                                        <div class="modal-content">
-                                                                            <span class="close" onclick="closeModal('${schedule.mentorName}')">&times;</span>
-                                                                            <h2>Schedule Details</h2>
-                                                                            <p><strong>Mentor Name:</strong> <span id="modalMentorName" class="name_mentor" value="${schedule.mentorName}">${schedule.mentorName}</span></p>
-                                                                            <p><strong>Start Time:</strong> <span id="modalMentorName">${schedule.startTime}</span></p>
-                                                                            <p><strong>End Time:</strong> <span id="modalMentorName">${schedule.endTime}</span></p>
-                                                                            <p><strong>Details Schedule</strong>
-                                                                            <div class="form-container">
-                                                                                  <div class="schedule-container">
-                                                        <div class="header">
-                                                            <div class="select-container">
-                                                                <label for="year">YEAR</label>
-                                                                <select id="year">
-                                                                    <option value="2024">2024</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="select-container">
-                                                                <div id="statusIndicator" class="status-indicator">
-                                                                    
-                                                                </div>
-                                                            </div>
-                                                            <div class="select-container">
-                                                                <label for="week">WEEK</label>
-                                                                <select id="week"></select>
-                                                            </div>
-                                                        </div>
-                                                        <table id="scheduleTable">
-                                                            <thead>
-                                                                <tr id="dayHeaders"></tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            </tbody>
-                                                        </table>
-
-                                                    </div>
-                                                                                <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
-                                                                            </div>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
                                                                 </td>
-                                                                <td><div id="messageContainer" style="display: none; margin-top: 20px;">
-                                                                        <span id="MessageTitle" style="display: none" class="userDatatable-title">Reject Message</span><br/>
-                                                                        <form action="HandleSlotMentor" method="post">
-                                                                            <c:if test="${not empty schedule.list}">
-                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
-                                                                            </c:if>
-                                                                            <input type="hidden" name="action" value="3"/>
-                                                                            <textarea id="messageInput" name="messageInput" class="form-control" rows="4" placeholder="Enter your message here..."></textarea>
-                                                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
-                                                                        </form>
-                                                                    </div></td>
                                                             </tr>
                                                         </c:forEach>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -382,6 +375,22 @@ s<!DOCTYPE html>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Popup for note input -->
+                            <div id="notePopup" class="popup">
+                                <div class="popup-content">
+                                    <span class="close">&times;</span>
+                                    <h2>Reject CV</h2>
+                                    <form id="noteForm" method="get" action="changeStatus">
+                                        <input type="hidden" name="cvId" id="popupCvId" value="" />
+                                        <input type="hidden" name="status" value="3" />
+                                        <label for="popupNote">Note:</label>
+                                        <input type="text" name="note" id="popupNote" required />
+                                        <button type="submit" class="btn btn-danger">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+
                         </div>
                     </section>
                     <!-- Dialog -->
@@ -479,7 +488,7 @@ s<!DOCTYPE html>
                     </div>
                 </div>
 
-                
+
             </div>
         </div>
         <script src="assetss/js/app.min.js"></script>
@@ -488,336 +497,48 @@ s<!DOCTYPE html>
         <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
         <!-- Page Specific JS File -->
         <script src="assetss/js/page/form-wizard.js"></script>
-        <!-- Template JS File -->
+        <!-- Template JS File -->   
         <script src="assetss/js/scripts.js"></script>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
+        <script src="site/assets/js/snippets.js"></script>
         <script>
-      
-    function handleMessage() {
-                                                                                  
-              
-            
-                                                                                    var messageContainer = document.getElementById('messageContainer');
-                                                                                    var messageTitle = document.getElementById('MessageTitle');
-                                                                                    messageContainer.style.display = 'block';
-                                                                                    messageTitle.style.display = 'inherit';
-                                                                                }
-
-                                                                                function submitMessage() {
-                                                                                    var message = document.getElementById('messageInput').value;
-                                                                                    if (message == null) {
-                                                                                        alert('Please enter reject message!');
-                                                                                    }
-                                                                                    // You can add additional logic to handle the message submission
-                                                                                }
-        </script>
-        <script>
-           
-            function openModal(userName) {
-                document.getElementById('modal-' + userName).style.display = 'block';
-                const bookedSlots = Array.from(document.querySelectorAll('td.Book'));
-                 
-                   let t = document.querySelector('.name_mentor').textContent;
-console.log(t);
-                let currentAction = "editable";
-const scheduleData = [
-    <c:forEach items="${requestScope.list}" var="mentor">
-                 if('${mentor.mentorName}' === userName){
-        <c:forEach var="schedule" items="${mentor.list}">
-           
-            {
-        week:  1,
-        nameday: "${schedule.nameOfDay}",
-        slot: ${schedule.slotId.substring(5)},
-        mentorName: "${mentor.mentorName}",
-        class: "SWR302",
-        room: "BE-209",
-        status: "${status}",
-        day: "${schedule.dayOfSlot}",
-        time: "${schedule.slot_name}"
-    },
-        
-        </c:forEach>
-    }
-        <c:set var="start" value="${mentor.startTime}"/>
-        <c:set var="end" value="${mentor.endTime}"/>
-    </c:forEach>
-];
-console.log(scheduleData)
-let allSelectedSlots = [];
-console.log("Initial scheduleData:", scheduleData);
-
-function generateWeeks(startDate) {
-    const weeks = [];
-    const start = new Date(startDate);
-    for (let i = 0; i < 4; i++) {
-        const weekStart = new Date(start);
-        weekStart.setDate(start.getDate() + i * 7);
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 6);
-        weeks.push({ week: i + 1, start: weekStart, end: weekEnd });
-    }
-    return weeks;
-}
-
-function getWeekNumber(date, startDate) {
-    const weeks = generateWeeks(startDate);
-    const targetDate = new Date(date);
-    for (let i = 0; i < weeks.length; i++) {
-        if (targetDate >= weeks[i].start && targetDate <= weeks[i].end) {
-            return weeks[i].week;
-        }
-    }
-    return null;
-}
-
-const start = '${start}';
-
-console.log("Start date:", start);
-
-scheduleData.forEach((item) => {
-    console.log("Processing item:", item);
-    item.week = getWeekNumber(item.day, start);
-    console.log("Calculated week:", item.week);
-});
-
-console.log("Updated scheduleData:", scheduleData);
-
-let tmp = scheduleData.filter(s => s.week ===  1 );
-console.log("Items in week 2:", tmp);
-                function formatDate(date) {
-                return (
-                        date.getFullYear().toString().padStart(4, "0") +
-                        "-" +
-                        (date.getMonth() + 1).toString().padStart(2, "0") +
-                        "-" +
-                        date.getDate().toString().padStart(2, "0")
-                        );
-                }
-
-                function getMonday(date) {
-                date = new Date(date);
-                const day = date.getDay();
-                const diff = date.getDate() - day + (day === 0 ? - 6 : 1);
-                return new Date(date.setDate(diff));
-                }
-
-                function getWeekOptions(start) {
-                const startDate = new Date(start);
-                const options = [];
-                for (let week = 0; week < 4; week++) {
-                const mondayOfWeek = new Date(startDate);
-                mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
-                const sundayOfWeek = new Date(mondayOfWeek);
-                sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
-                const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
-                options.push({value: week + 1, text: optionText});
-                }
-                return options;
-                }
-
-                function isClassCurrentlyHappening(classItem, currentDate) {
-                const [startHour, startMinute] = classItem.time.split("-")[0].split(":").map(Number);
-                const [endHour, endMinute] = classItem.time.split("-")[1].split(":").map(Number);
-                const classStart = new Date(currentDate);
-                classStart.setHours(startHour, startMinute, 0);
-                const classEnd = new Date(currentDate);
-                classEnd.setHours(endHour, endMinute, 0);
-                return currentDate >= classStart && currentDate < classEnd;
-                }
-
-                function getStatusClass(status) {
-                switch (status) {
-                case "chosen":
-                        return "chosen";
-                case "selected":
-                        return "selected";
-                case "not-selected":
-                        return "not-selected";
-                default:
-                        return "";
-                }
-                }
-
-                function getStatusText(status) {
-                switch (status) {
-                case "chosen":
-                        return "(chosen)";
-                case "selected":
-                        return "(selected)";
-                case "not-selected":
-                        return "(not selected)";
-                default:
-                        return "";
-                }
-                }
-                function updateSchedule() {
-                const selectedWeek = parseInt(weekSelect.value);
-                const startDate = new Date('${start}');
-                const monday = new Date(startDate);
-                monday.setDate(monday.getDate() + (selectedWeek - 1) * 7);
-                // Update headers
-                const dayHeaders = document.getElementById("dayHeaders");
-                dayHeaders.innerHTML = "<th>WEEK</th>";
-                const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-                daysOfWeek.forEach((day, index) => {
-                const date = new Date(monday);
-                date.setDate(date.getDate() + index);
-                const th = document.createElement("th");
-                th.innerHTML = day + `<br>` + formatDate(date);
-                dayHeaders.appendChild(th);
-                });
-                // Update slots
-                const tbody = document.querySelector("#scheduleTable tbody");
-                tbody.innerHTML = "";
-                for (let i = 0; i < 5; i++) {
-                const row = document.createElement("tr");
-                row.innerHTML = `<td>Slot ` + (i + 1) + `</td>` + "<td></td>".repeat(7);
-                tbody.appendChild(row);
-                }
-
-                const currentDate = new Date();
-                const weekData = scheduleData.filter(item => item.week === selectedWeek);
-                console.log(weekData);
-                weekData.forEach((item) => {
-                const dayIndex = daysOfWeek.indexOf(item.nameday.toUpperCase());
-                console.log(dayIndex);
-                if (dayIndex !== - 1) {
-                const cell = tbody.rows[item.slot - 1].cells[dayIndex + 1];
-                if (cell) {
-                let onlineIndicator = item.online ? '<span class="online-indicator"></span>' : "";
-                const classDate = new Date(monday);
-                classDate.setDate(classDate.getDate() + dayIndex);
-                let onlineNowIndicator = "";
-                if (
-                        classDate.toDateString() === currentDate.toDateString() &&
-                        isClassCurrentlyHappening(item, currentDate)
-                        ) {
-                onlineNowIndicator = '<div class="online-now">Online</div>';
-                }
-
-                const statusClass = getStatusClass(item.status);
-                const statusText = getStatusText(item.status);
-                cell.innerHTML +=
-                        '<div class="class-block">' +
-                        '<div>' + item.class + ' ' + onlineIndicator + '</div>' +
-                        '<div class="view-materials">View Materials</div>' +
-                        '<div class="edu-next">EduNext</div>' +
-                        '<div>at ' + item.room + '</div>' +
-                        '<div class="status ' + statusClass + '" data-day="' + item.day + '" data-slot="' + item.slot + '" data-week="' + item.week + '">' + statusText + '</div>' +
-                        '<div class="time">' + item.time + '</div>' +
-                        onlineNowIndicator +
-                        '</div>';
-                if (item.status === "selected") {
-                cell.classList.add("selected");
-                }
-                }
-                }
-                });
-                // Update event listeners
-               document.querySelectorAll(".status").forEach((element) => {
-        element.addEventListener("click", function () {
-            const day = this.getAttribute("data-day");
-            const slot = parseInt(this.getAttribute("data-slot"));
-            const week = parseInt(this.getAttribute("data-week"));
-            const filteredSchedule = scheduleData.find(
-                (item) => item.day === day && item.slot === slot && item.week === week
-            );
-            if (filteredSchedule) {
-                if (filteredSchedule.status === "not-selected") {
-                    filteredSchedule.status = "selected";
-                    this.textContent = getStatusText("selected");
-                    this.classList.remove("not-selected");
-                    this.classList.add("selected");
-                    this.closest('td').classList.add("selected");
-                                allSelectedSlots.push({day, slot, week});
-
-                 
-                } else if (filteredSchedule.status === "selected") {
-                    filteredSchedule.status = "not-selected";
-                    this.textContent = getStatusText("not-selected");
-                    this.classList.remove("selected");
-                    this.classList.add("not-selected");
-                    this.closest('td').classList.remove("selected");
-                     allSelectedSlots = allSelectedSlots.filter(
-                item => !(item.day === day && item.slot === slot && item.week === week)
-            );
-                
-                }
-            }
-        });
-    });
-}
-
-    
-console.log(allSelectedSlots);
-          
-                const weekSelect = document.getElementById("week");
-                const weekOptions = getWeekOptions('${start}');
-                weekOptions.forEach((option) => {
-                const opt = document.createElement("option");
-                opt.value = option.value;
-                opt.textContent = option.text;
-                weekSelect.appendChild(opt);
-                });
-               
-                weekSelect.addEventListener("change", updateSchedule);
-                updateSchedule();
-                
-                bookedSlots.forEach(slot => {
-                    const newDiv = document.createElement('div');
-                    newDiv.innerHTML = `
-                          <div>SWR302</div>
-                           <div>View Materials</div>
-                           <div>at BE-209</div>
-                                                                                            `;
-                    slot.innerHTML = '';
-                    slot.appendChild(newDiv);
-                    slot.classList.remove('Book');
-                });
-            }
-
-            function closeModal(userName) {
-                document.getElementById('modal-' + userName).style.display = 'none';
-            }
             document.addEventListener('DOMContentLoaded', (e) => {
-
-                const editButtons = document.querySelectorAll('.edit');
-                editButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const cvId = this.id.split('_')[1];
-                        const note = document.getElementById('note_' + cvId);
-                        const noteInput = document.getElementById('note_Input_' + cvId);
-                        const status = document.getElementById('status_' + cvId);
-                        status.value = 2;
-                        noteInput.value = note.value;
-                        const form = document.getElementById('form_' + cvId);
-                        form.action = 'changeStatus?cvId=' + cvId + '&status=2&note=' + note;
-                        form.method = 'get';
-                        form.submit();
+            const closeButtons = document.querySelectorAll('.close');
+                    closeButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                    const popup = this.closest('.popup');
+                            popup.style.display = 'none';
                     });
-                });
-                const rejectButtons = document.querySelectorAll('.reject');
-                rejectButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const cvId = this.id.split('_')[1];
-                        const note = document.getElementById('note_' + cvId);
-                        const noteInput = document.getElementById('note_Input_' + cvId);
-                        const status = document.getElementById('status_' + cvId);
-                        status.value = 3;
-                        noteInput.value = note.value;
-                        const form = document.getElementById('form_' + cvId);
-                        form.action = 'changeStatus?cvId=' + cvId + '&status=3&note=' + note;
-                        form.method = 'get';
-                        form.submit();
                     });
-                });
-            });
-
+                    window.onclick = function (event) {
+                    if (event.target.classList.contains('popup')) {
+                    event.target.style.display = 'none';
+                    }
+                    };
+                    const rejectButtons = document.querySelectorAll('.reject');
+                    rejectButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                            const cvId = this.getAttribute('data-cv-id');
+                            const popup = document.getElementById('notePopup');
+                            const popupCvId = document.getElementById('popupCvId');
+                            popupCvId.value = cvId;
+                            popup.style.display = 'block';
+                    });
+                    });
+                    // Validate and submit the form
+                    const noteForm = document.getElementById('noteForm');
+                    noteForm.addEventListener('submit', function (event) {
+                    const popupNote = document.getElementById('popupNote');
+                            if (popupNote.value.trim() === "") {
+                    event.preventDefault();
+                            alert("Please enter a note.");
+                    }
+                    });
+            };
         </script>
+
     </body>
 
 </html>
