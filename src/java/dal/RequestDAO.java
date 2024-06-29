@@ -214,7 +214,7 @@ public class RequestDAO {
         List<RequestDTO> requests = new ArrayList<>();
         String sql = " SELECT * \n"
                 + "                     FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name\n"
-                + "                     WHERE r.mentor_name = ?\n"
+                + "                     WHERE r.mentor_name = ? AND r.status_id <> 6\n"
                 + "                     order by [deadline_date] DESC\n"
                 + "					 OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
 
@@ -262,7 +262,7 @@ public class RequestDAO {
     }
 
     public int getTotalRequestMentor(String mentorName) {
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee WHERE mentor_name = ?";
+        String sql = "SELECT COUNT(*) FROM RequestsFormMentee WHERE mentor_name = ? AND r.status_id <> 6";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, mentorName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -281,7 +281,7 @@ public class RequestDAO {
     String sql = "SELECT r.*, c.cv_id, c.mentor_name " +
                  "FROM RequestsFormMentee r " +
                  "JOIN CV c ON c.mentor_name = r.mentor_name " +
-                 "WHERE r.mentor_name = ? AND r.status_id = ? " +
+                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.status_id <> 6 " +
                  "ORDER BY r.deadline_date DESC " +
                  "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
@@ -330,7 +330,7 @@ public class RequestDAO {
 }
 
     public int getTotalRequestMentorCountByStatus(String mentorName, int statusId) {
-    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.status_id = ?";
+    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.status_id = ? AND r.status_id <> 6";
     try (PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, mentorName);
         ps.setInt(2, statusId);
@@ -350,7 +350,7 @@ public class RequestDAO {
     String sql = "SELECT r.*, c.cv_id, c.mentor_name " +
                  "FROM RequestsFormMentee r " +
                  "JOIN CV c ON c.mentor_name = r.mentor_name " +
-                 "WHERE r.mentor_name = ? AND r.mentee_name LIKE ? " +
+                 "WHERE r.mentor_name = ? AND r.mentee_name LIKE ? AND r.status_id <> 6 " +
                  "ORDER BY r.deadline_date DESC " +
                  "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
@@ -399,7 +399,7 @@ public class RequestDAO {
 }
     
     public int getTotalRequestMentorCountByMenteeName(String mentorName, String menteeName) {
-    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.mentee_name LIKE ?";
+    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.mentee_name LIKE ? AND r.status_id <> 6";
     try (PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, mentorName);
         ps.setString(2, "%" + menteeName + "%"); // Using LIKE for partial matching
@@ -419,7 +419,7 @@ public class RequestDAO {
     String sql = "SELECT r.*, c.cv_id, c.mentor_name " +
                  "FROM RequestsFormMentee r " +
                  "JOIN CV c ON c.mentor_name = r.mentor_name " +
-                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ? " +
+                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ? AND r.status_id <> 6 " +
                  "ORDER BY r.deadline_date DESC " +
                  "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
@@ -470,7 +470,7 @@ public class RequestDAO {
 
    public int getTotalRequestMentorCountByStatusAndMenteeName(String mentorName, int statusId, String menteeName) {
     String sql = "SELECT COUNT(*) FROM RequestsFormMentee r " +
-                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ?";
+                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ? AND r.status_id <> 6";
     try (PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, mentorName);
         ps.setInt(2, statusId);
@@ -742,7 +742,7 @@ public class RequestDAO {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT * FROM RequestStatuses";
+            String sql = "select * from RequestStatuses r where r.status_id <> 6";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 
