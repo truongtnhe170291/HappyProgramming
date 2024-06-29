@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import models.Account;
+import models.Hold;
 import models.Transaction;
 import models.Wallet;
 
@@ -50,11 +51,15 @@ public class WalletServlet extends HttpServlet {
         } else {
             request.setAttribute("wallet", wallet);
         }
-        int numPage = dao.getNumberPageByUserName(user.getUserName());
+        int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+        int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());
         request.setAttribute("userInfo", user.getUserName());
         List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), 1);
+        List<Hold> listHold = dao.getHoldByPaging(user.getUserName(), 1);
         request.setAttribute("listTran", list);
+        request.setAttribute("listHold", listHold);
         request.setAttribute("numPage", numPage);
+        request.setAttribute("numPageHold", numPageHold);
         request.getRequestDispatcher("Wallet.jsp").forward(request, response);
 
     }

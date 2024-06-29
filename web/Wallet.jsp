@@ -298,10 +298,10 @@
                 <main>
                     <section class="wallet-overview">
                         <div class="total-balance">
-                            <h3>Available: <span id="available_binance" value="${requestScope.wallet.avaiable_binance}">${requestScope.wallet.avaiable_binance}</span><span> VND</span></h3>
+                            <h3>Hold: <span id="available_binance" value="${requestScope.wallet.hold}">${requestScope.wallet.hold}</span><span> VND</span></h3>
                         </div>
                         <div class="total-balance">
-                            <h3>Balance: <span id="real_binance" value="${requestScope.wallet.real_binance}">${requestScope.wallet.real_binance}</span><span> VND</span></h3>
+                            <h3>Balance: <span id="real_binance" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}</span><span> VND</span></h3>
                         </div>
 
                         <!--            <div class="wallet-list"></div>-->
@@ -318,7 +318,7 @@
                                     <tr>
                                         <td>${tran.create_date}</td>
                                         <td>${tran.message}</td>
-                                        <td class="test_trans" value="${tran.amount}">${tran.user_send == sessionScope.user.userName?"-":"+"}${tran.amount}</td>
+                                        <td class="test_trans" value="${tran.amount}">${tran.user_send == sessionScope.user.userName?"-":"+"}${tran.amount} <span> VND</span></td>
                                     </tr>
                                 </c:forEach>
                             </table>
@@ -330,17 +330,17 @@
                         </div>
                         <div id="holdContent" class="tab-content">
                             <table class="hold_history">
-                                <c:forEach items="${requestScope.listTran}" var="tran">
+                                <c:forEach items="${requestScope.listHold}" var="hold">
                                     <tr>
-                                        <td>${tran.create_date}</td>
-                                        <td>${tran.message}</td>
-                                        <td class="test_trans" value="${tran.amount}">${tran.user_send == sessionScope.user.userName?"-":"+"}${tran.amount}</td>
+                                        <td>${hold.create_date}</td>
+                                        <td>${hold.message}</td>
+                                        <td class="test_trans" value="${hold.amount}">${hold.hold?"+":"-"}${tran.amount}</td>
                                     </tr>
                                 </c:forEach>
                             </table>
                             <div>
-                                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                                    <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
+                                <c:forEach begin="1" end="${requestScope.numPageHold}" var="i">
+                                    <a href="PagingHold?action=menteeHold&index=${i}">${i}</a> &nbsp;
                                 </c:forEach>
                             </div>
                         </div>

@@ -506,10 +506,8 @@ function getWeekNumber(date, startDate) {
     return null;
 }
 
-// Đảm bảo start là một chuỗi ngày hợp lệ, ví dụ: '2024-07-08'
-const start = '${start}'; // Hoặc dùng một ngày cụ thể nếu ${start} không hoạt động
+const start = '${start}';
 
-console.log("Start date:", start);
 
 scheduleData.forEach((item) => {
     console.log("Processing item:", item);
@@ -518,7 +516,29 @@ scheduleData.forEach((item) => {
 });
 
 console.log("Updated scheduleData:", scheduleData);
+ function showToastMessage(message) {
+                Toastify({
+                text: message,
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                }).showToast();
+                }
+function validateForm() {
+const totalPriceInput = document.getElementById("totalPriceInput");
+                const notifyBtn = document.getElementById("notify_btn");
 
+        if (${wallet} < totalPriceInput.value) {
+            notifyBtn.disabled = true;
+            showToastMessage("Bạn không đủ tiền để Book lịch học. Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
+            return false;
+        }else {
+            notifyBtn.disabled = false;
+            return true;
+        }
+    }
+    
 const tmp = scheduleData.filter(s => s.week ===  1);
 console.log("Items in week 2:", tmp);
                 function formatDate(date) {
@@ -650,7 +670,6 @@ console.log("Items in week 2:", tmp);
                 }
                 }
                 });
-                // Update event listeners
                document.querySelectorAll(".status").forEach((element) => {
         element.addEventListener("click", function () {
             const day = this.getAttribute("data-day");
@@ -682,6 +701,7 @@ console.log("Items in week 2:", tmp);
                 }
             }
             updateTotalPrice();
+            validateForm(); 
         });
     });
     updateTotalPrice();
@@ -699,7 +719,7 @@ console.log("Items in week 2:", tmp);
                 const totalPriceInput = document.getElementById("totalPriceInput");
                 const totalPriceDisplay = document.getElementById("totalPrice");
                 totalPriceInput.value = total;
-                totalPriceDisplay.innerHTML = `Total Price: ` + total;
+                totalPriceDisplay.innerHTML = `Total Price: ` + total + `/` +(selectedCount)+ ` Slot`;
                 }
  function getFormValues() {
                 const action = document.getElementById("statusIndicator").textContent;
@@ -886,7 +906,31 @@ function getFormValues() {
     }));
 
     
+if (!formData.title || !formData.description || !formData.deadlineDate || !formData.deadlineHour || !formData.skill) {
+        Toastify({
+            text: "Vui lòng điền đầy đủ thông tin.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+        return;
+    }
 
+    if (selectedSlots.length === 0) {
+        Toastify({
+            text: "Vui lòng chọn ít nhất một slot.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+        return;
+    }
     const requestData = {
         ...formData,
         selectedSlots: selectedSlots
@@ -996,10 +1040,12 @@ function getFormValues() {
                 function validateForm() {
                 const deadlineDate = deadlineInput.value;
                 const currentDate = getFormattedCurrentDate('${start}');
+                const newDate = new Date();
                 const sundayOfWeek = getSundayOfWeek();
+                console.log(deadlineDate + newDate + currentDate);
                 const checkedSchedules = countCheckedSchedules();
                 const selectedSkills = countSelectedSkills();
-                if (deadlineDate >= currentDate || deadlineDate > sundayOfWeek) {
+                if (  deadlineDate <= currentDate) {
                 notifyBtn.disabled = true;
                 showToastMessage("Hãy nhập đúng ngày !!!.");
                 return false;
@@ -1009,22 +1055,23 @@ function getFormValues() {
                     showToastMessage("Hãy chọn ít nhất 1 slot!!!");
                                 return false;
                 } 
-                else if (selectedSkills === 0) {
-                notifyBtn.disabled = true;
-                showToastMessage("Hãy chọn skill để book lịch.");
-                return false;
-                }
                 else if(${wallet} < totalPriceInput.value){
                  notifyBtn.disabled = true;
                 showToastMessage("Bạn không đủ tiền để Book lịch học.Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
                 return false;
                 }
+                else if (selectedSkills === 0) {
+                notifyBtn.disabled = true;
+                showToastMessage("Hãy chọn skill để book lịch.");
+                return false;
+                }
+                
                 else{
                     notifyBtn.disabled = false;
                      return true;
                 }
                 }
-
+ 
 
                 deadlineInput.addEventListener('change', validateForm);
                 skillRadios.forEach(radio => {

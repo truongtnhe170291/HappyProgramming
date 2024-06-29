@@ -52,12 +52,11 @@ public class TransactionServlet extends HttpServlet {
                 if (dao.insertTransaction(transaction)) {
                     Wallet wallet = dao.getWalletByUsenName(userName);
                     if (wallet != null) {
-                        wallet.setAvaiable_binance(wallet.getAvaiable_binance()+transaction.getAmount());
-                        wallet.setReal_binance(wallet.getReal_binance()+transaction.getAmount());
+                        wallet.setReal_balance(wallet.getReal_balance()+transaction.getAmount());
                         dao.updateWallet(wallet);
                         response.sendRedirect("wallet");
                     } else {
-                        dao.insertWallet(new Wallet(userName, transaction.getAmount(), transaction.getAmount()));
+                        dao.insertWallet(new Wallet(userName, transaction.getAmount(), 0));
                         response.sendRedirect("wallet");
                     }
                 }

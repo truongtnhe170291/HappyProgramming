@@ -64,6 +64,7 @@ public class LoginManager extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
     }
 
     /**
@@ -114,7 +115,7 @@ public class LoginManager extends HttpServlet {
             } else if (acc.getRoleId() == 3) {
                 session.setAttribute("user", acc);
                 List<Transaction> list = dao.getTransactionByPaging(acc.getUserName(), 1);
-                int numPage = dao.getNumberPageByUserName(acc.getUserName());
+                int numPage = dao.getNumberPageByUserNameTransaction(acc.getUserName());
                 request.setAttribute("listTran", list);
                 request.setAttribute("numPage", numPage);
                 response.sendRedirect("ManagerHomePage");

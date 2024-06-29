@@ -10,12 +10,13 @@ package models;
  */
 public class Wallet {
     private String wallet_id;
-    private long real_binance, avaiable_binance;
+    private long real_balance;
+    private long hold;
 
-    public Wallet(String wallet_id, long real_binance, long avaiable_binance) {
+    public Wallet(String wallet_id, long real_balance, long hold) {
         this.wallet_id = wallet_id;
-        this.real_binance = real_binance;
-        this.avaiable_binance = avaiable_binance;
+        this.real_balance = real_balance;
+        this.hold = hold;
     }
 
     public String getWallet_id() {
@@ -26,21 +27,22 @@ public class Wallet {
         this.wallet_id = wallet_id;
     }
 
-    public long getReal_binance() {
-        return real_binance;
+    public long getReal_balance() {
+        return real_balance;
     }
 
-    public void setReal_binance(long real_binance) {
-        this.real_binance = real_binance;
+    public void setReal_balance(long real_balance) {
+        this.real_balance = real_balance;
     }
 
-    public long getAvaiable_binance() {
-        return avaiable_binance;
+    public long getHold() {
+        return hold;
     }
 
-    public void setAvaiable_binance(long avaiable_binance) {
-        this.avaiable_binance = avaiable_binance;
+    public void setHold(long hold) {
+        this.hold = hold;
     }
-
+    
+    
    
 }

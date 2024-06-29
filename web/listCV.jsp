@@ -374,8 +374,8 @@
                                                                             class="fas fa-check"></i></button>
                                                                     <button id="reject_${cv.cvId}"
                                                                         class="reject btn btn-danger btn-sm"
-                                                                        data-cv-id="${cv.cvId}"><i
-                                                                            class="fas fa-times"></i></button>
+                                                                        data-cv-id="${cv.cvId}">
+                                                                        <i class="fas fa-times"></i></button>
                                                                 </c:if>
 
                                                             </td>
