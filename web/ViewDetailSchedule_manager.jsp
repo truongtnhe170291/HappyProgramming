@@ -24,7 +24,7 @@
 
             .header {
                 display: flex;
-                    justify-content: space-between;
+                justify-content: space-between;
                 margin-bottom: 20px;
             }
             .items{
@@ -249,46 +249,67 @@
             .sendSelectedSlots{
                 transform: translate(30%,30%);
             }
-          #renderButton {
-            background-color: #ADD8E6;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+            #renderButton {
+                background-color: #ADD8E6;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: none;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
 
-        #renderButton:hover {
-            background-color: #87CEEB;
-            color: #ffffff; 
-        }
-        .poiter{
-            pointer-events: none;
-        }
-        #sendSelectedSlots{
-        margin-top: 10px;
-        margin-right: 10px;
-    float: right;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    transition-duration: 0.4s;}
+            #renderButton:hover {
+                background-color: #87CEEB;
+                color: #ffffff;
+            }
+            .poiter{
+                pointer-events: none;
+            }
+            #sendSelectedSlots{
+                margin-top: 10px;
+                margin-right: 10px;
+                float: right;
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition-duration: 0.4s;
+            }
+            #newButton{
+                margin-top: 10px;
+                margin-right: 10px;
+                float: right;
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition-duration: 0.4s;
+            }
+            
+            .span{
+                margin: 0px 5px;
+            }
         </style>
-         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     </head>
 
     <body class="layout-light side-menu">
@@ -305,41 +326,45 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <h1 style="margin-top: 30px">List of Requests</h1>
+
+                <div style="display: flex; justify-content: space-between">
+                    <h1 style="margin-top: 30px">Schedule Detail</h1>
+                    <h1 style="margin-top: 30px">Mentor: ${mentorName}</h1>
+                </div>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <form id="scheduleForm">
                             <div class="schedule-container">
                                 <div class="header">
-                            <div class="items">
-                                    <div class="select-container">
-                                        <label for="year">YEAR</label>
-                                        <select id="year" >
-                                            <option>2024</option>
-                                        </select>
-                                    </div>
-                                    <div class="select-container">
-                                        <label for="week">WEEK</label>
-                                        <select id="week" ></select>
-                                    </div>
-                                </div>
                                     <div class="items">
-                                <div class="select-container class-set-render">
-                                        <div id="renderButton" >Render</div>
-                                    </div>
-                                    
-                                    <div class="select-container cusstom_h">
-
-                                        <c:if test="${status != ''}">
-                                            <label for="year" class="d-flex">Status: <div class="st">${status}</div></label>
-                                        </c:if>
-                                        <c:if test="${status eq ''}">
-                                            <label for="year">Status: Booking Schedule</label>
-                                        </c:if>
-
-
-                                    </div>
+                                        <div class="select-container">
+                                            <label for="year">YEAR</label>
+                                            <select id="year" >
+                                                <option>2024</option>
+                                            </select>
                                         </div>
+                                        <div class="select-container">
+                                            <label for="week">WEEK</label>
+                                            <select id="week" ></select>
+                                        </div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="select-container class-set-render">
+                                            <div id="renderButton" >Render</div>
+                                        </div>
+
+                                        <div class="select-container cusstom_h">
+
+                                            <c:if test="${status != ''}">
+                                                <label for="year" class="d-flex">Status: <div class="st">${status}</div></label>
+                                                </c:if>
+                                                <c:if test="${status eq ''}">
+                                                <label for="year">Status: Booking Schedule</label>
+                                            </c:if>
+
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <table id="scheduleTable">
                                     <thead>
@@ -351,31 +376,21 @@
                                 <div class="note-container">
                                     <h2>Note:</h2>
                                     <ul>
-                                        <li>Your selection of week will select for <span class="highlight">hole month</span></li>
-                                        <li>You cannot booking a schedule on <span class="highlight">Saturday</span> and <span class="highlight">Sunday</span></li>
-                                        <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight">Pending</span></li>
-                                        <li><span class="highlight">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight"> first week</span></li>
+                                        <li><span class="highlight">Next button</span> to view next request <span class="highlight">request schedule</span> from mentor</li>
+                                        <li><span class="highlight">Back button</span> to back to schedule list request </li>
                                             <c:forEach items="${requestScope.listSlot}" var="slot">
                                             <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
                                             </c:forEach>
                                     </ul>
                                 </div>  
-
-
-                                <c:if test="${status eq 'Saved' || status eq ''}">
-                                    <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>
-                                 </c:if>
-                                        <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                    <a href="bookSchedule" id="sendSelectedSlots">Send Schedule</a></div>
-                                </div>
-                              
-                        
-
+                                <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                            <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a></div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px">
+                        <a href="HandleSlotMentor" id="newButton">Back</a>
+                        <a id="newButton" href="">Next</a>
+                    </div>
+                </div>
                 </form>
-
-                
-
-
             </div>
         </div>
 
@@ -388,22 +403,22 @@
         const weeksData = {1: {}, 2: {}, 3: {}, 4: {}};
         const saveButton = document.getElementById("saveSelectedSlots");
         const sendButton = document.getElementById("sendSelectedSlots");
-const tatussss = '${status}';
-if(tatussss === 'Pending' || tatussss === 'Approved'){
-    saveButton.classList.add('poiter');
-    sendButton.classList.add('poiter');
-}else{
-     saveButton.classList.remove('poiter');
-    sendButton.classList.remove('poiter');
-}
-saveButton.addEventListener("click", function () {
-     document.querySelector('.st').textContent = 'Saved';
-});
-sendButton.addEventListener("click", function () {
-     document.querySelector('.st').textContent = 'Pending';
-     saveButton.style.display = 'none';
-     sendButton.classList.add('poiter');
-});
+        const tatussss = '${status}';
+        if (tatussss === 'Pending' || tatussss === 'Approved') {
+            saveButton.classList.add('poiter');
+            sendButton.classList.add('poiter');
+        } else {
+            saveButton.classList.remove('poiter');
+            sendButton.classList.remove('poiter');
+        }
+        saveButton.addEventListener("click", function () {
+            document.querySelector('.st').textContent = 'Saved';
+        });
+        sendButton.addEventListener("click", function () {
+            document.querySelector('.st').textContent = 'Pending';
+            saveButton.style.display = 'none';
+            sendButton.classList.add('poiter');
+        });
         function formatDate(date) {
             return (
                     date.getDate().toString().padStart(2, "0") +
@@ -456,15 +471,15 @@ sendButton.addEventListener("click", function () {
             weekSelect.appendChild(optionElement);
         });
 
- function showToastMessage(message) {
-                Toastify({
+        function showToastMessage(message) {
+            Toastify({
                 text: message,
-                        duration: 5000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                }).showToast();
-                }
+                duration: 5000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#ff7b5a",
+            }).showToast();
+        }
 
         function selectWeekID(dayOfSlot, startTimeStr) {
             // Chuyển đổi cả hai ngày về cùng định dạng Date
@@ -687,7 +702,7 @@ sendButton.addEventListener("click", function () {
                             '<div class="slot_active">Selected</div>';
                     weeksData[week][slotKey] = item;
                 } else {
-                    cell.innerHTML = '<div class="slot-label">Not Selected</div>';
+                    cell.innerHTML = '<div class="slot-label"></div>';
                     delete weeksData[week][slotKey];
                 }
             }

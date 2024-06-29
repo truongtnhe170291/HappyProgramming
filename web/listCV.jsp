@@ -424,9 +424,6 @@
                                                 href="listCV?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
                                         </c:if>
                                     </div>
-
-
-
                                 </div>
                             </div>
                         </div>
