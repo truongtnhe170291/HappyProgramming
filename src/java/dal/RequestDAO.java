@@ -232,9 +232,9 @@ public class RequestDAO {
     
     public static void main(String[] args) {
         RequestDAO dao = new RequestDAO();
-        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPaging("hieu", "2");
+        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "2");
         for (RequestDTO request : requests) {
-            System.out.println(request.getListSchedule());
+            System.out.println(request);
         }
         
     }
@@ -1081,14 +1081,14 @@ public class RequestDAO {
     public void insertRquestSelectedSlot(int requestId, int selectedId) {
         try {
             String sql = "INSERT INTO RquestSelectedSlot(request_id, selected_id)"
-                    + "VALUES"
-                    + "(?, ?)";
+                    + " VALUES"
+                    + " (?, ?)";
             ps = con.prepareStatement(sql);
             ps.setInt(1, requestId);
             ps.setInt(2, selectedId);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("loi"+e.getMessage());
         }
 
     }

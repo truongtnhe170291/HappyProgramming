@@ -374,7 +374,9 @@ button[type="submit"] {
 .pagination a.prev:hover, .pagination a.next:hover {
     background-color: #ddd !important;
 }
-
+.custome{
+    background-color: #80e27e !important;
+}
         </style>
   
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -420,6 +422,7 @@ button[type="submit"] {
                 </form>
             <div class="userDatatable userDatatable--ticket mt-1">
                 <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
 
                         <thead class="hd">
                             <tr class="userDatatable-header">
@@ -445,37 +448,8 @@ button[type="submit"] {
 
                                     <span class="userDatatable-title">Actions</span>
                                 </th>
-<<<<<<< HEAD
-          
 
-=======
-            <jsp:include page="sidebar.jsp" />
-            <div class="contents">
-                <form method="get" action="ListRequestMentor" class="filter-search-form">
-                    <div>
-                        <label for="statusFilter">Filter by Status:</label>
-                        <select name="statusFilter" id="statusFilter">
-                            <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
-                            <c:forEach items="${listStatus}" var="status">
-                                <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
-                                    ${status.statusName}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="menteeNameFilter">Search by Mentee Name:</label>
-                        <input type="text" name="menteeNameFilter" id="menteeNameFilter" value="${param.menteeNameFilter}" placeholder="Enter mentee name"/>
-                    </div>
-                    <button type="submit">Apply</button>
-                </form>
-
-
-                <h1>List of Requests</h1>
-                <div class="userDatatable userDatatable--ticket mt-1">
-                    <div class="table-responsive">
-                        <table class="table mb-0 table-borderless">
->>>>>>> 78997036f4ec7c8f4362240ec9ba0bc63537989d
+              
                             </tr>
                         </thead>
 
@@ -540,13 +514,14 @@ button[type="submit"] {
                                                             <div class="modal-body pb-sm-50 pb-30">
 
                                                                 <div class="modal-body">
-
+                           <h2>Enter reason reject</h2>
+                           <br/>
                                                                     <input type="hidden" id="requestId" name="requestId" value="${request.requestId}" />
                                                                     <textarea id="rejectReason" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary" onclick="submitRejectForm()">Reject</button>
+                                                                    <button type="submit" class="btn btn-primary custome" onclick="submitRejectForm()">Reject</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -562,7 +537,7 @@ button[type="submit"] {
                                 </td>
                             </tr>
                         </c:forEach>
-
+                        </table>
                     <div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

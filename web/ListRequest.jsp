@@ -681,14 +681,7 @@
                                                 </form>
                                             </c:if>
 
-                                            <c:if test="${request.status.statusId == 3}">
-                                                <form method="GET" action="request" ">
-                                                    <input type="hidden" name="cvId" value="${request.cvId}" />
-                                                    <button type="submit" class="edit-btn btn " style="width: 59.5px; height: 41px;border-radius: 0.42rem;" ">
-                                                        <i class="fas fa-pencil-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </c:if>
+                                            
 
                                             <!-- Payment button for 'Wait For Payment' status -->
                                             <c:if test="${request.status.statusName == 'Wait For Payment'}">

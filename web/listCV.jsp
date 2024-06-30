@@ -171,6 +171,218 @@
             .note-section strong {
                 color: #007bff;
             }
+            .filter-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    .filter-group {
+        display: flex;
+        align-items: center;
+    }
+    .filter-group label {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    .filter-group select,
+    .filter-group input[type="text"] {
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+    .apply-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .apply-button:hover {
+        background-color: #0056b3;
+    }
+     .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a, .pagination span {
+        padding: 8px 16px;
+        text-decoration: none;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+    .pagination span {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+    .popup {
+       margin-top: 50px;
+    display: none;
+    position: fixed;
+    z-index:  9999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-family: 'Arial', sans-serif;
+}
+
+.popup-container {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    width: 80%;
+    max-width: 1000px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    text-align: left;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
+.popup-container {
+  
+    width: 80%; 
+    max-width: 1000px; 
+}
+
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-left {
+    flex: 0 0 40%;
+    padding-right: 20px;
+}
+
+.header-right {
+    flex: 0 0 60%;
+    text-align: left;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+    object-fit: cover;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.popup-title {
+    text-align: center;
+    color: #333;
+    font-size: 26px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+     margin-bottom: 15px;
+}
+
+.popup-section {
+    margin-bottom: 20px;
+}
+
+.popup-item {
+    line-height: 1.6;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.popup-item strong {
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    width: 180px;
+}
+
+.popup-item span {
+    color: #555;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.skills-section .popup-item {
+    margin-bottom: 5px;
+    margin-top: 20px;
+
+}
+
+.skill-item {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.note-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #007bff;
+}
+
+.note-section strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+
+
         </style>
     </head>
 
@@ -222,40 +434,7 @@
                     </li>
                     </ul>
                 </nav>
-                <div class="main-sidebar sidebar-style-2">
-                    <aside id="sidebar-wrapper">
-
-                        <ul class="sidebar-menu">
-                            <li class="menu-header">Main</li>
-                            <li class="dropdown active">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                        data-feather="monitor"></i><span>Dashboard</span></a>
-                                <ul class="dropdown-menu">
-                                    <li class="active"><a class="nav-link" href="Homes_manager.jsp">Dashboard 1</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-header">Request</li>
-                            <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                        data-feather="layout"></i><span>Management</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="listCV">List CV</a></li>
-
-                                    <li><a class="nav-link" href="skills">List Skills</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                        data-feather="layout"></i><span>Schedule Management</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </aside>
-                </div>
+             
                 <!-- Main Content -->
                 <div class="main-content">
                     <section class="section">
@@ -275,20 +454,24 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="card">
                                         <form method="get" action="listCV">
-                                            <label for="statusFilter">Filter by Status:</label>
-                                            <select name="statusFilter" id="statusFilter">
-                                                <option value="" ${empty param.statusFilter ? 'selected' : '' }>All</option>
-                                                <c:forEach items="${statusList}" var="status">
-                                                    <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : '' }>
-                                                        ${status.statusName}
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-
-                                            <label for="searchName">Search by Mentor Name:</label>
-                                            <input type="text" name="searchName" id="searchName" value="${param.searchName}" />
-
-                                            <button type="submit">Apply</button>
+                                            <div class="filter-container">
+    <div class="filter-group">
+        <label for="statusFilter">Filter by Status:</label>
+        <select name="statusFilter" id="statusFilter">
+            <option value="" ${empty param.statusFilter ? 'selected' : '' }>All</option>
+            <c:forEach items="${statusList}" var="status">
+                <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : '' }>
+                    ${status.statusName}
+                </option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="searchName">Search by Mentor Name:</label>
+        <input type="text" name="searchName" id="searchName" value="${param.searchName}" />
+        <button type="submit" class="apply-button">Apply</button>
+    </div>
+</div>
                                         </form>
 
                                         <div class="card-header">
@@ -299,80 +482,13 @@
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <td>${cv.cvId}</td>
-                                                            <td>${cv.fullName}</td>
+                                                            <td>ID</td>
+                                                            <td>Mentor Name</td>
 
                                                            
-                                                            <td>${cv.status.statusName}</td>
+                                                            <td>Status</td>
                                                             <td>
-                                                                <button class="btn btn-info btn-sm">
-                                                                    <i class="fas fa-eye"></i>
-                                                                    <div id="requestDetailsPopup_${cv.cvId}"
-                                                                        class="popup">
-                                                                        <div class="popup-content">
-                                                                            <span class="close">&times;</span>
-                                                                            <h2>CV Details</h2>
-                                                                            <p><strong>Mentor Name:</strong> <span
-                                                                                    id="popupMentorName_${cv.cvId}">${cv.userName}</span>
-                                                                            </p>
-                                                                            <p><strong>Email:</strong> <span
-                                                                                    id="popupEmail_${cv.cvId}">${cv.gmail}</span>
-                                                                            </p>
-                                                                            <p><strong>Full name:</strong> <span
-                                                                                    id="popupFullName_${cv.cvId}">${cv.fullName}</span>
-                                                                            </p>
-                                                                            <p><strong>DoB:</strong> <span
-                                                                                    id="popupDoB_${cv.cvId}">${cv.dob}</span>
-                                                                            </p>
-                                                                            <p><strong>Gender:</strong> <span
-                                                                                    id="popupGender_${cv.cvId}">${cv.sex
-                                                                                    ? "Male" : "Female"}</span></p>
-                                                                            <p><strong>Address:</strong> <span
-                                                                                    id="popupAddress_${cv.cvId}">${cv.address}</span>
-                                                                            </p>
-                                                                            <p><strong>Profession:</strong> <span
-                                                                                    id="popupProfession_${cv.cvId}">${cv.profession}</span>
-                                                                            </p>
-                                                                            <p><strong>Profession Introduction:</strong>
-                                                                                <span
-                                                                                    id="popupProfessionIntro_${cv.cvId}">${cv.professionIntro}</span>
-                                                                            </p>
-                                                                            <p><strong>Achievement Description:</strong>
-                                                                                <span
-                                                                                    id="popupAchievementDescription_${cv.cvId}">${cv.achievementDescription}</span>
-                                                                            </p>
-                                                                            <p><strong>Service Description:</strong>
-                                                                                <span
-                                                                                    id="popupServiceDescription_${cv.cvId}">${cv.serviceDescription}</span>
-                                                                            </p>
-                                                                            <p><strong>Skills:</strong>
-                                                                                <span id="popupSkills_${cv.cvId}">
-                                                                                    <c:forEach items="${cv.listSkill}"
-                                                                                        var="skill">
-                                                                                        <p>${skill.skillName}</p>
-                                                                                    </c:forEach>
-                                                                                </span>
-                                                                            </p>
-
-                                                                            <c:if test="${not empty cv.note}">
-                                                                                <div class="note-section">
-                                                                                    <strong>Note:</strong>
-                                                                                    <p>${cv.note}</p>
-                                                                                </div>
-                                                                            </c:if>
-                                                                        </div>
-                                                                    </div>
-                                                                </button>
-                                                                <c:if test="${cv.status.statusId == 1}">
-                                                                    <button id="edit_${cv.cvId}"
-                                                                        class="edit btn btn-success btn-sm"><i
-                                                                            class="fas fa-check"></i></button>
-                                                                    <button id="reject_${cv.cvId}"
-                                                                        class="reject btn btn-danger btn-sm"
-                                                                        data-cv-id="${cv.cvId}">
-                                                                        <i class="fas fa-times"></i></button>
-                                                                </c:if>
-
+                                                              Action
                                                             </td>
                                                         </tr>
                                                     </thead>
@@ -387,61 +503,52 @@
                                                                 <td>
                                                                     <button class="btn btn-info btn-sm">
                                                                         <i class="fas fa-eye"></i>
-                                                                        <div id="requestDetailsPopup_${cv.cvId}"
-                                                                             class="popup">
-                                                                            <div class="popup-content">
-                                                                                <span class="close">&times;</span>
-                                                                                <h2>CV Details</h2>
-                                                                                <p><strong>Mentor Name:</strong> <span
-                                                                                        id="popupMentorName_${cv.cvId}">${cv.userName}</span>
-                                                                                </p>
-                                                                                <p><strong>Email:</strong> <span
-                                                                                        id="popupEmail_${cv.cvId}">${cv.gmail}</span>
-                                                                                </p>
-                                                                                <p><strong>Full name:</strong> <span
-                                                                                        id="popupFullName_${cv.cvId}">${cv.fullName}</span>
-                                                                                </p>
-                                                                                <p><strong>DoB:</strong> <span
-                                                                                        id="popupDoB_${cv.cvId}">${cv.dob}</span>
-                                                                                </p>
-                                                                                <p><strong>Gender:</strong> <span
-                                                                                        id="popupGender_${cv.cvId}">${cv.sex
-                                                                                                      ? "Male" : "Female"}</span></p>
-                                                                                <p><strong>Address:</strong> <span
-                                                                                        id="popupAddress_${cv.cvId}">${cv.address}</span>
-                                                                                </p>
-                                                                                <p><strong>Profession:</strong> <span
-                                                                                        id="popupProfession_${cv.cvId}">${cv.profession}</span>
-                                                                                </p>
-                                                                                <p><strong>Profession Introduction:</strong>
-                                                                                    <span
-                                                                                        id="popupProfessionIntro_${cv.cvId}">${cv.professionIntro}</span>
-                                                                                </p>
-                                                                                <p><strong>Achievement Description:</strong>
-                                                                                    <span
-                                                                                        id="popupAchievementDescription_${cv.cvId}">${cv.achievementDescription}</span>
-                                                                                </p>
-                                                                                <p><strong>Service Description:</strong>
-                                                                                    <span
-                                                                                        id="popupServiceDescription_${cv.cvId}">${cv.serviceDescription}</span>
-                                                                                </p>
-                                                                                <p><strong>Skills:</strong>
-                                                                                    <span id="popupSkills_${cv.cvId}">
-                                                                                        <c:forEach items="${cv.listSkill}"
-                                                                                                   var="skill">
-                                                                                            <p>${skill.skillName}</p>
-                                                                                        </c:forEach>
-                                                                                    </span>
-                                                                                </p>
+                                                                       <div id="requestDetailsPopup_${cv.cvId}" class="popup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <span class="close">&times;</span>
+            <div class="header-content">
+                <div class="header-left">
+                     <img src="path/to/profile-picture.png" alt="Profile Picture" class="profile-picture">
+                    <p class="popup-item"><strong>Mentor Name:</strong> <span id="popupMentorName_${cv.cvId}">${cv.userName}</span></p>
+                    <p class="popup-item"><strong>Email:</strong> <span id="popupEmail_${cv.cvId}">${cv.gmail}</span></p>
+                    <p class="popup-item"><strong>Full name:</strong> <span id="popupFullName_${cv.cvId}">${cv.fullName}</span></p>
+                    <p class="popup-item"><strong>DoB:</strong> <span id="popupDoB_${cv.cvId}">${cv.dob}</span></p>
+                    <p class="popup-item"><strong>Gender:</strong> <span id="popupGender_${cv.cvId}">${cv.sex ? "Male" : "Female"}</span></p>
+                    <p class="popup-item"><strong>Address:</strong> <span id="popupAddress_${cv.cvId}">${cv.address}</span></p>
+                </div>
+                <div class="header-right">
+                   
+                    
+            <h2 class="popup-title">CV Details</h2>
+            <div class="popup-section">
+                <p class="popup-item"><strong>Profession:</strong> <span id="popupProfession_${cv.cvId}">${cv.profession}</span></p>
+                <p class="popup-item"><strong>Profession Introduction:</strong> <span id="popupProfessionIntro_${cv.cvId}">${cv.professionIntro}</span></p>
+                <p class="popup-item"><strong>Achievement Description:</strong> <span id="popupAchievementDescription_${cv.cvId}">${cv.achievementDescription}</span></p>
+                <p class="popup-item"><strong>Service Description:</strong> <span id="popupServiceDescription_${cv.cvId}">${cv.serviceDescription}</span></p>
+            </div>
+            <div class="popup-section skills-section">
+                <p class="popup-item"><strong>Skills:</strong></p>
+                <div id="popupSkills_${cv.cvId}">
+                    <c:forEach items="${cv.listSkill}" var="skill">
+                        <span class="skill-item">${skill.skillName}</span>
+                    </c:forEach>
+                </div>
+            </div>
+            <c:if test="${not empty cv.note}">
+                <div class="popup-section note-section">
+                    <strong>Note:</strong>
+                    <p>${cv.note}</p>
+                </div>
+            </c:if>
+       
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
 
-                                                                                <c:if test="${not empty cv.note}">
-                                                                                    <div class="note-section">
-                                                                                        <strong>Note:</strong>
-                                                                                        <p>${cv.note}</p>
-                                                                                    </div>
-                                                                                </c:if>
-                                                                            </div>
-                                                                        </div>
                                                                     </button>
                                                                     <c:if test="${cv.status.statusId == 1}">
                                                                         <button id="edit_${cv.cvId}"
@@ -479,26 +586,24 @@
 
 
 
-                                        <div>
-                                            <c:if test="${currentPage > 1}">
-                                                <a
-                                                    href="listCV?page=${currentPage - 1}&statusFilter=${statusFilter}">Previous</a>
-                                            </c:if>
-                                            <c:forEach begin="1" end="${totalPages}" var="i">
-                                                <c:choose>
-                                                    <c:when test="${i == currentPage}">
-                                                        <span>${i}</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a href="listCV?page=${i}&statusFilter=${statusFilter}">${i}</a>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                            <c:if test="${currentPage < totalPages}">
-                                                <a
-                                                    href="listCV?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
-                                            </c:if>
-                                        </div>
+                                        <div class="pagination">
+                        <c:if test="${currentPage > 1}">
+                            <a href="listCV?page=${currentPage - 1}&statusFilter=${statusFilter}">Previous</a>
+                        </c:if>
+                        <c:forEach begin="1" end="${totalPages}" var="i">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <span>${i}</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="listCV?page=${i}&statusFilter=${statusFilter}">${i}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <c:if test="${currentPage < totalPages}">
+                            <a href="listCV?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
+                        </c:if>
+                    </div>
 
 
 
@@ -625,7 +730,9 @@
                     icon.addEventListener('click', function () {
                         const popup = this.parentElement.querySelector('.popup');
                         popup.style.display = 'block';
-                    });
+window.onload = function() {
+    document.querySelector('.theme-white .navbar').style.setProperty('background-color', 'rgba(0, 0, 0, 0.5)', 'important');
+};                    });
                 });
 
                 const closeButtons = document.querySelectorAll('.close');

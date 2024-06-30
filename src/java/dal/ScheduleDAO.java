@@ -399,7 +399,10 @@ public class ScheduleDAO {
 
     public static void main(String[] args) {
         ScheduleDAO dao = new ScheduleDAO();
-        dao.rejectRequestNew(23, "ádfjkahkfsj");
+        List<SchedulePublic> lisr = dao.getScheduleByRequestId(2);
+        for(SchedulePublic s : lisr){
+            System.out.println(s);
+        }
     }
 
     public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {

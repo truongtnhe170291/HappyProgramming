@@ -22,18 +22,8 @@
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
 
-            .header {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 20px;
-            }
             .items{
                 display: flex;
-            }
-            .select-container {
-                display: flex;
-                align-items: center;
-                margin-right: 20px;
             }
 
             label {
@@ -164,7 +154,11 @@
                 background-color: #ffa500;
                 color: white;
             }
-
+            .contents{
+                    width: max-content;
+    margin-right: 200px;
+    transform: translate(-230px, -150px);
+            }
             .edu-next {
                 background-color: #4682b4;
                 color: white;
@@ -224,24 +218,7 @@
                 margin-top: 0;
                 margin-bottom: 15px;
             }
-            ul {
-                list-style-type: none;
-                padding-left: 0;
-                margin: 0;
-            }
-            li {
-                margin-bottom: 10px;
-                color: #666;
-                display: flex;
-                align-items: flex-start;
-                list-style: none !important;
-            }
-            li::before {
-                color: #666;
-                display: inline-block;
-                width: 1em;
-                margin-right: 0.5em;
-            }
+           
             .highlight {
                 margin: 0 4px;
                 color: #4a86e8;
@@ -308,6 +285,57 @@
             .span{
                 margin: 0px 5px;
             }
+.row {
+    margin: 0 auto !important;
+    max-width:  900px !important;
+    padding: 30px !important;
+}
+
+.note-container {
+    margin-bottom: 30px;
+        height: 460px;
+    background-color: #ffffff !important;
+    border: 2px solid #007bff !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 30px !important;
+}
+
+.note-container h2 {
+    color: #007bff !important;
+    font-size: 28px !important;
+    margin-bottom: 20px !important;
+    border-bottom: 3px solid #5bc0de !important;
+    padding-bottom: 10px !important;
+    text-align: center !important;
+}
+
+.note-container ul {
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.note-container ul li {
+    padding: 15px 0 !important;
+    border-bottom: 2px solid #f1f1f1 !important;
+    font-size: 18px !important;
+    color: #333333 !important;
+}
+
+.note-container ul li:last-child {
+    border-bottom: none !important;
+}
+
+.note-container .highlight {
+    background-color: #a2c2e0 !important;
+    color: #ffffff !important;
+    padding: 4px 8px !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
 
         </style>
         <link rel="stylesheet" href="assetss/css/app.min.css">
@@ -321,35 +349,42 @@
         <jsp:include page="style/linkcss.jsp" />
     </head>
 
-    <body class="layout-light side-menu">
+<body class="layout-light side-menu">
+    <div class="mobile-search">
+        <form action="/" class="search-form">
+            <img src="img/svg/search.svg" alt="search" class="svg">
+            <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..."
+                   aria-label="Search">
+        </form>
+    </div>
+    <div class="mobile-author-actions"></div>
+    <jsp:include page="control_nav.jsp" />
 
-        <div class="mobile-search">
-            <form action="/" class="search-form">
-                <img src="img/svg/search.svg" alt="search" class="svg">
-                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
-            </form>
-        </div>
-        <div class="mobile-author-actions"></div>
+    <main class="main-content">
 
-        <jsp:include page="control_nav.jsp" />
-
-        <div id="app">
-            <main class="main-content">
-
-                <jsp:include page="sidebar.jsp" />
-
-                <div class="main-wrapper main-wrapper-1">
-
-                    <div class="userDatatable userDatatable--ticket mt-1">
+        <jsp:include page="sidebar.jsp" />
+        <div class="contents">
                         <div class="table-responsive">
                             <form id="scheduleForm">
                                 <div class="schedule-container">
-                                    <div style="display: flex; justify-content: space-between; margin: 0 20px">
-                                        <a href="ListRequestMentor" id="newButton">Back</a>
-                                    </div> 
+                                   
                                     <div style="display: flex; justify-content: center">
-                                        <h1 style="margin: 30px 0px">Schedule Detail</h1>
+                                        <h1 style="margin: 30px 0px">Request Detail</h1>
                                     </div>
+                                    <div>
+                                            <div class="note-container">
+                                                <ul>
+                                                    <h4 style="
+    line-height: 40px;
+">Title request:  <span class="highlight">${requestDetail.title}</span></h4>
+                                                    <li><span class="highlight">This request is send for mentor:  </span>${requestDetail.mentorName}</li>
+                                                    <li><span class="highlight">Deadline Date: </span> ${requestDetail.deadlineDate}</li>
+                                                    <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
+                                                    <li><span class="highlight">Money/Slots </span> ${requestDetail.description}/${requestDetail.description}</li>
+                                                    <li><span class="highlight">Request Skill: </span> ${skillName}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     <div class="header">
                                         <div class="items">
                                             <div class="select-container">
@@ -363,6 +398,7 @@
                                                 <select id="week" ></select>
                                             </div>
                                         </div>
+                                        
                                         <div class="items">
                                             <div class="select-container class-set-render">
                                                 <div id="renderButton" >Render</div>
@@ -391,20 +427,8 @@
                                         </tbody>
                                     </table>
                                     <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="note-container">
-                                                <h2 style="margin-bottom: 15px">Request Description:</h2>
-                                                <ul>
-                                                    <h4>Title request:  <span class="highlight">${requestDetail.title}</span></h4>
-                                                    <li>This request is send for mentor:  <span class="highlight">${requestDetail.mentorName}</span></li>
-                                                    <li>Deadline Date:  <span class="highlight">${requestDetail.deadlineDate}</span></li>
-                                                    <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
-                                                    <li><span class="highlight">Money/Slots </span> ${requestDetail.description}/${requestDetail.description}</li>
-                                                    <li><span class="highlight">Request Skill: </span> ${skillName}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        
+                                        <div >
                                             <div class="note-container">
                                                 <h2>Note:</h2>
                                                 <ul>
@@ -416,15 +440,19 @@
                                             </div>
                                         </div>
                                     </div>
+                                                 <div style="display: flex; justify-content: space-between; margin: 0 20px">
+                                        <a href="ListRequestMentor" id="newButton">Back</a>
+                                    </div> 
                                     <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
                                 <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
+                        
                         </div>
-
-                    </div>
-                    </form>
-                </div>
-            </main>
+  </form>
         </div>
+                  
+              
+            </main>
+        
 
 
         <!-- General JS Scripts -->

@@ -308,6 +308,51 @@
             .span{
                 margin: 0px 5px;
             }
+.note-container {
+    margin-bottom: 30px;
+        height: 460px;
+    background-color: #ffffff !important;
+    border: 2px solid #007bff !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 30px !important;
+}
+
+.note-container h2 {
+    color: #007bff !important;
+    font-size: 28px !important;
+    margin-bottom: 20px !important;
+    border-bottom: 3px solid #5bc0de !important;
+    padding-bottom: 10px !important;
+    text-align: center !important;
+}
+
+.note-container ul {
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.note-container ul li {
+    padding: 15px 0 !important;
+    border-bottom: 2px solid #f1f1f1 !important;
+    font-size: 18px !important;
+    color: #333333 !important;
+}
+
+.note-container ul li:last-child {
+    border-bottom: none !important;
+}
+
+.note-container .highlight {
+    background-color: #a2c2e0 !important;
+    color: #ffffff !important;
+    padding: 4px 8px !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
 
         </style>
         <link rel="stylesheet" href="assetss/css/app.min.css">
@@ -328,83 +373,87 @@
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <form id="scheduleForm">
-                            <div class="schedule-container">
-                                <div style="display: flex; justify-content: space-between; margin: 0 20px">
-                                    <a href="ListRequest" id="newButton">Back</a>
-                                </div> 
-                                <div style="display: flex; justify-content: center">
-                                    <h1 style="margin: 30px 0px">Schedule Detail</h1>
-                                </div>
-                                <div class="header">
-                                    <div class="items">
-                                        <div class="select-container">
-                                            <label for="year">YEAR</label>
-                                            <select id="year" >
-                                                <option>2024</option>
-                                            </select>
+                                <div class="schedule-container">
+                                   
+                                    <div style="display: flex; justify-content: center">
+                                        <h1 style="margin: 30px 0px">Request Detail</h1>
+                                    </div>
+                                    <div>
+                                            <div class="note-container">
+                                                <ul>
+                                                    <h4 style="
+    line-height: 40px;
+">Title request:  <span class="highlight">${requestDetail.title}</span></h4>
+                                                    <li><span class="highlight">This request is send for mentor:  </span>${requestDetail.mentorName}</li>
+                                                    <li><span class="highlight">Deadline Date: </span> ${requestDetail.deadlineDate}</li>
+                                                    <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
+                                                    <li><span class="highlight">Money/Slots </span> ${requestDetail.description}/${requestDetail.description}</li>
+                                                    <li><span class="highlight">Request Skill: </span> ${skillName}</li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="select-container">
-                                            <label for="week">WEEK</label>
-                                            <select id="week" ></select>
+                                    <div class="header">
+                                        <div class="items">
+                                            <div class="select-container">
+                                                <label for="year">YEAR</label>
+                                                <select id="year" >
+                                                    <option>2024</option>
+                                                </select>
+                                            </div>
+                                            <div class="select-container">
+                                                <label for="week">WEEK</label>
+                                                <select id="week" ></select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="items">
+                                            <div class="select-container class-set-render">
+                                                <div id="renderButton" >Render</div>
+                                            </div>
+
+                                            <div class="select-container cusstom_h">
+
+                                                <c:if test="${status != ''}">
+                                                    <!--<label for="year" class="d-flex">Status: <div class="st">${status}</div></label>-->
+                                                </c:if>
+                                                <c:if test="${status eq ''}">
+                                                    <label for="year">Status: Booking Schedule</label>
+                                                </c:if>
+
+
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="items">
-                                        <div class="select-container class-set-render">
-                                            <div id="renderButton" >Render</div>
-                                        </div>
-
-                                        <div class="select-container cusstom_h">
-
-                                            <c:if test="${status != ''}">
-                                                <!--<label for="year" class="d-flex">Status: <div class="st">${status}</div></label>-->
-                                            </c:if>
-                                            <c:if test="${status eq ''}">
-                                                <label for="year">Status: Booking Schedule</label>
-                                            </c:if>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <table id="scheduleTable" style="
-                                       pointer-events: none;
-                                       ">
-                                    <thead>
-                                        <tr id="dayHeaders"></tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="note-container">
-                                            <h2>Request Description:</h2>
-                                            <ul>
-                                                <h4>Title request:  <span class="highlight">${requestDetail.title}</span></h4>
-                                                <li>This request is send for mentor:  <span class="highlight">${requestDetail.mentorName}</span></li>
-                                                <li>Deadline Date:  <span class="highlight">${requestDetail.deadlineDate}</span></li>
-                                                <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
-                                                <li><span class="highlight">Money/Slots: </span> </li>
-                                                <li><span class="highlight">Request Skill: </span> ${skillName}</li>
-                                            </ul>
+                                    <table id="scheduleTable" style="
+                                           pointer-events: none;
+                                           ">
+                                        <thead>
+                                            <tr id="dayHeaders"></tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        
+                                        <div >
+                                            <div class="note-container">
+                                                <h2>Note:</h2>
+                                                <ul>
+                                                    <li><span class="highlight">Back button</span> to back to list request </li>
+                                                        <c:forEach items="${requestScope.listSlot}" var="slot">
+                                                        <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="note-container">
-                                            <h2>Note:</h2>
-                                            <ul>
-                                                <li><span class="highlight">Back button</span> to back to list request </li>
-                                                    <c:forEach items="${requestScope.listSlot}" var="slot">
-                                                    <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
-                                                    </c:forEach>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                            <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
-                    </div>
+                                                 <div style="display: flex; justify-content: space-between; margin: 0 20px">
+                                        <a href="ListRequest" id="newButton">Back</a>
+                                    </div> 
+                                    <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                                <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
+                        
+                        </div>
 
                 </div>
                 </form>
