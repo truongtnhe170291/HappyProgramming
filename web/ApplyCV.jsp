@@ -827,6 +827,24 @@
         });
     </script>
     <script>
+          var emailInput = document.getElementById('email');
+            var emailError = document.getElementById('emailError');
+            var mailcv = document.getElementById('mailcv');
+            var mailcvErr = document.getElementById('mailcvErr');
+            var phoneInput = document.getElementById('phoneNumber');
+            var phoneError = document.getElementById('phoneError');
+            var nameInput = document.getElementById('fullname');
+            var nameError = document.getElementById('nameError');
+            var dobInput = document.getElementById('dob');
+            var dobError = document.getElementById('dobError');
+            var dobcv = document.getElementById('dobcv');
+            var dobcvErr = document.getElementById('dobcvErr');
+            var submitForm = document.getElementById('submitForm');
+            var addressInput = document.getElementById('address');
+            var addressError = document.getElementById('addressError');
+
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             var emailInput = document.getElementById('email');
             var emailError = document.getElementById('emailError');

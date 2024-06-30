@@ -85,6 +85,7 @@ public class PaymentServlet extends HttpServlet {
                         response.sendRedirect("ListRequest");
                         //return;
                     }
+                    
                 }
                 // chuyen huong neu error
             }

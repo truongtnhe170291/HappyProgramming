@@ -182,6 +182,54 @@ public class RequestDAO {
         return requests;
     }
     
+    public List<RequestDTO> getRequestOfMenteeByStatusNotPagingMentor(String mentorName, String requestId) {
+        List<RequestDTO> requests = new ArrayList<>();
+        try {
+            String sql = " SELECT * "
+                    + " FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name "
+                    + " WHERE r.mentor_name = ? AND r.request_id = ? "
+                    + " ORDER BY [deadline_date] DESC ";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            ps.setString(2, requestId);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+                request.setCvId(rs.getInt("cv_id"));
+
+                // Fetch status using fetchStatusById method
+                int statusId = rs.getInt("status_id");
+                Status status = fetchStatusById(statusId, con);
+                request.setStatus(status);
+
+                requests.add(request);
+            }
+
+            for (RequestDTO requ : requests) {
+                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+                requ.setListSkills(skills);
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                requ.setListSchedule(listSchedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
+        }
+
+        return requests;
+    }
+    
     public static void main(String[] args) {
         RequestDAO dao = new RequestDAO();
         List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPaging("hieu", "2");

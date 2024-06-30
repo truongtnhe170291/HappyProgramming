@@ -487,31 +487,31 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-            function formatNumberWithDots(number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
+            document.addEventListener("DOMContentLoaded", function () {
+                function formatNumberWithDots(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
 
-            function updateBalanceDisplay(elementId) {
-            const element = document.getElementById(elementId);
-            const value = parseInt(element.getAttribute("value"), 10);
-            element.textContent = formatNumberWithDots(value);
-            }
+                function updateBalanceDisplay(elementId) {
+                    const element = document.getElementById(elementId);
+                    const value = parseInt(element.getAttribute("value"), 10);
+                    element.textContent = formatNumberWithDots(value);
+                }
 
-            updateBalanceDisplay("available_binance");
-            updateBalanceDisplay("real_binance");
+                updateBalanceDisplay("available_binance");
+                updateBalanceDisplay("real_binance");
             });
         </script>
         <script>
             function formatDateTime(dateTime) {
-            return dateTime.replace("T", " ");
+                return dateTime.replace("T", " ");
             }
 
-            document.addEventListener("DOMContentLoaded", function() {
-            const dateTimeCells = document.querySelectorAll(".hold_history td.dateTime");
-            dateTimeCells.forEach(cell => {
-            cell.textContent = formatDateTime(cell.textContent);
-            });
+            document.addEventListener("DOMContentLoaded", function () {
+                const dateTimeCells = document.querySelectorAll(".hold_history td.dateTime");
+                dateTimeCells.forEach(cell => {
+                    cell.textContent = formatDateTime(cell.textContent);
+                });
             });
         </script>
         <script>
@@ -519,140 +519,143 @@
             const holdContent = document.getElementById('holdContent');
             const hasHistoryTransactions = historyContent.querySelectorAll('.transactions tr').length > 0;
             const hasHoldTransactions = holdContent.querySelectorAll('.hold_history tr').length > 0;
+
             if (!hasHistoryTransactions) {
-            const noTransactionMessage = document.createElement('p');
-            noTransactionMessage.textContent = 'No Transaction';
-            noTransactionMessage.classList.add('no-transaction-message');
-            historyContent.appendChild(noTransactionMessage);
-            }else if(!hasHoldTransactions){
                 const noTransactionMessage = document.createElement('p');
-            noTransactionMessage.textContent = 'No Hold';
-            noTransactionMessage.classList.add('no-transaction-message');
-            holdContent.appendChild(noTransactionMessage);
-            } else {
-            document.querySelectorAll('.pt').forEach((element) => element.style.display = 'block');
+                noTransactionMessage.textContent = 'No Transaction';
+                noTransactionMessage.classList.add('no-transaction-message');
+                historyContent.appendChild(noTransactionMessage);
             }
 
+            if (!hasHoldTransactions) {
+                const noTransactionMessage = document.createElement('p');
+                noTransactionMessage.textContent = 'No Hold';
+                noTransactionMessage.classList.add('no-transaction-message');
+                holdContent.appendChild(noTransactionMessage);
+            }
 
+            if (hasHistoryTransactions && hasHoldTransactions) {
+                document.querySelectorAll('.pt').forEach((element) => element.style.display = 'block');
+            }
         </script>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-            function formatNumberWithDotss(number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VNĐ";
-            }
+            document.addEventListener("DOMContentLoaded", function () {
+                function formatNumberWithDotss(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VNĐ";
+                }
 
-            function updateTransactionAmounts(selector) {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(element => {
-            const value = parseInt(element.getAttribute("value"), 10);
-            const sign = element.textContent.trim().charAt(0);
-            const formattedValue = formatNumberWithDotss(Math.abs(value));
-            element.textContent = sign + formattedValue;
-            });
-            }
+                function updateTransactionAmounts(selector) {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        const value = parseInt(element.getAttribute("value"), 10);
+                        const sign = element.textContent.trim().charAt(0);
+                        const formattedValue = formatNumberWithDotss(Math.abs(value));
+                        element.textContent = sign + formattedValue;
+                    });
+                }
 
-            updateTransactionAmounts("#historyContent .test_trans");
-            updateTransactionAmounts("#holdContent .test_trans");
+                updateTransactionAmounts("#historyContent .test_trans");
+                updateTransactionAmounts("#holdContent .test_trans");
             });
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-            const amountInput = document.getElementById('amount');
-            const depositBtn = document.querySelector('.deposit-btn');
-            amountInput.addEventListener('input', function () {
-            validateAmount(this.value);
-            });
-            function validateAmount(value) {
-            let parsedAmount = parseInt(value);
-            if (parsedAmount < 100000 || parsedAmount > 10000000) {
-            depositBtn.disabled = true;
-            Toastify({
-            text: 'Amount must be between 100,000 and 10,000,000',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
-                    backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
-                    stopOnFocus: true,
-                    close: true
-            }).showToast();
-            } else {
-            depositBtn.disabled = false;
-            }
-            }
+                const amountInput = document.getElementById('amount');
+                const depositBtn = document.querySelector('.deposit-btn');
+                amountInput.addEventListener('input', function () {
+                    validateAmount(this.value);
+                });
+                function validateAmount(value) {
+                    let parsedAmount = parseInt(value);
+                    if (parsedAmount < 100000 || parsedAmount > 10000000) {
+                        depositBtn.disabled = true;
+                        Toastify({
+                            text: 'Amount must be between 100,000 and 10,000,000',
+                            duration: 3000,
+                            gravity: 'top',
+                            position: 'right',
+                            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                            stopOnFocus: true,
+                            close: true
+                        }).showToast();
+                    } else {
+                        depositBtn.disabled = false;
+                    }
+                }
             });
         </script>
         <script>
             document.querySelectorAll('.transactions td:first-child').forEach(function (td) {
-            td.textContent = td.textContent.replace('T', ' ');
+                td.textContent = td.textContent.replace('T', ' ');
             });
             document.querySelectorAll('.test_trans').forEach(function (td) {
-            if (td.textContent.trim().startsWith('-')) {
-            td.style.color = 'red';
-            }
+                if (td.textContent.trim().startsWith('-')) {
+                    td.style.color = 'red';
+                }
             });
             const wallets = [
-            {name: "SHIBA INU", amount: 39900, value: 0.24, icon: "shiba.png"},
+                {name: "SHIBA INU", amount: 39900, value: 0.24, icon: "shiba.png"},
             ];
             const transactions = [
-            {
-            date: "26 Jun 2021",
+                {
+                    date: "26 Jun 2021",
                     time: "07:45 pm",
                     description: "Tezos staking reward",
                     amount: "+0.000247 XTZ",
-            },
+                },
             ];
             function populateWallets() {
-            const walletList = document.querySelector(".wallet-list");
-            wallets.forEach(wallet => {
-            const walletItem = document.createElement('div');
-            walletItem.classList.add('wallet-item');
-            walletItem.innerHTML = '<img src="' + wallet.icon + '" class="wallet-icon" alt="' + wallet.name + '">' +
-                    '<div class="wallet-info">' +
-                    '<h3>' + wallet.name + '</h3>' +
-                    '<p>' + (wallet.amount < 1 ? wallet.amount.toFixed(5) : wallet.amount.toFixed(2)) + ' - $' + wallet.value.toFixed(2) + '</p>' +
-                    '</div>';
-            walletList.appendChild(walletItem);
-            });
+                const walletList = document.querySelector(".wallet-list");
+                wallets.forEach(wallet => {
+                    const walletItem = document.createElement('div');
+                    walletItem.classList.add('wallet-item');
+                    walletItem.innerHTML = '<img src="' + wallet.icon + '" class="wallet-icon" alt="' + wallet.name + '">' +
+                            '<div class="wallet-info">' +
+                            '<h3>' + wallet.name + '</h3>' +
+                            '<p>' + (wallet.amount < 1 ? wallet.amount.toFixed(5) : wallet.amount.toFixed(2)) + ' - $' + wallet.value.toFixed(2) + '</p>' +
+                            '</div>';
+                    walletList.appendChild(walletItem);
+                });
             }
 
             function populateTransactions() {
-            const transactionTable = document.querySelector(".transactions");
-            transactions.forEach(transaction => {
-            const row = transactionTable.insertRow();
-            row.innerHTML = '<td>' + transaction.date + '<br>' + transaction.time + '</td>' +
-                    '<td>' + transaction.description + '</td>' +
-                    '<td>' + transaction.amount + '</td>';
-            });
+                const transactionTable = document.querySelector(".transactions");
+                transactions.forEach(transaction => {
+                    const row = transactionTable.insertRow();
+                    row.innerHTML = '<td>' + transaction.date + '<br>' + transaction.time + '</td>' +
+                            '<td>' + transaction.description + '</td>' +
+                            '<td>' + transaction.amount + '</td>';
+                });
             }
 
 
             function switchTab(tabId) {
-            document.querySelectorAll(".tab-content").forEach((content) => {
-            content.classList.remove("active");
-            });
-            document.querySelectorAll(".tabs button").forEach((btn) => {
-            btn.classList.remove("active");
-            });
-            document.getElementById(tabId).classList.add("active");
-            document.querySelector(`button[id="${tabId.replace("Content", "Btn")}"]`).classList.add("active");
+                document.querySelectorAll(".tab-content").forEach((content) => {
+                    content.classList.remove("active");
+                });
+                document.querySelectorAll(".tabs button").forEach((btn) => {
+                    btn.classList.remove("active");
+                });
+                document.getElementById(tabId).classList.add("active");
+                document.querySelector(`button[id="${tabId.replace("Content", "Btn")}"]`).classList.add("active");
             }
 
             document.querySelector(".tabs").addEventListener("click", function (e) {
-            if (e.target.tagName === "BUTTON") {
-            switchTab(e.target.id.replace("Btn", "Content"));
-            }
+                if (e.target.tagName === "BUTTON") {
+                    switchTab(e.target.id.replace("Btn", "Content"));
+                }
             });
             document.getElementById("depositForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            const crypto = document.getElementById("cryptoSelect").value;
-            const amount = document.getElementById("amount").value;
-            const address = document.getElementById("walletAddress").value;
-            this.reset();
-            switchTab("historyContent");
+                e.preventDefault();
+                const crypto = document.getElementById("cryptoSelect").value;
+                const amount = document.getElementById("amount").value;
+                const address = document.getElementById("walletAddress").value;
+                this.reset();
+                switchTab("historyContent");
             });
             window.onload = () => {
-            populateWallets();
-            populateTransactions();
+                populateWallets();
+                populateTransactions();
             };
 
         </script>

@@ -318,97 +318,112 @@
         <link rel="stylesheet" href="assetss/css/custom.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <jsp:include page="style/linkcss.jsp" />
     </head>
 
-    <body>
-        <div class="loader"></div>
+    <body class="layout-light side-menu">
+
+        <div class="mobile-search">
+            <form action="/" class="search-form">
+                <img src="img/svg/search.svg" alt="search" class="svg">
+                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+            </form>
+        </div>
+        <div class="mobile-author-actions"></div>
+
+        <jsp:include page="control_nav.jsp" />
+
         <div id="app">
-            <div class="main-wrapper main-wrapper-1">
-                <jsp:include page="header.jsp" />
-                <div class="userDatatable userDatatable--ticket mt-1">
-                    <div class="table-responsive">
-                        <form id="scheduleForm">
-                            <div class="schedule-container">
-                                <div style="display: flex; justify-content: space-between; margin: 0 20px">
-                                    <a href="ListRequest" id="newButton">Back</a>
-                                </div> 
-                                <div style="display: flex; justify-content: center">
-                                    <h1 style="margin: 30px 0px">Schedule Detail</h1>
-                                </div>
-                                <div class="header">
-                                    <div class="items">
-                                        <div class="select-container">
-                                            <label for="year">YEAR</label>
-                                            <select id="year" >
-                                                <option>2024</option>
-                                            </select>
+            <main class="main-content">
+
+                <jsp:include page="sidebar.jsp" />
+
+                <div class="main-wrapper main-wrapper-1">
+
+                    <div class="userDatatable userDatatable--ticket mt-1">
+                        <div class="table-responsive">
+                            <form id="scheduleForm">
+                                <div class="schedule-container">
+                                    <div style="display: flex; justify-content: space-between; margin: 0 20px">
+                                        <a href="ListRequestMentor" id="newButton">Back</a>
+                                    </div> 
+                                    <div style="display: flex; justify-content: center">
+                                        <h1 style="margin: 30px 0px">Schedule Detail</h1>
+                                    </div>
+                                    <div class="header">
+                                        <div class="items">
+                                            <div class="select-container">
+                                                <label for="year">YEAR</label>
+                                                <select id="year" >
+                                                    <option>2024</option>
+                                                </select>
+                                            </div>
+                                            <div class="select-container">
+                                                <label for="week">WEEK</label>
+                                                <select id="week" ></select>
+                                            </div>
                                         </div>
-                                        <div class="select-container">
-                                            <label for="week">WEEK</label>
-                                            <select id="week" ></select>
+                                        <div class="items">
+                                            <div class="select-container class-set-render">
+                                                <div id="renderButton" >Render</div>
+                                            </div>
+
+                                            <div class="select-container cusstom_h">
+
+                                                <c:if test="${status != ''}">
+                                                    <!--<label for="year" class="d-flex">Status: <div class="st">${status}</div></label>-->
+                                                </c:if>
+                                                <c:if test="${status eq ''}">
+                                                    <label for="year">Status: Booking Schedule</label>
+                                                </c:if>
+
+
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="items">
-                                        <div class="select-container class-set-render">
-                                            <div id="renderButton" >Render</div>
+                                    <table id="scheduleTable" style="
+                                           pointer-events: none;
+                                           ">
+                                        <thead>
+                                            <tr id="dayHeaders"></tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="note-container">
+                                                <h2 style="margin-bottom: 15px">Request Description:</h2>
+                                                <ul>
+                                                    <h4>Title request:  <span class="highlight">${requestDetail.title}</span></h4>
+                                                    <li>This request is send for mentor:  <span class="highlight">${requestDetail.mentorName}</span></li>
+                                                    <li>Deadline Date:  <span class="highlight">${requestDetail.deadlineDate}</span></li>
+                                                    <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
+                                                    <li><span class="highlight">Money/Slots </span> ${requestDetail.description}/${requestDetail.description}</li>
+                                                    <li><span class="highlight">Request Skill: </span> ${skillName}</li>
+                                                </ul>
+                                            </div>
                                         </div>
-
-                                        <div class="select-container cusstom_h">
-
-                                            <c:if test="${status != ''}">
-                                                <!--<label for="year" class="d-flex">Status: <div class="st">${status}</div></label>-->
-                                            </c:if>
-                                            <c:if test="${status eq ''}">
-                                                <label for="year">Status: Booking Schedule</label>
-                                            </c:if>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <table id="scheduleTable" style="
-                                       pointer-events: none;
-                                       ">
-                                    <thead>
-                                        <tr id="dayHeaders"></tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="note-container">
-                                            <h2>Request Description:</h2>
-                                            <ul>
-                                                <h4>Title request:  <span class="highlight">${requestDetail.title}</span></h4>
-                                                <li>This request is send for mentor:  <span class="highlight">${requestDetail.mentorName}</span></li>
-                                                <li>Deadline Date:  <span class="highlight">${requestDetail.deadlineDate}</span></li>
-                                                <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
-                                                <li><span class="highlight">Money/Slots: </span> </li>
-                                                <li><span class="highlight">Request Skill: </span> ${skillName}</li>
-                                            </ul>
+                                        <div class="col-md-4">
+                                            <div class="note-container">
+                                                <h2>Note:</h2>
+                                                <ul>
+                                                    <li><span class="highlight">Back button</span> to back to list request </li>
+                                                        <c:forEach items="${requestScope.listSlot}" var="slot">
+                                                        <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="note-container">
-                                            <h2>Note:</h2>
-                                            <ul>
-                                                <li><span class="highlight">Back button</span> to back to list request </li>
-                                                    <c:forEach items="${requestScope.listSlot}" var="slot">
-                                                    <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
-                                                    </c:forEach>
+                                    <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                                <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
+                        </div>
 
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                            <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
                     </div>
-
+                    </form>
                 </div>
-                </form>
-            </div>
+            </main>
         </div>
 
 

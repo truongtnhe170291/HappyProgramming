@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import models.AttendanceRecord;
 
 import models.ScheduleDTO;
 import models.ScheduleCommon;
@@ -618,5 +619,50 @@ public class ScheduleDAO {
         }
         return true;
         
+    }
+    
+    public boolean updateAttendance(AttendanceRecord record) {
+        String sql = "UPDATE Attendance SET attendance_status = ? " +
+                     "WHERE mentee_name = ? AND selected_id = ? AND request_id = ?";
+        
+        try (
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            
+            pstmt.setString(1, record.getAttendanceStatus());
+            pstmt.setString(2, record.getMenteeName());
+            pstmt.setInt(3, record.getSelectedId());
+            pstmt.setInt(4, record.getRequestId());
+            
+            int affectedRows = pstmt.executeUpdate();
+            
+            if (affectedRows == 0) {
+                return insertNewAttendance(record);
+            }
+            
+            return true;
+        } catch (SQLException e) {
+            System.out.println("updateAttendance: "+e.getMessage());
+            return false;
+        }
+    }
+    
+    private boolean insertNewAttendance(AttendanceRecord record) {
+        String sql = "INSERT INTO Attendance (request_id, selected_id, mentee_name, attendance_status, attendance_date) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, record.getRequestId());
+            pstmt.setInt(2, record.getSelectedId());
+            pstmt.setString(3, record.getMenteeName());
+            pstmt.setString(4, record.getAttendanceStatus());
+            pstmt.setTimestamp(5, new java.sql.Timestamp(record.getAttendanceDate().getTime()));
+            
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println("insertNewAttendance: "+e.getMessage());
+            return false;
+        }
     }
 }

@@ -19,6 +19,8 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
+import models.Blog;
 
 /**
  *
@@ -63,12 +65,7 @@ public class UpdateBlog extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    
-}
-
+ 
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
