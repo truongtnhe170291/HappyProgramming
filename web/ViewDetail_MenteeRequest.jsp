@@ -382,7 +382,9 @@
                                             <ul>
                                                 <h4>Title request:  <span class="highlight">${requestDetail.title}</span></h4>
                                                 <li>This request is send for mentor:  <span class="highlight">${requestDetail.mentorName}</span></li>
-                                                 
+                                                <li>Deadline Date:  <span class="highlight">${requestDetail.deadlineDate}</span></li>
+                                                <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
+                                                    
                                             </ul>
                                         </div>
                                     </div>
@@ -423,7 +425,7 @@
         <script src="assetss/js/custom.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const startTimeStr = '${requestScope.mon}';
+                const startTimeStr = '${startTime}';
                 const weeksData = {1: {}, 2: {}, 3: {}, 4: {}};
                 const saveButton = document.getElementById("saveSelectedSlots");
                 const sendButton = document.getElementById("sendSelectedSlots");

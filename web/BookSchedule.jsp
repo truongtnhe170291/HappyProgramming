@@ -333,7 +333,7 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <h1>List of Requests</h1>
+                <h1 style="padding: 30px 0px">List of Requests</h1>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <form id="scheduleForm">

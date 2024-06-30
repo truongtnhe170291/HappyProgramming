@@ -289,7 +289,6 @@
                 <div class="table-responsive">
                     <table class="table mb-0 table-borderless">
 
-<<<<<<< HEAD
                         <thead class="hd">
                             <tr class="userDatatable-header">
                                 <th>
@@ -314,7 +313,6 @@
 
                                     <span class="userDatatable-title">Actions</span>
                                 </th>
-=======
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
                 <form method="get" action="ListRequestMentor" class="filter-search-form">
@@ -341,8 +339,6 @@
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <table class="table mb-0 table-borderless">
->>>>>>> f7b8c77d26dc1afeb90778fd5aa1929339501d6b
-
                             </tr>
                         </thead>
 

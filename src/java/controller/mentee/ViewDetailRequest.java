@@ -100,8 +100,8 @@ public class ViewDetailRequest extends HttpServlet {
             // Log schedules for debugging
             
             
-            
             request.setAttribute("listScheduleSave", listSchedule);
+            request.setAttribute("startTime", listSchedule.get(0).getStartTime());
             request.setAttribute("requestDetail", requestDetail);
             
             request.setAttribute("mon", nextNextMonday.toString());

@@ -26,7 +26,7 @@ public class Test {
         RequestDAO dao = new RequestDAO();
         
         System.out.println("Request List");
-        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPaging("hieu", "2");
+        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPaging("hieu", "1");
         for (RequestDTO request : requests) {
             System.out.println(request);
         }
