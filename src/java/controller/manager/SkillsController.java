@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import models.Skill;
 
@@ -64,15 +65,62 @@ public class SkillsController extends HttpServlet {
         skillDAO = new SkillDAO();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<Skill> skills = skillDAO.getAllSkills();
-        //đặt danh sách các kỹ năng (được lưu trong biến skills) làm thuộc tính của yêu cầu 
+   @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        SkillDAO skillDAO = new SkillDAO();
+        
+        // Parameters for pagination
+        String pageParam = request.getParameter("page");
+        int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+        int pageSize = 3; // Number of skills per page
+
+        // Parameters for filtering and searching
+        String statusParam = request.getParameter("status");
+        String skillName = request.getParameter("skillName");
+        
+        Boolean status = null;
+        if (statusParam != null && !statusParam.isEmpty()) {
+            status = Boolean.parseBoolean(statusParam);
+        }
+        
+        List<Skill> skills = new ArrayList<>();
+        int totalSkills = 0;
+
+        if (status != null && skillName != null && !skillName.isEmpty()) {
+            // Filter by status and search by skill name
+            skills = skillDAO.getAllSkillByStatusAndSkillName(status, skillName, page, pageSize);
+            totalSkills = skillDAO.getCountSkillByStatusAndSkillName(status, skillName);
+        } else if (status != null) {
+            // Filter by status only
+            skills = skillDAO.getAllSkillByStatus(status, page, pageSize);
+            totalSkills = skillDAO.getCountSkillByStatus(status);
+        } else if (skillName != null && !skillName.isEmpty()) {
+            // Search by skill name only
+            skills = skillDAO.getAllSkillBySkillName(skillName, page, pageSize);
+            totalSkills = skillDAO.getCountSkillBySkillName(skillName);
+        } else {
+            // No filter or search
+            skills = skillDAO.getAllSkills(page, pageSize);
+            totalSkills = skillDAO.getCountSkill();
+        }
+
+        int totalPages = (int) Math.ceil((double) totalSkills / pageSize);
+
+        // Set attributes for JSP rendering
         request.setAttribute("skills", skills);
-       // request.getRequestDispatcher("SkillsManagement.jsp").forward(request, response);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("status", statusParam);
+        request.setAttribute("skillName", skillName);
+
         request.getRequestDispatcher("Manager_Skill.jsp").forward(request, response);
+    } catch (Exception e) {
+        throw new ServletException(e);
     }
+}
+
 
     /**
      * Handles the HTTP <code>POST</code> method.

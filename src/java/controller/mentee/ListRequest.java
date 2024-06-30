@@ -57,9 +57,70 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         rdao.updateExpiredRequestsStatus();
 
-        List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName);
+        List<RequestDTO> requests = new ArrayList<>();
         List<Status> statuses = rdao.getAllStatuses();
         List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
+
+        String statusFilter = request.getParameter("statusFilter");
+        String mentorNameFilter = request.getParameter("mentorNameFilter");
+        String startTimeFilter = request.getParameter("startTimeFilter");
+        String endTimeFilter = request.getParameter("endTimeFilter");
+
+        int statusId = -1;
+        LocalDate startTime = null;
+        LocalDate endTime = null;
+        String mentorName = mentorNameFilter != null && !mentorNameFilter.equals("all") ? mentorNameFilter : "";
+
+        if (startTimeFilter != null && !startTimeFilter.isEmpty()) {
+            startTime = LocalDate.parse(startTimeFilter);
+        }
+        if (endTimeFilter != null && !endTimeFilter.isEmpty()) {
+            endTime = LocalDate.parse(endTimeFilter);
+        }
+
+        // Lấy thông tin phân trang
+        int page = 1;
+        int pageSize = 2;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        if (request.getParameter("pageSize") != null) {
+            pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        }
+
+        int totalRequests = 0;
+
+        if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) &&
+            (mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName)) &&
+            startTime == null && endTime == null) {
+            // Case 1: No filters applied
+            totalRequests = rdao.getCountRequestOfMenteeInDeadlineByStatus(menteeName);
+            requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName, page, pageSize);
+        } else if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) &&
+                   (mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName)) &&
+                   (startTime != null || endTime != null)) {
+            // Case 2: Only time filters applied
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime, page, pageSize);
+        } else if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) &&
+                   (startTime == null && endTime == null)) {
+            // Case 3: Only mentor filter applied
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null, page, pageSize);
+        } else if ((mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName)) &&
+                   (startTime == null && endTime == null)) {
+            // Case 4: Only status filter applied
+            statusId = Integer.parseInt(statusFilter);
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null, page, pageSize);
+        } else {
+            // Case 5: Combination of filters
+            statusId = (statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) ? -1 : Integer.parseInt(statusFilter);
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime, page, pageSize);
+        }
+
+        int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
 
         // Log schedules for debugging
         for (RequestDTO requestDTO : requests) {
@@ -68,9 +129,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             requestDTO.setListSchedule(oneWeekSchedule);  // Cập nhật danh sách lịch trình cho requestDTO
 
             for (SchedulePublic schedule : oneWeekSchedule) {
-                System.out.println("Request ID: " + requestDTO.getRequestId() + 
-                                    " Schedule: " + schedule.getSlotId() + 
-                                    " " + schedule.getDayOfSlot());
+                System.out.println("Request ID: " + requestDTO.getRequestId() +
+                        " Schedule: " + schedule.getSlotId() +
+                        " " + schedule.getDayOfSlot());
             }
         }
 
@@ -79,16 +140,25 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("listDays", oneWeekDays);  // Chỉ hiển thị danh sách ngày của một tuần
         request.setAttribute("mentors1", mentors1);
         request.setAttribute("statuses", statuses);
+        request.setAttribute("statusId", statusId);
+        request.setAttribute("mentorName", mentorName);
+        request.setAttribute("startTime", startTimeFilter);
+        request.setAttribute("endTime", endTimeFilter);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("pageSize", pageSize);
+        request.setAttribute("totalPages", totalPages);
 
         request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
     } catch (SQLException e) {
         throw new ServletException(e);
     }
 }
+
+
     public static void main(String[] args) throws SQLException {
          RequestDAO rdao = new RequestDAO();
-
-          List<RequestDTO> requests = rdao.getRequestOfMenteeInDeadlineByStatus("truong");
+         List<RequestDTO> requests = new ArrayList<>();
+       
           
     }
 

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-        <title>List Request Manager</title>
-        <link rel="stylesheet" href="assetss/css/app.min.css">
-        <link rel="stylesheet" href="assetss/css/style.css">
-        <link rel="stylesheet" href="assetss/css/components.css">
-        <link rel="stylesheet" href="assetss/css/custom.css">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>List Request Manager</title>
+    <link rel="stylesheet" href="assetss/css/app.min.css">
+    <link rel="stylesheet" href="assetss/css/style.css">
+    <link rel="stylesheet" href="assetss/css/components.css">
+    <link rel="stylesheet" href="assetss/css/custom.css">
 
-        <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <style>
             .table {
                 margin-bottom: 0;
@@ -24,6 +24,7 @@
             .badge {
                 margin-right: 5px;
             }
+
             .modal {
                 display: none;
                 position: fixed;
@@ -38,7 +39,7 @@
 
             .modal-content {
                 background-color: #fefefe;
-                top:15%;
+                top: 15%;
                 left: 25%;
                 padding: 20px;
                 border: 1px solid #888;
@@ -58,6 +59,7 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+
             .calendar {
                 background-color: #fff;
                 border: 1px solid #ddd;
@@ -116,7 +118,10 @@
                 font-size: 12px;
                 color: #333;
             }
-            #modalMentorName, #modalStartDate, #modalEndDate {
+
+            #modalMentorName,
+            #modalStartDate,
+            #modalEndDate {
                 display: inline-block;
                 margin-right: 10px;
                 font-weight: bold;
@@ -133,7 +138,9 @@
                 padding: 20px;
             }
 
-            #modalMentorName, #modalStartDate, #modalEndDate {
+            #modalMentorName,
+            #modalStartDate,
+            #modalEndDate {
                 background: linear-gradient(135deg, #7e57c2, #ab47bc);
                 color: #fff;
                 padding: 10px;
@@ -162,32 +169,38 @@
                 font-weight: bold;
                 color: #7e57c2;
             }
+
             .close {
                 color: #aaa;
                 float: right;
                 font-size: 28px;
                 font-weight: bold;
             }
+
             .close:hover,
             .close:focus {
                 color: black;
                 text-decoration: none;
                 cursor: pointer;
             }
+
             .btn-sm {
                 margin-left: 5px;
                 padding: 5px 10px;
                 font-size: 12px;
             }
+
             .btn-info {
                 background-color: #17a2b8;
                 border-color: #17a2b8;
                 color: white;
             }
+
             .btn-info:hover {
                 background-color: #138496;
                 border-color: #117a8b;
             }
+
             .form-container {
                 max-width: 100%;
                 margin: 0 auto;
@@ -223,7 +236,7 @@
                 vertical-align: middle;
             }
 
-            .form-container td > div {
+            .form-container td>div {
                 background-color: #e6f3ff;
                 margin: 5px;
                 padding: 5px;
@@ -232,16 +245,16 @@
                 font-size: 14px;
             }
 
-            .form-container td > div > div:first-child {
+            .form-container td>div>div:first-child {
                 font-weight: bold;
                 color: #0056b3;
             }
 
-            .form-container td > div > div:nth-child(2) {
+            .form-container td>div>div:nth-child(2) {
                 color: #28a745;
             }
 
-            .form-container td > div > div:nth-child(3) {
+            .form-container td>div>div:nth-child(3) {
                 color: #6c757d;
             }
 
@@ -302,243 +315,317 @@
                 color: #007bff;
             }
         </style>
-    </head>
+</head>
 
-    <body>
-        <div class="loader"></div>
-        <div id="app">
-            <div class="main-wrapper main-wrapper-1">
-                <jsp:include page="header_Manager.jsp" />
-                <!-- Main Content -->
-                <div class="main-content">
-                    <section class="section">
-                        <ul class="breadcrumb breadcrumb-style ">
-                            <li class="breadcrumb-item">
-                                <h4 class="page-title m-b-0">Homes</h4>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="Homes_manager.jsp">
-                                    <i class="fas fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item">Schedule</li>
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <jsp:include page="header_Manager.jsp" />
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title m-b-0">Homes</h4>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="Homes_manager.jsp">
+                                <i class="fas fa-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">Schedule</li>
 
-                        </ul>
-                        <div class="section-body">
-                            <div class="row clearfix">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4>List Schedule Mentor</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table mb-0 table-borderless">
-                                                    <thead>
-                                                        <tr class="userDatatable-header">
-                                                            <th><span class="userDatatable-title">User Name</span></th>
-                                                            <th><span class="userDatatable-title">Deadline</span></th>
-                                                            <th><span class="userDatatable-title">Status</span></th>
-                                                            <th><span class="userDatatable-title">Action</span></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <c:forEach var="schedule" items="${list}">
-                                                            <tr>
-                                                                <td><div class="userDatatable-content">${schedule.mentorName}</div></td>
-                                                                <td><div class="userDatatable-content">${schedule.deadline}</div></td>
-                                                                <td><div class="userDatatable-content">${schedule.status}</div></td>
+                    </ul>
+                    <div class="section-body">
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>List Schedule Mentor</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Form Search v� Filter -->
+                                        <form method="get" action="HandleSlotMentor" class="mb-3">
+                                            <div class="form-row">
 
-
-                                                                <td> 
-                                                                    <div class="btn-group">
-                                                                        <a href="ViewDetailSchedule?mentorName=${schedule.mentorName}"> <button class="btn btn-info btn-sm"> <i class="fas fa-eye"></i> </button> </a>
-                                                                        <form action="HandleSlotMentor" method="post">
-                                                                            <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
-                                                                            <c:if test="${not empty schedule.list}">
-                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
-                                                                            </c:if>
-                                                                            <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
-                                                                                <i class="fas fa-check"></i>
-                                                                            </button>
-                                                                            <button type="button" name="action" value="3" class="btn btn-danger btn-sm" id="reject_${schedule.mentorName}" data-cv-id="${schedule.mentorName}">
-                                                                                <i class="fas fa-times"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                <div class="col-md-4">
+                                                    <label for="statusFilter">Filter by Status:</label>
+                                                    <select class="form-control" id="statusFilter" name="statusFilter">
+                                                        <option value="" ${empty param.statusFilter ? 'selected' : '' }>
+                                                            All</option>
+                                                        <c:forEach items="${statusList}" var="status">
+                                                            <option value="${status.statusId}"
+                                                                ${param.statusFilter==status.statusId ? 'selected' : ''
+                                                                }>
+                                                                ${status.statusName}
+                                                            </option>
                                                         </c:forEach>
-                                                    </tbody>
-                                                </table>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="mentorName">Search by Mentor Name:</label>
+                                                    <input type="text" class="form-control" id="mentorName"
+                                                        name="mentorName" value="${param.mentorName}">
+                                                </div>
+                                                <div class="col-md-2 mt-4">
+                                                    <button type="submit" class="btn btn-primary">Search/Filter</button>
+                                                </div>
                                             </div>
+                                        </form>
+
+                                        <!-- Table to display schedule -->
+                                        <div class="table-responsive">
+                                            <table class="table mb-0 table-borderless">
+                                                <thead>
+                                                    <tr class="userDatatable-header">
+                                                        <th><span class="userDatatable-title">User Name</span></th>
+                                                        <th><span class="userDatatable-title">Deadline</span></th>
+                                                        <th><span class="userDatatable-title">Status</span></th>
+                                                        <th><span class="userDatatable-title">Action</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="schedule" items="${list}">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="userDatatable-content">
+                                                                    ${schedule.mentorName}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="userDatatable-content">${schedule.deadline}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="userDatatable-content">${schedule.status}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <a
+                                                                        href="ViewDetailSchedule?mentorName=${schedule.mentorName}">
+                                                                        <button class="btn btn-info btn-sm"> <i
+                                                                                class="fas fa-eye"></i> </button> </a>
+                                                                    <form action="HandleSlotMentor" method="post">
+                                                                        <input type="hidden" name="mentorName"
+                                                                            value="${schedule.mentorName}" />
+                                                                        <c:if test="${not empty schedule.list}">
+                                                                            <input type="hidden" name="cycleID"
+                                                                                value="${schedule.cycleId}" />
+                                                                        </c:if>
+                                                                        <button type="submit" name="action" value="2"
+                                                                            class="btn btn-success btn-sm">
+                                                                            <i class="fas fa-check"></i>
+                                                                        </button>
+                                                                        <button type="button" name="action" value="3"
+                                                                            class="btn btn-danger btn-sm"
+                                                                            id="reject_${schedule.mentorName}"
+                                                                            data-cv-id="${schedule.mentorName}">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
+
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Popup for note input -->
-                            <div id="notePopup" class="popup">
-                                <div class="popup-content">
-                                    <span class="close">&times;</span>
-                                    <h2>Reject CV</h2>
-                                    <form id="noteForm" method="get" action="changeStatus">
-                                        <input type="hidden" name="cvId" id="popupCvId" value="" />
-                                        <input type="hidden" name="status" value="3" />
-                                        <label for="popupNote">Note:</label>
-                                        <input type="text" name="note" id="popupNote" required />
-                                        <button type="submit" class="btn btn-danger">Submit</button>
-                                    </form>
+                                <div>
+                                    <c:if test="${currentPage > 1}">
+                                        <a
+                                            href="HandleSlotMentor?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Previous</a>
+                                    </c:if>
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <c:choose>
+                                            <c:when test="${i == currentPage}">
+                                                <span>${i}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a
+                                                    href="HandleSlotMentor?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}">${i}</a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                    <c:if test="${currentPage < totalPages}">
+                                        <a
+                                            href="HandleSlotMentor?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Next</a>
+                                    </c:if>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
-                    </section>
-                    <!-- Dialog -->
 
-                    <div class="settingSidebar">
-                        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-                        </a>
-                        <div class="settingSidebar-body ps-container ps-theme-default">
-                            <div class=" fade show active">
-                                <div class="setting-panel-header">Setting Panel
+                        <!-- Popup for note input -->
+                        <div id="notePopup" class="popup">
+                            <div class="popup-content">
+                                <span class="close">&times;</span>
+                                <h2>Reject CV</h2>
+                                <form id="noteForm" method="get" action="changeStatus">
+                                    <input type="hidden" name="cvId" id="popupCvId" value="" />
+                                    <input type="hidden" name="status" value="3" />
+                                    <label for="popupNote">Note:</label>
+                                    <input type="text" name="note" id="popupNote" required />
+                                    <button type="submit" class="btn btn-danger">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <!-- Dialog -->
+
+                <div class="settingSidebar">
+                    <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
+                    </a>
+                    <div class="settingSidebar-body ps-container ps-theme-default">
+                        <div class=" fade show active">
+                            <div class="setting-panel-header">Setting Panel
+                            </div>
+                            <div class="p-15 border-bottom">
+                                <h6 class="font-medium m-b-10">Select Layout</h6>
+                                <div class="selectgroup layout-color w-50">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="1"
+                                            class="selectgroup-input-radio select-layout" checked>
+                                        <span class="selectgroup-button">Light</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="2"
+                                            class="selectgroup-input-radio select-layout">
+                                        <span class="selectgroup-button">Dark</span>
+                                    </label>
                                 </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Select Layout</h6>
-                                    <div class="selectgroup layout-color w-50">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                                            <span class="selectgroup-button">Light</span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                                            <span class="selectgroup-button">Dark</span>
-                                        </label>
-                                    </div>
+                            </div>
+                            <div class="p-15 border-bottom">
+                                <h6 class="font-medium m-b-10">Sidebar Color</h6>
+                                <div class="selectgroup selectgroup-pills sidebar-color">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="icon-input" value="1"
+                                            class="selectgroup-input select-sidebar">
+                                        <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                                            data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="icon-input" value="2"
+                                            class="selectgroup-input select-sidebar" checked>
+                                        <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                                            data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
+                                    </label>
                                 </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                                    <div class="selectgroup selectgroup-pills sidebar-color">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                                        </label>
-                                    </div>
+                            </div>
+                            <div class="p-15 border-bottom">
+                                <h6 class="font-medium m-b-10">Color Theme</h6>
+                                <div class="theme-setting-options">
+                                    <ul class="choose-theme list-unstyled mb-0">
+                                        <li title="white" class="active">
+                                            <div class="white"></div>
+                                        </li>
+                                        <li title="cyan">
+                                            <div class="cyan"></div>
+                                        </li>
+                                        <li title="black">
+                                            <div class="black"></div>
+                                        </li>
+                                        <li title="purple">
+                                            <div class="purple"></div>
+                                        </li>
+                                        <li title="orange">
+                                            <div class="orange"></div>
+                                        </li>
+                                        <li title="green">
+                                            <div class="green"></div>
+                                        </li>
+                                        <li title="red">
+                                            <div class="red"></div>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Color Theme</h6>
-                                    <div class="theme-setting-options">
-                                        <ul class="choose-theme list-unstyled mb-0">
-                                            <li title="white" class="active">
-                                                <div class="white"></div>
-                                            </li>
-                                            <li title="cyan">
-                                                <div class="cyan"></div>
-                                            </li>
-                                            <li title="black">
-                                                <div class="black"></div>
-                                            </li>
-                                            <li title="purple">
-                                                <div class="purple"></div>
-                                            </li>
-                                            <li title="orange">
-                                                <div class="orange"></div>
-                                            </li>
-                                            <li title="green">
-                                                <div class="green"></div>
-                                            </li>
-                                            <li title="red">
-                                                <div class="red"></div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            </div>
+                            <div class="p-15 border-bottom">
+                                <div class="theme-setting-options">
+                                    <label class="m-b-0">
+                                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                                            id="mini_sidebar_setting">
+                                        <span class="custom-switch-indicator"></span>
+                                        <span class="control-label p-l-10">Mini Sidebar</span>
+                                    </label>
                                 </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="mini_sidebar_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Mini Sidebar</span>
-                                        </label>
-                                    </div>
+                            </div>
+                            <div class="p-15 border-bottom">
+                                <div class="theme-setting-options">
+                                    <label class="m-b-0">
+                                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                                            id="sticky_header_setting">
+                                        <span class="custom-switch-indicator"></span>
+                                        <span class="control-label p-l-10">Sticky Header</span>
+                                    </label>
                                 </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="sticky_header_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Sticky Header</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                                    <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                                        <i class="fas fa-undo"></i> Restore Default
-                                    </a>
-                                </div>
+                            </div>
+                            <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
+                                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
+                                    <i class="fas fa-undo"></i> Restore Default
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-        </div>
-        <script src="assetss/js/app.min.js"></script>
-        <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
-        <!-- JS Libraies -->
-        <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
-        <!-- Page Specific JS File -->
-        <script src="assetss/js/page/form-wizard.js"></script>
-        <!-- Template JS File -->   
-        <script src="assetss/js/scripts.js"></script>
-        <!-- Custom JS File -->
-        <script src="assetss/js/custom.js"></script>
-        <script src="site/assets/js/snippets.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', (e) => {
-            const closeButtons = document.querySelectorAll('.close');
-                    closeButtons.forEach(function (button) {
-                    button.addEventListener('click', function () {
-                    const popup = this.closest('.popup');
-                            popup.style.display = 'none';
-                    });
-                    });
-                    window.onclick = function (event) {
-                    if (event.target.classList.contains('popup')) {
-                    event.target.style.display = 'none';
-                    }
-                    };
-                    const rejectButtons = document.querySelectorAll('.reject');
-                    rejectButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                            const cvId = this.getAttribute('data-cv-id');
-                            const popup = document.getElementById('notePopup');
-                            const popupCvId = document.getElementById('popupCvId');
-                            popupCvId.value = cvId;
-                            popup.style.display = 'block';
-                    });
-                    });
-                    // Validate and submit the form
-                    const noteForm = document.getElementById('noteForm');
-                    noteForm.addEventListener('submit', function (event) {
-                    const popupNote = document.getElementById('popupNote');
-                            if (popupNote.value.trim() === "") {
-                    event.preventDefault();
-                            alert("Please enter a note.");
-                    }
-                    });
-            };
-        </script>
 
-    </body>
+
+        </div>
+    </div>
+    <script src="assetss/js/app.min.js"></script>
+    <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="assetss/js/page/form-wizard.js"></script>
+    <!-- Template JS File -->
+    <script src="assetss/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="assetss/js/custom.js"></script>
+    <script src="site/assets/js/snippets.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (e) => {
+            const closeButtons = document.querySelectorAll('.close');
+            closeButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const popup = this.closest('.popup');
+                    popup.style.display = 'none';
+                });
+            });
+            window.onclick = function (event) {
+                if (event.target.classList.contains('popup')) {
+                    event.target.style.display = 'none';
+                }
+            };
+            const rejectButtons = document.querySelectorAll('.reject');
+            rejectButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const cvId = this.getAttribute('data-cv-id');
+                    const popup = document.getElementById('notePopup');
+                    const popupCvId = document.getElementById('popupCvId');
+                    popupCvId.value = cvId;
+                    popup.style.display = 'block';
+                });
+            });
+            // Validate and submit the form
+            const noteForm = document.getElementById('noteForm');
+            noteForm.addEventListener('submit', function (event) {
+                const popupNote = document.getElementById('popupNote');
+                if (popupNote.value.trim() === "") {
+                    event.preventDefault();
+                    alert("Please enter a note.");
+                }
+            });
+        };
+    </script>
+
+</body>
 
 </html>

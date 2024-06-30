@@ -465,6 +465,30 @@
                 display: inline-block;
                 margin-right: 10px;
             }
+            .pagination {
+                display: flex;
+                list-style: none;
+                padding: 0;
+            }
+            .pagination li {
+                margin: 0 5px;
+            }
+            .pagination a, .pagination span {
+                text-decoration: none;
+                padding: 5px 10px;
+                border: 1px solid #ddd;
+                color: #007bff;
+                display: block;
+            }
+            .pagination a:hover {
+                background-color: #007bff;
+                color: #fff;
+            }
+            .pagination span {
+                background-color: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
         </style>
     </head>
 
@@ -475,7 +499,7 @@
             <div class="userDatatable userDatatable--ticket mt-1">
                 <div class="table-responsive">
                     <div class="filter-container">
-                        <form method="POST" action="FilterStatusServlet">
+                        <form method="GET" action="ListRequest">
                             <label for="statusFilter">Filter by Status: </label>
                             <select id="statusFilter" name="statusFilter">
                                 <option value="all" ${statusId == -1 ? 'selected' : ''}>All</option>
@@ -488,7 +512,7 @@
 
                             <label for="mentorNameFilter">Filter by Mentor Name: </label>
                             <select id="mentorNameFilter" name="mentorNameFilter">
-                                <option value="all" ${mentorName == '' ? 'selected' : ''}>All</option>
+                                <option value="all" ${empty param.mentorNameFilter ? 'selected' : ''}>All</option>
                                 <c:forEach var="mentor" items="${mentors1}">
                                     <option value="${mentor.userName}" ${mentorName == mentor.userName ? 'selected' : ''}>
                                         ${mentor.userName}
@@ -497,10 +521,10 @@
                             </select>
 
                             <label for="startTimeFilter">Filter by Start Time: </label>
-                            <input type="date" id="startTimeFilter" name="startTimeFilter" value="${startTime == null ? '' : startTime}">
+                            <input type="date" id="startTimeFilter" name="startTimeFilter" value="${startTime != null ? startTime : ''}">
 
                             <label for="endTimeFilter">Filter by End Time: </label>
-                            <input type="date" id="endTimeFilter" name="endTimeFilter" value="${endTime == null ? '' : endTime}">
+                            <input type="date" id="endTimeFilter" name="endTimeFilter" value="${endTime != null ? endTime : ''}">
 
                             <button type="submit">Filter</button>
                         </form>
@@ -538,9 +562,14 @@
                                         <!-- View button -->
                                         <input type="hidden" name="requestId" value="${request.requestId}" />
                                         <div class="action-btn">
-                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
+<!--                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
+                                                <i class="uil uil-eye align-center" style="color: blue;"></i>
+                                            </a>-->
+
+                                            <a href="ViewDetailRequest?requestId=${request.requestId}" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>
+
                                             <div class="modal fade ticket_modal custom_modal" id="${request.menteeName}${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
                                                     <div class="modal-content radius-xl">
@@ -681,6 +710,34 @@
                             </c:forEach>
                         </tbody>
                     </table>
+                    <div style="display: flex; justify-content: end; margin: 10px 0">
+                        <c:if test="${totalPages > 1}">
+                            <ul class="pagination">
+                                <c:if test="${currentPage > 1}">
+                                    <li>
+                                        <a href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
+                                    </li>
+                                </c:if>
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li><span>${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                            <li>
+                                                <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:if test="${currentPage < totalPages}">
+                                    <li>
+                                        <a href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <script>

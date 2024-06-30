@@ -15,7 +15,7 @@
         <style>
 
             .schedule-container {
-                background-color: white;
+                background-color: #f5f5f5;
                 border-radius: 5px;
                 padding: 20px;
 
@@ -212,7 +212,7 @@
                 background-color: #45a049;
             }
             .note-container {
-                background-color: #fff;
+                background-color: rgba(79, 89, 102, .08);
                 border-radius: 8px;
                 padding: 20px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -324,168 +324,86 @@
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
-                <jsp:include page="header_Manager.jsp" />
-                <div class="mobile-author-actions"></div>
-                <div class="main-content">
-                    <div class="contents">
-                        <div style="display: flex; justify-content: space-between; margin-top: 20px">
-                            <a href="HandleSlotMentor" id="newButton">Back</a>
-                        </div>  
-                        <div style="display: flex; justify-content: space-between">
-                            <h1 style="margin-top: 30px">Schedule Detail</h1>
-                            <h1 style="margin-top: 30px">Mentor: ${mentorName}</h1>
-                        </div>
-                        <div class="userDatatable userDatatable--ticket mt-1">
-                            <div class="table-responsive">
-                                <form id="scheduleForm">
-                                    <div class="schedule-container">
-                                        <div class="header">
-                                            <div class="items">
-                                                <div class="select-container">
-                                                    <label for="year">YEAR</label>
-                                                    <select id="year" >
-                                                        <option>2024</option>
-                                                    </select>
-                                                </div>
-                                                <div class="select-container">
-                                                    <label for="week">WEEK</label>
-                                                    <select id="week" ></select>
-                                                </div>
-                                            </div>
-                                            <div class="items">
-                                                <div class="select-container class-set-render">
-                                                    <div id="renderButton" >Render</div>
-                                                </div>
-
-                                                <div class="select-container cusstom_h">
-
-                                                    <c:if test="${status != ''}">
-                                                        <label for="year" class="d-flex">Status: <div class="st">${status}</div></label>
-                                                        </c:if>
-                                                        <c:if test="${status eq ''}">
-                                                        <label for="year">Status: Booking Schedule</label>
-                                                    </c:if>
-
-
-                                                </div>
-                                            </div>
+                <jsp:include page="header.jsp" />
+                <div class="userDatatable userDatatable--ticket mt-1">
+                    <div class="table-responsive">
+                        <form id="scheduleForm">
+                            <div class="schedule-container">
+                                <div style="display: flex; justify-content: space-between; margin: 0 20px">
+                                    <a href="ListRequest" id="newButton">Back</a>
+                                </div> 
+                                <div style="display: flex; justify-content: center">
+                                    <h1 style="margin: 30px 0px">Schedule Detail</h1>
+                                </div>
+                                <div class="header">
+                                    <div class="items">
+                                        <div class="select-container">
+                                            <label for="year">YEAR</label>
+                                            <select id="year" >
+                                                <option>2024</option>
+                                            </select>
                                         </div>
-                                        <table id="scheduleTable" style="
-                                               pointer-events: none;
-                                               ">
-                                            <thead>
-                                                <tr id="dayHeaders"></tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="select-container">
+                                            <label for="week">WEEK</label>
+                                            <select id="week" ></select>
+                                        </div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="select-container class-set-render">
+                                            <div id="renderButton" >Render</div>
+                                        </div>
+
+                                        <div class="select-container cusstom_h">
+
+                                            <c:if test="${status != ''}">
+                                                <!--<label for="year" class="d-flex">Status: <div class="st">${status}</div></label>-->
+                                            </c:if>
+                                            <c:if test="${status eq ''}">
+                                                <label for="year">Status: Booking Schedule</label>
+                                            </c:if>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <table id="scheduleTable" style="
+                                       pointer-events: none;
+                                       ">
+                                    <thead>
+                                        <tr id="dayHeaders"></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="note-container">
+                                            <h2>Request Description:</h2>
+                                            <ul>
+                                                <h4>Title request:  <span class="highlight">${requestDetail.title}</span></h4>
+                                                <li>This request is send for mentor:  <span class="highlight">${requestDetail.mentorName}</span></li>
+                                                 
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="note-container">
                                             <h2>Note:</h2>
                                             <ul>
-                                              <li><span class="highlight">Back button</span> to back to schedule list request </li>
+                                                <li><span class="highlight">Back button</span> to back to list request </li>
                                                     <c:forEach items="${requestScope.listSlot}" var="slot">
                                                     <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
                                                     </c:forEach>
                                             </ul>
-                                        </div>  
-                                        <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                                    <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                            <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
+                    </div>
 
-                        </div>
-                        </form>
-                    </div>
-                    <div class="settingSidebar">
-                        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-                        </a>
-                        <div class="settingSidebar-body ps-container ps-theme-default">
-                            <div class=" fade show active">
-                                <div class="setting-panel-header">Setting Panel
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Select Layout</h6>
-                                    <div class="selectgroup layout-color w-50">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                                            <span class="selectgroup-button">Light</span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                                            <span class="selectgroup-button">Dark</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                                    <div class="selectgroup selectgroup-pills sidebar-color">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Color Theme</h6>
-                                    <div class="theme-setting-options">
-                                        <ul class="choose-theme list-unstyled mb-0">
-                                            <li title="white" class="active">
-                                                <div class="white"></div>
-                                            </li>
-                                            <li title="cyan">
-                                                <div class="cyan"></div>
-                                            </li>
-                                            <li title="black">
-                                                <div class="black"></div>
-                                            </li>
-                                            <li title="purple">
-                                                <div class="purple"></div>
-                                            </li>
-                                            <li title="orange">
-                                                <div class="orange"></div>
-                                            </li>
-                                            <li title="green">
-                                                <div class="green"></div>
-                                            </li>
-                                            <li title="red">
-                                                <div class="red"></div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="mini_sidebar_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Mini Sidebar</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="sticky_header_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Sticky Header</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                                    <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                                        <i class="fas fa-undo"></i> Restore Default
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                </form>
             </div>
         </div>
 
@@ -494,7 +412,6 @@
         <script src="assetss/js/app.min.js"></script>
         <!-- JS Libraies -->
         <script src="assetss/bundles/apexcharts/apexcharts.min.js"></script>
-        <script src="assetss/bundles/amcharts4/core.js"></script>
         <script src="assetss/bundles/amcharts4/charts.js"></script>
         <script src="assetss/bundles/amcharts4/animated.js"></script>
         <script src="assetss/bundles/jquery.sparkline.min.js"></script>
@@ -680,9 +597,9 @@
                     saveButton.disabled = isDisabled;
                     sendButton.disabled = isDisabled;
 
-                    if (isDisabled) {
-                        showToast("Please select at least 2 weeks of schedule.");
-                    }
+//                    if (isDisabled) {
+//                        showToast("Please select at least 2 weeks of schedule.");
+//                    }
                 }
 
                 function showToast(message) {
