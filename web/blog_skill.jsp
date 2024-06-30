@@ -17,7 +17,19 @@
         display: flex;
         align-items: center;
     }
+.Img_allform{
+ height: 80% !important;
+    background-size: contain;
+    background-clip: initial;
 
+}
+.post-image{
+       height: 300px;
+}
+.post-item-wrap{
+   height: 500px;
+   max-height: 600px;
+}
     .search-form img {
         margin-right: 10px; /* Adjust as needed */
     }
@@ -99,7 +111,7 @@
                 <div class="post-item border bc-general bc-music bc-economics">
                     <div class="post-item-wrap">
                         <div class="post-image">
-                            <img alt="" src="./img/${skill.img}">
+                            <img class="Img_allform" alt="" src="./img/${skill.img}">
                             <span class="post-meta-category"><a href=""></a></span>
                         </div>
                         <div class="post-item-description">

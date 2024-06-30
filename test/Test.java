@@ -1,29 +1,43 @@
 
 import dal.MentorDAO;
+import dal.RequestDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import models.RequestDTO;
 import models.SchedulePublic;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Admin
  */
 public class Test {
+
     public static void main(String[] args) {
         MentorDAO mentorDao = new MentorDAO();
+        RequestDAO dao = new RequestDAO();
         
-        List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor("son", "", "");
-        for (SchedulePublic schedulePublic : listsp) {
-            System.out.println(schedulePublic);
+        System.out.println("Request List");
+        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPaging("hieu", "2");
+        for (RequestDTO request : requests) {
+            System.out.println(request);
         }
+        
+        System.out.println("--------------------------------------------------------");
+                
+//        System.out.println("SchedulePublic List");
+//        ArrayList<SchedulePublic> listSchedulePublic = mentorDao.listSlotsCycleByMentor("son", "2024-07-08", "2024-08-04");
+//        for (SchedulePublic schedulePublic : listSchedulePublic) {
+//            System.out.println(schedulePublic);
+//        }
     }
 
     private static String convertDateFormat(String date) {

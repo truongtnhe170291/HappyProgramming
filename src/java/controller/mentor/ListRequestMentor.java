@@ -35,7 +35,7 @@ import models.Status;
 public class ListRequestMentor extends HttpServlet {
 
 
-  @Override
+ @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     try {
@@ -50,20 +50,30 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         MentorDAO mentorDao = new MentorDAO();
 
         String statusFilterParam = request.getParameter("statusFilter");
+        String menteeNameFilter = request.getParameter("menteeNameFilter");
         String pageParam = request.getParameter("page");
         int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-        int pageSize = 3; // Number of requests per page
+        int pageSize = 10; // Number of requests per page
 
         List<RequestDTO> requests;
         int totalRequests;
-        if (statusFilterParam != null && !statusFilterParam.isEmpty()) {
+
+        if ((statusFilterParam != null && !statusFilterParam.isEmpty()) && (menteeNameFilter != null && !menteeNameFilter.isEmpty())) {
+            int statusFilter = Integer.parseInt(statusFilterParam);
+            requests = rdao.getRequestMentorByStatusAndMenteeName(mentorName, statusFilter, menteeNameFilter, page, pageSize);
+            totalRequests = rdao.getTotalRequestMentorCountByStatusAndMenteeName(mentorName, statusFilter, menteeNameFilter);
+        } else if (statusFilterParam != null && !statusFilterParam.isEmpty()) {
             int statusFilter = Integer.parseInt(statusFilterParam);
             requests = rdao.getRequestMentorByStatus(mentorName, statusFilter, page, pageSize);
             totalRequests = rdao.getTotalRequestMentorCountByStatus(mentorName, statusFilter);
+        } else if (menteeNameFilter != null && !menteeNameFilter.isEmpty()) {
+            requests = rdao.getRequestMentorByMenteeName(mentorName, menteeNameFilter, page, pageSize);
+            totalRequests = rdao.getTotalRequestMentorCountByMenteeName(mentorName, menteeNameFilter);
         } else {
             requests = rdao.getRequestOfMentorInDeadlineByStatus(mentorName, page, pageSize);
             totalRequests = rdao.getTotalRequestMentor(mentorName);
         }
+
         int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
 
         // Fetch other necessary data like slots, days, mentees, and statuses
@@ -91,12 +101,14 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("statusFilter", statusFilterParam);
+        request.setAttribute("menteeNameFilter", menteeNameFilter);
 
         request.getRequestDispatcher("ListRequestMentor.jsp").forward(request, response);
     } catch (SQLException e) {
         throw new ServletException(e);
     }
 }
+
 
 
     public static void main(String[] args) throws SQLException {

@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import models.Account;
+import models.Hold;
 import models.Transaction;
 
 /**
@@ -64,10 +65,6 @@ public class PagingHomePageServlet extends HttpServlet {
         try {
             String action = request.getParameter("action");
             Account user = (Account) request.getSession().getAttribute("user");
-            if (user == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
             String indexs = request.getParameter("index");
             int index;
             if (indexs != null) {
@@ -76,14 +73,34 @@ public class PagingHomePageServlet extends HttpServlet {
                 index = 1;
             }
             WalletDAO dao = new WalletDAO();
-            List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), index);
-            int numPage = dao.getNumberPageByUserName(user.getUserName());
-            request.setAttribute("listTran", list);
-            request.setAttribute("numPage", numPage);
             if (action.equals("manager")) {
+                if (user == null) {
+                    response.sendRedirect("LoginManager");
+                    return;
+                }
+                List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), index);
+                int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+                request.setAttribute("listTran", list);
+                request.setAttribute("numPage", numPage);
                 request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
-            }
-            if(action.equals("mentee")){
+                //paging for manager
+
+            } else if (action.equals("mentee")) {
+                if (user == null) {
+                    response.sendRedirect("login");
+                    return;
+                }
+                List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), index);
+                int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+                request.setAttribute("listTran", list);
+                request.setAttribute("numPage", numPage);
+                
+                //listHold
+                List<Hold> listHold = dao.getHoldByPaging(user.getUserName(), 1);
+                int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());
+                request.setAttribute("listHold", listHold);
+                request.setAttribute("numPageHold", numPageHold);
+                
                 request.getRequestDispatcher("Wallet.jsp").forward(request, response);
             }
         } catch (IOException | NumberFormatException e) {

@@ -242,6 +242,35 @@ public class AccountDAO {
         }
         return updated;
     }
+
+    public String getNextAccountForManager(String currentAccount) {
+        String nextAccount = "WITH a AS (\n"
+                + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time\n"
+                + "FROM Selected_Slot ss\n"
+                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id\n"
+                + "JOIN Slots s ON s.slot_id = ss.slot_id\n"
+                + "JOIN Status_Selected sta ON sta.status_id = ss.status_id\n"
+                + "WHERE ss.status_id = 1 AND CAST(c.deadline_date AS DATE) > CAST(CURRENT_TIMESTAMP AS DATE)\n"
+                + ")\n"
+                + "SELECT TOP 1 *\n"
+                + "FROM a\n"
+                + "WHERE a.mentor_name > ?\n"
+                + "ORDER BY a.mentor_name ASC";
+        String query = "";
+
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setString(1, currentAccount);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    nextAccount = rs.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nextAccount;
+    }
+
  //lấy danh sách account
     public ArrayList<Account> listAccount12() {
         ArrayList<Account> list = new ArrayList<>();

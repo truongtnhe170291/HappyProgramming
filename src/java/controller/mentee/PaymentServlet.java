@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import models.Account;
+import models.Hold;
 import models.Request;
 import models.Transaction;
 import models.Wallet;
@@ -65,12 +66,17 @@ public class PaymentServlet extends HttpServlet {
             Request r = rdao.getRequestById(requestId);
             if (r != null) {
                 Wallet wallet = wdao.getWalletByUsenName(a.getUserName());
-                wallet.setReal_binance(wallet.getReal_binance() - r.getPrice());
+                wallet.setReal_balance(wallet.getReal_balance() - r.getPrice());
                 if (wdao.updateWallet(wallet)) {
-                    wdao.insertTransaction(new Transaction(0, a.getUserName(), "manager", LocalDateTime.now(), r.getPrice(), "Pay Request to Menttor: " + r.getMentorName()));
+                    //update hold
+                    wallet.setHold(wallet.getHold() - r.getPrice());
+                    wdao.updateWalletHold(wallet);
+                    Hold h = new Hold(r.getMenteeName(), requestId, r.getPrice(), LocalDateTime.now(), "Cancel hold money because paid request with title: "+r.getTitle(), false);
+                    wdao.inserHold(h);
+                    wdao.insertTransaction(new Transaction(0, a.getUserName(), "manager", LocalDateTime.now(), r.getPrice(), "Pay request to mentor with title: " + r.getTitle()));
                     wallet = wdao.getWalletByUsenName("manager");
                     if (wallet != null) {
-                        wallet.setReal_binance(wallet.getReal_binance() + r.getPrice());
+                        wallet.setReal_balance(wallet.getReal_balance() + r.getPrice());
                         wdao.updateWallet(wallet);
                     } else {
                         wdao.insertWallet(new Wallet("manager", r.getPrice(), 0));

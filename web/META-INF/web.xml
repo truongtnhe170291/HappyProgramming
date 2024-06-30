@@ -8,6 +8,10 @@
         <servlet-name>TopSkill</servlet-name>
         <servlet-class>controller.common.TopSkill</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManagerBlog</servlet-name>
+        <servlet-class>controller.manager.ManagerBlog</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SkillDetail</servlet-name>
         <url-pattern>/SkillDetail</url-pattern>
@@ -22,6 +26,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>homes.jsp</welcome-file>
+        <welcome-file>homeMentee</welcome-file>
     </welcome-file-list>
 </web-app>
