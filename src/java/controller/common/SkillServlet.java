@@ -66,7 +66,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     String pageParam = request.getParameter("page");
 
     int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-    int pageSize = 5; // Số lượng kỹ năng trên mỗi trang
+    int pageSize = 6; // Số lượng kỹ năng trên mỗi trang
 
     List<Skill> list;
     int totalSkillCount;

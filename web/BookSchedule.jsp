@@ -11,6 +11,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
         <title>Schedule</title>
         <style>
 
@@ -286,6 +288,32 @@
     border: none;
     border-radius: 5px;
     transition-duration: 0.4s;}
+        .add-icon, .delete-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #d0f0c0; 
+    color: green; 
+    font-size: 16px; 
+    margin-top: 8px; 
+}
+
+.delete-icon {
+    background-color: #f8d7da; 
+    color: red;
+}
+
+.add-icon:hover, .delete-icon:hover {
+    background-color: #c8e6c9; 
+}
+
+.delete-icon:hover {
+    background-color: #f5c6cb; 
+}
+
         </style>
          <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
             <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -305,7 +333,7 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <h1 style="margin-top: 30px">List of Requests</h1>
+                <h1>List of Requests</h1>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <form id="scheduleForm">
@@ -331,10 +359,10 @@
                                     <div class="select-container cusstom_h">
 
                                         <c:if test="${status != ''}">
-                                            <label for="year" class="d-flex">Status: <div class="st">${status}</div></label>
+                                            <label for="year" class="d-flex">Status: <div>${status}</div></label>
                                         </c:if>
                                         <c:if test="${status eq ''}">
-                                            <label for="year">Status: Booking Schedule</label>
+                                            <label class="st">Status: Booking Schedule</label>
                                         </c:if>
 
 
@@ -354,7 +382,7 @@
                                         <li>Your selection of week will select for <span class="highlight">hole month</span></li>
                                         <li>You cannot booking a schedule on <span class="highlight">Saturday</span> and <span class="highlight">Sunday</span></li>
                                         <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight">Pending</span></li>
-                                        <li><span class="highlight">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight"> first week</span></li>
+                                        <li class="highlights"><span class="highlight">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight"> first week</span></li>
                                             <c:forEach items="${requestScope.listSlot}" var="slot">
                                             <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
                                             </c:forEach>
@@ -366,7 +394,7 @@
                                     <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>
                                  </c:if>
                                         <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                    <a href="bookSchedule" id="sendSelectedSlots">Send Schedule</a></div>
+                    <a href="bookSchedule" id="sendSelectedSlots">Submit Schedule</a></div>
                                 </div>
                               
                         
@@ -389,21 +417,9 @@
         const saveButton = document.getElementById("saveSelectedSlots");
         const sendButton = document.getElementById("sendSelectedSlots");
 const tatussss = '${status}';
-if(tatussss === 'Pending' || tatussss === 'Approved'){
-    saveButton.classList.add('poiter');
-    sendButton.classList.add('poiter');
-}else{
-     saveButton.classList.remove('poiter');
-    sendButton.classList.remove('poiter');
-}
-saveButton.addEventListener("click", function () {
-     document.querySelector('.st').textContent = 'Saved';
-});
-sendButton.addEventListener("click", function () {
-     document.querySelector('.st').textContent = 'Pending';
-     saveButton.style.display = 'none';
-     sendButton.classList.add('poiter');
-});
+
+
+
         function formatDate(date) {
             return (
                     date.getDate().toString().padStart(2, "0") +
@@ -467,10 +483,8 @@ sendButton.addEventListener("click", function () {
                 }
 
         function selectWeekID(dayOfSlot, startTimeStr) {
-            // Chuyển đổi cả hai ngày về cùng định dạng Date
             let slotDate, startDate;
 
-            // Xử lý dayOfSlot (có thể là yyyy-MM-dd hoặc dd-MM-yyyy)
             if (dayOfSlot.includes('-')) {
                 const [part1, part2, part3] = dayOfSlot.split('-');
                 slotDate = part1.length === 4
@@ -481,20 +495,17 @@ sendButton.addEventListener("click", function () {
                 return 0;
             }
 
-            // Xử lý startTimeStr (giả sử luôn là dd-MM-yyyy)
             const [startDayStr, startMonthStr, startYearStr] = startTimeStr.split('-');
             startDate = new Date(startDayStr, startMonthStr - 1, startYearStr);
 
-            // Đặt cả hai ngày về đầu tuần (Thứ Hai)
             const slotDayOfWeek = slotDate.getDay();
             const startDayOfWeek = startDate.getDay();
             slotDate.setDate(slotDate.getDate() - (slotDayOfWeek === 0 ? 6 : slotDayOfWeek - 1));
             startDate.setDate(startDate.getDate() - (startDayOfWeek === 0 ? 6 : startDayOfWeek - 1));
 
-            // Tính số tuần chênh lệch
             const weekDiff = Math.round((slotDate - startDate) / (7 * 24 * 60 * 60 * 1000));
 
-            return weekDiff + 1; // +1 vì tuần đầu tiên là tuần 1
+            return weekDiff + 1;
         }
         console.log(selectWeekID('2024-07-15', '15-07-2024'));
         const weekIds = selectWeekID('2024-07-15', startTimeStr);
@@ -506,14 +517,12 @@ sendButton.addEventListener("click", function () {
         var slotId = '${schedule.slotId}';
         var weekId = selectWeekID(dayOfSlot, startTimeStr);
 
-        // Đảm bảo rằng weeksData[weekId] tồn tại
         if (!weeksData[weekId]) {
             weeksData[weekId] = {};
         }
         var key = weekId + '-' + nameOfDay.substring(0, 3) + '-' + slotId.substring(4) + '-' + formattedDayOfSlot;
         console.log(dayOfSlot, nameOfDay.substring(0, 2), slotId.substring(4));
 
-        // Thêm dữ liệu mới vào object của tuần đó
         weeksData[weekId][key] = {class: "Class", room: "Room", time: "Time"};
     </c:forEach>
 
@@ -674,24 +683,47 @@ sendButton.addEventListener("click", function () {
 
         function createSlotListener(cell, item, week, slotKey) {
             function updateSlotStatus() {
-                if (cell.classList.contains("selected")) {
+               if (cell.classList.contains("selected")) {
                     cell.innerHTML =
-                            '<div class="class-block selected">' +
-                            "<div>" + item.class + "</div>" +
-                            '<div class="view-materials">View Materials</div>' +
-                            '<div class="edu-next">EduNext</div>' +
-                            "<div>at " + item.room + "</div>" +
-                            '<div class="selected-text">(selected)</div>' +
-                            '<div class="time">' + item.time + "</div>" +
-                            "</div>" +
-                            '<div class="slot_active">Selected</div>';
+                        '<div class="class-block selected">' +
+                        "<div>" + item.class + "</div>" +
+                        '<div class="view-materials">View Materials</div>' +
+                        '<div class="edu-next">EduNext</div>' +
+                        "<div>at " + item.room + "</div>" +
+                        '<div class="selected-text">(selected)</div>' +
+                        '<div class="time">' + item.time + "</div>" +  
+                        '<div class="slot_active">Selected</div>' +
+                        "</div>" +
+                        
+                '<div class="delete-icon"><i class="fas fa-trash-alt"></i></div>' ;
                     weeksData[week][slotKey] = item;
                 } else {
-                    cell.innerHTML = '<div class="slot-label">Not Selected</div>';
+                    cell.innerHTML = 
+                        '<div class="slot-label">Not Selected</div>' +
+                        '<div class="add-icon" style="color: green;"><i class="fas fa-plus"></i></div>';
                     delete weeksData[week][slotKey];
                 }
-            }
 
+            }
+if(tatussss === 'Pending' || tatussss === 'Approved'){
+        document.querySelectorAll('.delete-icon').forEach((element)=>{
+            element.style.display = 'none'; 
+            console.log(element);
+        });
+        document.querySelectorAll('.add-icon').forEach((element)=>{
+            element.style.display = 'none'; 
+        });
+        document.getElementById('scheduleTable').classList.add('poiter');
+       document.getElementById("renderButton").classList.add('poiter');
+        saveButton.classList.add('poiter');
+        sendButton.classList.add('poiter');
+    }else{
+        document.getElementById("renderButton").classList.remove('poiter');
+                document.getElementById('scheduleTable').classList.remove('poiter');
+
+     saveButton.classList.remove('poiter');
+    sendButton.classList.remove('poiter');
+}
             function toggleSlot() {
                 cell.classList.toggle("selected");
                 updateSlotStatus(cell, item, week, slotKey);
@@ -726,6 +758,7 @@ sendButton.addEventListener("click", function () {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(dataToSend),
+
             })
                     .then(response => {
                         if (!response.ok)
@@ -748,10 +781,28 @@ sendButton.addEventListener("click", function () {
         updateSchedule();
         weekSelect.addEventListener("change", updateSchedule);
 
-        saveButton.addEventListener("click", (event) => sendSelectedSlots(event, 'save'));
-        sendButton.addEventListener("click", (event) => sendSelectedSlots(event, 'send'));
+        saveButton.addEventListener("click", (event) => {sendSelectedSlots(event, 'save');
+        
+   document.querySelector('.st').textContent = 'Status: Saved';
     });
-
+        sendButton.addEventListener("click", (event) =>{ sendSelectedSlots(event, 'send');
+               document.querySelectorAll('.delete-icon').forEach((element)=>{
+            element.style.display = 'none'; 
+            console.log(element);
+        });
+        document.querySelectorAll('.add-icon').forEach((element)=>{
+            element.style.display = 'none'; 
+        });
+        document.getElementById('scheduleTable').classList.add('poiter');
+       document.getElementById("renderButton").classList.add('poiter');
+        sendButton.classList.add('poiter');
+     document.querySelector('.st').textContent = 'Status: Pending';
+     saveButton.style.display = 'none';
+    
+    });
+console.log(document.querySelector('.st').textContent);
+});
+    
 </script>
 
 </body>

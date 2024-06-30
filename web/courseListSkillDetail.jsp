@@ -153,10 +153,10 @@
                             <button class="arrow left" id="leftArrow">&lt;</button>
                             <div class="slider">
                                 <c:forEach items="${requestScope.mentors}" var="member"> 
-                                    <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                    <a href="MentorProfileServlet?cvId=${member.cv_id}">
                                         <div class="slide">
                                             <img src="./img/${member.avatar}" alt="Template 1"/>
-                                            <a href="MentorProfileServlet?mentorName=${member.getMentorName()}">
+                                            <a href="MentorProfileServlet?cvId=${member.cv_id}">
                                                 <h3>${member.getFull_name()}</h3>
                                             </a>
                                             <c:forEach items="${member.listSkills}" var="skill">

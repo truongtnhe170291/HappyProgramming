@@ -71,7 +71,7 @@ public class BookScheduleServlet extends HttpServlet {
         Cycle c = mentorDao.getNewCycleByUser(acc.getUserName());
         String status = "";
         //get list schdule
-        if (mentorDao.checkContainSelectSlotSave(acc.getUserName(), 6) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 1) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 2)) {
+        if (mentorDao.checkContainSelectSlotSave(acc.getUserName(), 4) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 1) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 2) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 3)) {
             List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), c.getStart(), c.getEnd());
             if (!listsp.isEmpty()) {
                 for (SchedulePublic s : listsp) {
@@ -170,12 +170,12 @@ public class BookScheduleServlet extends HttpServlet {
         LocalDate deadLineDate = LocalDate.now().plusDays(5);
 
         if (status.equals("save")) {
-            if (!mentorDao.checkContainSelectSlotSave(acc.getUserName(), 6)) {
+            if (!mentorDao.checkContainSelectSlotSave(acc.getUserName(), 4)) {
                 if (!listSchedule.isEmpty()) {
                     mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
                     int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);
                     for (SlotData s : listSchedule) {
-                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 6);
+                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 4);
                     }
                 }
             } else {
@@ -191,13 +191,13 @@ public class BookScheduleServlet extends HttpServlet {
                     mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
                     int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);
                     for (SlotData s : listSchedule) {
-                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 6);
+                        mentorDao.insertSchedulePublic(s.getSlotId(), cycleId, s.getDate().toString(), 4);
                     }
                 }
 
             }
         } else {
-            if (!mentorDao.checkContainSelectSlotSave(acc.getUserName(), 6)) {
+            if (!mentorDao.checkContainSelectSlotSave(acc.getUserName(), 4)) {
                 if (!listSchedule.isEmpty()) {
                     mentorDao.insertCycle(startDate, endDate, "", acc.getUserName(), deadLineDate.toString());
                     int cycleId = mentorDao.getCycleIdByMentor(acc.getUserName(), startDate, endDate);

@@ -299,10 +299,81 @@
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th>NO</th>
-                                                            <th>Mentor</th>
-                                                            <th>Status</th>
-                                                            <th>Actions</th>
+                                                            <td>${cv.cvId}</td>
+                                                            <td>${cv.fullName}</td>
+
+                                                           
+                                                            <td>${cv.status.statusName}</td>
+                                                            <td>
+                                                                <button class="btn btn-info btn-sm">
+                                                                    <i class="fas fa-eye"></i>
+                                                                    <div id="requestDetailsPopup_${cv.cvId}"
+                                                                        class="popup">
+                                                                        <div class="popup-content">
+                                                                            <span class="close">&times;</span>
+                                                                            <h2>CV Details</h2>
+                                                                            <p><strong>Mentor Name:</strong> <span
+                                                                                    id="popupMentorName_${cv.cvId}">${cv.userName}</span>
+                                                                            </p>
+                                                                            <p><strong>Email:</strong> <span
+                                                                                    id="popupEmail_${cv.cvId}">${cv.gmail}</span>
+                                                                            </p>
+                                                                            <p><strong>Full name:</strong> <span
+                                                                                    id="popupFullName_${cv.cvId}">${cv.fullName}</span>
+                                                                            </p>
+                                                                            <p><strong>DoB:</strong> <span
+                                                                                    id="popupDoB_${cv.cvId}">${cv.dob}</span>
+                                                                            </p>
+                                                                            <p><strong>Gender:</strong> <span
+                                                                                    id="popupGender_${cv.cvId}">${cv.sex
+                                                                                    ? "Male" : "Female"}</span></p>
+                                                                            <p><strong>Address:</strong> <span
+                                                                                    id="popupAddress_${cv.cvId}">${cv.address}</span>
+                                                                            </p>
+                                                                            <p><strong>Profession:</strong> <span
+                                                                                    id="popupProfession_${cv.cvId}">${cv.profession}</span>
+                                                                            </p>
+                                                                            <p><strong>Profession Introduction:</strong>
+                                                                                <span
+                                                                                    id="popupProfessionIntro_${cv.cvId}">${cv.professionIntro}</span>
+                                                                            </p>
+                                                                            <p><strong>Achievement Description:</strong>
+                                                                                <span
+                                                                                    id="popupAchievementDescription_${cv.cvId}">${cv.achievementDescription}</span>
+                                                                            </p>
+                                                                            <p><strong>Service Description:</strong>
+                                                                                <span
+                                                                                    id="popupServiceDescription_${cv.cvId}">${cv.serviceDescription}</span>
+                                                                            </p>
+                                                                            <p><strong>Skills:</strong>
+                                                                                <span id="popupSkills_${cv.cvId}">
+                                                                                    <c:forEach items="${cv.listSkill}"
+                                                                                        var="skill">
+                                                                                        <p>${skill.skillName}</p>
+                                                                                    </c:forEach>
+                                                                                </span>
+                                                                            </p>
+
+                                                                            <c:if test="${not empty cv.note}">
+                                                                                <div class="note-section">
+                                                                                    <strong>Note:</strong>
+                                                                                    <p>${cv.note}</p>
+                                                                                </div>
+                                                                            </c:if>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                <c:if test="${cv.status.statusId == 1}">
+                                                                    <button id="edit_${cv.cvId}"
+                                                                        class="edit btn btn-success btn-sm"><i
+                                                                            class="fas fa-check"></i></button>
+                                                                    <button id="reject_${cv.cvId}"
+                                                                        class="reject btn btn-danger btn-sm"
+                                                                        data-cv-id="${cv.cvId}">
+                                                                        <i class="fas fa-times"></i></button>
+                                                                </c:if>
+
+                                                            </td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
