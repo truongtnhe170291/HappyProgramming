@@ -26,7 +26,7 @@
 
             .header {
                 display: flex;
-                    justify-content: space-between;
+                justify-content: space-between;
                 margin-bottom: 20px;
             }
             .items{
@@ -235,73 +235,75 @@
             .sendSelectedSlots{
                 transform: translate(30%,30%);
             }
-          #renderButton {
-            background-color: #ADD8E6;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+            #renderButton {
+                background-color: #ADD8E6;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
 
-        #renderButton:hover {
-            background-color: #87CEEB;
-            color: #ffffff; 
-        }
-        .poiter{
-            pointer-events: none;
-        }
-        #sendSelectedSlots{
-        margin-top: 10px;
-        margin-right: 10px;
-    float: right;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    transition-duration: 0.4s;}
-        .add-icon, .delete-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #d0f0c0; 
-    color: green; 
-    font-size: 16px; 
-    margin-top: 8px; 
-}
+            #renderButton:hover {
+                background-color: #87CEEB;
+                color: #ffffff;
+            }
+            .poiter{
+                pointer-events: none;
+            }
+            #sendSelectedSlots{
+                margin-top: 10px;
+                margin-right: 10px;
+                float: right;
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition-duration: 0.4s;
+            }
+            .add-icon, .delete-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background-color: #d0f0c0;
+                color: green;
+                font-size: 16px;
+                margin-top: 8px;
+            }
 
-.delete-icon {
-    background-color: #f8d7da; 
-    color: red;
-}
+            .delete-icon {
+                background-color: #f8d7da;
+                color: red;
+            }
 
-.add-icon:hover, .delete-icon:hover {
-    background-color: #c8e6c9; 
-}
+            .add-icon:hover, .delete-icon:hover {
+                background-color: #c8e6c9;
+            }
 
-.delete-icon:hover {
-    background-color: #f5c6cb; 
-}
+            .delete-icon:hover {
+                background-color: #f5c6cb;
+            }
+
 
 
         </style>
-         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     </head>
 
     <body class="layout-light side-menu">
@@ -318,41 +320,41 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <h1>List of Requests</h1>
+                <h1 style="padding: 30px 0px">List of Requests</h1>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <form id="scheduleForm">
                             <div class="schedule-container">
                                 <div class="header">
-                            <div class="items">
-                                    <div class="select-container">
-                                        <label for="year">YEAR</label>
-                                        <select id="year" >
-                                            <option>2024</option>
-                                        </select>
-                                    </div>
-                                    <div class="select-container">
-                                        <label for="week">WEEK</label>
-                                        <select id="week" ></select>
-                                    </div>
-                                </div>
                                     <div class="items">
-                                <div class="select-container class-set-render">
-                                        <div id="renderButton" >Render</div>
-                                    </div>
-                                    
-                                    <div class="select-container cusstom_h">
-
-                                        <c:if test="${status != ''}">
-                                            <label for="year" class="d-flex">Status: <div>${status}</div></label>
-                                        </c:if>
-                                        <c:if test="${status eq ''}">
-                                            <label class="st">Status: Booking Schedule</label>
-                                        </c:if>
-
-
-                                    </div>
+                                        <div class="select-container">
+                                            <label for="year">YEAR</label>
+                                            <select id="year" >
+                                                <option>2024</option>
+                                            </select>
                                         </div>
+                                        <div class="select-container">
+                                            <label for="week">WEEK</label>
+                                            <select id="week" ></select>
+                                        </div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="select-container class-set-render">
+                                            <div id="renderButton" >Render</div>
+                                        </div>
+
+                                        <div class="select-container cusstom_h">
+
+                                            <c:if test="${status != ''}">
+                                                <label for="year" class="d-flex">Status: <div>${status}</div></label>
+                                            </c:if>
+                                            <c:if test="${status eq ''}">
+                                                <label class="st">Status: Booking Schedule</label>
+                                            </c:if>
+
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <table id="scheduleTable">
                                     <thead>
@@ -364,12 +366,12 @@
                                 <div class="note-container">
                                     <h2>Note:</h2>
                                     <ul>
-                                        <li>Your selection of week will select for <span class="highlight">hole month</span></li>
-                                        <li>You cannot booking a schedule on <span class="highlight">Saturday</span> and <span class="highlight">Sunday</span></li>
-                                        <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight">Pending</span></li>
-                                        <li class="highlights"><span class="highlight">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight"> first week</span></li>
+                                        <li>Your selection of week will select for <span class="highlight" style="margin: 0px 5px;">hole month</span></li>
+                                        <li>You cannot booking a schedule on <span class="highlight" style=" margin: 0px 5px; ">Saturday</span> and <span class="highlight" style=" margin: 0px 5px; ">Sunday</span></li>
+                                        <li>You can <span class="highlight" style="margin: 0px 5px; "> Update </span> your schedule when status is <span class="highlight" style=" margin: 0px 5px;">Pending</span></li>
+                                        <li class="highlights"><span class="highlight" style=" margin: 0px 5px;">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight" style="margin: 0px 5px;"> first week</span></li>
                                             <c:forEach items="${requestScope.listSlot}" var="slot">
-                                            <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
+                                            <li><span class="highlight" style="margin: 0px 5px;">${slot.slot_id}: </span> ${slot.slot_name}</li>
                                             </c:forEach>
                                     </ul>
                                 </div>  
@@ -377,16 +379,16 @@
 
                                 <c:if test="${status eq 'Saved' || status eq ''}">
                                     <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>
-                                 </c:if>
-                                        <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                    <a href="bookSchedule" id="sendSelectedSlots">Submit Schedule</a></div>
-                                </div>
-                              
-                        
+                                </c:if>
+                                <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                            <a href="bookSchedule" id="sendSelectedSlots">Submit Schedule</a></div>
+                </div>
+
+
 
                 </form>
 
-                
+
 
 
             </div>
@@ -401,7 +403,7 @@
         const weeksData = {1: {}, 2: {}, 3: {}, 4: {}};
         const saveButton = document.getElementById("saveSelectedSlots");
         const sendButton = document.getElementById("sendSelectedSlots");
-const tatussss = '${status}';
+        const tatussss = '${status}';
 
 let disableButtonStatusUpdate = false;
 
@@ -457,15 +459,15 @@ let disableButtonStatusUpdate = false;
             weekSelect.appendChild(optionElement);
         });
 
- function showToastMessage(message) {
-                Toastify({
+        function showToastMessage(message) {
+            Toastify({
                 text: message,
-                        duration: 5000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                }).showToast();
-                }
+                duration: 5000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#ff7b5a",
+            }).showToast();
+        }
 
         function selectWeekID(dayOfSlot, startTimeStr) {
             let slotDate, startDate;
@@ -669,29 +671,27 @@ let disableButtonStatusUpdate = false;
 
         function createSlotListener(cell, item, week, slotKey) {
             function updateSlotStatus() {
-               if (cell.classList.contains("selected")) {
+                if (cell.classList.contains("selected")) {
                     cell.innerHTML =
-                        '<div class="class-block selected">' +
-                        "<div>" + item.class + "</div>" +
-                        '<div class="view-materials">View Materials</div>' +
-                        '<div class="edu-next">EduNext</div>' +
-                        "<div>at " + item.room + "</div>" +
-                        '<div class="selected-text">(selected)</div>' +
-                        '<div class="time">' + item.time + "</div>" +  
-                        '<div class="slot_active">Selected</div>' +
-                        "</div>" +
-                        
-                '<div class="delete-icon"><i class="fas fa-trash-alt"></i></div>' ;
+                            '<div class="class-block selected">' +
+                            "<div>" + item.class + "</div>" +
+                            '<div class="view-materials">View Materials</div>' +
+                            '<div class="edu-next">EduNext</div>' +
+                            "<div>at " + item.room + "</div>" +
+                            '<div class="selected-text">(selected)</div>' +
+                            '<div class="time">' + item.time + "</div>" +
+                            '<div class="slot_active">Selected</div>' +
+                            "</div>" +
+                            '<div class="delete-icon"><i class="fas fa-trash-alt"></i></div>';
                     weeksData[week][slotKey] = item;
                 } else {
-                    cell.innerHTML = 
-                        '<div class="slot-label">Not Selected</div>' +
-                        '<div class="add-icon" style="color: green;"><i class="fas fa-plus"></i></div>';
+                    cell.innerHTML =
+                            '<div class="slot-label">Not Selected</div>' +
+                            '<div class="add-icon" style="color: green;"><i class="fas fa-plus"></i></div>';
                     delete weeksData[week][slotKey];
                 }
 
             }
-
             function toggleSlot() {
                 cell.classList.toggle("selected");
                 updateSlotStatus(cell, item, week, slotKey);

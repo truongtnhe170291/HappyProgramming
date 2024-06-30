@@ -445,8 +445,37 @@ button[type="submit"] {
 
                                     <span class="userDatatable-title">Actions</span>
                                 </th>
+<<<<<<< HEAD
           
 
+=======
+            <jsp:include page="sidebar.jsp" />
+            <div class="contents">
+                <form method="get" action="ListRequestMentor" class="filter-search-form">
+                    <div>
+                        <label for="statusFilter">Filter by Status:</label>
+                        <select name="statusFilter" id="statusFilter">
+                            <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
+                            <c:forEach items="${listStatus}" var="status">
+                                <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
+                                    ${status.statusName}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="menteeNameFilter">Search by Mentee Name:</label>
+                        <input type="text" name="menteeNameFilter" id="menteeNameFilter" value="${param.menteeNameFilter}" placeholder="Enter mentee name"/>
+                    </div>
+                    <button type="submit">Apply</button>
+                </form>
+
+
+                <h1>List of Requests</h1>
+                <div class="userDatatable userDatatable--ticket mt-1">
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-borderless">
+>>>>>>> 78997036f4ec7c8f4362240ec9ba0bc63537989d
                             </tr>
                         </thead>
 
@@ -467,11 +496,18 @@ button[type="submit"] {
                                     ${request.status.statusName}</td>
 
                                 <td class="d-flex">                   
-                                    <a href="#" class="btn btn-primary align-center centaxs"
+<!--                                    <a href="#" class="btn btn-primary align-center centaxs"
+                                       style="background-color: #fff; border: none;">
+
+                                        <i class="fas fa-eye align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
+                                    </a>-->
+                                    
+                                    <a href="DetailSchedule_mentor?requestId=${request.requestId}" class="btn btn-primary align-center centaxs"
                                        style="background-color: #fff; border: none;">
 
                                         <i class="fas fa-eye align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
                                     </a>
+                                    
                                     <c:if test="${request.status.statusId == 2}">
                                         <form method="POST" action="success">
                                             <input type="hidden" name="requestId" value="${request.requestId}" />

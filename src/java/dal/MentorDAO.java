@@ -474,11 +474,7 @@ public class MentorDAO {
         }
         return c;
     }
-    
-    public static void main(String[] args) {
-        MentorDAO dao = new MentorDAO();
-        System.out.println(dao.getNewCycleByUser("son"));
-    }
+
 
     public void deleteCycle(int cycleId) {
         try {
