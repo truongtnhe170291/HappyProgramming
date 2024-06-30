@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/dal/ScheduleDAO.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Mentor_Mentee_calendar.jsp</file>
             <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentee/RequestServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/models/AttendanceRecord.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentor/ApplyCVServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentor/UpdateAttendanceServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/BookSchedule.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentor/BookScheduleServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentee/PaymentServlet.java</file>
+            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/ListRequest.jsp</file>
+            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Mentor.jsp</file>
+            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/common/MentorProfileServlet.java</file>
         </group>
     </open-files>
 </project-private>
