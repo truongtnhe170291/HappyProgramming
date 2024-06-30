@@ -359,11 +359,18 @@
                                     ${request.status.statusName}</td>
 
                                 <td class="d-flex">                   
-                                    <a href="#" class="btn btn-primary align-center centaxs"
+<!--                                    <a href="#" class="btn btn-primary align-center centaxs"
+                                       style="background-color: #fff; border: none;">
+
+                                        <i class="fas fa-eye align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
+                                    </a>-->
+                                    
+                                    <a href="DetailSchedule_mentor?requestId=${request.requestId}" class="btn btn-primary align-center centaxs"
                                        style="background-color: #fff; border: none;">
 
                                         <i class="fas fa-eye align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
                                     </a>
+                                    
                                     <c:if test="${request.status.statusId == 2}">
                                         <form method="POST" action="success">
                                             <input type="hidden" name="requestId" value="${request.requestId}" />
