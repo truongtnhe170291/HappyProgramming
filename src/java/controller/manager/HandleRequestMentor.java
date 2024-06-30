@@ -134,7 +134,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         // Lấy mentorName, cycleId và action từ request
         int cycleId = Integer.parseInt(request.getParameter("cycleID"));
         int action = Integer.parseInt(request.getParameter("action"));
-        String message = request.getParameter("messageInput");
+        String message = request.getParameter("notes");
         System.out.println(cycleId + ""+ action);
         // Kiểm tra action và gọi hàm tương ứng
         System.out.println(message);

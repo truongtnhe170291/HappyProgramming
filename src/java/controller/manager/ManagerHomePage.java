@@ -6,6 +6,7 @@ package controller.manager;
 
 import dal.AccountDAO;
 import dal.CVDAO;
+import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import models.Account;
+import models.Transaction;
 
 /**
  *
@@ -42,17 +46,28 @@ public class ManagerHomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CVDAO cvDao = new CVDAO();
-        AccountDAO accountDao = new AccountDAO();
-        
-        int totalAccountRegisted = accountDao.listAccountRegisted().size();
-        int totalCVs = cvDao.getTotalCVCountByStatus(1);
-        
-        
-        request.setAttribute("totalCVs", totalCVs);
-        request.setAttribute("totalAcc", totalAccountRegisted);
-        request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
-        
+        try {
+            Account user = (Account) request.getSession().getAttribute("user");
+            if(user == null){
+                response.sendRedirect("LoginManager");
+                return;
+            }
+            CVDAO cvDao = new CVDAO();
+            WalletDAO dao = new WalletDAO();
+            AccountDAO accountDao = new AccountDAO();
+
+            int totalAccountRegisted = accountDao.listAccountRegisted().size();
+            int totalCVs = cvDao.getTotalCVCountByStatus(1);
+            int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+            List<Transaction> listTr = dao.getTransactionByPaging(user.getUserName(), 1);
+            request.setAttribute("totalCVs", totalCVs);
+            request.setAttribute("numPage", numPage);
+            request.setAttribute("listTran", listTr);
+            request.setAttribute("totalAcc", totalAccountRegisted);
+            request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+
     }
 
     /**

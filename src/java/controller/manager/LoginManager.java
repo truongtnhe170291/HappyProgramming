@@ -63,8 +63,7 @@ public class LoginManager extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
+        request.getRequestDispatcher("loginManager.jsp").forward(request, response);
     }
 
     /**

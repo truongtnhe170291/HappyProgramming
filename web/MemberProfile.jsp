@@ -114,34 +114,32 @@ label[for="file-upload"]:hover img {
     margin-bottom: 15px;
 }
 button {
-   
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center;
-    text-align: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -0%);
- --glow-color: rgb(217, 176, 255);
- --glow-spread-color: rgba(191, 123, 255, 0.781);
- --enhanced-glow-color: rgb(231, 206, 255);
- --btn-color: rgb(100, 61, 136);
- border: .25em solid var(--glow-color);
- padding: 1em 3em;
- color: var(--glow-color);
- font-size: 15px;
- font-weight: bold;
- background-color: var(--btn-color);
- border-radius: 1em;
- outline: none;
- box-shadow: 0 0 1em .25em var(--glow-color),
+   display: flex !important;
+   align-items: center !important;
+   justify-content: center;
+   text-align: center;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -0%);
+   --glow-color: rgb(217, 176, 255);
+   /* --glow-spread-color: rgba(191, 123, 255, 0.781); */
+   --enhanced-glow-color: rgb(231, 206, 255);
+   /* --btn-color: rgb(100, 61, 136); */
+   border: .25em solid var(--glow-color);
+   padding: 1em 3em;
+   /* color: var(--glow-color); */
+   /* font-size: 15px; */
+   font-weight: bold;
+   /* background-color: var(--btn-color); */
+   border-radius: 1em;
+   outline: none;
+   /* box-shadow: 0 0 1em .25em var(--glow-color),
         0 0 4em 1em var(--glow-spread-color),
-        inset 0 0 .75em .25em var(--glow-color);
- text-shadow: 0 0 .5em var(--glow-color);
- position: relative;
- transition: all 0.3s;
+        inset 0 0 .75em .25em var(--glow-color); */
+   text-shadow: 0 0 .5em var(--glow-color);
+   position: relative;
+   transition: all 0.3s;
 }
-
 button::after {
  pointer-events: none;
  content: "";
@@ -208,7 +206,7 @@ button:active {
     </head>
     <body>
 
-        <header id="header" data-fullwidth="true">
+       <header id="header" data-fullwidth="true">
             <div class="header-inner">
                 <div class="container">
                     <!--Logo-->
@@ -255,6 +253,7 @@ button:active {
                                                 <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                                 <li><a href="StaticRequest">REQUEST STATIC</a></li>
                                                 <li><a href="ListRequest">History Request</a></li>
+                                                <li><a href="Schedule_General_Mentee">General Schedule</a></li>
                                                 </c:if>
                                         </ul>
                                     </li>
@@ -285,7 +284,13 @@ button:active {
                                                     <a href="UpdateAccountServlet">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
-
+                                                
+                                                <li>
+                                                    <a href="wallet">
+                                                        <i class="uil uil-key-skeleton"></i> Your Wallet
+                                                    </a>
+                                                </li>
+                                                
                                                 <li>
                                                     <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password

@@ -115,7 +115,7 @@ public class LoginServlet extends HttpServlet {
             // Redirect based on user role
             if (acc.getRoleId() == 1) {
                if(acc.getStatusId()!=2){
-                response.sendRedirect("MenteeHomeServlet");
+                response.sendRedirect("homeMentee");
                }else{
                     request.setAttribute("mess", "Your account has been banned because you have violated the website's rules");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

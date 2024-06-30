@@ -226,24 +226,8 @@
                 margin-top: 0;
                 margin-bottom: 15px;
             }
-            ul {
-                list-style-type: none;
-                padding-left: 0;
-                margin: 0;
-            }
-            li {
-                margin-bottom: 10px;
-                color: #666;
-                display: flex;
-                align-items: flex-start;
-            }
-            li::before {
-                content: "•";
-                color: #666;
-                display: inline-block;
-                width: 1em;
-                margin-right: 0.5em;
-            }
+           
+          
             .highlight {
                 color: #4a86e8;
                 font-weight: bold;
@@ -313,6 +297,7 @@
 .delete-icon:hover {
     background-color: #f5c6cb; 
 }
+
 
         </style>
          <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -418,7 +403,7 @@
         const sendButton = document.getElementById("sendSelectedSlots");
 const tatussss = '${status}';
 
-
+let disableButtonStatusUpdate = false;
 
         function formatDate(date) {
             return (
@@ -562,6 +547,7 @@ const tatussss = '${status}';
         }
 
         function updateButtonStatus() {
+            if (disableButtonStatusUpdate) return;
             const nonEmptyWeeks = Object.values(weeksData).filter(week => Object.keys(week).length > 0).length;
             const isDisabled = nonEmptyWeeks < 2;
             saveButton.disabled = isDisabled;
@@ -705,25 +691,7 @@ const tatussss = '${status}';
                 }
 
             }
-if(tatussss === 'Pending' || tatussss === 'Approved'){
-        document.querySelectorAll('.delete-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-            console.log(element);
-        });
-        document.querySelectorAll('.add-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-        });
-        document.getElementById('scheduleTable').classList.add('poiter');
-       document.getElementById("renderButton").classList.add('poiter');
-        saveButton.classList.add('poiter');
-        sendButton.classList.add('poiter');
-    }else{
-        document.getElementById("renderButton").classList.remove('poiter');
-                document.getElementById('scheduleTable').classList.remove('poiter');
 
-     saveButton.classList.remove('poiter');
-    sendButton.classList.remove('poiter');
-}
             function toggleSlot() {
                 cell.classList.toggle("selected");
                 updateSlotStatus(cell, item, week, slotKey);
@@ -768,6 +736,9 @@ if(tatussss === 'Pending' || tatussss === 'Approved'){
                     .then(data => {
                         console.log("Response from server:", data);
                         showToast("Selected slots " + (status === 'save' ? 'saved' : 'sent') + " successfully!");
+                         if(status === 'send'){
+                              window.location.href = 'bookSchedule';}
+                         
                     })
                     .catch(error => {
                         console.error("Failed to " + status + " selected slots:", error);
@@ -780,27 +751,65 @@ if(tatussss === 'Pending' || tatussss === 'Approved'){
 
         updateSchedule();
         weekSelect.addEventListener("change", updateSchedule);
+if (tatussss === 'Pending' || tatussss === 'Approved') {
+    function hideIcons() {
+        document.querySelectorAll('.delete-icon, .add-icon').forEach((element) => {
+            element.style.display = 'none';
+        });
+    }
 
+    hideIcons();
+
+    weekSelect.addEventListener("change", hideIcons);
+
+    document.getElementById("renderButton").addEventListener("click", () => {
+        setTimeout(hideIcons, 0);
+    });
+
+ document.querySelectorAll('#scheduleTable').forEach(ele =>ele.classList.add('poiter'));    document.getElementById("renderButton").classList.add('poiter');
+    saveButton.classList.add('poiter');
+    sendButton.classList.add('poiter');
+} else {
+    document.getElementById("renderButton").classList.remove('poiter');
+ document.querySelectorAll('#scheduleTable').forEach(ele =>ele.classList.remove('poiter'));   
+ saveButton.classList.remove('poiter');
+    sendButton.classList.remove('poiter');
+}
+var noBook = "${noBook}";
+    if (noBook && noBook !== "null" && noBook !== "") {
+        disableButtonStatusUpdate = true;
+            document.getElementById("renderButton").style.display = 'none';
+    document.querySelectorAll('#scheduleTable').forEach(ele =>ele.classList.add('poiter'));
+
+        function hideIcons() {
+        document.querySelectorAll('.delete-icon, .add-icon').forEach((element) => {
+            element.style.display = 'none';
+        });
+    }
+
+    hideIcons();
+
+    weekSelect.addEventListener("change", hideIcons);
+
+    document.getElementById("renderButton").addEventListener("click", () => {
+        setTimeout(hideIcons, 0);
+    });
+        saveButton.style.display = 'none';
+    sendButton.style.display = 'none';
+        document.querySelector('.st').textContent = 'Status: No Book';
+        showToast(noBook);
+    }
         saveButton.addEventListener("click", (event) => {sendSelectedSlots(event, 'save');
         
    document.querySelector('.st').textContent = 'Status: Saved';
     });
-        sendButton.addEventListener("click", (event) =>{ sendSelectedSlots(event, 'send');
-               document.querySelectorAll('.delete-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-            console.log(element);
-        });
-        document.querySelectorAll('.add-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-        });
-        document.getElementById('scheduleTable').classList.add('poiter');
-       document.getElementById("renderButton").classList.add('poiter');
-        sendButton.classList.add('poiter');
-     document.querySelector('.st').textContent = 'Status: Pending';
-     saveButton.style.display = 'none';
+       sendButton.addEventListener("click", async (event) => {
+         sendSelectedSlots(event, 'send');
     
-    });
-console.log(document.querySelector('.st').textContent);
+            document.querySelector('.st').textContent = 'Status: Pending';
+      
+});
+ console.log('test' + disableButtonStatusUpdate);
 });
     
 </script>

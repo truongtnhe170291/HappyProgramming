@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dal.MentorDAO;
 import com.google.gson.JsonElement;
+import dal.CVDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import models.Account;
+import models.CV;
 import models.Cycle;
 import models.FormData;
 import models.SchedulePublic;
@@ -63,6 +65,11 @@ public class BookScheduleServlet extends HttpServlet {
         if (acc == null) {
             response.sendRedirect("login.jsp");
             return;
+        }
+        CVDAO cdao = new CVDAO();
+        CV cv = cdao.getCVByUserName(acc.getUserName());
+        if(cv == null ||cv.getStattusId() != 2){
+            request.setAttribute("noBook", "You need to complete your CV before booking your schedule");
         }
         // get thu 2 của tuan sau nua
         LocalDate today = LocalDate.now();
