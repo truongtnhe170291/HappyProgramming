@@ -11,6 +11,8 @@
         <link href="css/style.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
         <style>
             .rounded-circle {
                 width: 200px;
@@ -89,9 +91,6 @@
                                                             <img src="./img/${user.avatar}" alt=""
                                                                  class="rounded-circle">
                                                         </div>
-                                                        <div>
-                                                            <span>UI Designer</span>
-                                                        </div>
                                                     </div>
                                                 </li>
                                                 <li>
@@ -101,7 +100,7 @@
                                                 
                                                 <li>
                                                     <a href="wallet">
-                                                        <i class="uil uil-key-skeleton"></i> Your Wallet
+                                                      <i class="fas fa-wallet"></i> Your Wallet
                                                     </a>
                                                 </li>
                                                 
@@ -109,10 +108,6 @@
                                                     <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password
                                                     </a>
-                                                </li>
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-bell"></i> Help</a>
                                                 </li>
                                                 <li>
                                                     <a href="Signout_Servlet" class="nav-author__signout">

@@ -318,8 +318,7 @@
                 skillName: "${schedule.skillName}",
                 dayOfSlot: "${schedule.dayOfSlot}",
                 slotName: "${schedule.slotName}",
-                description: "${schedule.description}",
-                attendanceStatus: "${schedule.attendanceStatus}" // Thêm trạng thái tham dự ở đây
+                attendanceStatus: "${schedule.attendanceStatus}" 
             }
         });
 
@@ -384,13 +383,7 @@
                                     '<span class="list-label">Time :</span>' +
                                     '<span class="list-meta">' + en.slotName + '</span>' +
                                 '</span>' +
-                            '</li>' +
-                            '<li>' +
-                                '<img class="svg" src="img/svg/align-left.svg" alt="align-left">' +
-                                '<span class="list-line">' +
-                                    '<span class="list-text">' + en.description + '</span>' +
-                                '</span>' +
-                            '</li>' +
+                            '</li>' +    
                             '<li>' +
                                 '<span class="list-line">' +
                                     '<span class="list-label">Attendance:</span>' +

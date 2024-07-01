@@ -399,8 +399,8 @@ public class ScheduleDAO {
 
     public static void main(String[] args) {
         ScheduleDAO dao = new ScheduleDAO();
-        List<SchedulePublic> lisr = dao.getScheduleByRequestId(2);
-        for(SchedulePublic s : lisr){
+        List<ScheduleCommon> lisr = dao.getScheduleCommonByMentorName("UserA");
+        for(ScheduleCommon s : lisr){
             System.out.println(s);
         }
     }
@@ -539,24 +539,42 @@ public class ScheduleDAO {
         return list;
     }
 
-    public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
+     public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
         List<ScheduleCommon> list = new ArrayList<>();
         try {
-            String sql = "SELECT ss.mentor_name, a.full_name, s.skill_name, s.description, ss.day_of_slot, sl.slot_id, sl.slot_name \n"
-                    + "FROM RequestsFormMentee r \n"
-                    + "join Accounts a on a.user_name = r.mentee_name\n"
-                    + "join RequestSkills rs on r.request_id = rs.request_id \n"
-                    + "join Skills s on s.skill_id = rs.skill_id \n"
-                    + "join RquestSelectedSlot rss on rss.request_id = rs.request_id\n"
-                    + "join Selected_Slot ss on rss.selected_id = ss.selected_id\n"
-                    + "join Slots sl on sl.slot_id = ss.slot_id\n"
-                    + "where r.status_id = 1 and ss.mentor_name = ?";
+            String sql = "SELECT \n" +
+"    r.mentor_name, \n" +
+"    a.full_name, \n" +
+"    s.skill_name, \n" +
+"    s.description, \n" +
+"    ss.day_of_slot, \n" +
+"    sl.slot_id, \n" +
+"    sl.slot_name, \n" +
+"    att.attendance_status \n" +
+"FROM \n" +
+"    RequestsFormMentee r \n" +
+"JOIN \n" +
+"    Accounts a on a.user_name = r.mentee_name\n" +
+"JOIN \n" +
+"    RequestSkills rs on r.request_id = rs.request_id \n" +
+"JOIN \n" +
+"    Skills s on s.skill_id = rs.skill_id \n" +
+"JOIN \n" +
+"    RquestSelectedSlot rss on rss.request_id = rs.request_id\n" +
+"JOIN \n" +
+"    Selected_Slot ss on rss.selected_id = ss.selected_id\n" +
+"JOIN \n" +
+"    Slots sl on sl.slot_id = ss.slot_id\n" +
+"LEFT JOIN \n" +
+"    Attendance att on att.mentee_name = r.mentee_name AND att.request_id = r.request_id\n" +
+"WHERE  \n" +
+"    r.mentor_name = ?;";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ScheduleCommon sc = new ScheduleCommon(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getString(6), rs.getString(7));
+                ScheduleCommon sc = new ScheduleCommon(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getString(6), rs.getString(7),rs.getString(8));
                 list.add(sc);
             }
         } catch (SQLException e) {

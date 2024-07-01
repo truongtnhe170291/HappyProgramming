@@ -293,7 +293,7 @@
 
 .note-container {
     margin-bottom: 30px;
-        height: 460px;
+        height: auto;
     background-color: #ffffff !important;
     border: 2px solid #007bff !important;
     border-radius: 12px !important;
@@ -336,7 +336,9 @@
     font-weight: bold !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
-
+.navbar-light{
+ transform: translateX(-250px);
+}
         </style>
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <!-- Template CSS -->
@@ -363,7 +365,7 @@
     <main class="main-content">
 
         <jsp:include page="sidebar.jsp" />
-        <div class="contents">
+        <div class="contents" style="width: 120%;max-width: 130%;">
                         <div class="table-responsive">
                             <form id="scheduleForm">
                                 <div class="schedule-container">
@@ -374,14 +376,13 @@
                                     <div>
                                             <div class="note-container">
                                                 <ul>
-                                                    <h4 style="
-    line-height: 40px;
-">Title request:  <span class="highlight">${requestDetail.title}</span></h4>
-                                                    <li><span class="highlight">This request is send for mentor:  </span>${requestDetail.mentorName}</li>
-                                                    <li><span class="highlight">Deadline Date: </span> ${requestDetail.deadlineDate}</li>
-                                                    <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
-                                                    <li><span class="highlight">Money/Slots </span> ${requestDetail.description}/${requestDetail.description}</li>
-                                                    <li><span class="highlight">Request Skill: </span> ${skillName}</li>
+                                                        <h4 style="line-height: 50px;">Title request: <span class="highlight">${requestDetail.title}</span></h4>
+    <li style="line-height: 50px;"><span class="highlight">This request is send for mentor: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.mentorName}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Deadline Date: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.deadlineDate}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Description: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.description}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Moneys: </span><span style="line-height: 50px;margin-top: 6px;" id="price">${requestDetail.price}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Request Skill: </span><span style="line-height: 50px;margin-top: 6px;">${skillName}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Note: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.note}</span></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -468,6 +469,15 @@
         <script src="assetss/js/scripts.js"></script>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
+         <script>function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('price').textContent = formatPrice(Number(document.getElementById('price').textContent)) + " VND";
+              
+        });
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const startTimeStr = '${startTime}';

@@ -300,6 +300,17 @@
             }
 
 
+.select-container.custom_popup {
+    margin-top: 10px;
+    cursor: pointer;
+    width: auto;
+    height: 40px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: inline-block;
+}
 
         </style>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -332,11 +343,17 @@
                                             <select id="year" >
                                                 <option>2024</option>
                                             </select>
+                                            
                                         </div>
+                                         
                                         <div class="select-container">
                                             <label for="week">WEEK</label>
                                             <select id="week" ></select>
                                         </div>
+                                        <div class="select-container custom_popup" id="rejmodal" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    <label >Reason for rejection</label>
+                                </div>
+
                                     </div>
                                     <div class="items">
                                         <div class="select-container class-set-render">
@@ -397,14 +414,37 @@
     </div>
 
 </main>
+                               <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reason for Rejection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <h3 style="padding: 30px 0px">${sessionScope.reject}</h3>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    
     document.addEventListener("DOMContentLoaded", function () {
         const startTimeStr = '${requestScope.mon}';
         const weeksData = {1: {}, 2: {}, 3: {}, 4: {}};
         const saveButton = document.getElementById("saveSelectedSlots");
         const sendButton = document.getElementById("sendSelectedSlots");
         const tatussss = '${status}';
-
+if( tatussss !== 'Reject' ){
+    document.getElementById('rejmodal').style.display = 'none';
+}else{
+     document.getElementById('rejmodal').style.display = 'block';
+}
 let disableButtonStatusUpdate = false;
 
         function formatDate(date) {

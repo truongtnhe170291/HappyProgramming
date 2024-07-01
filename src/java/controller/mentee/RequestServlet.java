@@ -145,6 +145,7 @@ public class RequestServlet extends HttpServlet {
 
             for (FormData.Slot slot : formData.getSelectedSlots()) {
                 System.out.println(slot.getSlot() + " " + slot.getDay());
+                System.out.println("Test send");
             }
             System.out.println("break");
             String title = formData.getTitle();

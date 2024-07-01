@@ -44,7 +44,6 @@
                             <!-- Captions -->
                             <h1 data-caption-animate="zoom-out">WELCOME TO THE WORLD OF FMASTER</h1>
                             <p>Welcome aboard FMaster—the ultimate destination for creative minds. Whether you're here to learn, to create, or to be inspired, your journey starts now. So, dive in, explore, and let your imagination soar. The world of FMaster is yours to conquer..</p>
-                            <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div>
 
                             <!-- end: Captions -->
                         </div>
@@ -59,7 +58,6 @@
                             <!-- Captions -->
                             <h1>100+ Quality mentors</h1>
                             <p class="text-small">FMASTER: Discover & Develop Your Passion for Programming with Mentor Code: Detailed Instructions from Basic to Advanced</p>
-                            <div><a href="#welcome" class="btn btn-primary scroll-to">Explore more</a></div>
                             <!-- end: Captions -->
                         </div>
                     </div>

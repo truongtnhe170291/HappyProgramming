@@ -310,7 +310,7 @@
             }
 .note-container {
     margin-bottom: 30px;
-        height: 460px;
+        height: auto;
     background-color: #ffffff !important;
     border: 2px solid #007bff !important;
     border-radius: 12px !important;
@@ -353,7 +353,12 @@
     font-weight: bold !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
-
+.dropdown {
+    margin-top: 5.4px !important;
+}
+.line-height-20 {
+        line-height: 20px;
+    }
         </style>
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <!-- Template CSS -->
@@ -380,16 +385,16 @@
                                     </div>
                                     <div>
                                             <div class="note-container">
-                                                <ul>
-                                                    <h4 style="
-    line-height: 40px;
-">Title request:  <span class="highlight">${requestDetail.title}</span></h4>
-                                                    <li><span class="highlight">This request is send for mentor:  </span>${requestDetail.mentorName}</li>
-                                                    <li><span class="highlight">Deadline Date: </span> ${requestDetail.deadlineDate}</li>
-                                                    <li><span class="highlight">Description: </span> ${requestDetail.description}</li>
-                                                    <li><span class="highlight">Money/Slots </span> ${requestDetail.description}/${requestDetail.description}</li>
-                                                    <li><span class="highlight">Request Skill: </span> ${skillName}</li>
-                                                </ul>
+                                           <ul>
+    <h4 style="line-height: 20px;">Title request: <span class="highlight">${requestDetail.title}</span></h4>
+    <li style="line-height: 20px;"><span class="highlight">This request is send for mentor: </span><span style="line-height: 20px;margin-top: 6px;">${requestDetail.mentorName}</span></li>
+    <li style="line-height: 20px;"><span class="highlight">Deadline Date: </span><span style="line-height: 20px;margin-top: 6px;">${requestDetail.deadlineDate}</span></li>
+    <li style="line-height: 20px;"><span class="highlight">Description: </span><span style="line-height: 20px;margin-top: 6px;">${requestDetail.description}</span></li>
+    <li style="line-height: 20px;"><span class="highlight">Moneys: </span><span style="line-height: 20px;margin-top: 6px;" id="price">${requestDetail.price}</span></li>
+    <li style="line-height: 20px;"><span class="highlight">Request Skill: </span><span style="line-height: 20px;margin-top: 6px;">${skillName}</span></li>
+    <li style="line-height: 20px;"><span class="highlight">Note: </span><span style="line-height: 20px;margin-top: 6px;">${requestDetail.note}</span></li>
+</ul>
+
                                             </div>
                                         </div>
                                     <div class="header">
@@ -441,7 +446,7 @@
                                                 <ul>
                                                     <li><span class="highlight">Back button</span> to back to list request </li>
                                                         <c:forEach items="${requestScope.listSlot}" var="slot">
-                                                        <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
+                                                        <li><span class="highlight">${slot.slot_id}: </span><span style="margin-top: 6px;">${slot.slot_name} </span></li>
                                                         </c:forEach>
                                                 </ul>
                                             </div>
@@ -474,6 +479,15 @@
         <script src="assetss/js/scripts.js"></script>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
+        <script>function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('price').textContent = formatPrice(Number(document.getElementById('price').textContent)) + " VND";
+              
+        });
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const startTimeStr = '${startTime}';

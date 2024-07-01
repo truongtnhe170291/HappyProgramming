@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Update CV of mentor</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>       
-            <style>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>       
+        <style>
             .author_2{
                 transform: translate(750px,-87px);
             }
@@ -184,7 +184,7 @@
                 justify-content: end;
             }
             .statusol{
-                
+
                 line-height: 20px;
                 text-align: center;
                 margin-top: 20px;
@@ -255,6 +255,67 @@
             #apply-cv-as1:hover, #set-rate-as2:hover {
                 background-color: #138496;
             }
+            
+                .status-radio label {
+              
+                    font-weight: bold;
+                    font-size: 18px;
+                    margin-bottom: 15px;
+                    display: block;
+                    color: #333;
+                }
+
+                .skills-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                }
+
+                .skill-item {
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 12px 20px;
+                    display: flex;
+                    align-items: center;
+                    transition: box-shadow 0.3s ease, transform 0.3s ease;
+                    cursor: pointer;
+                    width: 100%;
+                    max-width: 200px;
+                    text-align: center;
+                }
+
+                .skill-item:hover {
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    transform: translateY(-3px);
+                }
+
+                .form-check-input {
+                    margin-right: 10px;
+                   
+                    transform: scale(1.2);
+                }
+
+                .form-check-label {
+                    margin: 0;
+                    font-size: 16px;
+                    color: #555;
+                    flex-grow: 1;
+                    text-align: left;
+                }
+
+                @media (max-width: 768px) {
+                    .skills-container {
+                        flex-direction: column;
+                    }
+
+                    .skill-item {
+                        width: 100%;
+                    }
+                }
+                .form-group {
+                    margin-bottom: 25px;
+                }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -295,7 +356,7 @@
                                     <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
                                         <li class="nav-item hes">
-                                            
+
                                             <form action="aplly" method="post" class="status-bar">
                                                 <input type="hidden" name="cvId" value="${cv.cvId}"/>
                                                 <div class="statusol">
@@ -431,7 +492,7 @@
                                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
-                                                
+
                                                 <div class="mt-40 mb-50">
                                                     <div class="user-tab-info-title mb-35 text-capitalize">
                                                         <h5 class="fw-500">CV Information</h5>
@@ -541,10 +602,10 @@
                                                                 <label for="phoneNumber1">Service Description</label>
                                                                 <textarea name="serviceDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
                                                             </div>
-                                                            
-                                                            <div class="form-group mb-25 status-radio ">
+
+                                                            <div class="form-group mb-25 status-radio">
                                                                 <label for="hiringDateCheckbox">Skill</label>
-                                                                <div class="d-flex">
+                                                                <div class="d-flex skills-container">
                                                                     <c:forEach items="${requestScope.skills}" var="skill">
                                                                         <c:set var="isChecked" value="false"/>
                                                                         <c:forEach items="${cv.skills}" var="cvskill">
@@ -552,11 +613,10 @@
                                                                                 <c:set var="isChecked" value="true"/>
                                                                             </c:if>
                                                                         </c:forEach>
-                                                                        <div class="form-check">
-                                                                            <input name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox">
-                                                                            <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
+                                                                        <div class="form-check skill-item">
+                                                                            <input style="margin-left:10px;" name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox-${skill.skillID}">
+                                                                            <label class="form-check-label" for="hiringDateCheckbox-${skill.skillID}">${skill.skillName}</label>
                                                                         </div>
-
                                                                     </c:forEach>
                                                                 </div>
                                                             </div>
@@ -800,17 +860,17 @@
     </div>
     <div class="overlay-dark-sidebar"></div>
     <div class="customizer-overlay"></div>
- <script>
-        document.addEventListener("DOMContentLoaded", function() {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
             const rate = Number(document.querySelector(".rate_all").value);
             console.log(rate);
             if (rate <= 0) {
-                 Toastify({
-                text: ('Bạn chưa nhập Rate. Hãy điền rate !!!'),
-                        duration: 5000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
+                Toastify({
+                    text: ('Bạn chưa nhập Rate. Hãy điền rate !!!'),
+                    duration: 5000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#ff7b5a",
                 }).showToast();
             }
         });
@@ -827,21 +887,21 @@
         });
     </script>
     <script>
-          var emailInput = document.getElementById('email');
-            var emailError = document.getElementById('emailError');
-            var mailcv = document.getElementById('mailcv');
-            var mailcvErr = document.getElementById('mailcvErr');
-            var phoneInput = document.getElementById('phoneNumber');
-            var phoneError = document.getElementById('phoneError');
-            var nameInput = document.getElementById('fullname');
-            var nameError = document.getElementById('nameError');
-            var dobInput = document.getElementById('dob');
-            var dobError = document.getElementById('dobError');
-            var dobcv = document.getElementById('dobcv');
-            var dobcvErr = document.getElementById('dobcvErr');
-            var submitForm = document.getElementById('submitForm');
-            var addressInput = document.getElementById('address');
-            var addressError = document.getElementById('addressError');
+        var emailInput = document.getElementById('email');
+        var emailError = document.getElementById('emailError');
+        var mailcv = document.getElementById('mailcv');
+        var mailcvErr = document.getElementById('mailcvErr');
+        var phoneInput = document.getElementById('phoneNumber');
+        var phoneError = document.getElementById('phoneError');
+        var nameInput = document.getElementById('fullname');
+        var nameError = document.getElementById('nameError');
+        var dobInput = document.getElementById('dob');
+        var dobError = document.getElementById('dobError');
+        var dobcv = document.getElementById('dobcv');
+        var dobcvErr = document.getElementById('dobcvErr');
+        var submitForm = document.getElementById('submitForm');
+        var addressInput = document.getElementById('address');
+        var addressError = document.getElementById('addressError');
 
     </script>
     <script>

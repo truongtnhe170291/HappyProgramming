@@ -761,7 +761,7 @@ public class RequestDAO {
             String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
                     + "SET status_id = 4 "
                     + "WHERE deadline_date < CAST(GETDATE() AS DATE) "
-                    + "AND status_id = 2 or status_id = 5)";
+                    + "AND status_id = 2 or status_id = 5";
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
         } catch (SQLException e) {
