@@ -55,7 +55,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         // Lọc danh sách ngày cho một tuần
         ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
-        //rdao.updateExpiredRequestsStatus();
+        rdao.updateExpiredRequestsStatus();
 
         List<RequestDTO> requests = new ArrayList<>();
         List<Status> statuses = rdao.getAllStatuses();
