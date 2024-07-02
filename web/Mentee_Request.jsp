@@ -418,10 +418,10 @@
                                                             <label for="hiringDateCheckbox">Skill</label>
                                                             <div class="d-flex">
                                                             <c:forEach items="${requestScope.skills}" var="skill">
-                                                                <div class="form-check text-center m-3">
+                                                                <div class="form-check text-center m-3 d-flex">
                                                                     <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
 
-                                                                    <input type="radio" ${requestScope.skillOfMentee.skillID == skill.skillID ? "checked": ""} name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translate(80px, -28px);">
+                                                                    <input type="radio" ${requestScope.skillOfMentee.skillID == skill.skillID ? "checked": ""} name="skill" value="${skill.skillID}" autocomplete="off" style="transform: translateY(-10%)">
                                                                 </div>
 
                                                             </c:forEach>
@@ -506,10 +506,8 @@ function getWeekNumber(date, startDate) {
     return null;
 }
 
-// Đảm bảo start là một chuỗi ngày hợp lệ, ví dụ: '2024-07-08'
-const start = '${start}'; // Hoặc dùng một ngày cụ thể nếu ${start} không hoạt động
+const start = '${start}';
 
-console.log("Start date:", start);
 
 scheduleData.forEach((item) => {
     console.log("Processing item:", item);
@@ -518,7 +516,29 @@ scheduleData.forEach((item) => {
 });
 
 console.log("Updated scheduleData:", scheduleData);
+ function showToastMessage(message) {
+                Toastify({
+                text: message,
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                }).showToast();
+                }
+function validateForm() {
+const totalPriceInput = document.getElementById("totalPriceInput");
+                const notifyBtn = document.getElementById("notify_btn");
 
+        if (${wallet} < totalPriceInput.value) {
+            notifyBtn.disabled = true;
+            showToastMessage("Bạn không đủ tiền để Book lịch học. Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
+            return false;
+        }else {
+            notifyBtn.disabled = false;
+            return true;
+        }
+    }
+    
 const tmp = scheduleData.filter(s => s.week ===  1);
 console.log("Items in week 2:", tmp);
                 function formatDate(date) {
@@ -650,7 +670,6 @@ console.log("Items in week 2:", tmp);
                 }
                 }
                 });
-                // Update event listeners
                document.querySelectorAll(".status").forEach((element) => {
         element.addEventListener("click", function () {
             const day = this.getAttribute("data-day");
@@ -682,6 +701,7 @@ console.log("Items in week 2:", tmp);
                 }
             }
             updateTotalPrice();
+            validateForm(); 
         });
     });
     updateTotalPrice();
@@ -699,7 +719,7 @@ console.log("Items in week 2:", tmp);
                 const totalPriceInput = document.getElementById("totalPriceInput");
                 const totalPriceDisplay = document.getElementById("totalPrice");
                 totalPriceInput.value = total;
-                totalPriceDisplay.innerHTML = `Total Price: ` + total;
+                totalPriceDisplay.innerHTML = `Total Price: ` + total + `/` +(selectedCount)+ ` Slot`;
                 }
  function getFormValues() {
                 const action = document.getElementById("statusIndicator").textContent;
@@ -886,7 +906,20 @@ function getFormValues() {
     }));
 
     
+if (!formData.title || !formData.description || !formData.deadlineDate || !formData.deadlineHour || !formData.skill) {
+        Toastify({
+            text: "Vui lòng điền đầy đủ thông tin.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FF6347",
+            stopOnFocus: true,
+        }).showToast();
+        return;
+    }
 
+   
     const requestData = {
         ...formData,
         selectedSlots: selectedSlots
@@ -949,6 +982,7 @@ function getFormValues() {
             </script>
  <script>
                 document.addEventListener('DOMContentLoaded', (et) => {
+                          const saveButton = document.querySelector("#Save_status");
 
                 const deadlineInput = document.getElementById('notify_messages');
                 const notifyBtn = document.getElementById("notify_btn");
@@ -960,6 +994,7 @@ function getFormValues() {
                 const balance = ${wallet}; 
                 console.log(totalPriceInput.textContent+' oke '+totalPrice.textContent+ ' oke 2 '+totalPrice.value + 'oke 3 ' +${wallet} +' oke 4 '+totalPriceInput.value);
                 console.log(${wallet} < totalPriceInput.value);
+                console.log(totalPriceInput.value <= 0);
                 function getSundayOfWeek() {
                 const currentDate = new Date('${start}');
                 const dayOfWeek = currentDate.getDay();
@@ -996,36 +1031,54 @@ function getFormValues() {
                 function validateForm() {
                 const deadlineDate = deadlineInput.value;
                 const currentDate = getFormattedCurrentDate('${start}');
+                const newDate = new Date();
+                 function formatDates(date) {
+                return (
+                        date.getFullYear().toString().padStart(4, "0") +
+                        "-" +
+                        (date.getMonth() + 1).toString().padStart(2, "0") +
+                        "-" +
+                        date.getDate().toString().padStart(2, "0")
+                        );
+                }
+                const daybyday = formatDates(newDate);
+                console.log('test' + totalPriceInput.value);
                 const sundayOfWeek = getSundayOfWeek();
+                console.log(deadlineDate + newDate + currentDate);
                 const checkedSchedules = countCheckedSchedules();
                 const selectedSkills = countSelectedSkills();
-                if (deadlineDate >= currentDate || deadlineDate > sundayOfWeek) {
+                
+                if ( deadlineDate < daybyday  || deadlineDate >= currentDate) {
                 notifyBtn.disabled = true;
                 showToastMessage("Hãy nhập đúng ngày !!!.");
                 return false;
                 }    
-                 else if(totalPriceInput.value <= 0){
+               else if(totalPriceInput.value <= 0){
                     notifyBtn.disabled = true;
-                    showToastMessage("Hãy chọn ít nhất 1 slot!!!");
-                                return false;
-                } 
-                else if (selectedSkills === 0) {
-                notifyBtn.disabled = true;
-                showToastMessage("Hãy chọn skill để book lịch.");
+                showToastMessage("Hãy chọn ít nhất  slot .");
                 return false;
-                }
+               }
                 else if(${wallet} < totalPriceInput.value){
                  notifyBtn.disabled = true;
                 showToastMessage("Bạn không đủ tiền để Book lịch học.Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
                 return false;
                 }
+                else if (selectedSkills === 0) {
+                notifyBtn.disabled = true;
+                showToastMessage("Hãy chọn skill để book lịch.");
+                return false;
+                }
+                
                 else{
                     notifyBtn.disabled = false;
                      return true;
                 }
                 }
-
-
+ 
+notifyBtn.addEventListener('click', function (){
+    notifyBtn.disabled = true;
+    saveButton.disabled = true;
+})
                 deadlineInput.addEventListener('change', validateForm);
                 skillRadios.forEach(radio => {
                 radio.addEventListener('change', validateForm);
