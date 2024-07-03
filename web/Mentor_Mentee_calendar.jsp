@@ -314,6 +314,10 @@
             textColor: fullnameSet[fullname].textColor, 
             className: fullnameSet[fullname].className, 
             extendedProps: {
+                selected_id: "${schedule.selected_id}",
+                menteeName: "${schedule.menteeName}",
+                slotID: "${schedule.slotId}",
+                request_id: "${schedule.request_id}",
                 fullName: "${schedule.fullName}",
                 skillName: "${schedule.skillName}",
                 dayOfSlot: "${schedule.dayOfSlot}",
@@ -406,7 +410,7 @@
                             alert("Please select an attendance status.");
                             return;
                         }
-                        updateAttendance(infoEvent.event.id, en.fullName, en.skillName, en.dayOfSlot, en.slotName, attendanceStatus);
+                        updateAttendance(infoEvent.event.id, en.selected_id,en.slotID,en.menteeName,en.request_id,en.fullName, en.skillName, en.dayOfSlot, en.slotName, attendanceStatus);
                     });
                 },
             });
@@ -426,29 +430,38 @@
         }
     });
 
-    function updateAttendance(eventId, fullName, skillName, date, slot, status) {
-        $.ajax({
-            url: 'UpdateAttendanceServlet',
-            type: 'POST',
-            data: {
-                fullName: fullName,
-                skillName: skillName,
-                date: date,
-                slot: slot,
-                status: status
-            },
-            success: function(response) {
-                alert('Attendance updated successfully');
-                var event = calendar.getEventById(eventId);
-                if (event) {
-                    event.setExtendedProp('attendanceStatus', status);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error updating attendance: ' + error);
+   function updateAttendance(eventId, selected_id,slotID,menteeName,request_id,fullName, skillName, date, slot, status) {
+    const data = {
+        selected_id:selected_id,
+        menteeName: menteeName,
+        request_id:request_id,
+        slotID:slotID,
+        fullName: fullName,
+        skillName: skillName,
+        date: date,
+        slot: slot,
+        status: status
+    };
+
+    console.log('Sending data:', data); // Debug line
+
+    $.ajax({
+        url: 'UpdateAttendanceServlet',
+        type: 'POST',
+        contentType: 'application/json', // Ensure correct content type
+        data: JSON.stringify(data), // Convert data to JSON string
+        success: function(response) {
+            alert('Attendance updated successfully');
+            var event = calendar.getEventById(eventId);
+            if (event) {
+                event.setExtendedProp('attendanceStatus', status);
             }
-        });
-    }
+        },
+        error: function(xhr, status, error) {
+            alert('Error updating attendance: ' + error);
+        }
+    });
+}
 
 })(jQuery);
             </script>
