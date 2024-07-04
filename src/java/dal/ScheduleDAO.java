@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import models.AttendanceRecord;
@@ -392,14 +393,7 @@ public class ScheduleDAO {
         }
     }
 
-    public static void main(String[] args) {
-        ScheduleDAO dao = new ScheduleDAO();
-        List<SchedulePublic> lisr = dao.getScheduleByMenteeName("truong");
-        for (SchedulePublic s : lisr) {
-            System.out.println(s);
-        }
-    }
-
+  
     public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
 
         List<SchedulePublic> list = new ArrayList<>();
@@ -542,7 +536,7 @@ public class ScheduleDAO {
     public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
         List<ScheduleCommon> list = new ArrayList<>();
         try {
-            String sql = "SELECT r.mentor_name, a.full_name, s.skill_name,  s.description, \n"
+            String sql = "SELECT r.mentor_name,r.mentee_name,r.request_id,rss.selected_id, a.full_name, s.skill_name,  s.description, \n"
                     + "ss.day_of_slot, \n"
                     + " sl.slot_id, \n"
                     + "sl.slot_name, \n"
@@ -561,7 +555,7 @@ public class ScheduleDAO {
             ps.setString(1, userName);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ScheduleCommon sc = new ScheduleCommon(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                ScheduleCommon sc = new ScheduleCommon(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4), rs.getString(5), rs.getString(6), rs.getString(7),rs.getDate(8), rs.getString(9), rs.getString(10),rs.getString(11));
                 list.add(sc);
             }
         } catch (SQLException e) {
@@ -569,7 +563,7 @@ public class ScheduleDAO {
         }
         return list;
     }
-
+   
     public int getCycleIdInTime(String mentorName, String startTime, String endTime) {
         try {
             String sql = "select c.cycle_id from Cycle c where c.mentor_name = ? and c.start_time = ? and c.end_time = ?";
@@ -628,49 +622,90 @@ public class ScheduleDAO {
         return true;
 
     }
+public boolean updateAttendance(AttendanceRecord record) {
+    if (attendanceRecordExists(record)) {
+        return updateExistingAttendance(record);
+    } else {
+        return insertNewAttendance(record);
+    }
+}
 
-    public boolean updateAttendance(AttendanceRecord record) {
-        String sql = "UPDATE Attendance SET attendance_status = ? "
-                + "WHERE mentee_name = ? AND selected_id = ? AND request_id = ?";
+private boolean attendanceRecordExists(AttendanceRecord record) {
+    String sql = "SELECT COUNT(*) FROM Attendance WHERE mentee_name = ? AND selected_id = ? AND request_id = ?";
+    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setString(1, record.getMenteeName());
+        pstmt.setInt(2, record.getSelectedId());
+        pstmt.setInt(3, record.getRequestId());
 
-        try (
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
-
-            pstmt.setString(1, record.getAttendanceStatus());
-            pstmt.setString(2, record.getMenteeName());
-            pstmt.setInt(3, record.getSelectedId());
-            pstmt.setInt(4, record.getRequestId());
-
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows == 0) {
-                return insertNewAttendance(record);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
-
-            return true;
-        } catch (SQLException e) {
-            System.out.println("updateAttendance: " + e.getMessage());
-            return false;
         }
+    } catch (SQLException e) {
+        System.out.println("attendanceRecordExists: " + e.getMessage());
+    }
+    return false;
+}
+
+private boolean updateExistingAttendance(AttendanceRecord record) {
+    String sql = "UPDATE Attendance SET attendance_status = ? WHERE mentee_name = ? AND selected_id = ? AND request_id = ?";
+    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setString(1, record.getAttendanceStatus());
+        pstmt.setString(2, record.getMenteeName());
+        pstmt.setInt(3, record.getSelectedId());
+        pstmt.setInt(4, record.getRequestId());
+
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+    } catch (SQLException e) {
+        System.out.println("updateExistingAttendance: " + e.getMessage());
+        return false;
+    }
+}
+
+private boolean insertNewAttendance(AttendanceRecord record) {
+    String sql = "INSERT INTO Attendance (request_id, selected_id, mentee_name, attendance_status, attendance_date) VALUES (?, ?, ?, ?, ?)";
+    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setInt(1, record.getRequestId());
+        pstmt.setInt(2, record.getSelectedId());
+        pstmt.setString(3, record.getMenteeName());
+        pstmt.setString(4, record.getAttendanceStatus());
+        pstmt.setDate(5, record.getAttendanceDate());
+
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+    } catch (SQLException e) {
+        System.out.println("insertNewAttendance: " + e.getMessage());
+        return false;
+    }
+}
+ public static void main(String[] args) {
+        // Initialize DAO
+        ScheduleDAO dao = new ScheduleDAO();
+        List<ScheduleCommon> t = dao.getScheduleCommonByMentorName("son");
+        for(ScheduleCommon l : t){
+         System.out.println(l);
+        }
+        // Create a sample AttendanceRecord
+        AttendanceRecord record = new AttendanceRecord();
+        record.setRequestId(2);
+        record.setSelectedId(3);
+        record.setMenteeName("truong");
+        record.setAttendanceStatus("Attented");
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date parsedDate = dateFormat.parse("2024-07-15");
+            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+            record.setAttendanceDate(sqlDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Call updateAttendance method and print the result
+        boolean success = dao.updateAttendance(record);
+        System.out.println("Update Attendance Result: " + success);
     }
 
-    private boolean insertNewAttendance(AttendanceRecord record) {
-        String sql = "INSERT INTO Attendance (request_id, selected_id, mentee_name, attendance_status, attendance_date) "
-                + "VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-
-            pstmt.setInt(1, record.getRequestId());
-            pstmt.setInt(2, record.getSelectedId());
-            pstmt.setString(3, record.getMenteeName());
-            pstmt.setString(4, record.getAttendanceStatus());
-            pstmt.setTimestamp(5, new java.sql.Timestamp(record.getAttendanceDate().getTime()));
-
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            System.out.println("insertNewAttendance: " + e.getMessage());
-            return false;
-        }
-    }
 }

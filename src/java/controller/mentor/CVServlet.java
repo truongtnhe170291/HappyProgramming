@@ -49,7 +49,7 @@ public class CVServlet extends HttpServlet {
         try {
             Account curentAccount = (Account) request.getSession().getAttribute("user");
             if (curentAccount == null) {
-                response.sendRedirect("Login.jsp");
+                response.sendRedirect("login.jsp");
                 return;
             }
             SkillDAO skillDAO = new SkillDAO();

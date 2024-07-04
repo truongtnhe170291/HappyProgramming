@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models;
 import java.sql.Date;
-/**
- *
- * @author Admin
- */
+
 public class AttendanceRecord {
     private int attendanceId;
     private int requestId;
@@ -38,7 +31,7 @@ public class AttendanceRecord {
     }
 
     public AttendanceRecord() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      
     }
 
     public int getAttendanceId() {
@@ -137,11 +130,9 @@ public class AttendanceRecord {
         this.attendanceDate = attendanceDate;
     }
 
+
     @Override
     public String toString() {
         return "AttendanceRecord{" + "attendanceId=" + attendanceId + ", requestId=" + requestId + ", selectedId=" + selectedId + ", fullName=" + fullName + ", menteeName=" + menteeName + ", mentorName=" + mentorName + ", skillName=" + skillName + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", slotName=" + slotName + ", attendanceStatus=" + attendanceStatus + ", attendanceDate=" + attendanceDate + '}';
     }
-    
-    
-    
 }

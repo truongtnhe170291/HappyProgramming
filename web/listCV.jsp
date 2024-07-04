@@ -551,19 +551,16 @@
 
                                                                     </button>
                                                                     <c:if test="${cv.status.statusId == 1}">
-                                                                        <button id="edit_${cv.cvId}"
-                                                                                class="edit btn btn-success btn-sm"><i
-                                                                                class="fas fa-check"></i></button>
-                                                                        <button id="reject_${cv.cvId}"
-                                                                                class="reject btn btn-danger btn-sm"
-                                                                                data-cv-id="${cv.cvId}"><i
-                                                                                class="fas fa-times"></i></button>
-                                                                        </c:if>
-
+                                                                        <button id="edit_${cv.cvId}" class="edit btn btn-success btn-sm">
+                                                                            <i class="fas fa-check"></i>
+                                                                        </button>
+                                                                        <button id="reject_${cv.cvId}" class="reject btn btn-danger btn-sm" data-cv-id="${cv.cvId}">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </button>
+                                                                    </c:if>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -735,65 +732,65 @@ window.onload = function() {
 };                    });
                 });
 
-                const closeButtons = document.querySelectorAll('.close');
-                closeButtons.forEach(function (button) {
-                    button.addEventListener('click', function () {
-                        const popup = this.closest('.popup');
-                        popup.style.display = 'none';
-                    });
-                });
+                                                                                    const closeButtons = document.querySelectorAll('.close');
+                                                                                    closeButtons.forEach(function (button) {
+                                                                                        button.addEventListener('click', function () {
+                                                                                            const popup = this.closest('.popup');
+                                                                                            popup.style.display = 'none';
+                                                                                        });
+                                                                                    });
 
-                window.onclick = function (event) {
-                    if (event.target.classList.contains('popup')) {
-                        event.target.style.display = 'none';
-                    }
-                };
+                                                                                    window.onclick = function (event) {
+                                                                                        if (event.target.classList.contains('popup')) {
+                                                                                            event.target.style.display = 'none';
+                                                                                        }
+                                                                                    };
 
-                const editButtons = document.querySelectorAll('.edit');
-                editButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const cvId = this.id.split('_')[1];
-                        const form = document.createElement('form');
-                        form.method = 'get';
-                        form.action = 'changeStatus';
-                        const cvIdInput = document.createElement('input');
-                        cvIdInput.type = 'hidden';
-                        cvIdInput.name = 'cvId';
-                        cvIdInput.value = cvId;
-                        form.appendChild(cvIdInput);
-                        const statusInput = document.createElement('input');
-                        statusInput.type = 'hidden';
-                        statusInput.name = 'status';
-                        statusInput.value = '2';
-                        form.appendChild(statusInput);
-                        document.body.appendChild(form);
-                        form.submit();
-                    });
-                });
+                                                                                    const editButtons = document.querySelectorAll('.edit');
+                                                                                    editButtons.forEach(button => {
+                                                                                        button.addEventListener('click', function (event) {
+                                                                                            event.preventDefault();
+                                                                                            const cvId = this.id.split('_')[1];
+                                                                                            const form = document.createElement('form');
+                                                                                            form.method = 'get';
+                                                                                            form.action = 'changeStatus';
+                                                                                            const cvIdInput = document.createElement('input');
+                                                                                            cvIdInput.type = 'hidden';
+                                                                                            cvIdInput.name = 'cvId';
+                                                                                            cvIdInput.value = cvId;
+                                                                                            form.appendChild(cvIdInput);
+                                                                                            const statusInput = document.createElement('input');
+                                                                                            statusInput.type = 'hidden';
+                                                                                            statusInput.name = 'status';
+                                                                                            statusInput.value = '2';
+                                                                                            form.appendChild(statusInput);
+                                                                                            document.body.appendChild(form);
+                                                                                            form.submit();
+                                                                                        });
+                                                                                    });
 
-                const rejectButtons = document.querySelectorAll('.reject');
-                rejectButtons.forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const cvId = this.getAttribute('data-cv-id');
-                        const popup = document.getElementById('notePopup');
-                        const popupCvId = document.getElementById('popupCvId');
-                        popupCvId.value = cvId;
-                        popup.style.display = 'block';
-                    });
-                });
+                                                                                    const rejectButtons = document.querySelectorAll('.reject');
+                                                                                    rejectButtons.forEach(button => {
+                                                                                        button.addEventListener('click', function (event) {
+                                                                                            event.preventDefault();
+                                                                                            const cvId = this.getAttribute('data-cv-id');
+                                                                                            const popup = document.getElementById('notePopup');
+                                                                                            const popupCvId = document.getElementById('popupCvId');
+                                                                                            popupCvId.value = cvId;
+                                                                                            popup.style.display = 'block';
+                                                                                        });
+                                                                                    });
 
-                // Validate and submit the form
-                const noteForm = document.getElementById('noteForm');
-                noteForm.addEventListener('submit', function (event) {
-                    const popupNote = document.getElementById('popupNote');
-                    if (popupNote.value.trim() === "") {
-                        event.preventDefault();
-                        alert("Please enter a note.");
-                    }
-                });
-            });
+                                                                                    // Validate and submit the form
+                                                                                    const noteForm = document.getElementById('noteForm');
+                                                                                    noteForm.addEventListener('submit', function (event) {
+                                                                                        const popupNote = document.getElementById('popupNote');
+                                                                                        if (popupNote.value.trim() === "") {
+                                                                                            event.preventDefault();
+                                                                                            alert("Please enter a note.");
+                                                                                        }
+                                                                                    });
+                                                                                });
 
 
 

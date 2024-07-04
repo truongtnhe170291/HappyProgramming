@@ -118,10 +118,34 @@ public class SkillDAO {
 
     public static void main(String[] args) {
         SkillDAO sd = new SkillDAO();
-        for (Skill s : sd.getSkillByCVId(1)) {
-            System.out.println(s.getSkillName());
+        for (Skill s : sd.getSkillByMentorName("son")) {
+            System.out.println(s);
         }
     }
+    public List<Skill> getSkillByMentorName(String mentorName) {
+    String sql = "SELECT s.skill_id, s.skill_name " +
+                 "FROM CVSkills cs " +
+                 "JOIN Skills s ON cs.skill_id = s.skill_id " +
+                 "JOIN CV c ON cs.cv_id = c.cv_id " +
+                 "WHERE c.mentor_name = ?";
+    List<Skill> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Skill s = new Skill();
+            s.setSkillID(rs.getInt(1));
+            s.setSkillName(rs.getString(2));
+            list.add(s);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+    
 
     public List<Skill> getSkillByCVId(int cvId) {
         String sql = "SELECT cs.skill_id, s.skill_name from CVSkills cs join Skills s on cs.skill_id = s.skill_id WHERE cs.cv_id = ?";

@@ -36,9 +36,7 @@ public class ScheduleCommonMentorServlet extends HttpServlet {
             if (acc.getRoleId() == 2) {
                 ScheduleDAO dao = new ScheduleDAO();
                 List<ScheduleCommon> list = dao.getScheduleCommonByMentorName(acc.getUserName());
-                for(ScheduleCommon a : list){
-                    System.out.println(a.getSlotName());
-                }
+                
                 request.setAttribute("listSchedule", list);
                 request.getRequestDispatcher("Mentor_Mentee_calendar.jsp").forward(request, response);
             }
