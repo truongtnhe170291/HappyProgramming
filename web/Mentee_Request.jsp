@@ -456,6 +456,18 @@
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                 let currentAction = "editable";
+                 const ScheduleData_General = [
+        <c:forEach items="${requestScope.listSchedule_gereral}" var="schedules">{
+            week: null,
+            nameday: "${schedules.nameOfDay}",
+            slot: ${schedules.slotId.substring(5)},
+            class: "SWR302",
+            room: "BE-209",
+            status: "${schedules.status}",
+            day: "${schedules.dayOfSlot}",
+            time: "${schedules.slot_name}"
+        },</c:forEach>
+    ];
 const scheduleData = [
     <c:forEach items="${requestScope.listSchedule}" var="schedule">
         <c:set var="isSelected" value="false"/>
@@ -509,7 +521,11 @@ function getWeekNumber(date, startDate) {
 
 const start = '${start}';
 
-
+function checkConflict(day, slot) {
+    return ScheduleData_General.some(item => 
+        item.day === day && item.slot === slot 
+    );
+}
 scheduleData.forEach((item) => {
     console.log("Processing item:", item);
     item.week = getWeekNumber(item.day, start);
@@ -681,6 +697,18 @@ console.log("Items in week 2:", tmp);
             );
             if (filteredSchedule) {
                 if (filteredSchedule.status === "not-selected") {
+                    if(checkConflict(day, slot)){
+                        Toastify({
+                        text: `Lịch chung của bạn đã tồn tại slot `+filteredSchedule.slot+ ` ngày ` +filteredSchedule.day+ ` tuần ` + filteredSchedule.week +` rồi, vui lòng chọn slot khác!`,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#FF6347",
+                        stopOnFocus: true,
+                    }).showToast();
+            return;
+                    }
                     filteredSchedule.status = "selected";
                     this.textContent = getStatusText("selected");
                     this.classList.remove("not-selected");
