@@ -15,25 +15,15 @@
         <style>
 
             .schedule-container {
-                background-color: white;
+                background-color: #f5f5f5;
                 border-radius: 5px;
                 padding: 20px;
 
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
 
-            .header {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 20px;
-            }
             .items{
                 display: flex;
-            }
-            .select-container {
-                display: flex;
-                align-items: center;
-                margin-right: 20px;
             }
 
             label {
@@ -164,7 +154,11 @@
                 background-color: #ffa500;
                 color: white;
             }
-
+            .contents{
+                    width: max-content;
+    margin-right: 200px;
+    transform: translate(-230px, -150px);
+            }
             .edu-next {
                 background-color: #4682b4;
                 color: white;
@@ -212,7 +206,7 @@
                 background-color: #45a049;
             }
             .note-container {
-                background-color: #fff;
+                background-color: rgba(79, 89, 102, .08);
                 border-radius: 8px;
                 padding: 20px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -224,24 +218,7 @@
                 margin-top: 0;
                 margin-bottom: 15px;
             }
-            ul {
-                list-style-type: none;
-                padding-left: 0;
-                margin: 0;
-            }
-            li {
-                margin-bottom: 10px;
-                color: #666;
-                display: flex;
-                align-items: flex-start;
-                list-style: none !important;
-            }
-            li::before {
-                color: #666;
-                display: inline-block;
-                width: 1em;
-                margin-right: 0.5em;
-            }
+           
             .highlight {
                 margin: 0 4px;
                 color: #4a86e8;
@@ -308,7 +285,60 @@
             .span{
                 margin: 0px 5px;
             }
+.row {
+    margin: 0 auto !important;
+    max-width:  900px !important;
+    padding: 30px !important;
+}
 
+.note-container {
+    margin-bottom: 30px;
+        height: auto;
+    background-color: #ffffff !important;
+    border: 2px solid #007bff !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 30px !important;
+}
+
+.note-container h2 {
+    color: #007bff !important;
+    font-size: 28px !important;
+    margin-bottom: 20px !important;
+    border-bottom: 3px solid #5bc0de !important;
+    padding-bottom: 10px !important;
+    text-align: center !important;
+}
+
+.note-container ul {
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.note-container ul li {
+    padding: 15px 0 !important;
+    border-bottom: 2px solid #f1f1f1 !important;
+    font-size: 18px !important;
+    color: #333333 !important;
+}
+
+.note-container ul li:last-child {
+    border-bottom: none !important;
+}
+
+.note-container .highlight {
+    background-color: #a2c2e0 !important;
+    color: #ffffff !important;
+    padding: 4px 8px !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+.navbar-light{
+ transform: translateX(-250px);
+}
         </style>
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <!-- Template CSS -->
@@ -318,183 +348,118 @@
         <link rel="stylesheet" href="assetss/css/custom.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <jsp:include page="style/linkcss.jsp" />
     </head>
 
-    <body>
-        <div class="loader"></div>
-        <div id="app">
-            <div class="main-wrapper main-wrapper-1">
-                <jsp:include page="header_Manager.jsp" />
-                <div class="mobile-author-actions"></div>
-                <div class="main-content">
-                    <div class="contents">
-                        <div style="display: flex; justify-content: space-between; margin-top: 20px">
-                            <a href="HandleSlotMentor" id="newButton">Back</a>
-                        </div>  
-                        <div style="display: flex; justify-content: space-between">
-                            <h1 style="margin-top: 30px">Schedule Detail</h1>
-                            <h1 style="margin-top: 30px">Mentor: ${mentorName}</h1>
-                        </div>
-                        <div class="userDatatable userDatatable--ticket mt-1">
-                            <div class="table-responsive">
-                                <form id="scheduleForm">
-                                    <div class="schedule-container">
-                                        <div class="header">
-                                            <div class="items">
-                                                <div class="select-container">
-                                                    <label for="year">YEAR</label>
-                                                    <select id="year" >
-                                                        <option>2024</option>
-                                                    </select>
-                                                </div>
-                                                <div class="select-container">
-                                                    <label for="week">WEEK</label>
-                                                    <select id="week" ></select>
-                                                </div>
-                                            </div>
-                                            <div class="items">
-                                                <div class="select-container class-set-render">
-                                                    <div id="renderButton" >Render</div>
-                                                </div>
+<body class="layout-light side-menu">
+    <div class="mobile-search">
+        <form action="/" class="search-form">
+            <img src="img/svg/search.svg" alt="search" class="svg">
+            <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..."
+                   aria-label="Search">
+        </form>
+    </div>
+    <div class="mobile-author-actions"></div>
+    <jsp:include page="control_nav.jsp" />
 
-                                                <div class="select-container cusstom_h">
+    <main class="main-content">
 
-                                                    <c:if test="${status != ''}">
-                                                        <label for="year" class="d-flex">Status: <div class="st">${status}</div></label>
-                                                        </c:if>
-                                                        <c:if test="${status eq ''}">
-                                                        <label for="year">Status: Booking Schedule</label>
-                                                    </c:if>
-
-
-                                                </div>
+        <jsp:include page="sidebar.jsp" />
+        <div class="contents" style="width: 120%;max-width: 130%;">
+                        <div class="table-responsive">
+                            <form id="scheduleForm">
+                                <div class="schedule-container">
+                                   
+                                    <div style="display: flex; justify-content: center">
+                                        <h1 style="margin: 30px 0px">Request Detail</h1>
+                                    </div>
+                                    <div>
+                                            <div class="note-container">
+                                                <ul>
+                                                        <h4 style="line-height: 50px;">Title request: <span class="highlight">${requestDetail.title}</span></h4>
+    <li style="line-height: 50px;"><span class="highlight">This request is send for mentor: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.mentorName}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Deadline Date: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.deadlineDate}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Description: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.description}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Moneys: </span><span style="line-height: 50px;margin-top: 6px;" id="price">${requestDetail.price}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Request Skill: </span><span style="line-height: 50px;margin-top: 6px;">${skillName}</span></li>
+    <li style="line-height: 50px;"><span class="highlight">Note: </span><span style="line-height: 50px;margin-top: 6px;">${requestDetail.note}</span></li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <table id="scheduleTable" style="
-                                               pointer-events: none;
-                                               ">
-                                            <thead>
-                                                <tr id="dayHeaders"></tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                        <div class="note-container">
-                                            <h2>Note:</h2>
-                                            <ul>
-                                              <li><span class="highlight">Back button</span> to back to schedule list request </li>
-                                                    <c:forEach items="${requestScope.listSlot}" var="slot">
-                                                    <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
-                                                    </c:forEach>
-                                            </ul>
-                                        </div>  
-                                        <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                                    <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a></div>
+                                    <div class="header">
+                                        <div class="items">
+                                            <div class="select-container">
+                                                <label for="year">YEAR</label>
+                                                <select id="year" >
+                                                    <option>2024</option>
+                                                </select>
+                                            </div>
+                                            <div class="select-container">
+                                                <label for="week">WEEK</label>
+                                                <select id="week" ></select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="items">
+                                            <div class="select-container class-set-render">
+                                                <div id="renderButton" >Render</div>
+                                            </div>
 
+                                            <div class="select-container cusstom_h">
+
+                                                <c:if test="${status != ''}">
+                                                    <!--<label for="year" class="d-flex">Status: <div class="st">${status}</div></label>-->
+                                                </c:if>
+                                                <c:if test="${status eq ''}">
+                                                    <label for="year">Status: Booking Schedule</label>
+                                                </c:if>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table id="scheduleTable" style="
+                                           pointer-events: none;
+                                           ">
+                                        <thead>
+                                            <tr id="dayHeaders"></tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        
+                                        <div >
+                                            <div class="note-container">
+                                                <h2>Note:</h2>
+                                                <ul>
+                                                    <li><span class="highlight">Back button</span> to back to list request </li>
+                                                        <c:forEach items="${requestScope.listSlot}" var="slot">
+                                                        <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                 <div style="display: flex; justify-content: space-between; margin: 0 20px">
+                                        <a href="ListRequestMentor" id="newButton">Back</a>
+                                    </div> 
+                                    <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                                <a href="bookSchedule" hidden id="sendSelectedSlots">Send Schedule</a>
+                        
                         </div>
-                        </form>
-                    </div>
-                    <div class="settingSidebar">
-                        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-                        </a>
-                        <div class="settingSidebar-body ps-container ps-theme-default">
-                            <div class=" fade show active">
-                                <div class="setting-panel-header">Setting Panel
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Select Layout</h6>
-                                    <div class="selectgroup layout-color w-50">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                                            <span class="selectgroup-button">Light</span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                                            <span class="selectgroup-button">Dark</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                                    <div class="selectgroup selectgroup-pills sidebar-color">
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                                        </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                                            <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                                  data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <h6 class="font-medium m-b-10">Color Theme</h6>
-                                    <div class="theme-setting-options">
-                                        <ul class="choose-theme list-unstyled mb-0">
-                                            <li title="white" class="active">
-                                                <div class="white"></div>
-                                            </li>
-                                            <li title="cyan">
-                                                <div class="cyan"></div>
-                                            </li>
-                                            <li title="black">
-                                                <div class="black"></div>
-                                            </li>
-                                            <li title="purple">
-                                                <div class="purple"></div>
-                                            </li>
-                                            <li title="orange">
-                                                <div class="orange"></div>
-                                            </li>
-                                            <li title="green">
-                                                <div class="green"></div>
-                                            </li>
-                                            <li title="red">
-                                                <div class="red"></div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="mini_sidebar_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Mini Sidebar</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="p-15 border-bottom">
-                                    <div class="theme-setting-options">
-                                        <label class="m-b-0">
-                                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                                   id="sticky_header_setting">
-                                            <span class="custom-switch-indicator"></span>
-                                            <span class="control-label p-l-10">Sticky Header</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                                    <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                                        <i class="fas fa-undo"></i> Restore Default
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  </form>
         </div>
+                  
+              
+            </main>
+        
 
 
         <!-- General JS Scripts -->
         <script src="assetss/js/app.min.js"></script>
         <!-- JS Libraies -->
         <script src="assetss/bundles/apexcharts/apexcharts.min.js"></script>
-        <script src="assetss/bundles/amcharts4/core.js"></script>
         <script src="assetss/bundles/amcharts4/charts.js"></script>
         <script src="assetss/bundles/amcharts4/animated.js"></script>
         <script src="assetss/bundles/jquery.sparkline.min.js"></script>
@@ -504,9 +469,18 @@
         <script src="assetss/js/scripts.js"></script>
         <!-- Custom JS File -->
         <script src="assetss/js/custom.js"></script>
+         <script>function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('price').textContent = formatPrice(Number(document.getElementById('price').textContent)) + " VND";
+              
+        });
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const startTimeStr = '${requestScope.mon}';
+                const startTimeStr = '${startTime}';
                 const weeksData = {1: {}, 2: {}, 3: {}, 4: {}};
                 const saveButton = document.getElementById("saveSelectedSlots");
                 const sendButton = document.getElementById("sendSelectedSlots");
@@ -680,9 +654,9 @@
                     saveButton.disabled = isDisabled;
                     sendButton.disabled = isDisabled;
 
-                    if (isDisabled) {
-                        showToast("Please select at least 2 weeks of schedule.");
-                    }
+//                    if (isDisabled) {
+//                        showToast("Please select at least 2 weeks of schedule.");
+//                    }
                 }
 
                 function showToast(message) {

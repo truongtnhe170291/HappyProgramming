@@ -27,11 +27,7 @@
                             <li class="breadcrumb-item">
                                 <h4 class="page-title m-b-0">Dashboard</h4>
                             </li>
-                            <li class="breadcrumb-item">
-                                <a href="index.html">
-                                    <i class="fas fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            
                         </ul>
                         <div class="row">
                             <div class="col-lg-4 col-sm-6">
@@ -83,11 +79,11 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Assign Project List</h4>
+                                        <h4>History Transactions</h4>
                                         <div class="card-header-form">
                                             <form>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search">
+                                                    <input type="text" class="form-control" placeholder="Search remitter...">
                                                     <div class="input-group-btn">
                                                         <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                                     </div>

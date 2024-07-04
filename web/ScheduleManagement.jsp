@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>List Request Manager</title>
-    <link rel="stylesheet" href="assetss/css/app.min.css">
-    <link rel="stylesheet" href="assetss/css/style.css">
-    <link rel="stylesheet" href="assetss/css/components.css">
-    <link rel="stylesheet" href="assetss/css/custom.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+        <title>List Request Manager</title>
+        <link rel="stylesheet" href="assetss/css/app.min.css">
+        <link rel="stylesheet" href="assetss/css/style.css">
+        <link rel="stylesheet" href="assetss/css/components.css">
+        <link rel="stylesheet" href="assetss/css/custom.css">
 
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <style>
             .table {
                 margin-bottom: 0;
@@ -206,7 +206,7 @@
                 margin: 0 auto;
                 font-family: Arial, sans-serif;
             }
- .modal-content.radius-xl {
+            .modal-content.radius-xl {
                 border-radius: 15px;
                 padding: 20px;
                 background-color: #fff;
@@ -276,55 +276,55 @@
             .form-container td>div>div:nth-child(2) {
                 color: #28a745;
             }
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
+            .modal {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
 
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+            .modal-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-}
+            .modal-footer {
+                display: flex;
+                justify-content: flex-end;
+            }
 
-.btn-secondary, .btn-primary {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+            .btn-secondary, .btn-primary {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
 
-.btn-secondary {
-    background-color: #6c757d;
-    color: #fff;
-    margin-right: 10px;
-}
+            .btn-secondary {
+                background-color: #6c757d;
+                color: #fff;
+                margin-right: 10px;
+            }
 
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-}
+            .btn-primary {
+                background-color: #007bff;
+                color: #fff;
+            }
 
             .form-container td>div>div:nth-child(3) {
                 color: #6c757d;
@@ -389,313 +389,313 @@
             #rejectReasonModal{
                 z-index: 9999 !important;
             }
+            #rejectReason{
+                display: none;
+            }
+            .action-btn {
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .btn-group {
+                display: flex;
+                gap: 8px;
+            }
+            .btn-info, .btn-danger{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px !important;
+                max-width: 30px;
+                height: 30px !important;
+                max-height: 30px;
+                border-radius: 5px !important;
+            }
+            .V_o{
+                margin-right: 4px;
+            }
         </style>
-</head>
+    </head>
 
-<body>
-    <div class="loader"></div>
-    <div id="app">
-        <div class="main-wrapper main-wrapper-1">
-            <jsp:include page="header_Manager.jsp" />
-            <!-- Main Content -->
-            <div class="main-content">
-                <section class="section">
-                    <ul class="breadcrumb breadcrumb-style ">
-                        <li class="breadcrumb-item">
-                            <h4 class="page-title m-b-0">Homes</h4>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="Homes_manager.jsp">
-                                <i class="fas fa-home"></i></a>
-                        </li>
-                        <li class="breadcrumb-item">Schedule</li>
+    <body>
+        <div class="loader"></div>
+        <div id="app">
+            <div class="main-wrapper main-wrapper-1">
+                <jsp:include page="header_Manager.jsp" />
+                <!-- Main Content -->
+                <div class="main-content">
+                    <section class="section">
+                        <ul class="breadcrumb breadcrumb-style ">
+                            <li class="breadcrumb-item">
+                                <h4 class="page-title m-b-0">Homes</h4>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="Homes_manager.jsp">
+                                    <i class="fas fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item">Schedule</li>
 
-                    </ul>
-                    <div class="section-body">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>List Schedule Mentor</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- Form Search v� Filter -->
-                                        <form method="get" action="HandleSlotMentor" class="mb-3">
-                                            <div class="form-row">
+                        </ul>
+                        <div class="section-body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>List Schedule Mentor</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Form Search v� Filter -->
+                                            <form method="get" action="HandleSlotMentor" class="mb-3">
+                                                <div class="form-row">
+                                                    </tr>
+                                                    <div class="col-md-4">
+                                                        <label for="statusFilter">Filter by Status:</label>
+                                                        <select class="form-control" id="statusFilter" name="statusFilter">
+                                                            <option value="" ${empty param.statusFilter ? 'selected' : '' }>
+                                                                All</option>
+                                                                <c:forEach items="${statusList}" var="status">
+                                                                <option value="${status.statusId}"
+                                                                        ${param.statusFilter==status.statusId ? 'selected' : ''
+                                                                        }>
+                                                                    ${status.statusName}
+                                                                </option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="mentorName">Search by Mentor Name:</label>
+                                                        <input type="text" class="form-control" id="mentorName"
+                                                               name="mentorName" value="${param.mentorName}">
+                                                    </div>
+                                                    <div class="col-md-2 mt-4">
+                                                        <button type="submit" class="btn btn-primary">Search/Filter</button>
+                                                    </div>
+                                                </div>
+                                            </form>
 
-
-                                                                <td> 
-                                                                    <div class="btn-group">
-                                                                        <a href="ViewDetailSchedule?mentorName=${schedule.mentorName}"> <button class="btn btn-info btn-sm"> <i class="fas fa-eye"></i> </button> </a>
-                                                                        <form action="HandleSlotMentor" method="post">
-                                                                            <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
-                                                                            <c:if test="${not empty schedule.list}">
-                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
-                                                                            </c:if>
-                                                                            <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
-                                                                                <i class="fas fa-check"></i>
-                                                                            </button>
-                                                                        </form>
-
-                                                                    <div class="action-btn" style="margin-top:24px;margin-left: 7px;margin-right: 7px;">
-    <a href="#" class="btn-primary align-center centaxs" onclick="openRejectModal('${schedule.mentorName}${schedule.cycleId}')"
-       style="background-color: #fff; border: none;">
-        <i class="fas fa-times align-center" style="color: #000; width:10px;height:25px;line-height: 25px;"></i>
-    </a>
-    <form id="rejectForm${schedule.mentorName}${schedule.cycleId}" method="POST" action="reject" style="display:none;">
-        <input type="hidden" id="requestId${schedule.mentorName}${schedule.cycleId}" name="requestId" value="${request.requestId}" />
-        <textarea id="rejectReason${schedule.mentorName}${schedule.cycleId}" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
-    </form>
-</div>
-
+                                            <!-- Table to display schedule -->
+                                            <div class="table-responsive">
+                                                <table class="table mb-0 table-borderless">
+                                                    <thead>
+                                                        <tr class="userDatatable-header">
+                                                            <th><span class="userDatatable-title">User Name</span></th>
+                                                            <th><span class="userDatatable-title">Deadline</span></th>
+                                                            <th><span class="userDatatable-title">Status</span></th>
+                                                            <th><span class="userDatatable-title">Action</span></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="schedule" items="${list}">
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="userDatatable-content">
+                                                                        ${schedule.mentorName}</div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="userDatatable-content">${schedule.deadline}
                                                                     </div>
                                                                 </td>
-                                                            </tr>
-                                                <div class="col-md-4">
-                                                    <label for="statusFilter">Filter by Status:</label>
-                                                    <select class="form-control" id="statusFilter" name="statusFilter">
-                                                        <option value="" ${empty param.statusFilter ? 'selected' : '' }>
-                                                            All</option>
-                                                        <c:forEach items="${statusList}" var="status">
-                                                            <option value="${status.statusId}"
-                                                                ${param.statusFilter==status.statusId ? 'selected' : ''
-                                                                }>
-                                                                ${status.statusName}
-                                                            </option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="mentorName">Search by Mentor Name:</label>
-                                                    <input type="text" class="form-control" id="mentorName"
-                                                        name="mentorName" value="${param.mentorName}">
-                                                </div>
-                                                <div class="col-md-2 mt-4">
-                                                    <button type="submit" class="btn btn-primary">Search/Filter</button>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        <!-- Table to display schedule -->
-                                        <div class="table-responsive">
-                                            <table class="table mb-0 table-borderless">
-                                                <thead>
-                                                    <tr class="userDatatable-header">
-                                                        <th><span class="userDatatable-title">User Name</span></th>
-                                                        <th><span class="userDatatable-title">Deadline</span></th>
-                                                        <th><span class="userDatatable-title">Status</span></th>
-                                                        <th><span class="userDatatable-title">Action</span></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach var="schedule" items="${list}">
-                                                        <tr>
-                                                            <td>
-                                                                <div class="userDatatable-content">
-                                                                    ${schedule.mentorName}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="userDatatable-content">${schedule.deadline}
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="userDatatable-content">${schedule.status}
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="btn-group">
-                                                                    <a
-                                                                        href="ViewDetailSchedule?mentorName=${schedule.mentorName}">
-                                                                        <button class="btn btn-info btn-sm"> <i
-                                                                                class="fas fa-eye"></i> </button> </a>
-                                                                    <form action="HandleSlotMentor" method="post">
-                                                                        <input type="hidden" name="mentorName"
-                                                                            value="${schedule.mentorName}" />
-                                                                        <c:if test="${not empty schedule.list}">
-                                                                            <input type="hidden" name="cycleID"
-                                                                                value="${schedule.cycleId}" />
+                                                                <td>
+                                                                    <div class="userDatatable-content">${schedule.status}
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="btn-group d-flex align-items-center">
+                                                                        <a href="ViewDetailSchedule?mentorName=${schedule.mentorName}" class="btn btn-info btn-sm ">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </a>
+                                                                        <c:if test="${schedule.status == 'Pending'}">
+                                                                            <form action="HandleSlotMentor" method="post" class="V_o">
+                                                                                <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
+                                                                                <c:if test="${not empty schedule.list}">
+                                                                                    <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                                </c:if>
+                                                                                <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
+                                                                                    <i class="fas fa-check"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                            <a href="#" class="btn btn-danger" onclick="openRejectModal('')">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </a>
+                                                                            <form id="rejectForm" method="POST" action="HandleSlotMentor" style="display:none;">
+                                                                                <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
+                                                                                <input type="hidden" name="action" value="3" />
+                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
+                                                                                <textarea id="rejectReason" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
+                                                                            </form>
                                                                         </c:if>
-                                                                        <button type="submit" name="action" value="2"
-                                                                            class="btn btn-success btn-sm">
-                                                                            <i class="fas fa-check"></i>
-                                                                        </button>
-                                                                        <button type="button" name="action" value="3"
-                                                                            class="btn btn-danger btn-sm"
-                                                                            id="reject_${schedule.mentorName}"
-                                                                            data-cv-id="${schedule.mentorName}">
-                                                                            <i class="fas fa-times"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                                    </div>
 
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <c:if test="${currentPage > 1}">
+                                            <a
+                                                href="HandleSlotMentor?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Previous</a>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${totalPages}" var="i">
+                                            <c:choose>
+                                                <c:when test="${i == currentPage}">
+                                                    <span>${i}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a
+                                                        href="HandleSlotMentor?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}">${i}</a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                        <c:if test="${currentPage < totalPages}">
+                                            <a
+                                                href="HandleSlotMentor?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Next</a>
+                                        </c:if>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="modal" id="rejectReasonModal${schedule.mentorName}${schedule.cycleId}" style="display: none;">
+                                <div class="modal-content" style="width: 50%; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h5 class="modal-title">Enter reason why reject</h5>
+                                        <button type="button" onclick="closeRejectModal('${schedule.mentorName}${schedule.cycleId}')" style="background: none; border: none; font-size: 1.5rem;">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="modalRejectForm${schedule.mentorName}${schedule.cycleId}">
+                                            <textarea id="modalRejectReason${schedule.mentorName}${schedule.cycleId}" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+                                        <button type="button" onclick="closeRejectModal('${schedule.mentorName}${schedule.cycleId}')" class="btn-secondary">Close</button>
+                                        <button type="button" onclick="submitRejectForm('${schedule.mentorName}${schedule.cycleId}')" class="btn-primary">Reject</button>
                                     </div>
                                 </div>
-
-                                <div>
-                                    <c:if test="${currentPage > 1}">
-                                        <a
-                                            href="HandleSlotMentor?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Previous</a>
-                                    </c:if>
-                                    <c:forEach begin="1" end="${totalPages}" var="i">
-                                        <c:choose>
-                                            <c:when test="${i == currentPage}">
-                                                <span>${i}</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a
-                                                    href="HandleSlotMentor?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}">${i}</a>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                    <c:if test="${currentPage < totalPages}">
-                                        <a
-                                            href="HandleSlotMentor?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Next</a>
-                                    </c:if>
-                                </div>
-
                             </div>
-                        </div>
-
-                     <div class="modal" id="rejectReasonModal${schedule.mentorName}${schedule.cycleId}" style="display: none;">
-    <div class="modal-content" style="width: 50%; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <h5 class="modal-title">Enter reason why reject</h5>
-            <button type="button" onclick="closeRejectModal('${schedule.mentorName}${schedule.cycleId}')" style="background: none; border: none; font-size: 1.5rem;">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="modalRejectForm${schedule.mentorName}${schedule.cycleId}">
-                <textarea id="modalRejectReason${schedule.mentorName}${schedule.cycleId}" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
-            </form>
-        </div>
-        <div class="modal-footer" style="display: flex; justify-content: flex-end;">
-            <button type="button" onclick="closeRejectModal('${schedule.mentorName}${schedule.cycleId}')" class="btn-secondary">Close</button>
-            <button type="button" onclick="submitRejectForm('${schedule.mentorName}${schedule.cycleId}')" class="btn-primary">Reject</button>
-        </div>
-    </div>
-</div>
-                    <div class="settingSidebar">
-                        <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-                        </a>
-                        <div class="settingSidebar-body ps-container ps-theme-default">
-                            <div class=" fade show active">
-                                <div class="setting-panel-header">Setting Panel
-                                </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                                <div class="selectgroup selectgroup-pills sidebar-color">
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="icon-input" value="1"
-                                            class="selectgroup-input select-sidebar">
-                                        <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                            data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="icon-input" value="2"
-                                            class="selectgroup-input select-sidebar" checked>
-                                        <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                            data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <h6 class="font-medium m-b-10">Color Theme</h6>
-                                <div class="theme-setting-options">
-                                    <ul class="choose-theme list-unstyled mb-0">
-                                        <li title="white" class="active">
-                                            <div class="white"></div>
-                                        </li>
-                                        <li title="cyan">
-                                            <div class="cyan"></div>
-                                        </li>
-                                        <li title="black">
-                                            <div class="black"></div>
-                                        </li>
-                                        <li title="purple">
-                                            <div class="purple"></div>
-                                        </li>
-                                        <li title="orange">
-                                            <div class="orange"></div>
-                                        </li>
-                                        <li title="green">
-                                            <div class="green"></div>
-                                        </li>
-                                        <li title="red">
-                                            <div class="red"></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <div class="theme-setting-options">
-                                    <label class="m-b-0">
-                                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                            id="mini_sidebar_setting">
-                                        <span class="custom-switch-indicator"></span>
-                                        <span class="control-label p-l-10">Mini Sidebar</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="p-15 border-bottom">
-                                <div class="theme-setting-options">
-                                    <label class="m-b-0">
-                                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                                            id="sticky_header_setting">
-                                        <span class="custom-switch-indicator"></span>
-                                        <span class="control-label p-l-10">Sticky Header</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                                    <i class="fas fa-undo"></i> Restore Default
+                            <div class="settingSidebar">
+                                <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
                                 </a>
+                                <div class="settingSidebar-body ps-container ps-theme-default">
+                                    <div class=" fade show active">
+                                        <div class="setting-panel-header">Setting Panel
+                                        </div>
+                                    </div>
+                                    <div class="p-15 border-bottom">
+                                        <h6 class="font-medium m-b-10">Sidebar Color</h6>
+                                        <div class="selectgroup selectgroup-pills sidebar-color">
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="icon-input" value="1"
+                                                       class="selectgroup-input select-sidebar">
+                                                <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                                                      data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
+                                            </label>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="icon-input" value="2"
+                                                       class="selectgroup-input select-sidebar" checked>
+                                                <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
+                                                      data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="p-15 border-bottom">
+                                        <h6 class="font-medium m-b-10">Color Theme</h6>
+                                        <div class="theme-setting-options">
+                                            <ul class="choose-theme list-unstyled mb-0">
+                                                <li title="white" class="active">
+                                                    <div class="white"></div>
+                                                </li>
+                                                <li title="cyan">
+                                                    <div class="cyan"></div>
+                                                </li>
+                                                <li title="black">
+                                                    <div class="black"></div>
+                                                </li>
+                                                <li title="purple">
+                                                    <div class="purple"></div>
+                                                </li>
+                                                <li title="orange">
+                                                    <div class="orange"></div>
+                                                </li>
+                                                <li title="green">
+                                                    <div class="green"></div>
+                                                </li>
+                                                <li title="red">
+                                                    <div class="red"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="p-15 border-bottom">
+                                        <div class="theme-setting-options">
+                                            <label class="m-b-0">
+                                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                                                       id="mini_sidebar_setting">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="control-label p-l-10">Mini Sidebar</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="p-15 border-bottom">
+                                        <div class="theme-setting-options">
+                                            <label class="m-b-0">
+                                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
+                                                       id="sticky_header_setting">
+                                                <span class="custom-switch-indicator"></span>
+                                                <span class="control-label p-l-10">Sticky Header</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
+                                        <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
+                                            <i class="fas fa-undo"></i> Restore Default
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
-        </div>
-             
-        <script src="assetss/js/app.min.js"></script>
-        <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
-        <!-- JS Libraies -->
-        <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
-        <!-- Page Specific JS File -->
-        <script src="assetss/js/page/form-wizard.js"></script>
-        <!-- Template JS File -->   
-        <script src="assetss/js/scripts.js"></script>
-        <!-- Custom JS File -->
-        <script src="assetss/js/custom.js"></script>
-      <script>
-       function openRejectModal(mentorCycleId) {
-    document.getElementById(`rejectReasonModal${mentorCycleId}`).style.display = 'block';
-}
 
-function closeRejectModal(mentorCycleId) {
-    document.getElementById(`rejectReasonModal${mentorCycleId}`).style.display = 'none';
-}
+            <script src="assetss/js/app.min.js"></script>
+            <script src="assetss/bundles/jquery-validation/dist/jquery.validate.min.js"></script>
+            <!-- JS Libraies -->
+            <script src="assetss/bundles/jquery-steps/jquery.steps.min.js"></script>
+            <!-- Page Specific JS File -->
+            <script src="assetss/js/page/form-wizard.js"></script>
+            <!-- Template JS File -->   
+            <script src="assetss/js/scripts.js"></script>
+            <!-- Custom JS File -->
+            <script src="assetss/js/custom.js"></script>
+            <script>
+                                            function openRejectModal(mentorCycleId) {
+                                                document.getElementById(`rejectReasonModal${mentorCycleId}`).style.display = 'block';
+                                            }
 
-function submitRejectForm(mentorCycleId) {
-    const reasonInput = document.getElementById(`modalRejectReason${mentorCycleId}`);
-    const reason = reasonInput.value.trim();
-    if (reason.length === 0) {
-        alert('Please enter reason.');
-        return;
-    }
+                                            function closeRejectModal(mentorCycleId) {
+                                                document.getElementById(`rejectReasonModal${mentorCycleId}`).style.display = 'none';
+                                            }
 
-    document.getElementById(`rejectReason${mentorCycleId}`).value = reason;
-    document.getElementById(`rejectForm${mentorCycleId}`).submit();
-    closeRejectModal(mentorCycleId);
-}
+                                            function submitRejectForm(mentorCycleId) {
+                                                const reasonInput = document.getElementById(`modalRejectReason${mentorCycleId}`);
+                                                const reason = reasonInput.value.trim();
+                                                if (reason.length === 0) {
+                                                    alert('Please enter reason.');
+                                                    return;
+                                                }
 
-        </script>
+                                                document.getElementById(`rejectReason${mentorCycleId}`).value = reason;
+                                                document.getElementById(`rejectForm${mentorCycleId}`).submit();
+                                                closeRejectModal(mentorCycleId);
+                                            }
+
+            </script>
 
 
 

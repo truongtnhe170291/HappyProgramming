@@ -465,8 +465,8 @@ public class MentorDAO {
 
             while (rs.next()) {
                 c = new Cycle(
-                        rs.getString(2), 
-                        rs.getString(3), 
+                        rs.getString(2),
+                        rs.getString(3),
                         rs.getString(5));
             }
         } catch (Exception e) {
@@ -474,10 +474,29 @@ public class MentorDAO {
         }
         return c;
     }
-    
-    public static void main(String[] args) {
-        MentorDAO dao = new MentorDAO();
-        System.out.println(dao.getNewCycleByUser("son"));
+
+    public Cycle getCycleByCycleID(int cycleId) {
+        Cycle c = new Cycle();
+        try {
+            String query = "select * from Cycle c where c.cycle_id = ?";
+            con = new DBContext().connection;// mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setInt(1, cycleId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                c.setCycleId(cycleId);
+                c.setStart(rs.getString("start_time"));
+                c.setEnd(rs.getString("end_time"));
+                c.setNote(rs.getString("note"));
+                c.setName(rs.getString("mentor_name"));
+                c.setName(rs.getString("deadline_date"));
+                return c;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     public void deleteCycle(int cycleId) {

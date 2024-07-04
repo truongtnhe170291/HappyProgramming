@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import models.AttendanceRecord;
 
 import models.ScheduleDTO;
 import models.ScheduleCommon;
@@ -398,7 +399,10 @@ public class ScheduleDAO {
 
     public static void main(String[] args) {
         ScheduleDAO dao = new ScheduleDAO();
-        dao.rejectRequestNew(23, "ádfjkahkfsj");
+        List<ScheduleCommon> lisr = dao.getScheduleCommonByMentorName("UserA");
+        for(ScheduleCommon s : lisr){
+            System.out.println(s);
+        }
     }
 
     public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
@@ -535,24 +539,42 @@ public class ScheduleDAO {
         return list;
     }
 
-    public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
+     public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {
         List<ScheduleCommon> list = new ArrayList<>();
         try {
-            String sql = "SELECT ss.mentor_name, a.full_name, s.skill_name, s.description, ss.day_of_slot, sl.slot_id, sl.slot_name \n"
-                    + "FROM RequestsFormMentee r \n"
-                    + "join Accounts a on a.user_name = r.mentee_name\n"
-                    + "join RequestSkills rs on r.request_id = rs.request_id \n"
-                    + "join Skills s on s.skill_id = rs.skill_id \n"
-                    + "join RquestSelectedSlot rss on rss.request_id = rs.request_id\n"
-                    + "join Selected_Slot ss on rss.selected_id = ss.selected_id\n"
-                    + "join Slots sl on sl.slot_id = ss.slot_id\n"
-                    + "where r.status_id = 1 and ss.mentor_name = ?";
+            String sql = "SELECT \n" +
+"    r.mentor_name, \n" +
+"    a.full_name, \n" +
+"    s.skill_name, \n" +
+"    s.description, \n" +
+"    ss.day_of_slot, \n" +
+"    sl.slot_id, \n" +
+"    sl.slot_name, \n" +
+"    att.attendance_status \n" +
+"FROM \n" +
+"    RequestsFormMentee r \n" +
+"JOIN \n" +
+"    Accounts a on a.user_name = r.mentee_name\n" +
+"JOIN \n" +
+"    RequestSkills rs on r.request_id = rs.request_id \n" +
+"JOIN \n" +
+"    Skills s on s.skill_id = rs.skill_id \n" +
+"JOIN \n" +
+"    RquestSelectedSlot rss on rss.request_id = rs.request_id\n" +
+"JOIN \n" +
+"    Selected_Slot ss on rss.selected_id = ss.selected_id\n" +
+"JOIN \n" +
+"    Slots sl on sl.slot_id = ss.slot_id\n" +
+"LEFT JOIN \n" +
+"    Attendance att on att.mentee_name = r.mentee_name AND att.request_id = r.request_id\n" +
+"WHERE  \n" +
+"    r.mentor_name = ?;";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ScheduleCommon sc = new ScheduleCommon(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getString(6), rs.getString(7));
+                ScheduleCommon sc = new ScheduleCommon(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getString(6), rs.getString(7),rs.getString(8));
                 list.add(sc);
             }
         } catch (SQLException e) {
@@ -618,5 +640,50 @@ public class ScheduleDAO {
         }
         return true;
         
+    }
+    
+    public boolean updateAttendance(AttendanceRecord record) {
+        String sql = "UPDATE Attendance SET attendance_status = ? " +
+                     "WHERE mentee_name = ? AND selected_id = ? AND request_id = ?";
+        
+        try (
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            
+            pstmt.setString(1, record.getAttendanceStatus());
+            pstmt.setString(2, record.getMenteeName());
+            pstmt.setInt(3, record.getSelectedId());
+            pstmt.setInt(4, record.getRequestId());
+            
+            int affectedRows = pstmt.executeUpdate();
+            
+            if (affectedRows == 0) {
+                return insertNewAttendance(record);
+            }
+            
+            return true;
+        } catch (SQLException e) {
+            System.out.println("updateAttendance: "+e.getMessage());
+            return false;
+        }
+    }
+    
+    private boolean insertNewAttendance(AttendanceRecord record) {
+        String sql = "INSERT INTO Attendance (request_id, selected_id, mentee_name, attendance_status, attendance_date) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, record.getRequestId());
+            pstmt.setInt(2, record.getSelectedId());
+            pstmt.setString(3, record.getMenteeName());
+            pstmt.setString(4, record.getAttendanceStatus());
+            pstmt.setTimestamp(5, new java.sql.Timestamp(record.getAttendanceDate().getTime()));
+            
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println("insertNewAttendance: "+e.getMessage());
+            return false;
+        }
     }
 }

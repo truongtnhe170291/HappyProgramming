@@ -126,8 +126,8 @@ CREATE TABLE Cycle(
 	end_time DATE,
 	note NVARCHAR(1000),
 	mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-	deadline_date DATE
-	UNIQUE(start_time, end_time, mentor_name)
+	deadline_date DATE,
+	unique(start_time, end_time,mentor_name)
 );
 GO
 

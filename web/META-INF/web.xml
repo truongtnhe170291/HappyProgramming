@@ -8,6 +8,10 @@
         <servlet-name>TopSkill</servlet-name>
         <servlet-class>controller.common.TopSkill</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManagerBlog</servlet-name>
+        <servlet-class>controller.manager.ManagerBlog</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SkillDetail</servlet-name>
         <url-pattern>/SkillDetail</url-pattern>

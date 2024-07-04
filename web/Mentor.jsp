@@ -520,6 +520,11 @@ th {
     width: 100%;
 display: contents;
 }
+.img-circle .styled{
+    width:  50px;
+    height: 50px;
+    background-size: contain;
+}
         </style>
     </head>
 
@@ -539,7 +544,7 @@ display: contents;
     <aside class="col-md-4">
         <div class="box_style_1 profile">
             <p class="text-center">
-                <img src="./img/${mentor.avatar}" alt="Teacher" class="img-circle styled">
+                <img src="./img/${mentor.avatar}" alt="Teacher" class="img-circle styled" style="width:100px;">
             </p>
             <ul>
                 <li>Name <strong class="pull-right">

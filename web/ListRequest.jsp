@@ -465,30 +465,30 @@
                 display: inline-block;
                 margin-right: 10px;
             }
-             .pagination {
-            display: flex;
-            list-style: none;
-            padding: 0;
-        }
-        .pagination li {
-            margin: 0 5px;
-        }
-        .pagination a, .pagination span {
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-            color: #007bff;
-            display: block;
-        }
-        .pagination a:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .pagination span {
-            background-color: #007bff;
-            color: #fff;
-            border-color: #007bff;
-        }
+            .pagination {
+                display: flex;
+                list-style: none;
+                padding: 0;
+            }
+            .pagination li {
+                margin: 0 5px;
+            }
+            .pagination a, .pagination span {
+                text-decoration: none;
+                padding: 5px 10px;
+                border: 1px solid #ddd;
+                color: #007bff;
+                display: block;
+            }
+            .pagination a:hover {
+                background-color: #007bff;
+                color: #fff;
+            }
+            .pagination span {
+                background-color: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
         </style>
     </head>
 
@@ -562,9 +562,14 @@
                                         <!-- View button -->
                                         <input type="hidden" name="requestId" value="${request.requestId}" />
                                         <div class="action-btn">
-                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
+<!--                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
+                                                <i class="uil uil-eye align-center" style="color: blue;"></i>
+                                            </a>-->
+
+                                            <a href="ViewDetailRequest?requestId=${request.requestId}" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>
+
                                             <div class="modal fade ticket_modal custom_modal" id="${request.menteeName}${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
                                                     <div class="modal-content radius-xl">
@@ -676,14 +681,7 @@
                                                 </form>
                                             </c:if>
 
-                                            <c:if test="${request.status.statusId == 3}">
-                                                <form method="GET" action="request" ">
-                                                    <input type="hidden" name="cvId" value="${request.cvId}" />
-                                                    <button type="submit" class="edit-btn btn " style="width: 59.5px; height: 41px;border-radius: 0.42rem;" ">
-                                                        <i class="fas fa-pencil-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </c:if>
+                                            
 
                                             <!-- Payment button for 'Wait For Payment' status -->
                                             <c:if test="${request.status.statusName == 'Wait For Payment'}">
@@ -705,34 +703,34 @@
                             </c:forEach>
                         </tbody>
                     </table>
-                     <div>
-        <c:if test="${totalPages > 1}">
-            <ul class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <li>
-                        <a href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
-                    </li>
-                </c:if>
-                <c:forEach begin="1" end="${totalPages}" var="i">
-                    <c:choose>
-                        <c:when test="${i == currentPage}">
-                            <li><span>${i}</span></li>
-                        </c:when>
-                        <c:otherwise>
-                            <li>
-                                <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
-                            </li>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-                <c:if test="${currentPage < totalPages}">
-                    <li>
-                        <a href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
-                    </li>
-                </c:if>
-            </ul>
-        </c:if>
-    </div>
+                    <div style="display: flex; justify-content: end; margin: 10px 0">
+                        <c:if test="${totalPages > 1}">
+                            <ul class="pagination">
+                                <c:if test="${currentPage > 1}">
+                                    <li>
+                                        <a href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
+                                    </li>
+                                </c:if>
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li><span>${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                            <li>
+                                                <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:if test="${currentPage < totalPages}">
+                                    <li>
+                                        <a href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <script>

@@ -26,7 +26,7 @@
 
             .header {
                 display: flex;
-                    justify-content: space-between;
+                justify-content: space-between;
                 margin-bottom: 20px;
             }
             .items{
@@ -226,24 +226,8 @@
                 margin-top: 0;
                 margin-bottom: 15px;
             }
-            ul {
-                list-style-type: none;
-                padding-left: 0;
-                margin: 0;
-            }
-            li {
-                margin-bottom: 10px;
-                color: #666;
-                display: flex;
-                align-items: flex-start;
-            }
-            li::before {
-                content: "•";
-                color: #666;
-                display: inline-block;
-                width: 1em;
-                margin-right: 0.5em;
-            }
+           
+          
             .highlight {
                 color: #4a86e8;
                 font-weight: bold;
@@ -251,72 +235,86 @@
             .sendSelectedSlots{
                 transform: translate(30%,30%);
             }
-          #renderButton {
-            background-color: #ADD8E6;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+            #renderButton {
+                background-color: #ADD8E6;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
 
-        #renderButton:hover {
-            background-color: #87CEEB;
-            color: #ffffff; 
-        }
-        .poiter{
-            pointer-events: none;
-        }
-        #sendSelectedSlots{
-        margin-top: 10px;
-        margin-right: 10px;
-    float: right;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+            #renderButton:hover {
+                background-color: #87CEEB;
+                color: #ffffff;
+            }
+            .poiter{
+                pointer-events: none;
+            }
+            #sendSelectedSlots{
+                margin-top: 10px;
+                margin-right: 10px;
+                float: right;
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition-duration: 0.4s;
+            }
+            .add-icon, .delete-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background-color: #d0f0c0;
+                color: green;
+                font-size: 16px;
+                margin-top: 8px;
+            }
+
+            .delete-icon {
+                background-color: #f8d7da;
+                color: red;
+            }
+
+            .add-icon:hover, .delete-icon:hover {
+                background-color: #c8e6c9;
+            }
+
+            .delete-icon:hover {
+                background-color: #f5c6cb;
+            }
+
+
+.select-container.custom_popup {
+    margin-top: 10px;
     cursor: pointer;
-    border: none;
+    width: auto;
+    height: 40px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    transition-duration: 0.4s;}
-        .add-icon, .delete-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #d0f0c0; 
-    color: green; 
-    font-size: 16px; 
-    margin-top: 8px; 
-}
-
-.delete-icon {
-    background-color: #f8d7da; 
-    color: red;
-}
-
-.add-icon:hover, .delete-icon:hover {
-    background-color: #c8e6c9; 
-}
-
-.delete-icon:hover {
-    background-color: #f5c6cb; 
+    display: inline-block;
 }
 
         </style>
-         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     </head>
 
     <body class="layout-light side-menu">
@@ -333,41 +331,47 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <h1>List of Requests</h1>
+                <h1 style="padding: 30px 0px">List of Requests</h1>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <form id="scheduleForm">
                             <div class="schedule-container">
                                 <div class="header">
-                            <div class="items">
-                                    <div class="select-container">
-                                        <label for="year">YEAR</label>
-                                        <select id="year" >
-                                            <option>2024</option>
-                                        </select>
-                                    </div>
-                                    <div class="select-container">
-                                        <label for="week">WEEK</label>
-                                        <select id="week" ></select>
-                                    </div>
-                                </div>
                                     <div class="items">
-                                <div class="select-container class-set-render">
-                                        <div id="renderButton" >Render</div>
-                                    </div>
-                                    
-                                    <div class="select-container cusstom_h">
-
-                                        <c:if test="${status != ''}">
-                                            <label for="year" class="d-flex">Status: <div>${status}</div></label>
-                                        </c:if>
-                                        <c:if test="${status eq ''}">
-                                            <label class="st">Status: Booking Schedule</label>
-                                        </c:if>
-
-
-                                    </div>
+                                        <div class="select-container">
+                                            <label for="year">YEAR</label>
+                                            <select id="year" >
+                                                <option>2024</option>
+                                            </select>
+                                            
                                         </div>
+                                         
+                                        <div class="select-container">
+                                            <label for="week">WEEK</label>
+                                            <select id="week" ></select>
+                                        </div>
+                                        <div class="select-container custom_popup" id="rejmodal" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    <label >Reason for rejection</label>
+                                </div>
+
+                                    </div>
+                                    <div class="items">
+                                        <div class="select-container class-set-render">
+                                            <div id="renderButton" >Render</div>
+                                        </div>
+
+                                        <div class="select-container cusstom_h">
+
+                                            <c:if test="${status != ''}">
+                                                <label for="year" class="d-flex">Status: <div>${status}</div></label>
+                                            </c:if>
+                                            <c:if test="${status eq ''}">
+                                                <label class="st">Status: Booking Schedule</label>
+                                            </c:if>
+
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <table id="scheduleTable">
                                     <thead>
@@ -379,12 +383,12 @@
                                 <div class="note-container">
                                     <h2>Note:</h2>
                                     <ul>
-                                        <li>Your selection of week will select for <span class="highlight">hole month</span></li>
-                                        <li>You cannot booking a schedule on <span class="highlight">Saturday</span> and <span class="highlight">Sunday</span></li>
-                                        <li>You can <span class="highlight"> Update </span> your schedule when status is <span class="highlight">Pending</span></li>
-                                        <li class="highlights"><span class="highlight">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight"> first week</span></li>
+                                        <li>Your selection of week will select for <span class="highlight" style="margin: 0px 5px;">hole month</span></li>
+                                        <li>You cannot booking a schedule on <span class="highlight" style=" margin: 0px 5px; ">Saturday</span> and <span class="highlight" style=" margin: 0px 5px; ">Sunday</span></li>
+                                        <li>You can <span class="highlight" style="margin: 0px 5px; "> Update </span> your schedule when status is <span class="highlight" style=" margin: 0px 5px;">Pending</span></li>
+                                        <li class="highlights"><span class="highlight" style=" margin: 0px 5px;">Render</span> button will automatically insert the weeks of the month same as the <span class="highlight" style="margin: 0px 5px;"> first week</span></li>
                                             <c:forEach items="${requestScope.listSlot}" var="slot">
-                                            <li><span class="highlight">${slot.slot_id}: </span> ${slot.slot_name}</li>
+                                            <li><span class="highlight" style="margin: 0px 5px;">${slot.slot_id}: </span> ${slot.slot_name}</li>
                                             </c:forEach>
                                     </ul>
                                 </div>  
@@ -392,16 +396,16 @@
 
                                 <c:if test="${status eq 'Saved' || status eq ''}">
                                     <a href="bookSchedule" id="saveSelectedSlots">Save Selected Slots</a>
-                                 </c:if>
-                                        <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
-                    <a href="bookSchedule" id="sendSelectedSlots">Submit Schedule</a></div>
-                                </div>
-                              
-                        
+                                </c:if>
+                                <a href="bookSchedule" hidden  id="saveSelectedSlots">Save Selected Slots</a></div>
+                            <a href="bookSchedule" id="sendSelectedSlots">Submit Schedule</a></div>
+                </div>
+
+
 
                 </form>
 
-                
+
 
 
             </div>
@@ -410,15 +414,38 @@
     </div>
 
 </main>
+                               <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reason for Rejection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <h3 style="padding: 30px 0px">${sessionScope.reject}</h3>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    
     document.addEventListener("DOMContentLoaded", function () {
         const startTimeStr = '${requestScope.mon}';
         const weeksData = {1: {}, 2: {}, 3: {}, 4: {}};
         const saveButton = document.getElementById("saveSelectedSlots");
         const sendButton = document.getElementById("sendSelectedSlots");
-const tatussss = '${status}';
-
-
+        const tatussss = '${status}';
+if( tatussss !== 'Reject' ){
+    document.getElementById('rejmodal').style.display = 'none';
+}else{
+     document.getElementById('rejmodal').style.display = 'block';
+}
+let disableButtonStatusUpdate = false;
 
         function formatDate(date) {
             return (
@@ -472,15 +499,15 @@ const tatussss = '${status}';
             weekSelect.appendChild(optionElement);
         });
 
- function showToastMessage(message) {
-                Toastify({
+        function showToastMessage(message) {
+            Toastify({
                 text: message,
-                        duration: 5000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                }).showToast();
-                }
+                duration: 5000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#ff7b5a",
+            }).showToast();
+        }
 
         function selectWeekID(dayOfSlot, startTimeStr) {
             let slotDate, startDate;
@@ -562,6 +589,7 @@ const tatussss = '${status}';
         }
 
         function updateButtonStatus() {
+            if (disableButtonStatusUpdate) return;
             const nonEmptyWeeks = Object.values(weeksData).filter(week => Object.keys(week).length > 0).length;
             const isDisabled = nonEmptyWeeks < 2;
             saveButton.disabled = isDisabled;
@@ -683,47 +711,27 @@ const tatussss = '${status}';
 
         function createSlotListener(cell, item, week, slotKey) {
             function updateSlotStatus() {
-               if (cell.classList.contains("selected")) {
+                if (cell.classList.contains("selected")) {
                     cell.innerHTML =
-                        '<div class="class-block selected">' +
-                        "<div>" + item.class + "</div>" +
-                        '<div class="view-materials">View Materials</div>' +
-                        '<div class="edu-next">EduNext</div>' +
-                        "<div>at " + item.room + "</div>" +
-                        '<div class="selected-text">(selected)</div>' +
-                        '<div class="time">' + item.time + "</div>" +  
-                        '<div class="slot_active">Selected</div>' +
-                        "</div>" +
-                        
-                '<div class="delete-icon"><i class="fas fa-trash-alt"></i></div>' ;
+                            '<div class="class-block selected">' +
+                            "<div>" + item.class + "</div>" +
+                            '<div class="view-materials">View Materials</div>' +
+                            '<div class="edu-next">EduNext</div>' +
+                            "<div>at " + item.room + "</div>" +
+                            '<div class="selected-text">(selected)</div>' +
+                            '<div class="time">' + item.time + "</div>" +
+                            '<div class="slot_active">Selected</div>' +
+                            "</div>" +
+                            '<div class="delete-icon"><i class="fas fa-trash-alt"></i></div>';
                     weeksData[week][slotKey] = item;
                 } else {
-                    cell.innerHTML = 
-                        '<div class="slot-label">Not Selected</div>' +
-                        '<div class="add-icon" style="color: green;"><i class="fas fa-plus"></i></div>';
+                    cell.innerHTML =
+                            '<div class="slot-label">Not Selected</div>' +
+                            '<div class="add-icon" style="color: green;"><i class="fas fa-plus"></i></div>';
                     delete weeksData[week][slotKey];
                 }
 
             }
-if(tatussss === 'Pending' || tatussss === 'Approved'){
-        document.querySelectorAll('.delete-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-            console.log(element);
-        });
-        document.querySelectorAll('.add-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-        });
-        document.getElementById('scheduleTable').classList.add('poiter');
-       document.getElementById("renderButton").classList.add('poiter');
-        saveButton.classList.add('poiter');
-        sendButton.classList.add('poiter');
-    }else{
-        document.getElementById("renderButton").classList.remove('poiter');
-                document.getElementById('scheduleTable').classList.remove('poiter');
-
-     saveButton.classList.remove('poiter');
-    sendButton.classList.remove('poiter');
-}
             function toggleSlot() {
                 cell.classList.toggle("selected");
                 updateSlotStatus(cell, item, week, slotKey);
@@ -768,6 +776,9 @@ if(tatussss === 'Pending' || tatussss === 'Approved'){
                     .then(data => {
                         console.log("Response from server:", data);
                         showToast("Selected slots " + (status === 'save' ? 'saved' : 'sent') + " successfully!");
+                         if(status === 'send'){
+                              window.location.href = 'bookSchedule';}
+                         
                     })
                     .catch(error => {
                         console.error("Failed to " + status + " selected slots:", error);
@@ -780,27 +791,65 @@ if(tatussss === 'Pending' || tatussss === 'Approved'){
 
         updateSchedule();
         weekSelect.addEventListener("change", updateSchedule);
+if (tatussss === 'Pending' || tatussss === 'Approved') {
+    function hideIcons() {
+        document.querySelectorAll('.delete-icon, .add-icon').forEach((element) => {
+            element.style.display = 'none';
+        });
+    }
 
+    hideIcons();
+
+    weekSelect.addEventListener("change", hideIcons);
+
+    document.getElementById("renderButton").addEventListener("click", () => {
+        setTimeout(hideIcons, 0);
+    });
+
+ document.querySelectorAll('#scheduleTable').forEach(ele =>ele.classList.add('poiter'));    document.getElementById("renderButton").classList.add('poiter');
+    saveButton.classList.add('poiter');
+    sendButton.classList.add('poiter');
+} else {
+    document.getElementById("renderButton").classList.remove('poiter');
+ document.querySelectorAll('#scheduleTable').forEach(ele =>ele.classList.remove('poiter'));   
+ saveButton.classList.remove('poiter');
+    sendButton.classList.remove('poiter');
+}
+var noBook = "${noBook}";
+    if (noBook && noBook !== "null" && noBook !== "") {
+        disableButtonStatusUpdate = true;
+            document.getElementById("renderButton").style.display = 'none';
+    document.querySelectorAll('#scheduleTable').forEach(ele =>ele.classList.add('poiter'));
+
+        function hideIcons() {
+        document.querySelectorAll('.delete-icon, .add-icon').forEach((element) => {
+            element.style.display = 'none';
+        });
+    }
+
+    hideIcons();
+
+    weekSelect.addEventListener("change", hideIcons);
+
+    document.getElementById("renderButton").addEventListener("click", () => {
+        setTimeout(hideIcons, 0);
+    });
+        saveButton.style.display = 'none';
+    sendButton.style.display = 'none';
+        document.querySelector('.st').textContent = 'Status: No Book';
+        showToast(noBook);
+    }
         saveButton.addEventListener("click", (event) => {sendSelectedSlots(event, 'save');
         
    document.querySelector('.st').textContent = 'Status: Saved';
     });
-        sendButton.addEventListener("click", (event) =>{ sendSelectedSlots(event, 'send');
-               document.querySelectorAll('.delete-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-            console.log(element);
-        });
-        document.querySelectorAll('.add-icon').forEach((element)=>{
-            element.style.display = 'none'; 
-        });
-        document.getElementById('scheduleTable').classList.add('poiter');
-       document.getElementById("renderButton").classList.add('poiter');
-        sendButton.classList.add('poiter');
-     document.querySelector('.st').textContent = 'Status: Pending';
-     saveButton.style.display = 'none';
+       sendButton.addEventListener("click", async (event) => {
+         sendSelectedSlots(event, 'send');
     
-    });
-console.log(document.querySelector('.st').textContent);
+            document.querySelector('.st').textContent = 'Status: Pending';
+      
+});
+ console.log('test' + disableButtonStatusUpdate);
 });
     
 </script>

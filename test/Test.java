@@ -1,6 +1,6 @@
 
 import dal.MentorDAO;
-import dal.ScheduleDAO;
+import dal.RequestDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import models.Request;
+import models.RequestDTO;
 import models.SchedulePublic;
 
 /*
@@ -23,23 +23,28 @@ import models.SchedulePublic;
 public class Test {
 
     public static void main(String[] args) {
-        List<Request> list = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
-            Request r = new Request();
-            r.setRequestId(i);
-            list.add(r);
+        MentorDAO mentorDao = new MentorDAO();
+        RequestDAO dao = new RequestDAO();
+
+        System.out.println("Request List");
+        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "1");
+        for (RequestDTO request : requests) {
+            System.out.println(request);
         }
-        Request r = new Request();
-        r.setRequestId(3);
-        list.add(r);
-        for (Request ru : list) {
-            System.out.println(ru.getRequestId());
+
+        System.out.println("--------------------------------------------------------");
+
+//        System.out.println("SchedulePublic List");
+//        ArrayList<SchedulePublic> listSchedulePublic = mentorDao.listSlotsCycleByMentor("son", "2024-07-08", "2024-08-04");
+//        for (SchedulePublic schedulePublic : listSchedulePublic) {
+//            System.out.println(schedulePublic);
+//        }
+
+        Request requ = dao.getRequestByStatusSaved("hieu", "son");
+        for (RequestDTO request : requests) {
+            System.out.println(request);
         }
-        System.out.println("beak");
-        Set<Request> li = new HashSet<>(list);
-        for (Request rur : li) {
-            System.out.println(rur.getRequestId());
-        }
+
     }
 
     private static String convertDateFormat(String date) {

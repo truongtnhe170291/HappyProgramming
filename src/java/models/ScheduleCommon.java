@@ -16,8 +16,9 @@ public class ScheduleCommon {
     private Date dayOfSlot;
     private String slotId;
     private String slotName;
+    private String attendanceStatus;
 
-    public ScheduleCommon(String userName, String fullName, String skillName, String description, Date dayOfSlot, String slotId, String slotName) {
+    public ScheduleCommon(String userName, String fullName, String skillName, String description, Date dayOfSlot, String slotId, String slotName,String attendanceStatus) {
         this.userName = userName;
         this.fullName = fullName;
         this.skillName = skillName;
@@ -25,6 +26,7 @@ public class ScheduleCommon {
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
         this.slotName = slotName;
+        this.attendanceStatus = attendanceStatus;
     }
 
     public String getUserName() {
@@ -79,9 +81,29 @@ public class ScheduleCommon {
         return slotName;
     }
 
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
+
+    public void setAttendanceStatus(String attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
+    }
+
     public void setSlotName(String slotName) {
         this.slotName = slotName;
     }
     
-    
+    @Override
+public String toString() {
+    return "ScheduleCommon{" +
+            "userName='" + userName + '\'' +
+            ", fullName='" + fullName + '\'' +
+            ", skillName='" + skillName + '\'' +
+            ", dayOfSlot=" + dayOfSlot +
+            ", slotId='" + slotId + '\'' +
+            ", slotName='" + slotName + '\'' +
+            "attendanceStatus='" +attendanceStatus+
+            '}';
+}
+
 }

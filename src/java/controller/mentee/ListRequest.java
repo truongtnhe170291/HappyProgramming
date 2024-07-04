@@ -80,7 +80,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         // Lấy thông tin phân trang
         int page = 1;
-        int pageSize = 2;
+        int pageSize = 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
