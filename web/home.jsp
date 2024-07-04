@@ -156,74 +156,74 @@
             .order-bg-opacity-primary {
                 background-color: rgba(0, 123, 255, 0.1);
             }
-              .feedback-table-wrap {
-        padding: 15px;
-    }
+            .feedback-table-wrap {
+                padding: 15px;
+            }
 
-    .feedback-img {
-        display: flex;
-        align-items: center;
-    }
+            .feedback-img {
+                display: flex;
+                align-items: center;
+            }
 
-    .feedback-img-wrapper {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        border-radius: 50%;
-        overflow: hidden;
-    }
+            .feedback-img-wrapper {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+                border-radius: 50%;
+                overflow: hidden;
+            }
 
-    .feedback-img-wrapper img {
-        width: 100%;
-        height: auto;
-    }
+            .feedback-img-wrapper img {
+                width: 100%;
+                height: auto;
+            }
 
-    .table--default {
-        width: 100%;
-        margin-bottom: 1rem;
-        color: #212529;
-        border-collapse: collapse;
-    }
+            .table--default {
+                width: 100%;
+                margin-bottom: 1rem;
+                color: #212529;
+                border-collapse: collapse;
+            }
 
-    .table-borderless th,
-    .table-borderless td {
-        border: none;
-        padding: 10px;
-    }
+            .table-borderless th,
+            .table-borderless td {
+                border: none;
+                padding: 10px;
+            }
 
-    .table th {
-        text-align: left;
-        background-color: #f8f9fa;
-        font-weight: 600;
-    }
+            .table th {
+                text-align: left;
+                background-color: #f8f9fa;
+                font-weight: 600;
+            }
 
-    .table td {
-        vertical-align: middle;
-    }
+            .table td {
+                vertical-align: middle;
+            }
 
-    .order-bg-opacity-primary {
-        background-color: rgba(0, 123, 255, 0.1);
-    }
+            .order-bg-opacity-primary {
+                background-color: rgba(0, 123, 255, 0.1);
+            }
 
-    .rating {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
+            .rating {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
 
-    .star-rating {
-        display: inline-block;
-        font-size: 18px;
-        color: #ffc107;
-    }
+            .star-rating {
+                display: inline-block;
+                font-size: 18px;
+                color: #ffc107;
+            }
 
-    .star-rating:before {
-        content: '★★★★★';
-        letter-spacing: 3px;
-        background: linear-gradient(90deg, #ffc107 calc(var(--rating) / 5 * 100%), #e4e5e9 calc(var(--rating) / 5 * 100%));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+            .star-rating:before {
+                content: '★★★★★';
+                letter-spacing: 3px;
+                background: linear-gradient(90deg, #ffc107 calc(var(--rating) / 5 * 100%), #e4e5e9 calc(var(--rating) / 5 * 100%));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
         </style>
 
 
@@ -275,7 +275,7 @@
                             </div>
 
                             <div class="skills">
-                                <h3>My Skills:</h3>
+                                <h3>Top Price Of Skill :</h3>
                                 <c:forEach items="${skillList}" var="skill">
                                     <p>• ${skill.skillName}</p>
                                 </c:forEach>
@@ -283,9 +283,11 @@
                                     <button type="submit" class="btn-add-skill">Add CV skills </button>
                                 </form>
                             </div>
+                                
+                                
 
                             <div class="rate-section">
-                                <h2>My Tuition Price: 
+                                <h2>My Salary : 
                                     <span class="tuition-price">
                                         <fmt:formatNumber value="${rate}" type="number" maxFractionDigits="0" minFractionDigits="0" /> VND
                                     </span>
@@ -476,7 +478,7 @@
                                                                     <td style="justify-content: center">
                                                                         <div class="rating" data-rating="${fb.star}">
                                                                             <span class="star-rating"></span>
-                                                                          
+
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -513,14 +515,14 @@
         <div class="overlay-dark-sidebar"></div>
         <div class="customizer-overlay"></div>
         <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        document.querySelectorAll('.rating').forEach(rating => {
-            let starRating = rating.querySelector('.star-rating');
-            let ratingValue = rating.getAttribute('data-rating');
-            starRating.style.setProperty('--rating', ratingValue);
-        });
-    });
-</script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('.rating').forEach(rating => {
+                    let starRating = rating.querySelector('.star-rating');
+                    let ratingValue = rating.getAttribute('data-rating');
+                    starRating.style.setProperty('--rating', ratingValue);
+                });
+            });
+        </script>
 
     </body>
 

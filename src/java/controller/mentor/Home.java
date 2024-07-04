@@ -7,6 +7,7 @@ package controller.mentor;
 import dal.MentorDAO;
 import dal.MentorProfileDAO;
 import dal.RequestDAO;
+import dal.ScheduleDAO;
 import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,53 +38,56 @@ import services.CVService;
 
 public class Home extends HttpServlet {
 
-  @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    try {
-        Account currentAccount = (Account) request.getSession().getAttribute("user");
-        if (currentAccount == null) {
-            response.sendRedirect("login.jsp");
-            return;
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            Account currentAccount = (Account) request.getSession().getAttribute("user");
+            if (currentAccount == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            CVService cvService = CVService.getInstance();
+            CV cv = cvService.getCVByUserName(currentAccount.getUserName());
+            request.setAttribute("userAvatar", currentAccount.getAvatar());
+            request.setAttribute("userFullName", currentAccount.getFullName());
+            request.setAttribute("cv", cv);
+            ScheduleDAO sdao = new ScheduleDAO();
+            MentorDAO mentorDAO = new MentorDAO();
+            double rate = sdao.calculateTotalEarnings(currentAccount.getUserName());
+            System.out.println("Calculated rate: " + rate);
+            request.setAttribute("rate", rate);
+            SkillDAO skillDAO = new SkillDAO();
+            List<Skill> skillList = skillDAO.topSkillPrice();
+            request.setAttribute("skillList", skillList);
+            RequestDAO rdao = new RequestDAO();
+            // Thêm thông tin thống kê và số lượng mentee
+            StaticMentor staticMentor = rdao.getStaticRequestMentor(currentAccount.getUserName());
+            request.setAttribute("staticMentor", staticMentor);
+
+            int countMentee = rdao.getCountMentee(currentAccount.getUserName());
+            request.setAttribute("countMentee", countMentee);
+
+            List<RequestDTO> list = rdao.getRequestProcessing(currentAccount.getUserName());
+            request.setAttribute("list", list);
+            MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+            List<FeedBackDTO> feedback = mentorProfileDAO.get5Feedback(currentAccount.getUserName());
+            request.setAttribute("feedback", feedback);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        CVService cvService = CVService.getInstance();
-        CV cv = cvService.getCVByUserName(currentAccount.getUserName());
-        request.setAttribute("userAvatar", currentAccount.getAvatar());
-        request.setAttribute("userFullName", currentAccount.getFullName());
-        request.setAttribute("cv", cv);
-
-        MentorDAO mentorDAO = new MentorDAO();
-        double rate = mentorDAO.getRateOfMentor(currentAccount.getUserName());
-        request.setAttribute("rate", rate);
-
-        SkillDAO skillDAO = new SkillDAO();
-        List<Skill> skillList = skillDAO.getSkillByMentorName(currentAccount.getUserName());
-        request.setAttribute("skillList", skillList);
-        RequestDAO rdao = new RequestDAO();
-        // Thêm thông tin thống kê và số lượng mentee
-        StaticMentor staticMentor = rdao.getStaticRequestMentor(currentAccount.getUserName());
-        request.setAttribute("staticMentor", staticMentor);
-
-        int countMentee = rdao.getCountMentee(currentAccount.getUserName());
-        request.setAttribute("countMentee", countMentee);
-        
-        List<RequestDTO> list = rdao.getRequestProcessing(currentAccount.getUserName());
-        request.setAttribute("list", list);
-        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-        List<FeedBackDTO> feedback = mentorProfileDAO.get5Feedback(currentAccount.getUserName());
-        request.setAttribute("feedback", feedback);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-}
+
     public static void main(String[] args) throws SQLException {
-          MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+        ScheduleDAO sdao = new ScheduleDAO();
+        double rate = sdao.calculateTotalEarnings("son");
+
         List<FeedBackDTO> feedback = mentorProfileDAO.get5Feedback("son");
-        System.out.println(feedback);
+        System.out.println(rate);
     }
-  
 
     /**
      * Handles the HTTP <code>POST</code> method.

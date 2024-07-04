@@ -461,6 +461,38 @@ public class SkillDAO {
 
     return topSkills;
 }
+    
+    public List<Skill> topSkillPrice() {
+    List<Skill> topSkills = new ArrayList<>();
+    String sql = "SELECT TOP 5 s.skill_id, s.skill_name, s.img AS skill_image, s.description, s.status, SUM(rfm.price) AS total_price "
+               + "FROM Skills s "
+               + "JOIN RequestSkills rs ON s.skill_id = rs.skill_id "
+               + "JOIN RequestsFormMentee rfm ON rs.request_id = rfm.request_id "
+               + "WHERE rfm.status_id = 1 "
+               + "GROUP BY s.skill_id, s.skill_name, s.img, s.description, s.status "
+               + "ORDER BY COUNT(rfm.request_id) DESC";
+
+    try (PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            int id = rs.getInt("skill_id");
+            String name = rs.getString("skill_name");
+            String image = rs.getString("skill_image");
+            String description = rs.getString("description");
+            boolean status = rs.getBoolean("status");
+            int totalPrice = rs.getInt("total_price");
+
+            Skill skill = new Skill(id, name, image, description, status);
+           
+            topSkills.add(skill);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error fetching top skill prices: " + e.getMessage());
+    }
+
+    return topSkills;
+}
+
 
 
 }
