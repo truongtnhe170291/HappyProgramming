@@ -27,6 +27,7 @@ import java.util.List;
 import models.Account;
 import models.Skill;
 import services.CVService;
+import services.VietnameseConverter;
 
 /**
  *
@@ -78,7 +79,7 @@ public class UpdateAccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Account curentAccount = (Account) session.getAttribute("user");
         if(curentAccount == null){
-            response.sendRedirect("Login.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
         Account acc = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
@@ -108,12 +109,12 @@ public class UpdateAccountServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String userName = request.getParameter("username");
-        String fullName = request.getParameter("fullname");
+        String fullName = VietnameseConverter.removeDiacritics(request.getParameter("fullname"));
         String sex = request.getParameter("sex");
         String gmail = request.getParameter("gmail");
         String dob = request.getParameter("dob");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
+        String address = VietnameseConverter.removeDiacritics(request.getParameter("address"));
         Part filePart = request.getPart("fileUpload");
 
         // D:\Workspase\Java_NetBeans\Project-SWP-HappyProgramming\HappyProgramming\web\img
