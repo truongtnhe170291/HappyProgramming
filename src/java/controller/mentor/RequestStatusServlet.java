@@ -44,7 +44,7 @@ public class RequestStatusServlet extends HttpServlet {
                 List<SchedulePublic> listSchedule = sdao.getScheduleByRequestId(requestId);
 
                 //Get all reqest in status Pening
-                List<Request> listRequest = requestDao.getAllRequestByStatus(2, curentAccount.getUserName());
+                List<Request> listRequest = requestDao.getAllRequestByStatusAndMentor(2, curentAccount.getUserName());
                 List<Request> listReject = new ArrayList<>();
 
                 for (SchedulePublic s : listSchedule) {//6: Done
@@ -61,6 +61,11 @@ public class RequestStatusServlet extends HttpServlet {
                     Set<Request> listRejectAll = new HashSet<>(listReject);
                     for (Request r : listRejectAll) {
                         if (requestDao.updateStatus(r.getRequestId(), 3)) {
+                            Wallet w = wdao.getWalletByUsenName(r.getMenteeName());
+                            w.setHold(w.getHold() - r.getPrice());
+                            wdao.updateWalletHold(w);
+                            Hold h = new Hold(r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
+                            wdao.inserHold(h);
                             requestDao.updateNoteRequest(r.getRequestId(), "The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule");
                         }
                     }

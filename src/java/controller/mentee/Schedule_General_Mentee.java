@@ -5,6 +5,8 @@
 
 package controller.mentee;
 
+import dal.MentorDAO;
+import dal.RequestDAO;
 import dal.ScheduleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +23,7 @@ import java.util.List;
 import models.Account;
 import models.Day;
 import models.SchedulePublic;
+import models.Slot;
 
 /**
  *
@@ -70,11 +73,19 @@ public class Schedule_General_Mentee extends HttpServlet {
                 response.sendRedirect("Login.jsp");
                 return;
             }
+            
+            MentorDAO mentorDao = new MentorDAO();
+            RequestDAO rdao = new RequestDAO();
+
+            ArrayList<Slot> listSlots = mentorDao.listSlots();
+            ArrayList<Day> listDays = mentorDao.listDays();
             if (acc.getRoleId() == 1) {
                 ScheduleDAO dao = new ScheduleDAO();
                 List<SchedulePublic> list = dao.getScheduleByMenteeName(acc.getUserName());
-                 List<SchedulePublic> getonelist = getOneWeek(list);
-                request.setAttribute("listSchedule", getonelist);
+                request.setAttribute("listSchedule_gereral", list);
+                request.setAttribute("startTime", list.get(0).getStartTime());
+
+            request.setAttribute("listSlot", listSlots);
                 request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
             }
 
@@ -83,53 +94,6 @@ request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, res
         }
     }
 
-    private ArrayList<Day> getOneWeekDays(ArrayList<Day> list) {
-    ArrayList<Day> listOne = new ArrayList<>();
-    if (list.isEmpty()) {
-        return listOne;
-    }
-
-    LocalDate referenceDate = list.get(0).getDate1().toLocalDate();
-
-    // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-    LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-    LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-    // Lọc các ngày trong tuần đó
-    for (Day day : list) {
-        LocalDate dayDate = day.getDate1().toLocalDate();
-        if (!dayDate.isBefore(startOfWeek) && !dayDate.isAfter(endOfWeek)) {
-            listOne.add(day);
-        }
-    }
-
-    return listOne;
-}
-   private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
-        List<SchedulePublic> listOne = new ArrayList<>();
-        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
-
-        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        // Tạo danh sách các ngày trong tuần
-        List<LocalDate> weekDates = new ArrayList<>();
-        LocalDate current = startOfWeek;
-        while (!current.isAfter(endOfWeek)) {
-            weekDates.add(current);
-            current = current.plusDays(1);
-        }
-        for (SchedulePublic s : list) {
-            for (LocalDate d : weekDates) {
-                if (s.getDayOfSlot().toLocalDate().isEqual(d)) {
-                    listOne.add(s);
-                }
-            }
-        }
-
-        return listOne;
-    }
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
