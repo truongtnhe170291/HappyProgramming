@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import models.Skill;
+import services.VietnameseConverter;
 
 @WebServlet(name = "CreateSkillController", urlPatterns = {"/createSkill"})
 @MultipartConfig
@@ -26,9 +27,9 @@ public class CreateSkillController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String skillName = request.getParameter("skillName");
+        String skillName = VietnameseConverter.removeDiacritics(request.getParameter("skillName"));
         Part filePart = request.getPart("img"); // Retrieves <input type="file" name="img">
-        String description = request.getParameter("description");
+        String description = VietnameseConverter.removeDiacritics(request.getParameter("description"));
         boolean status = true; // Default status to active
 
         String fileName = getFileName(filePart);

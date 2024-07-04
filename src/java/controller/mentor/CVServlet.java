@@ -25,6 +25,7 @@ import services.SkillService;
 import models.Account;
 import models.Skill;
 import services.AccountService;
+import services.VietnameseConverter;
 
 /**
  *
@@ -79,14 +80,14 @@ public class CVServlet extends HttpServlet {
         try {
             // Get data from UpdateMenteeProfileDemo.jsp
             String gmail = request.getParameter("gmail");
-            String fullname = request.getParameter("fullName");
+            String fullname = VietnameseConverter.removeDiacritics(request.getParameter("fullName"));
             String dob = request.getParameter("dob");
             String _sex = request.getParameter("sex");
-            String address = request.getParameter("address");
-            String profession = request.getParameter("profession");
-            String professionIntro = request.getParameter("professionIntro");
-            String achievementDescription = request.getParameter("achievementDescription");
-            String serviceDescription = request.getParameter("serviceDescription");
+            String address = VietnameseConverter.removeDiacritics(request.getParameter("address"));
+            String profession = VietnameseConverter.removeDiacritics(request.getParameter("profession"));
+            String professionIntro = VietnameseConverter.removeDiacritics(request.getParameter("professionIntro"));
+            String achievementDescription = VietnameseConverter.removeDiacritics(request.getParameter("achievementDescription"));
+            String serviceDescription = VietnameseConverter.removeDiacritics(request.getParameter("serviceDescription"));
             String[] _skills = request.getParameterValues("skills");
             if(_skills == null){
                 response.sendRedirect("cv");
