@@ -51,7 +51,7 @@ public class HandleRequestMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+@Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     ScheduleDAO scheduleDAO = new ScheduleDAO();
@@ -62,7 +62,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     String statusFilter = request.getParameter("statusFilter");
     String pageParam = request.getParameter("page");
     int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-    int pageSize = 3; // Số lượng item trên mỗi trang
+    int pageSize = 2; // Số lượng item trên mỗi trang
 
     List<ScheduleDTO> list;
     int totalRequests;
@@ -73,13 +73,13 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         int statusId = Integer.parseInt(statusFilter);
         list = scheduleDAO.searchRequestByMentorNameAndStatus(mentorName, statusId, page, pageSize);
         totalRequests = scheduleDAO.getTotalRequestByMentorNameAndStatus(mentorName, statusId);
-    } else if (mentorName != null && !mentorName.isEmpty() && statusFilter.isEmpty())  {
+    } else if (mentorName != null && !mentorName.isEmpty() && (statusFilter == null || statusFilter.isEmpty())) {
         // Chỉ Search
         list = scheduleDAO.getAllRequestByMentorName(mentorName, page, pageSize);
         totalRequests = scheduleDAO.getTotalRequestByMentorName(mentorName);
-    } else if (statusFilter != null && !statusFilter.isEmpty() && mentorName.isEmpty()) {
+    } else if (statusFilter != null && !statusFilter.isEmpty() && (mentorName == null || mentorName.isEmpty())) {
         // Chỉ Filter
-        int statusId = Integer.parseInt(statusFilter );
+        int statusId = Integer.parseInt(statusFilter);
         list = scheduleDAO.getAllRequestByMentorByStatus(statusId, page, pageSize);
         totalRequests = scheduleDAO.getTotalRequestByStatus(statusId);
     } else {
@@ -93,9 +93,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     // Lấy danh sách các Slot từ MentorDAO
     ArrayList<Slot> listSlot = mentorDao.listSlots();
-    List<Status> statusList  = scheduleDAO.getAllStatus();
-  
-        
+    List<Status> statusList = scheduleDAO.getAllStatus();
 
     // Đặt các thuộc tính vào request để chuyển đến trang ScheduleManagement.jsp
     request.setAttribute("list", list);
@@ -105,15 +103,18 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     request.setAttribute("totalPages", totalPages);
     request.setAttribute("mentorName", mentorName);
     request.setAttribute("statusFilter", statusFilter);
+    request.setAttribute("pageSize", pageSize); // Gán pageSize vào request
 
     request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
 }
+
 
     public static void main(String[] args) {
           ScheduleDAO scheduleDAO = new ScheduleDAO();
     MentorDAO mentorDao = new MentorDAO();
     int totalRequests = scheduleDAO.getTotalRequestByMentorName("son");
-     List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorByStatus(1, 1, 5);
+     List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentor(1,2);
+        System.out.println(totalRequests);
         System.out.println(list.size());
     }
 

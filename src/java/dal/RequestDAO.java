@@ -366,7 +366,7 @@ public class RequestDAO {
     }
     
     public int getTotalRequestMentor(String mentorName) {
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee WHERE mentor_name = ? AND r.status_id <> 6";
+        String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE mentor_name = ? AND r.status_id <> 6";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, mentorName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -916,6 +916,30 @@ public int getTotalRequestMentorCountByMenteeName(String mentorName, String ment
         
         try {
             String sql = "select * from RequestStatuses r where r.status_id <> 6";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Status status = new Status(
+                        rs.getInt("status_id"),
+                        rs.getString("status_name")
+                );
+                statuses.add(status);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAllStatuses: " + e.getMessage());
+        }
+        
+        return statuses;
+    }
+    
+    public List<Status> getAllStatusesMentee() {
+        List<Status> statuses = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            String sql = "select * from RequestStatuses r ";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             
