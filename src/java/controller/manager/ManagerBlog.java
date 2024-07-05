@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 
 import java.util.List;
 import models.Blog;
+import services.VietnameseConverter;
 
 /**
  *
@@ -97,7 +98,7 @@ public class ManagerBlog extends HttpServlet {
             }
 
             // Get other form data
-            String link = request.getParameter("link");
+            String link = VietnameseConverter.removeDiacritics(request.getParameter("link"));
 
             // Set the status to true by default
             boolean status = true;

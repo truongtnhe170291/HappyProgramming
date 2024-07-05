@@ -16,7 +16,12 @@
         <title>Fmaster</title>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
+        <style>
+            .draggable-events{
+                display:flex;
+                justify-content: center;
+            }
+        </style>
 
     </head>
 
@@ -66,17 +71,10 @@
                                                     <h6 class="text-center">My Calendars</h6>
                                                    
                                                 </div>
-                                                  <c:forEach items="${requestScope.listSchedule}" var="schedule">
+                                                  
                  
                 
                                                 <ul class="draggable-event-list">
-                                                    <li class="draggable-event-list__single d-flex align-items-center" data-class="primary">
-                                                        <span class="badge-dot badge-primary"></span>
-                                                        
-                                                        <span class="event-text">${schedule.fullName}</span>
-                                                    </li>
-                                                    
-                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>

@@ -300,7 +300,7 @@ th {
                         var key = weekId + '-' + nameOfDay.substring(0, 3) + '-' + slotId.substring(4) + '-' + formattedDayOfSlot;
                         console.log(dayOfSlot, nameOfDay.substring(0, 2), slotId.substring(4));
 
-                        var status = "${schedule.status}";
+                        var status = "${schedule.attendanceStatus}";
                         var displayStatus = status;
                         var statusColor = "black";
 

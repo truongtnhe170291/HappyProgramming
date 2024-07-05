@@ -5,716 +5,525 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!doctype html>
 <html lang="en" dir="ltr">
 
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>Fmaster</title>
-          <jsp:include page="style/linkcss.jsp" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Fmaster</title>
+        <jsp:include page="style/linkcss.jsp" />
+        <style>
 
-</head>
 
-<body class="layout-light side-menu">
-   <div class="mobile-search">
-      <form action="/" class="search-form">
-         <img src="img/svg/search.svg" alt="search" class="svg">
-         <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
-      </form>
-   </div>
-   <div class="mobile-author-actions"></div>
-    <jsp:include page="control_nav.jsp" />
+            .nav-author__info {
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                background-color: #fff; /* Nền của header */
+                margin: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Độ đậm của shadow */
+            }
+
+            .author-img img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin-right: 20px;
+                border: 2px solid #ccc;
+            }
+
+            .author-details h2 {
+                margin: 0;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .skills {
+                margin: 20px;
+                background-color: #fff; /* Nền của phần skills */
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Độ đậm của shadow */
+            }
+
+            .skills h3 {
+                margin-top: 0;
+                font-size: 20px;
+            }
+
+            .skills p {
+                font-weight: bold;
+                margin: 5px 0;
+                padding-left: 10px;
+                color: #007bff; /* Màu chữ của các skill */
+            }
+
+            .btn-add-skill {
+                display: block;
+                margin: 10px 0 0;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .rate-section {
+                margin: 20px;
+                background-color: #fff; /* Nền của phần rate-section */
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Độ đậm của shadow */
+            }
+
+            .rate-section h2 {
+                margin: 0;
+                font-size: 20px;
+            }
+
+            .tuition-price {
+                font-size: 24px;
+                font-weight: bold;
+                color: tomato; /* Màu của số tiền học phí */
+            }
+
+            .btn-set-rate {
+                display: block;
+                margin: 10px 0 0;
+                padding: 10px 20px;
+                background-color: #28a745;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .author-details .highlight {
+                color: #007bff;
+                font-weight: bold;
+            }
+            .feedback-table-wrap {
+                padding: 15px;
+            }
+
+            .feedback-img {
+                display: flex;
+                align-items: center;
+            }
+
+            .feedback-img-wrapper {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+
+            .feedback-img-wrapper img {
+                width: 100%;
+                height: auto;
+            }
+
+            .table--default {
+                width: 100%;
+                margin-bottom: 1rem;
+                color: #212529;
+                border-collapse: collapse;
+            }
+
+            .table-borderless th,
+            .table-borderless td {
+                border: none;
+                padding: 10px;
+            }
+
+            .table th {
+                text-align: left;
+                background-color: #f8f9fa;
+                font-weight: 600;
+            }
+
+            .table td {
+                vertical-align: middle;
+            }
+
+            .order-bg-opacity-primary {
+                background-color: rgba(0, 123, 255, 0.1);
+            }
+            .feedback-table-wrap {
+                padding: 15px;
+            }
+
+            .feedback-img {
+                display: flex;
+                align-items: center;
+            }
+
+            .feedback-img-wrapper {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+
+            .feedback-img-wrapper img {
+                width: 100%;
+                height: auto;
+            }
+
+            .table--default {
+                width: 100%;
+                margin-bottom: 1rem;
+                color: #212529;
+                border-collapse: collapse;
+            }
+
+            .table-borderless th,
+            .table-borderless td {
+                border: none;
+                padding: 10px;
+            }
+
+            .table th {
+                text-align: left;
+                background-color: #f8f9fa;
+                font-weight: 600;
+            }
+
+            .table td {
+                vertical-align: middle;
+            }
+
+            .order-bg-opacity-primary {
+                background-color: rgba(0, 123, 255, 0.1);
+            }
+
+            .rating {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .star-rating {
+                display: inline-block;
+                font-size: 18px;
+                color: #ffc107;
+            }
+
+            .star-rating:before {
+                content: '★★★★★';
+                letter-spacing: 3px;
+                background: linear-gradient(90deg, #ffc107 calc(var(--rating) / 5 * 100%), #e4e5e9 calc(var(--rating) / 5 * 100%));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        </style>
+
+
+    </head>
+
+    <body class="layout-light side-menu">
+        <div class="mobile-search">
+            <form action="/" class="search-form">
+                <img src="img/svg/search.svg" alt="search" class="svg">
+                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+            </form>
+        </div>
+        <div class="mobile-author-actions"></div>
+        <jsp:include page="control_nav.jsp" />
 
         <main class="main-content">
 
             <jsp:include page="sidebar.jsp" />
 
 
-      <div class="contents">
+            <div class="contents">
 
-         <div class="demo2 mb-25 t-thead-bg">
-            <div class="container-fluid">
-               <div class="row ">
-                  <div class="col-lg-12">
+                <div class="demo2 mb-25 t-thead-bg">
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div class="col-lg-12">
 
-                     <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title">Statistical</h4>
-                        <div class="breadcrumb-action justify-content-center flex-wrap">
-                           <nav aria-label="breadcrumb">
-                              <ol class="breadcrumb">
-                                 <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>Statistical</a></li>
-                              </ol>
-                           </nav>
-                        </div>
-                     </div>
-
-                  </div>
-                  <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
-                     <!-- Card 1  -->
-                     <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
-
-
-
-
-
-                        <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
-                           <div class="ap-po-details__titlebar">
-                              <p>Total Products</p>
-                              <h1>100+</h1>
-                              <div class="ap-po-details-time">
-                                 <span class="color-success"><i class="las la-arrow-up"></i>
-                                    <strong>25.36%</strong></span>
-                                 <small>Since last month</small>
-                              </div>
-                           </div>
-                           <div class="ap-po-details__icon-area color-primary">
-                              <i class="uil uil-arrow-growth"></i>
-                           </div>
-                        </div>
-
-                     </div>
-                     <!-- Card 1 End  -->
-                  </div>
-
-                  <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
-                     <!-- Card 2 -->
-                     <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
-
-
-
-
-
-                        <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
-                           <div class="ap-po-details__titlebar">
-                              <p>Total Orders</p>
-                              <h1>30,825</h1>
-                              <div class="ap-po-details-time">
-                                 <span class="color-success"><i class="las la-arrow-up"></i>
-                                    <strong>25.36%</strong></span>
-                                 <small>Since last month</small>
-                              </div>
-                           </div>
-                           <div class="ap-po-details__icon-area color-secondary">
-                              <i class="uil uil-users-alt"></i>
-                           </div>
-                        </div>
-
-                     </div>
-                     <!-- Card 2 End  -->
-                  </div>
-
-                  <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
-                     <!-- Card 3 -->
-                     <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
-
-
-
-
-
-                        <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
-                           <div class="ap-po-details__titlebar">
-                              <p>Total Sales</p>
-                              <h1>$30,825</h1>
-                              <div class="ap-po-details-time">
-                                 <span class="color-danger"><i class="las la-arrow-down"></i>
-                                    <strong>25.36%</strong></span>
-                                 <small>Since last month</small>
-                              </div>
-                           </div>
-                           <div class="ap-po-details__icon-area color-success">
-                              <i class="uil uil-usd-circle"></i>
-                           </div>
-                        </div>
-
-                     </div>
-                     <!-- Card 3 End  -->
-                  </div>
-
-                  <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
-                     <!-- Card 4  -->
-                     <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
-
-
-
-
-
-                        <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
-                           <div class="ap-po-details__titlebar">
-                              <p>New Customers</p>
-                              <h1>30,825</h1>
-                              <div class="ap-po-details-time">
-                                 <span class="color-success"><i class="las la-arrow-up"></i>
-                                    <strong>25.36%</strong></span>
-                                 <small>Since last month</small>
-                              </div>
-                           </div>
-                           <div class="ap-po-details__icon-area color-info">
-                              <i class="uil uil-tachometer-fast"></i>
-                           </div>
-                        </div>
-
-                     </div>
-                     <!-- Card 4 End  -->
-                  </div>
-
-
-
-                  <div class="col-xxl-4 mb-25">
-
-                     <div class="card border-0 px-25">
-                        <div class="card-header px-0 border-0">
-                           <h6>New Product</h6>
-                           <div class="card-extra">
-                              <ul class="card-tab-links nav-tabs nav" role="tablist">
-                                 <li>
-                                    <a class="active" href="#t_selling-today" data-bs-toggle="tab" id="t_selling-today-tab" role="tab" aria-selected="true">Today</a>
-                                 </li>
-                                 <li>
-                                    <a href="#t_selling-week" data-bs-toggle="tab" id="t_selling-week-tab" role="tab" aria-selected="true">Week</a>
-                                 </li>
-                                 <li>
-                                    <a href="#t_selling-month" data-bs-toggle="tab" id="t_selling-month-tab" role="tab" aria-selected="true">Month</a>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                        <div class="card-body p-0">
-                           <div class="tab-content">
-                              <div class="tab-pane fade active show" id="t_selling-today" role="tabpanel" aria-labelledby="t_selling-today-tab">
-                                 <div class="selling-table-wrap">
-                                    <div class="table-responsive">
-                                       <table class="table table--default table-borderless ">
-                                          <thead>
-                                             <tr>
-                                                <th>PRDUCTS NAME</th>
-                                                <th>Price</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="radius-xs img-fluid order-bg-opacity-primary" src="img/giorgio.png" alt="img">
-                                                      <span>UV Protected Sunglass</span>
-                                                   </div>
-                                                </td>
-                                                <td>$38,536</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="radius-xs img-fluid order-bg-opacity-primary" src="img/headphone.png" alt="img">
-                                                      <span>Black Headphone</span>
-                                                   </div>
-                                                </td>
-                                                <td>$20,573</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="radius-xs img-fluid order-bg-opacity-primary" src="img/shoes.png" alt="img">
-                                                      <span>Nike Shoes</span>
-                                                   </div>
-                                                </td>
-                                                <td>$17,457</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="radius-xs img-fluid order-bg-opacity-primary" src="img/mac-pro.png" alt="img">
-                                                      <span>15" Mackbook Pro</span>
-                                                   </div>
-                                                </td>
-                                                <td>$15,354</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="radius-xs img-fluid order-bg-opacity-primary" src="img/creativ-bag.png" alt="img">
-                                                      <span>Women Bag</span>
-                                                   </div>
-                                                </td>
-                                                <td>$12,354</td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
+                                <div class="breadcrumb-main">
+                                    <h1 class="text-capitalize breadcrumb-title">Mentor Homepage</h1>
+                                    <div class="breadcrumb-action justify-content-center flex-wrap">
+                                        <nav aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>Statistical</a></li>
+                                            </ol>
+                                        </nav>
                                     </div>
-                                 </div>
-                              </div>
-                              <div class="tab-pane fade" id="t_selling-week" role="tabpanel" aria-labelledby="t_selling-week-tab">
-                                 <div class="selling-table-wrap">
-                                    <div class="table-responsive">
-                                       <table class="table table--default table-borderless">
-                                          <thead>
-                                             <tr>
-                                                <th>PRDUCTS NAME</th>
-                                                <th>Price</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/287.png" alt="img">
-                                                      <span>Samsung Galaxy S8 256GB</span>
-                                                   </div>
-                                                </td>
-                                                <td>$60,258</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid" src="img/165.png" alt="img">
-                                                      <span>Half Sleeve Shirt</span>
-                                                   </div>
-                                                </td>
-                                                <td>$2,483</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/166.png" alt="img">
-                                                      <span>Marco Shoes</span>
-                                                   </div>
-                                                </td>
-                                                <td>$19,758</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/315.png" alt="img">
-                                                      <span>15" Mackbook Pro</span>
-                                                   </div>
-                                                </td>
-                                                <td>$197,458</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/506.png" alt="img">
-                                                      <span>Apple iPhone X</span>
-                                                   </div>
-                                                </td>
-                                                <td>115,254</td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
+                                </div>
+
+                            </div>
+
+
+                            <div class="nav-author__info">
+                                <div class="author-img">
+                                    <img src="./img/${userAvatar}" alt="Avatar">
+                                </div>
+                                <div class="author-details">
+                                    <h2>Hello, <span class="highlight">${userFullName}</span></h2>
+                                </div>
+                            </div>
+
+                            <div class="skills">
+                                <h3>Top Price Of Skill :</h3>
+                                <c:forEach items="${skillList}" var="skill">
+                                    <p>• ${skill.skillName}</p>
+                                </c:forEach>
+                                <form action="cv" method="post">
+                                    <button type="submit" class="btn-add-skill">Add CV skills </button>
+                                </form>
+                            </div>
+                                
+                                
+
+                            <div class="rate-section">
+                                <h2>My Salary : 
+                                    <span class="tuition-price">
+                                        <fmt:formatNumber value="${rate}" type="number" maxFractionDigits="0" minFractionDigits="0" /> VND
+                                    </span>
+                                </h2>
+                                <form action="cv" method="post">
+                                    <button type="submit" class="btn-set-rate">Set Rate</button>
+                                </form>
+                            </div>
+
+                            <form action="StatisticRequestMentor" method="GET">
+                                <h2>Over View Request</h2>
+                                <button type="submit" class="btn btn-primary">View Details</button>
+                            </form>
+
+
+
+                            <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
+
+
+                                <!-- Card 1  -->
+                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+
+
+
+
+
+                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                        <div class="ap-po-details__titlebar">
+                                            <p>Total Requests</p>
+                                            <h1>${staticMentor.invitedRequests}</h1>
+
+                                        </div>
+                                        <div class="ap-po-details__icon-area color-primary">
+                                            <i class="uil uil-arrow-growth"></i>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
-                              <div class="tab-pane fade" id="t_selling-month" role="tabpanel" aria-labelledby="t_selling-month-tab">
-                                 <div class="selling-table-wrap">
-                                    <div class="table-responsive">
-                                       <table class="table table--default table-borderless">
-                                          <thead>
-                                             <tr>
-                                                <th>PRDUCTS NAME</th>
-                                                <th>Price</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/287.png" alt="img">
-                                                      <span>Samsung Galaxy S8 256GB</span>
-                                                   </div>
-                                                </td>
-                                                <td>$60,258</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid" src="img/165.png" alt="img">
-                                                      <span>Half Sleeve Shirt</span>
-                                                   </div>
-                                                </td>
-                                                <td>$2,483</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/166.png" alt="img">
-                                                      <span>Marco Shoes</span>
-                                                   </div>
-                                                </td>
-                                                <td>$19,758</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/315.png" alt="img">
-                                                      <span>15" Mackbook Pro</span>
-                                                   </div>
-                                                </td>
-                                                <td>$197,458</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <img class="me-15 wh-34 img-fluid order-bg-opacity-primary" src="img/506.png" alt="img">
-                                                      <span>Apple iPhone X</span>
-                                                   </div>
-                                                </td>
-                                                <td>115,254</td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
+
+                                </div>
+                                <!-- Card 1 End  -->
+                            </div>
+
+                            <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
+                                <!-- Card 2 -->
+                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+
+
+
+
+
+                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                        <div class="ap-po-details__titlebar">
+                                            <p>Accepted Requests</p>
+                                            <h1>${staticMentor.acceptedRequests}</h1>
+                                            <div class="ap-po-details-time">
+                                                <span class="color-success"><i class="las la-arrow-up"></i>
+                                                    <strong>${staticMentor.completePercentage}%</strong></span>
+                                                <small>Accept</small>
+                                            </div>
+                                        </div>
+                                        <div class="ap-po-details__icon-area color-secondary">
+                                            <i class="uil uil-users-alt"></i>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
-                           </div>
+
+                                </div>
+                                <!-- Card 2 End  -->
+                            </div>
+
+                            <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
+                                <!-- Card 3 -->
+                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+
+
+
+
+
+                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                        <div class="ap-po-details__titlebar">
+                                            <p>Canceled Requests</p>
+                                            <h1>${staticMentor.canceledRequests}</h1>
+                                            <div class="ap-po-details-time">
+                                                <span class="color-danger"><i class="las la-arrow-down"></i>
+                                                    <strong>${staticMentor.cancelPercentage}%</strong></span>
+                                                <small>Cancel</small>
+                                            </div>
+                                        </div>
+                                        <div class="ap-po-details__icon-area color-success">
+                                            <i class="uil uil-usd-circle"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Card 3 End  -->
+                            </div>
+
+                            <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
+                                <!-- Card 4  -->
+                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+
+
+
+
+
+                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                        <div class="ap-po-details__titlebar">
+                                            <p>Total Mentee Requests</p>
+                                            <h1>${countMentee}</h1>
+
+                                        </div>
+                                        <div class="ap-po-details__icon-area color-info">
+                                            <i class="uil uil-tachometer-fast"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Card 4 End  -->
+                            </div>
+
+
+
+                            <div class="col-xxl-4 mb-25">
+                                <div class="card border-0 px-25">
+                                    <div class="card-header px-0 border-0">
+                                        <h6>Request List</h6>
+                                        <form action="ListRequestMentor" method="get">
+                                            <input type="hidden" name="statusFilter" value="2">
+                                            <input type="hidden" name="menteeNameFilter" value="">
+                                            <button type="submit" class="btn btn-primary">View Details</button>
+                                        </form>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table--default table-borderless">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mentee Name</th>
+                                                        <th>Deadline Date</th>
+                                                        <th>Title</th>
+                                                        <th>Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items="${list}" var="request">
+                                                        <tr>
+                                                            <td>${request.menteeName}</td>
+                                                            <td>${request.deadlineDate}</td>
+                                                            <td>${request.title}</td>
+                                                            <td>${request.price}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xxl-8 mb-25">
+                                <div class="card border-0 px-25">
+                                    <h2>Feedback From My Mentee</h2>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade active show" id="feedback-list" role="tabpanel">
+                                            <div class="feedback-table-wrap">
+                                                <div class="table-responsive">
+                                                    <table class="table table--default table-borderless">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Mentee Name</th>
+                                                                <th>Time Feedback</th>
+                                                                <th>Comment</th>
+                                                                <th>Star</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <c:forEach var="fb" items="${feedback}">
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="feedback-img d-flex align-items-center">
+                                                                            <div class="feedback-img-wrapper order-bg-opacity-primary align-items-end">
+                                                                                <img class="img-fluid" src="img/${fb.avatar}" alt="img">
+                                                                            </div>
+                                                                            <span>${fb.menteeName}</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>${fb.timeFeedBack}</td>
+                                                                    <td>${fb.comment}</td>
+                                                                    <td style="justify-content: center">
+                                                                        <div class="rating" data-rating="${fb.star}">
+                                                                            <span class="star-rating"></span>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
                         </div>
-                     </div>
+                        <!-- ends: .row -->
+                    </div>
+                </div>
 
-                  </div>
-
-                  <div class="col-xxl-8 mb-25">
-
-                     <div class="card border-0 px-25">
-                        <div class="card-header px-0 border-0">
-                           <h6>Best Seller</h6>
-                           <div class="card-extra">
-                              <ul class="card-tab-links nav-tabs nav" role="tablist">
-                                 <li>
-                                    <a class="active" href="#t_selling-today222" data-bs-toggle="tab" id="t_selling-today222-tab" role="tab" aria-selected="true">Today</a>
-                                 </li>
-                                 <li>
-                                    <a href="#t_selling-week222" data-bs-toggle="tab" id="t_selling-week222-tab" role="tab" aria-selected="true">Week</a>
-                                 </li>
-                                 <li>
-                                    <a href="#t_selling-month333" data-bs-toggle="tab" id="t_selling-month333-tab" role="tab" aria-selected="true">Month</a>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                        <div class="card-body p-0">
-                           <div class="tab-content">
-                              <div class="tab-pane fade active show" id="t_selling-today222" role="tabpanel" aria-labelledby="t_selling-today222-tab">
-                                 <div class="selling-table-wrap selling-table-wrap--source">
-                                    <div class="table-responsive">
-                                       <table class="table table--default table-borderless">
-                                          <thead>
-                                             <tr>
-                                                <th>Seller name</th>
-                                                <th>Company</th>
-                                                <th>Product</th>
-                                                <th>Revenue</th>
-                                                <th>Status</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-primary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-1.png" alt="img">
-                                                      </div>
-                                                      <span>Robert Clinton</span>
-                                                   </div>
-                                                </td>
-                                                <td>Samsung</td>
-                                                <td>Smart Phone</td>
-                                                <td>
-                                                   $38,536
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-primary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-2.png" alt="img">
-                                                      </div>
-                                                      <span>Michael Johnson </span>
-                                                   </div>
-                                                </td>
-                                                <td>Asus</td>
-                                                <td>Laptop</td>
-                                                <td>
-                                                   $20,573
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-secondary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-3.png" alt="img">
-                                                      </div>
-                                                      <span>Daniel White</span>
-                                                   </div>
-                                                </td>
-                                                <td>Google</td>
-                                                <td>Watch</td>
-                                                <td>
-                                                   $17,457
-                                                </td>
-                                                <td>Pending</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-success align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-4.png" alt="img">
-                                                      </div>
-                                                      <span>Chris Barin </span>
-                                                   </div>
-                                                </td>
-                                                <td>Apple</td>
-                                                <td>Computer</td>
-                                                <td>
-                                                   $15,354
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-info align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-5.png" alt="img">
-                                                      </div>
-                                                      <span>Daniel Pink</span>
-                                                   </div>
-                                                </td>
-                                                <td>Panasonic</td>
-                                                <td>Sunglass</td>
-                                                <td>
-                                                   $12,354
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="tab-pane fade" id="t_selling-week222" role="tabpanel" aria-labelledby="t_selling-week222-tab">
-                                 <div class="selling-table-wrap selling-table-wrap--source">
-                                    <div class="table-responsive">
-                                       <table class="table table--default table-borderless">
-                                          <thead>
-                                             <tr>
-                                                <th>Seller name</th>
-                                                <th>Company</th>
-                                                <th>Product</th>
-                                                <th>Revenue</th>
-                                                <th>Status</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-primary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-1.png" alt="img">
-                                                      </div>
-                                                      <span>Robert Clinton</span>
-                                                   </div>
-                                                </td>
-                                                <td>Samsung</td>
-                                                <td>Smart Phone</td>
-                                                <td>
-                                                   $38,536
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-primary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-2.png" alt="img">
-                                                      </div>
-                                                      <span>Michael Johnson </span>
-                                                   </div>
-                                                </td>
-                                                <td>Asus</td>
-                                                <td>Laptop</td>
-                                                <td>
-                                                   $20,573
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-secondary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-3.png" alt="img">
-                                                      </div>
-                                                      <span>Daniel White</span>
-                                                   </div>
-                                                </td>
-                                                <td>Google</td>
-                                                <td>Watch</td>
-                                                <td>
-                                                   $17,457
-                                                </td>
-                                                <td>Pending</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-success align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-4.png" alt="img">
-                                                      </div>
-                                                      <span>Chris Barin </span>
-                                                   </div>
-                                                </td>
-                                                <td>Apple</td>
-                                                <td>Computer</td>
-                                                <td>
-                                                   $15,354
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-info align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-5.png" alt="img">
-                                                      </div>
-                                                      <span>Daniel Pink</span>
-                                                   </div>
-                                                </td>
-                                                <td>Panasonic</td>
-                                                <td>Sunglass</td>
-                                                <td>
-                                                   $12,354
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="tab-pane fade" id="t_selling-month333" role="tabpanel" aria-labelledby="t_selling-month333-tab">
-                                 <div class="selling-table-wrap selling-table-wrap--source">
-                                    <div class="table-responsive">
-                                       <table class="table table--default table-borderless">
-                                          <thead>
-                                             <tr>
-                                                <th>Seller name</th>
-                                                <th>Company</th>
-                                                <th>Product</th>
-                                                <th>Revenue</th>
-                                                <th>Status</th>
-                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-primary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-1.png" alt="img">
-                                                      </div>
-                                                      <span>Robert Clinton</span>
-                                                   </div>
-                                                </td>
-                                                <td>Samsung</td>
-                                                <td>Smart Phone</td>
-                                                <td>
-                                                   $38,536
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-primary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-2.png" alt="img">
-                                                      </div>
-                                                      <span>Michael Johnson </span>
-                                                   </div>
-                                                </td>
-                                                <td>Asus</td>
-                                                <td>Laptop</td>
-                                                <td>
-                                                   $20,573
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-secondary align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-3.png" alt="img">
-                                                      </div>
-                                                      <span>Daniel White</span>
-                                                   </div>
-                                                </td>
-                                                <td>Google</td>
-                                                <td>Watch</td>
-                                                <td>
-                                                   $17,457
-                                                </td>
-                                                <td>Pending</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-success align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-4.png" alt="img">
-                                                      </div>
-                                                      <span>Chris Barin </span>
-                                                   </div>
-                                                </td>
-                                                <td>Apple</td>
-                                                <td>Computer</td>
-                                                <td>
-                                                   $15,354
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                             <tr>
-                                                <td>
-                                                   <div class="selling-product-img d-flex align-items-center">
-                                                      <div class="selling-product-img-wrapper order-bg-opacity-info align-items-end">
-                                                         <img class=" img-fluid" src="img/author/robert-5.png" alt="img">
-                                                      </div>
-                                                      <span>Daniel Pink</span>
-                                                   </div>
-                                                </td>
-                                                <td>Panasonic</td>
-                                                <td>Sunglass</td>
-                                                <td>
-                                                   $12,354
-                                                </td>
-                                                <td>Done</td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                  </div>
-
-               </div>
-               <!-- ends: .row -->
             </div>
-         </div>
+        </main>
+        <div id="overlayer">
+            <div class="loader-overlay">
+                <div class="dm-spin-dots spin-lg">
+                    <span class="spin-dot badge-dot dot-primary"></span>
+                    <span class="spin-dot badge-dot dot-primary"></span>
+                    <span class="spin-dot badge-dot dot-primary"></span>
+                    <span class="spin-dot badge-dot dot-primary"></span>
+                </div>
+            </div>
+        </div>
+        <div class="overlay-dark-sidebar"></div>
+        <div class="customizer-overlay"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('.rating').forEach(rating => {
+                    let starRating = rating.querySelector('.star-rating');
+                    let ratingValue = rating.getAttribute('data-rating');
+                    starRating.style.setProperty('--rating', ratingValue);
+                });
+            });
+        </script>
 
-      </div>
-   </main>
-   <div id="overlayer">
-      <div class="loader-overlay">
-         <div class="dm-spin-dots spin-lg">
-            <span class="spin-dot badge-dot dot-primary"></span>
-            <span class="spin-dot badge-dot dot-primary"></span>
-            <span class="spin-dot badge-dot dot-primary"></span>
-            <span class="spin-dot badge-dot dot-primary"></span>
-         </div>
-      </div>
-   </div>
-   <div class="overlay-dark-sidebar"></div>
-   <div class="customizer-overlay"></div>
-  
-</body>
+    </body>
 
 </html>

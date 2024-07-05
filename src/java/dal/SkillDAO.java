@@ -118,10 +118,34 @@ public class SkillDAO {
 
     public static void main(String[] args) {
         SkillDAO sd = new SkillDAO();
-        for (Skill s : sd.getSkillByCVId(1)) {
-            System.out.println(s.getSkillName());
+        for (Skill s : sd.getSkillByMentorName("son")) {
+            System.out.println(s);
         }
     }
+    public List<Skill> getSkillByMentorName(String mentorName) {
+    String sql = "SELECT s.skill_id, s.skill_name " +
+                 "FROM CVSkills cs " +
+                 "JOIN Skills s ON cs.skill_id = s.skill_id " +
+                 "JOIN CV c ON cs.cv_id = c.cv_id " +
+                 "WHERE c.mentor_name = ?";
+    List<Skill> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Skill s = new Skill();
+            s.setSkillID(rs.getInt(1));
+            s.setSkillName(rs.getString(2));
+            list.add(s);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+    
 
     public List<Skill> getSkillByCVId(int cvId) {
         String sql = "SELECT cs.skill_id, s.skill_name from CVSkills cs join Skills s on cs.skill_id = s.skill_id WHERE cs.cv_id = ?";
@@ -437,6 +461,38 @@ public class SkillDAO {
 
     return topSkills;
 }
+    
+    public List<Skill> topSkillPrice() {
+    List<Skill> topSkills = new ArrayList<>();
+    String sql = "SELECT TOP 5 s.skill_id, s.skill_name, s.img AS skill_image, s.description, s.status, SUM(rfm.price) AS total_price "
+               + "FROM Skills s "
+               + "JOIN RequestSkills rs ON s.skill_id = rs.skill_id "
+               + "JOIN RequestsFormMentee rfm ON rs.request_id = rfm.request_id "
+               + "WHERE rfm.status_id = 1 "
+               + "GROUP BY s.skill_id, s.skill_name, s.img, s.description, s.status "
+               + "ORDER BY COUNT(rfm.request_id) DESC";
+
+    try (PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            int id = rs.getInt("skill_id");
+            String name = rs.getString("skill_name");
+            String image = rs.getString("skill_image");
+            String description = rs.getString("description");
+            boolean status = rs.getBoolean("status");
+            int totalPrice = rs.getInt("total_price");
+
+            Skill skill = new Skill(id, name, image, description, status);
+           
+            topSkills.add(skill);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error fetching top skill prices: " + e.getMessage());
+    }
+
+    return topSkills;
+}
+
 
 
 }
