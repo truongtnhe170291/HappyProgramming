@@ -509,7 +509,7 @@
             <span class="close">&times;</span>
             <div class="header-content">
                 <div class="header-left">
-                     <img src="path/to/profile-picture.png" alt="Profile Picture" class="profile-picture">
+                     <img src="./imgcv/${cv.imgcv}" alt="Profile Picture" class="profile-picture">
                     <p class="popup-item"><strong>Mentor Name:</strong> <span id="popupMentorName_${cv.cvId}">${cv.userName}</span></p>
                     <p class="popup-item"><strong>Email:</strong> <span id="popupEmail_${cv.cvId}">${cv.gmail}</span></p>
                     <p class="popup-item"><strong>Full name:</strong> <span id="popupFullName_${cv.cvId}">${cv.fullName}</span></p>

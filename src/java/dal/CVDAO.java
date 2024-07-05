@@ -104,7 +104,7 @@ public class CVDAO {
 
     // Thêm CV vào database 
     public boolean addCV(CV cv) {
-        String sql = "INSERT INTO CV (mentor_name,gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar, status_id) \n"
+        String sql = "INSERT INTO CV (mentor_name,gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar, status_id) "
                 + "VALUES"
                 + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {

@@ -479,7 +479,8 @@ const scheduleData = [
         <c:set var="end" value="${schedule.endTime}"/>
     </c:forEach>
 ];
-let allSelectedSlots = [];
+let allSelectedSlots = scheduleData.filter(item => item.status === 'selected')
+        .map(item => ({day: item.day, slot: item.slot, week: item.week}));
 console.log("Initial scheduleData:", scheduleData);
 
 function generateWeeks(startDate) {
@@ -706,21 +707,26 @@ console.log("Items in week 2:", tmp);
     });
     updateTotalPrice();
 }
+                function formatCurrency(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VNĐ";
+                }
 
                 function updateTotalPrice() {
-                let total = 0;
-                let selectedCount = 0;
-                scheduleData.forEach((item) => {
-                if (item.status === "selected") {
-                selectedCount++;
+                    let total = 0;
+                    let selectedCount = 0;
+                    scheduleData.forEach((item) => {
+                        if (item.status === "selected") {
+                            selectedCount++;
+                        }
+                    });
+                    total = ${rate} * selectedCount;
+                    const formattedTotal = formatCurrency(total);
+                    const totalPriceInput = document.getElementById("totalPriceInput");
+                    const totalPriceDisplay = document.getElementById("totalPrice");
+                    totalPriceInput.value = total;
+                    totalPriceDisplay.innerHTML = `Total Price: ` + formattedTotal + ` / ` + selectedCount + ` Slot`;
                 }
-                });
-                total = ${rate} * selectedCount;
-                const totalPriceInput = document.getElementById("totalPriceInput");
-                const totalPriceDisplay = document.getElementById("totalPrice");
-                totalPriceInput.value = total;
-                totalPriceDisplay.innerHTML = `Total Price: ` + total + `/` +(selectedCount)+ ` Slot`;
-                }
+
  function getFormValues() {
                 const action = document.getElementById("statusIndicator").textContent;
                 const start_time = document.getElementById("setStart_time").value;
@@ -919,12 +925,13 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
         return;
     }
 
-   
+
     const requestData = {
         ...formData,
         selectedSlots: selectedSlots
     };
     console.log('Sending data to server:', requestData);
+    console.log('Sending data all Slot: ', allSelectedSlots);
 
     fetch("request", {
         method: "POST",

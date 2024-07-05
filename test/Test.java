@@ -26,25 +26,28 @@ public class Test {
         MentorDAO mentorDao = new MentorDAO();
         RequestDAO dao = new RequestDAO();
 
-        System.out.println("Request List");
-        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "1");
-        for (RequestDTO request : requests) {
-            System.out.println(request);
+        System.out.println(formatStringMoney(1000000));
+        
+
+    }
+    
+    public static String formatStringMoney(long amount) {
+        String formattedAmount;
+        if (amount < 0) {
+            formattedAmount = "-" + formatStringMoney(-amount);
+        } else {
+            String amountStr = String.valueOf(amount);
+            int length = amountStr.length();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                if (i > 0 && (length - i) % 3 == 0) {
+                    sb.append(".");
+                }
+                sb.append(amountStr.charAt(i));
+            }
+            formattedAmount = sb.toString() + " vnđ";
         }
-
-        System.out.println("--------------------------------------------------------");
-
-//        System.out.println("SchedulePublic List");
-//        ArrayList<SchedulePublic> listSchedulePublic = mentorDao.listSlotsCycleByMentor("son", "2024-07-08", "2024-08-04");
-//        for (SchedulePublic schedulePublic : listSchedulePublic) {
-//            System.out.println(schedulePublic);
-//        }
-
-        Request requ = dao.getRequestByStatusSaved("hieu", "son");
-        for (RequestDTO request : requests) {
-            System.out.println(request);
-        }
-
+        return formattedAmount;
     }
 
     private static String convertDateFormat(String date) {

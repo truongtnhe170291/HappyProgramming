@@ -138,12 +138,11 @@
                                         <div id="addPopup" class="popup">
                                             <div class="popup-content">
                                                 <h2>Add New Skill</h2>
-                                                <form id="addForm" action="createSkill" method="post">
-
+                                                <form id="addForm" action="createSkill" method="post" enctype="multipart/form-data">
                                                     <label for="addName">Name:</label>
                                                     <input type="text" id="addName" required name="skillName"/>
-                                                    <label for="newImg" >Image URL</label>
-                                                    <input name="img" type="text" id="newImg" required/>
+                                                    <label for="newImg">Upload Image</label>
+                                                    <input name="img" type="file" id="newImg" required/>
                                                     <label for="newDescription" class="form-label">Description</label>
                                                     <textarea class="form-control" id="newDescription" name="description" rows="3"></textarea>
                                                     <input type="hidden" name="status" value="true">
@@ -168,7 +167,7 @@
                      transform: translate(-50%, -40%);">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form action="skills" method="post">
+                            <form action="skills" method="post" enctype="multipart/form-data">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="updateModalLabel">Update Skill</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -181,7 +180,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="img" class="form-label">Image URL</label>
-                                        <input type="text" class="form-control" id="img" name="img">
+                                        <input type="file" name="img" />
+                                        <input type="hidden" name="existingImg" value="${skill.img}" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Description</label>

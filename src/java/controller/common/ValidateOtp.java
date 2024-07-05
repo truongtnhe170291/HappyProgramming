@@ -70,6 +70,7 @@ public class ValidateOtp extends HttpServlet {
                 account.setPhone(phone);
                 account.setRoleId(roleId);
                 account.setStatusId(1);
+                account.setAvatar("defaultAcount.jpg");
 
                 SignUpDAO signUpDAO = new SignUpDAO();
                 boolean success = false;

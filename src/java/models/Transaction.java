@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  * @author Admin
  */
 public class Transaction {
+
     private int transaction_id;
     private String user_send;
     private String user_receive;
@@ -78,12 +79,33 @@ public class Transaction {
         this.message = message;
     }
 
+    public String formatMoney() {
+        String output = formatStringMoney(this.amount);
+        return output;
+    }
+    
+    public static String formatStringMoney(long amount) {
+        String formattedAmount;
+        if (amount < 0) {
+            formattedAmount = "-" + formatStringMoney(-amount);
+        } else {
+            String amountStr = String.valueOf(amount);
+            int length = amountStr.length();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                if (i > 0 && (length - i) % 3 == 0) {
+                    sb.append(".");
+                }
+                sb.append(amountStr.charAt(i));
+            }
+            formattedAmount = sb.toString() + " vnđ";
+        }
+        return formattedAmount;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" + "transaction_id=" + transaction_id + ", user_send=" + user_send + ", user_receive=" + user_receive + ", create_date=" + create_date + ", amount=" + amount + ", message=" + message + '}';
     }
-    
-    
+
 }
-
-
