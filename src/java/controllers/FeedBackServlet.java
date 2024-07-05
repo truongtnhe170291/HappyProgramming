@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import models.Account;
 import models.FeedBack;
+import services.VietnameseConverter;
 
 /**
  *
@@ -85,7 +86,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             if (account != null) {
                 //lấy thông tin đã nhập từ jsp
                 int star = Integer.parseInt(request.getParameter("rate"));
-                String comment = request.getParameter("comment");
+                String comment = VietnameseConverter.removeDiacritics(request.getParameter("comment"));
                 String mentorName = request.getParameter("mentorname");
                 java.util.Date utilDate = new java.util.Date(); // Current date
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Convert to java.sql.Date
@@ -105,7 +106,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             }
         } catch (Exception e) {     
             e.printStackTrace();
-            response.getWriter().write("Lỗi hệ thống ");
+            response.getWriter().write("System Error");
         }
 }
 
