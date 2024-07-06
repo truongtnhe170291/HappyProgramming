@@ -681,7 +681,7 @@
                                                 </form>
                                             </c:if>
 
-                                            
+
 
                                             <!-- Payment button for 'Wait For Payment' status -->
                                             <c:if test="${request.status.statusName == 'Wait For Payment'}">
@@ -731,6 +731,7 @@
                             </ul>
                         </c:if>
                     </div>
+
                 </div>
             </div>
             <script>

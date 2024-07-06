@@ -18,6 +18,7 @@ import java.nio.file.StandardCopyOption;
 import models.Skill;
 import java.util.ArrayList;
 import java.util.List;
+import services.VietnameseConverter;
 
 @WebServlet(name = "SkillsController", urlPatterns = {"/skills"})
 @MultipartConfig
@@ -84,8 +85,8 @@ public class SkillsController extends HttpServlet {
             throws ServletException, IOException {
         try {
             int skillID = Integer.parseInt(request.getParameter("skillID"));
-            String skillName = request.getParameter("skillName");
-            String description = request.getParameter("description");
+            String skillName = VietnameseConverter.removeDiacritics(request.getParameter("skillName"));
+            String description = VietnameseConverter.removeDiacritics(request.getParameter("description"));
             boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
             // Handle file upload

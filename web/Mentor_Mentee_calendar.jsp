@@ -16,7 +16,12 @@
         <title>Fmaster</title>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
+        <style>
+            .draggable-events{
+                display:flex;
+                justify-content: center;
+            }
+        </style>
 
     </head>
 
@@ -66,17 +71,10 @@
                                                     <h6 class="text-center">My Calendars</h6>
                                                    
                                                 </div>
-                                                  <c:forEach items="${requestScope.listSchedule}" var="schedule">
+                                                  
                  
                 
                                                 <ul class="draggable-event-list">
-                                                    <li class="draggable-event-list__single d-flex align-items-center" data-class="primary">
-                                                        <span class="badge-dot badge-primary"></span>
-                                                        
-                                                        <span class="event-text">${schedule.fullName}</span>
-                                                    </li>
-                                                    
-                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
@@ -314,6 +312,10 @@
             textColor: fullnameSet[fullname].textColor, 
             className: fullnameSet[fullname].className, 
             extendedProps: {
+                selected_id: "${schedule.selected_id}",
+                menteeName: "${schedule.menteeName}",
+                slotID: "${schedule.slotId}",
+                request_id: "${schedule.request_id}",
                 fullName: "${schedule.fullName}",
                 skillName: "${schedule.skillName}",
                 dayOfSlot: "${schedule.dayOfSlot}",
@@ -406,7 +408,7 @@
                             alert("Please select an attendance status.");
                             return;
                         }
-                        updateAttendance(infoEvent.event.id, en.fullName, en.skillName, en.dayOfSlot, en.slotName, attendanceStatus);
+                        updateAttendance(infoEvent.event.id, en.selected_id,en.slotID,en.menteeName,en.request_id,en.fullName, en.skillName, en.dayOfSlot, en.slotName, attendanceStatus);
                     });
                 },
             });
@@ -426,29 +428,38 @@
         }
     });
 
-    function updateAttendance(eventId, fullName, skillName, date, slot, status) {
-        $.ajax({
-            url: 'UpdateAttendanceServlet',
-            type: 'POST',
-            data: {
-                fullName: fullName,
-                skillName: skillName,
-                date: date,
-                slot: slot,
-                status: status
-            },
-            success: function(response) {
-                alert('Attendance updated successfully');
-                var event = calendar.getEventById(eventId);
-                if (event) {
-                    event.setExtendedProp('attendanceStatus', status);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error updating attendance: ' + error);
+   function updateAttendance(eventId, selected_id,slotID,menteeName,request_id,fullName, skillName, date, slot, status) {
+    const data = {
+        selected_id:selected_id,
+        menteeName: menteeName,
+        request_id:request_id,
+        slotID:slotID,
+        fullName: fullName,
+        skillName: skillName,
+        date: date,
+        slot: slot,
+        status: status
+    };
+
+    console.log('Sending data:', data); // Debug line
+
+    $.ajax({
+        url: 'UpdateAttendanceServlet',
+        type: 'POST',
+        contentType: 'application/json', // Ensure correct content type
+        data: JSON.stringify(data), // Convert data to JSON string
+        success: function(response) {
+            alert('Attendance updated successfully');
+            var event = calendar.getEventById(eventId);
+            if (event) {
+                event.setExtendedProp('attendanceStatus', status);
             }
-        });
-    }
+        },
+        error: function(xhr, status, error) {
+            alert('Error updating attendance: ' + error);
+        }
+    });
+}
 
 })(jQuery);
             </script>

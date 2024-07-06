@@ -55,10 +55,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         // Lọc danh sách ngày cho một tuần
         ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
-        //rdao.updateExpiredRequestsStatus();
+        rdao.updateExpiredRequestsStatus();
 
         List<RequestDTO> requests = new ArrayList<>();
-        List<Status> statuses = rdao.getAllStatuses();
+        List<Status> statuses = rdao.getAllStatusesMentee();
         List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
 
         String statusFilter = request.getParameter("statusFilter");
@@ -80,7 +80,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         // Lấy thông tin phân trang
         int page = 1;
-        int pageSize = 10;
+        int pageSize = 3;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }

@@ -178,7 +178,7 @@ public class MentorProfileDAO {
 
         return mentors;
     }
-
+    
     public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
         String sql = "SELECT c.*, a.phone, m.rate FROM CV c JOIN Accounts a ON c.mentor_name = a.user_name\n"
                 + "JOIN Mentors m on m.mentor_name = c.mentor_name\n"
@@ -217,6 +217,8 @@ public class MentorProfileDAO {
 
         return mentor;
     }
+
+
 
     private List<Skill> fetchSkills(int cvID, Connection con) throws SQLException {
         String sql = "select s.* from CVSkills cvs Join Skills s on cvs.skill_id = s.skill_id\n"
@@ -262,6 +264,34 @@ public class MentorProfileDAO {
 
         return feedbacks;
     }
+    
+    public List<FeedBackDTO> get5Feedback(String mentorName) throws SQLException {
+    String sql = "SELECT TOP 5 f.mentee_name, f.star, f.comment, f.time_feedback, a.avatar "
+                + "FROM dbo.FeedBacks f "
+                + "INNER JOIN dbo.Mentees m ON f.mentee_name = m.mentee_name "
+                + "INNER JOIN dbo.Accounts a ON m.mentee_name = a.user_name "
+                + "WHERE f.mentor_name = ? "
+                + "ORDER BY f.time_feedback DESC";
+
+    PreparedStatement ps = con.prepareStatement(sql);
+    ps.setString(1, mentorName); // Set the mentorName parameter
+
+    ResultSet rs = ps.executeQuery();
+
+    List<FeedBackDTO> feedbacks = new ArrayList<>();
+    while (rs.next()) {
+        FeedBackDTO feedback = new FeedBackDTO();
+        feedback.setMenteeName(rs.getString("mentee_name"));
+        feedback.setStar(rs.getInt("star"));
+        feedback.setComment(rs.getString("comment"));
+        feedback.setTimeFeedBack(rs.getDate("time_feedback"));
+        feedback.setAvatar(rs.getString("avatar")); // Set the avatar property
+        feedbacks.add(feedback);
+    }
+
+    return feedbacks;
+}
+
 
     public static void main(String[] args) throws SQLException {
 

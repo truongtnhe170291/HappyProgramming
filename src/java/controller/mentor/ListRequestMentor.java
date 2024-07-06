@@ -53,7 +53,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String menteeNameFilter = request.getParameter("menteeNameFilter");
         String pageParam = request.getParameter("page");
         int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-        int pageSize = 10; // Number of requests per page
+        int pageSize = 3; // Number of requests per page
 
         List<RequestDTO> requests;
         int totalRequests;
@@ -100,8 +100,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("listDays", oneWeekDays);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("statusFilter", statusFilterParam);
-        request.setAttribute("menteeNameFilter", menteeNameFilter);
+        request.setAttribute("statusFilter", statusFilterParam != null ? statusFilterParam : "");
+        request.setAttribute("menteeNameFilter", menteeNameFilter != null ? menteeNameFilter : "");
 
         request.getRequestDispatcher("ListRequestMentor.jsp").forward(request, response);
     } catch (SQLException e) {
@@ -111,11 +111,13 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
 
 
+
+
     public static void main(String[] args) throws SQLException {
       MentorDAO mentorDao = new MentorDAO();
       RequestDAO rdao = new RequestDAO();
-         List<RequestDTO> requests = rdao.getRequestMentorByStatus("son", 2,1,2);
-         int d = rdao.getTotalRequestMentorCountByStatus("son", 2);
+         List<RequestDTO> requests = rdao.getRequestMentorByStatus("son", 1,1,2);
+         int d = rdao.getTotalRequestMentorCountByStatus("son", 1);
            System.out.println(requests.size());
            System.out.println(d);
     }
