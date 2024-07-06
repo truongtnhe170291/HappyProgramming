@@ -927,7 +927,31 @@ public class RequestDAO {
 
         return statuses;
     }
-
+    
+    public List<Status> getAllStatusesMentee() {
+        List<Status> statuses = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            String sql = "select * from RequestStatuses r ";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Status status = new Status(
+                        rs.getInt("status_id"),
+                        rs.getString("status_name")
+                );
+                statuses.add(status);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAllStatuses: " + e.getMessage());
+        }
+        
+        return statuses;
+    }
+    
     public List<RequestDTO> getRequestList(String menteeName) {
         String sql = "SELECT request_id, mentor_name, title, deadline_date, deadline_hour "
                 + "FROM RequestsFormMentee rfm "

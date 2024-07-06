@@ -15,7 +15,27 @@
 
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
-
+            .paginator{
+                border: solid 1px rgba(0, 0, 0, .2);
+                width: fit-content;
+                padding: 10px 12px;
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+            .prev{
+                border-right: solid 1px rgba(0, 0, 0, .2);
+                padding-top: 13px;
+                padding-bottom: 13px;
+                padding-right: 10px;
+                margin-right: 6px;
+            }
+            .next{
+                border-left: solid 1px rgba(0, 0, 0, .2);
+                padding-top: 13px;
+                padding-bottom: 13px;
+                padding-left: 10px;
+                margin-left: 6px;
+            }
         </style>
     </head>
     <body>
@@ -99,15 +119,15 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
-                                            <div>
+                                            <div class="paginator">
                                                 <c:if test="${currentPage > 1}">
-                                                    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}">Previous</a>
+                                                    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}" class="prev">Previous</a>
                                                 </c:if>
 
-                                                Page ${currentPage} of ${totalPages}
+                                                    <span class="pageNum">Page ${currentPage} of ${totalPages}</span>
 
                                                 <c:if test="${currentPage < totalPages}">
-                                                    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}">Next</a>
+                                                    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}" class="next">Next</a>
                                                 </c:if>
                                             </div>
                                         </div>
