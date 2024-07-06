@@ -69,7 +69,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String searchName = request.getParameter("searchName");
         String pageParam = request.getParameter("page");
         int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-        int pageSize = 10; // Number of CVs per page
+        int pageSize = 3; // Number of CVs per page
 
         CVDAO dao = new CVDAO();
         List<CVDTO> list;

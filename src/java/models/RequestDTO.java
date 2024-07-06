@@ -19,6 +19,7 @@ public class RequestDTO extends Request{
     private Status status;
     private String note;
     private int cvId;
+    private int absent, attended;
     public RequestDTO() {
     }
 
@@ -48,6 +49,22 @@ public class RequestDTO extends Request{
     
     public String getNote() {
         return note;
+    }
+
+    public int getAbsent() {
+        return absent;
+    }
+
+    public void setAbsent(int absent) {
+        this.absent = absent;
+    }
+
+    public int getAttended() {
+        return attended;
+    }
+
+    public void setAttended(int attended) {
+        this.attended = attended;
     }
 
     public void setNote(String note) {
@@ -81,7 +98,7 @@ public class RequestDTO extends Request{
 
     @Override
     public String toString() {
-        return super.toString() + "RequestDTO{" + "listSkills=" + listSkills + ", listSchedule=" + listSchedule + ", status=" + status + ", note=" + note + '}';
+        return super.toString() + "RequestDTO{" + "listSkills=" + listSkills + ", listSchedule=" + listSchedule + ", status=" + status + ", note=" + note + '}'+"attend: "+attended+"  Absent: "+absent;
     }
     
     

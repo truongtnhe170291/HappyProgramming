@@ -90,7 +90,7 @@ public class PaymentServlet extends HttpServlet {
                     }
                     if (rdao.updateStatus(requestId, 1)) {
                         // reject request if duplicate schedule
-                        List<Request> listRequest = rdao.getAllRequestByStatusAndMentee(a.getUserName());
+                        List<Request> listRequest = rdao.getAllRequestByMenteeToReject(a.getUserName());
                         List<SchedulePublic> listSchedule = sdao.getScheduleByRequestId(requestId);
                         List<Request> listReject = new ArrayList<>();
 

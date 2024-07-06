@@ -522,6 +522,7 @@ public class ScheduleDAO {
                 schedule.setEndTime(rs.getDate("end_time"));
                 schedule.setSlot_name(rs.getString("slot_name"));
                 schedule.setSkillName(rs.getString("skill_name"));
+                schedule.setRequestId(rs.getInt("request_id"));
                 schedule.setAttendanceStatus(rs.getString("attendance_status"));
                 DayOfWeek nameOfDay = schedule.getDayOfSlot().toLocalDate().getDayOfWeek();
                 schedule.setNameOfDay(nameOfDay);

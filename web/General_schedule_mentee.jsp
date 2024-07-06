@@ -173,6 +173,10 @@ th {
                                                 <div hidden id="renderButton" >Render</div>
                                             </div>
 
+                                <div>
+                                    ${requestScope.listRequests}
+                                    ${requestScope.listSkill}
+                                </div>
      <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const startTimeStr = '${startTime}';
