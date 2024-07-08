@@ -68,7 +68,7 @@ public class ManagerBlog extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String UPLOAD_DIR = "uploads";
+   
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,7 +84,7 @@ public class ManagerBlog extends HttpServlet {
             }
 
             // Save the file to the server
-            String uploadDirectory = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgblog\\";
+            String uploadDirectory = "D:\\SWP\\HappyProgramming\\web\\imgblog\\";
             String filePath = uploadDirectory + fileName;
             try (OutputStream out = new FileOutputStream(filePath)) {
                 InputStream in = filePart.getInputStream();
@@ -109,7 +109,7 @@ public class ManagerBlog extends HttpServlet {
 
             // Save to database
             BlogDAO blogDAO = new BlogDAO();
-            boolean isCreated = blogDAO.createBlog(filePath, link, status);
+            boolean isCreated = blogDAO.createBlog(fileName, link, status);
 
             // Redirect or forward based on success or failure
             if (isCreated) {

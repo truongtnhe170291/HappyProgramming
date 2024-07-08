@@ -130,10 +130,10 @@
                                 <div class="portfolio-item-wrap">
                                     <div class="portfolio-image">
                                            
-                                        <a href="${topblog.link}"><img class="test" src="./img/${topblog.img}" alt="test" /></a>
+                                        <a href="${topblog.link}"><img class="test" src="./imgblog/${topblog.img}" alt="test" /></a>
                                     </div>
                                     <div class="portfolio-description">
-                                        <a title="Paper Pouch!" data-lightbox="image" href="./img/${topblog.img}"><i class="icon-maximize"></i></a>
+                                        <a title="Paper Pouch!" data-lightbox="image" href="./imgblog/${topblog.img}"><i class="icon-maximize"></i></a>
                                         <a href="${topblog.link}"><i class="icon-link"></i></a>
                                     </div>
                                 </div>
