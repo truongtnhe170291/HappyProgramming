@@ -84,7 +84,7 @@ public class BlogDAO {
     // Get List of Blogs
     public List<Blog> getBlogs() {
         List<Blog> blogs = new ArrayList<>();
-        String query = "SELECT * FROM Blogs";
+        String query = "SELECT * FROM Blogs ";
         try {
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
@@ -104,7 +104,7 @@ public class BlogDAO {
     
     public List<Blog> getTop4newBlogs() {
     List<Blog> blogs = new ArrayList<>();
-    String query = "SELECT TOP 4 * FROM Blogs ORDER BY blog_id DESC";
+    String query = "SELECT TOP 4 * FROM Blogs WHERE status = 1 ORDER BY blog_id DESC";
     try {
         ps = con.prepareStatement(query);
         rs = ps.executeQuery();

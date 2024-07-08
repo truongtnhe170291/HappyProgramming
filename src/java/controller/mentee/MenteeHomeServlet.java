@@ -80,7 +80,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("topMentors", topMentors);
 
         // Add logging
-        System.out.println("Top Blogs: " + topblog);
+        System.out.println("Top 4 Blogs: " + topblog);
         System.out.println("Top Mentors: " + topMentors);
 
          request.getRequestDispatcher("homes.jsp").forward(request, response);

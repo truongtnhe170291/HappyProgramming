@@ -124,15 +124,17 @@
 
                     <div id="portfolio" class="grid-layout portfolio-4-columns" data-margin="0">
                         <!-- portfolio item -->
-                        <c:forEach items="${topblog}" var="Blogs">
+                        
+                        <c:forEach items="${requestScope.topblog}" var="topblog">
                             <div class="portfolio-item img-zoom ct-photography ct-marketing ct-media">
                                 <div class="portfolio-item-wrap">
                                     <div class="portfolio-image">
-                                        <a href="${Blogs.link}"><img class="test" src="./img/${Blogs.img}" alt=""></a>
+                                           
+                                        <a href="${topblog.link}"><img class="test" src="./img/${topblog.img}" alt="test" /></a>
                                     </div>
                                     <div class="portfolio-description">
-                                        <a title="Paper Pouch!" data-lightbox="image" href="./img/${Blogs.img}"><i class="icon-maximize"></i></a>
-                                        <a href="${Blogs.link}"><i class="icon-link"></i></a>
+                                        <a title="Paper Pouch!" data-lightbox="image" href="./img/${topblog.img}"><i class="icon-maximize"></i></a>
+                                        <a href="${topblog.link}"><i class="icon-link"></i></a>
                                     </div>
                                 </div>
                             </div>

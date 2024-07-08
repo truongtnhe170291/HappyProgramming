@@ -86,17 +86,21 @@ public class ManagerBlog extends HttpServlet {
             // Save the file to the server
             String uploadDirectory = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgblog\\";
             String filePath = uploadDirectory + fileName;
-
             try (OutputStream out = new FileOutputStream(filePath)) {
                 InputStream in = filePart.getInputStream();
                 byte[] bytes = new byte[in.available()];
-                in.read(bytes);
-                out.write(bytes);
+                int bytesRead = in.read(bytes);
+                if (bytesRead != -1) {
+                    out.write(bytes);
+                } else {
+                    System.out.println("No bytes read from the input stream.");
+                    fileName = "default_blog_img.jpg"; // Handle default image if saving fails
+                }
             } catch (IOException e) {
+                e.printStackTrace(); // Print the stack trace for more details
                 System.out.println("Error saving file: " + e.getMessage());
                 fileName = "default_blog_img.jpg"; // Handle default image if saving fails
             }
-
             // Get other form data
             String link = VietnameseConverter.removeDiacritics(request.getParameter("link"));
 
