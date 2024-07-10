@@ -85,6 +85,7 @@ public class RequestServlet extends HttpServlet {
                 request.setAttribute("Editable", "Editable");
                 Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
                 List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+               
                 request.setAttribute("scheduleOfMentee", listScheduleByMentee);
                 request.setAttribute("skillOfMentee", s);
                 request.setAttribute("requestMentee", requ);
@@ -101,6 +102,11 @@ public class RequestServlet extends HttpServlet {
 
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
+         
+               
+          
+  List<SchedulePublic> listSchedule_General = scheduleDAO.getScheduleByMenteeName(acc.getUserName());
+                request.setAttribute("listSchedule_gereral", listSchedule_General);
             request.setAttribute("mon", listSchedule.get(0).getStartTime());
             request.setAttribute("listSlot", listSlot);
             request.setAttribute("skills", list);

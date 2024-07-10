@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import models.Request;
 import models.RequestDTO;
-import models.SchedulePublic;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license

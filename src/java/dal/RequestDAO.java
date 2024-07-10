@@ -81,6 +81,7 @@ public class RequestDAO {
 //        // Trả về danh sách request
 //        return requests;
 //    }
+    
     public List<RequestDTO> getRequestOfMenteeInDeadlineByStatus(String menteeName, int page, int pageSize) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         try {
@@ -317,7 +318,7 @@ public class RequestDAO {
         List<RequestDTO> requests = new ArrayList<>();
         String sql = " SELECT * \n"
                 + "                     FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name\n"
-                + "                     WHERE r.mentor_name = ?\n"
+                + "                     WHERE r.mentor_name = ? AND r.status_id <> 6\n"
                 + "                     order by [deadline_date] DESC\n"
                 + "					 OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
         
@@ -365,7 +366,7 @@ public class RequestDAO {
     }
     
     public int getTotalRequestMentor(String mentorName) {
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee WHERE mentor_name = ?";
+        String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE mentor_name = ? AND r.status_id <> 6";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, mentorName);
             try (ResultSet rs = ps.executeQuery()) {
@@ -380,14 +381,14 @@ public class RequestDAO {
     }
     
     public List<RequestDTO> getRequestMentorByStatus(String mentorName, int statusId, int page, int pageSize) throws SQLException {
-        List<RequestDTO> requests = new ArrayList<>();
-        String sql = "SELECT r.*, c.cv_id, c.mentor_name "
-                + "FROM RequestsFormMentee r "
-                + "JOIN CV c ON c.mentor_name = r.mentor_name "
-                + "WHERE r.mentor_name = ? AND r.status_id = ? "
-                + "ORDER BY r.deadline_date DESC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        
+    List<RequestDTO> requests = new ArrayList<>();
+    String sql = "SELECT r.*, c.cv_id, c.mentor_name " +
+                 "FROM RequestsFormMentee r " +
+                 "JOIN CV c ON c.mentor_name = r.mentor_name " +
+                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.status_id <> 6 " +
+                 "ORDER BY r.deadline_date DESC " +
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             int offset = (page - 1) * pageSize;
             ps.setString(1, mentorName);
@@ -431,98 +432,101 @@ public class RequestDAO {
         }
         return requests;
     }
-    
-    public int getTotalRequestMentorCountByStatus(String mentorName, int statusId) {
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.status_id = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, mentorName);
-            ps.setInt(2, statusId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+
+    public int getTotalRequestMentorCountByStatus(String mentorName, int statusId) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.status_id = ? AND r.status_id <> 6";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, mentorName);
+        ps.setInt(2, statusId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-    
-    public List<RequestDTO> getRequestMentorByMenteeName(String mentorName, String menteeName, int page, int pageSize) throws SQLException {
-        List<RequestDTO> requests = new ArrayList<>();
-        String sql = "SELECT r.*, c.cv_id, c.mentor_name "
-                + "FROM RequestsFormMentee r "
-                + "JOIN CV c ON c.mentor_name = r.mentor_name "
-                + "WHERE r.mentor_name = ? AND r.mentee_name LIKE ? "
-                + "ORDER BY r.deadline_date DESC "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            int offset = (page - 1) * pageSize;
-            ps.setString(1, mentorName);
-            ps.setString(2, "%" + menteeName + "%"); // Using LIKE for partial matching
-            ps.setInt(3, offset);
-            ps.setInt(4, pageSize);
-            
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    RequestDTO request = new RequestDTO();
-                    request.setRequestId(rs.getInt("request_id"));
-                    request.setMentorName(rs.getString("mentor_name"));
-                    request.setMenteeName(rs.getString("mentee_name"));
-                    request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
-                    request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
-                    request.setDescription(rs.getString("description"));
-                    request.setTitle(rs.getString("title"));
-                    request.setPrice(rs.getInt("price"));
-                    request.setNote(rs.getString("note"));
-                    request.setCvId(rs.getInt("cv_id"));
-
-                    // Fetch status
-                    int fetchedStatusId = rs.getInt("status_id");
-                    Status status = fetchStatusById(fetchedStatusId, con);
-                    request.setStatus(status);
-
-                    // Fetch skills and schedule for the request
-                    List<Skill> skills = fetchRequestSkills(request.getRequestId(), con);
-                    request.setListSkills(skills);
-                    
-                    ScheduleDAO scheduleDAO = new ScheduleDAO();
-                    List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(request.getRequestId());
-                    request.setListSchedule(listSchedule);
-                    
-                    requests.add(request);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error in getRequestMentorByMenteeName: " + e.getMessage());
-            throw e; // Rethrow the exception to be handled by the caller
-        }
-        return requests;
     }
-    
-    public int getTotalRequestMentorCountByMenteeName(String mentorName, String menteeName) {
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.mentee_name LIKE ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, mentorName);
-            ps.setString(2, "%" + menteeName + "%"); // Using LIKE for partial matching
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+
+   public List<RequestDTO> getRequestMentorByMenteeName(String mentorName, String menteeName, int page, int pageSize) throws SQLException {
+    List<RequestDTO> requests = new ArrayList<>();
+    String sql = "SELECT r.*, c.cv_id, c.mentor_name " +
+                 "FROM RequestsFormMentee r " +
+                 "JOIN CV c ON c.mentor_name = r.mentor_name " +
+                 "WHERE r.mentor_name = ? AND r.mentee_name LIKE ? AND r.status_id <> 6 " +
+                 "ORDER BY r.deadline_date DESC " +
+                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        int offset = (page - 1) * pageSize;
+        ps.setString(1, mentorName);
+        ps.setString(2, "%" + menteeName + "%"); // Using LIKE for partial matching
+        ps.setInt(3, offset);
+        ps.setInt(4, pageSize);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+                request.setCvId(rs.getInt("cv_id"));
+
+                // Fetch status
+                int fetchedStatusId = rs.getInt("status_id");
+                Status status = fetchStatusById(fetchedStatusId, con);
+                request.setStatus(status);
+
+                // Fetch skills and schedule for the request
+                List<Skill> skills = fetchRequestSkills(request.getRequestId(), con);
+                request.setListSkills(skills);
+
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(request.getRequestId());
+                request.setListSchedule(listSchedule);
+
+                requests.add(request);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return 0;
+    } catch (SQLException e) {
+        System.out.println("Error in getRequestMentorByMenteeName: " + e.getMessage());
+        throw e; // Rethrow the exception to be handled by the caller
     }
+    return requests;
+}
+
+public int getTotalRequestMentorCountByMenteeName(String mentorName, String menteeName) {
+    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r WHERE r.mentor_name = ? AND r.mentee_name LIKE ? AND r.status_id <> 6";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, mentorName);
+        ps.setString(2, "%" + menteeName + "%"); // Using LIKE for partial matching
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
     
+
+
     public List<RequestDTO> getRequestMentorByStatusAndMenteeName(String mentorName, int statusId, String menteeName, int page, int pageSize) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         String sql = "SELECT r.*, c.cv_id, c.mentor_name "
                 + "FROM RequestsFormMentee r "
                 + "JOIN CV c ON c.mentor_name = r.mentor_name "
-                + "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ? "
+                + "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ? AND r.status_id <> 6 "
                 + "ORDER BY r.deadline_date DESC "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         
@@ -570,25 +574,74 @@ public class RequestDAO {
         }
         return requests;
     }
-    
-    public int getTotalRequestMentorCountByStatusAndMenteeName(String mentorName, int statusId, String menteeName) {
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee r "
-                + "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, mentorName);
-            ps.setInt(2, statusId);
-            ps.setString(3, "%" + menteeName + "%"); // Using LIKE for partial matching
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+
+   public int getTotalRequestMentorCountByStatusAndMenteeName(String mentorName, int statusId, String menteeName) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM RequestsFormMentee r " +
+                 "WHERE r.mentor_name = ? AND r.status_id = ? AND r.mentee_name LIKE ? AND r.status_id <> 6";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, mentorName);
+        ps.setInt(2, statusId);
+        ps.setString(3, "%" + menteeName + "%"); // Using LIKE for partial matching
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
-    
+   }
+   
+   public List<RequestDTO> getRequestProcessing(String mentorName) throws SQLException {
+    List<RequestDTO> requests = new ArrayList<>();
+    String sql = "SELECT TOP 5 r.*, c.cv_id, c.mentor_name " +
+                 "FROM RequestsFormMentee r " +
+                 "JOIN CV c ON c.mentor_name = r.mentor_name " +
+                 "WHERE r.mentor_name = ? AND r.status_id = 2 " +
+                 "ORDER BY r.deadline_date DESC";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, mentorName);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+                request.setCvId(rs.getInt("cv_id"));
+
+                // Fetch status
+                int fetchedStatusId = rs.getInt("status_id");
+                Status status = fetchStatusById(fetchedStatusId, con);
+                request.setStatus(status);
+
+                // Fetch skills and schedule for the request
+                List<Skill> skills = fetchRequestSkills(request.getRequestId(), con);
+                request.setListSkills(skills);
+
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(request.getRequestId());
+                request.setListSchedule(listSchedule);
+
+                requests.add(request);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error in getRequestProcessing: " + e.getMessage());
+        throw e; // Rethrow the exception to be handled by the caller
+    }
+    return requests;
+}
+
+
     public List<SchedulePublic> getScheduleByMenteeName(String menteeName) {
         List<SchedulePublic> list = new ArrayList<>();
         try {
@@ -664,7 +717,7 @@ public class RequestDAO {
         
         return requests;
     }
-    
+//
     public List<RequestDTO> getRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime, int page, int pageSize) throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         PreparedStatement ps = null;
@@ -834,13 +887,59 @@ public class RequestDAO {
         return mentees;
     }
     
+    public int getCountMentee(String mentorName) {
+    int count = 0;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        String sql = "SELECT COUNT(DISTINCT mentee_name) AS countMentee FROM RequestsFormMentee WHERE mentor_name = ?";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            count = rs.getInt("countMentee");
+        }
+    } catch (SQLException e) {
+        System.out.println("getCountMentee: " + e.getMessage());
+    } 
+    
+    return count;
+}
+
+
     public List<Status> getAllStatuses() {
         List<Status> statuses = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         try {
-            String sql = "SELECT * FROM RequestStatuses";
+            String sql = "select * from RequestStatuses r where r.status_id <> 6";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Status status = new Status(
+                        rs.getInt("status_id"),
+                        rs.getString("status_name")
+                );
+                statuses.add(status);
+            }
+        } catch (SQLException e) {
+            System.out.println("getAllStatuses: " + e.getMessage());
+        }
+        
+        return statuses;
+    }
+    
+    public List<Status> getAllStatusesMentee() {
+        List<Status> statuses = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            String sql = "select * from RequestStatuses r ";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             

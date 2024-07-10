@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import models.Blog;
+import services.VietnameseConverter;
 
 /**
  *
@@ -117,7 +118,7 @@ public class UpdateBlog extends HttpServlet {
             }
 
             // Get other form data
-            String link = request.getParameter("link");
+            String link = VietnameseConverter.removeDiacritics(request.getParameter("link"));
 
             // Update the database
             BlogDAO blogDAO = new BlogDAO();

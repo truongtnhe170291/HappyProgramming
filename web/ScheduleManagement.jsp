@@ -538,26 +538,41 @@
                                     </div>
 
                                     <div>
-                                        <c:if test="${currentPage > 1}">
-                                            <a
-                                                href="HandleSlotMentor?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Previous</a>
-                                        </c:if>
-                                        <c:forEach begin="1" end="${totalPages}" var="i">
-                                            <c:choose>
-                                                <c:when test="${i == currentPage}">
-                                                    <span>${i}</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <a
-                                                        href="HandleSlotMentor?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}">${i}</a>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                        <c:if test="${currentPage < totalPages}">
-                                            <a
-                                                href="HandleSlotMentor?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}">Next</a>
+                                        <c:if test="${totalPages > 1}">
+                                            <ul class="pagination">
+                                                <c:if test="${currentPage > 1}">
+                                                    <li>
+                                                        <a href="HandleSlotMentor?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">Previous</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                                    <c:choose>
+                                                        <c:when test="${i == currentPage}">
+                                                            <li><span>${i}</span></li>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                            <li>
+                                                                <a href="HandleSlotMentor?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">${i}</a>
+                                                            </li>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                                <c:if test="${currentPage < totalPages}">
+                                                    <li>
+                                                        <a href="HandleSlotMentor?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">Next</a>
+                                                    </li>
+                                                </c:if>
+                                            </ul>
                                         </c:if>
                                     </div>
+
+
+
+
+
+
+
+
 
                                 </div>
                             </div>
