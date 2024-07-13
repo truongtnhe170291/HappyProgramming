@@ -12,10 +12,14 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import models.Account;
 
-
-
-@WebServlet("/NewPassword")
+@WebServlet(name = "NewPassword", urlPatterns = {"/newpassword"})
 public class NewPassword extends HttpServlet {
+
+     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+         request.getRequestDispatcher("newPassword.jsp").forward(request, response);
+    } 
 
         @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
