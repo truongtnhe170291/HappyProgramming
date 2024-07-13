@@ -68,7 +68,7 @@ public class ManagerBlog extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String UPLOAD_DIR = "uploads";
+   
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,19 +84,23 @@ public class ManagerBlog extends HttpServlet {
             }
 
             // Save the file to the server
-            String uploadDirectory = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgblog\\";
+            String uploadDirectory = "D:\\SWP\\HappyProgramming\\web\\imgblog\\";
             String filePath = uploadDirectory + fileName;
-
             try (OutputStream out = new FileOutputStream(filePath)) {
                 InputStream in = filePart.getInputStream();
                 byte[] bytes = new byte[in.available()];
-                in.read(bytes);
-                out.write(bytes);
+                int bytesRead = in.read(bytes);
+                if (bytesRead != -1) {
+                    out.write(bytes);
+                } else {
+                    System.out.println("No bytes read from the input stream.");
+                    fileName = "default_blog_img.jpg"; // Handle default image if saving fails
+                }
             } catch (IOException e) {
+                e.printStackTrace(); // Print the stack trace for more details
                 System.out.println("Error saving file: " + e.getMessage());
                 fileName = "default_blog_img.jpg"; // Handle default image if saving fails
             }
-
             // Get other form data
             String link = VietnameseConverter.removeDiacritics(request.getParameter("link"));
 
@@ -105,7 +109,7 @@ public class ManagerBlog extends HttpServlet {
 
             // Save to database
             BlogDAO blogDAO = new BlogDAO();
-            boolean isCreated = blogDAO.createBlog(filePath, link, status);
+            boolean isCreated = blogDAO.createBlog(fileName, link, status);
 
             // Redirect or forward based on success or failure
             if (isCreated) {

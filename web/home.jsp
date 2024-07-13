@@ -224,6 +224,52 @@
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
+            .dashboard-container {
+            background-color: #f8f9fa !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+        }
+        .nav-author__info {
+            display: flex !important;
+            align-items: center !important;
+            padding: 20px !important;
+            background-color: #fff !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+            margin-bottom: 20px !important;
+        }
+        .author-img img {
+            width: 80px !important;
+            height: 80px !important;
+            border-radius: 50% !important;
+            margin-right: 20px !important;
+        }
+        .highlight {
+            color: #007bff !important;
+        }
+        .skills, .rate-section, .overview-section {
+            padding: 20px !important;
+            background-color: #fff !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+            margin-bottom: 20px !important;
+        }
+        .btn-add-skill, .btn-set-rate {
+            margin-top: 10px !important;
+        }
+        .skills p {
+            margin: 0 !important;
+            font-size: 16px !important;
+        }
+        .dashboard-container{
+            margin-bottom: 20px;
+        }
+        .rating{
+            float:right;
+        }
+        .card_test{
+            opacity: 0;
+        }
         </style>
 
 
@@ -265,42 +311,40 @@
                             </div>
 
 
-                            <div class="nav-author__info">
-                                <div class="author-img">
-                                    <img src="./img/${userAvatar}" alt="Avatar">
-                                </div>
-                                <div class="author-details">
-                                    <h2>Hello, <span class="highlight">${userFullName}</span></h2>
-                                </div>
-                            </div>
+                          <div class="container dashboard-container">
+        <div class="nav-author__info">
+            <div class="author-img">
+                <img src="./img/${userAvatar}" alt="Avatar">
+            </div>
+            <div class="author-details">
+                <h2>Hello, <span class="highlight">${userFullName}</span></h2>
+            </div>
+        </div>
 
-                            <div class="skills">
-                                <h3>Top Price Of Skill :</h3>
-                                <c:forEach items="${skillList}" var="skill">
-                                    <p>• ${skill.skillName}</p>
-                                </c:forEach>
-                                <form action="cv" method="post">
-                                    <button type="submit" class="btn-add-skill">Add CV skills </button>
-                                </form>
-                            </div>
-                                
-                                
+        <div class="skills">
+            <h3>Top Price Of Skill :</h3>
+            <c:forEach items="${skillList}" var="skill">
+                <p>• ${skill.skillName}</p>
+            </c:forEach>
+            
+        </div>
 
-                            <div class="rate-section">
-                                <h2>My Salary : 
-                                    <span class="tuition-price">
-                                        <fmt:formatNumber value="${rate}" type="number" maxFractionDigits="0" minFractionDigits="0" /> VND
-                                    </span>
-                                </h2>
-                                <form action="cv" method="post">
-                                    <button type="submit" class="btn-set-rate">Set Rate</button>
-                                </form>
-                            </div>
+        <div class="rate-section">
+            <h2>My Salary: 
+                <span class="tuition-price">
+                    <fmt:formatNumber value="${rate}" type="number" maxFractionDigits="0" minFractionDigits="0" /> VND
+                </span>
+            </h2>
+        </div>
 
-                            <form action="StatisticRequestMentor" method="GET">
-                                <h2>Over View Request</h2>
-                                <button type="submit" class="btn btn-primary">View Details</button>
-                            </form>
+        <div class="overview-section">
+            <h2>Over View Request</h2>
+            <form action="StatisticRequestMentor" method="GET">
+                <button type="submit" class="btn btn-primary">View Details</button>
+            </form>
+            <canvas id="requestChart"></canvas>
+        </div>
+    </div>
 
 
 
@@ -318,7 +362,11 @@
                                         <div class="ap-po-details__titlebar">
                                             <p>Total Requests</p>
                                             <h1>${staticMentor.invitedRequests}</h1>
-
+<div class="ap-po-details-time card_test">
+                                                <span class="color-success"><i class="las la-arrow-up"></i>
+                                                    <strong>${staticMentor.completePercentage}%</strong></span>
+                                                <small>Accept</small>
+                                            </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-primary">
                                             <i class="uil uil-arrow-growth"></i>
@@ -395,7 +443,11 @@
                                         <div class="ap-po-details__titlebar">
                                             <p>Total Mentee Requests</p>
                                             <h1>${countMentee}</h1>
-
+<div class="ap-po-details-time card_test">
+                                                <span class="color-success"><i class="las la-arrow-up"></i>
+                                                    <strong>${staticMentor.completePercentage}%</strong></span>
+                                                <small>Accept</small>
+                                            </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-info">
                                             <i class="uil uil-tachometer-fast"></i>
@@ -514,6 +566,30 @@
         </div>
         <div class="overlay-dark-sidebar"></div>
         <div class="customizer-overlay"></div>
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('requestChart').getContext('2d');
+        const requestChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Number of Requests',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
         <script>
             document.addEventListener('DOMContentLoaded', (event) => {
                 document.querySelectorAll('.rating').forEach(rating => {

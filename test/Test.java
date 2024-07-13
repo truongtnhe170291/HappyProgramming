@@ -4,7 +4,9 @@ import dal.RequestDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -25,11 +27,24 @@ public class Test {
         MentorDAO mentorDao = new MentorDAO();
         RequestDAO dao = new RequestDAO();
 
-        System.out.println(formatStringMoney(1000000));
-        
+        LocalDate today = LocalDate.now();
 
+        String startTimeStr = "2024-07-08";
+        String endTimeStr = "2024-07-14";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
+        LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
+
+        long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+        LocalDate middleDate = startDate.plusDays(daysBetween / 2);
+
+        System.out.println(middleDate.format(formatter));
+        System.out.println(today.toString());
+        
+        
     }
-    
+
     public static String formatStringMoney(long amount) {
         String formattedAmount;
         if (amount < 0) {

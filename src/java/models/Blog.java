@@ -47,6 +47,14 @@ public class Blog {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Blog{" + "blogId=" + blogId + ", img=" + img + ", link=" + link + ", status=" + status + '}';
+    }
+    
+    
+    
 }
 
 

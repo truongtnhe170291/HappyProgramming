@@ -6,6 +6,7 @@ package controller.mentee;
 
 import dal.CVDAO;
 import dal.MentorDAO;
+import dal.MentorProfileDAO;
 import dal.RequestDAO;
 import dal.ScheduleDAO;
 import dal.SkillDAO;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ import models.Account;
 import models.CV;
 import models.Day;
 import models.Mentor;
+import models.MentorProfileDTO;
 import models.Request;
 import models.RequestDTO;
 import models.SchedulePublic;
@@ -110,7 +113,37 @@ public class ViewDetailRequest extends HttpServlet {
             request.setAttribute("requests", requests);
             request.setAttribute("listSlot", listSlots);
 
-            request.getRequestDispatcher("ViewDetail_MenteeRequest.jsp").forward(request, response);
+            // kiểm tra xem hôm nay có phải là ngày nằm giữa các ngày của requestID này không
+            String startTimeStr = listSchedule.get(0).getDayOfSlot().toString();
+            String endTimeStr = listSchedule.get(listSchedule.size() - 1).getDayOfSlot().toString();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
+            LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
+
+            long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+            LocalDate middleDate = startDate.plusDays(daysBetween / 2);
+
+//            System.out.println(middleDate.format(formatter));
+//            System.out.println(today);
+            if (today.isEqual(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
+                MentorDAO mentorDAO = new MentorDAO();
+                MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+                MentorProfileDTO mentor = mentorProfileDAO.getOneMentor(requests.get(0).getMentorName());
+                request.setAttribute("mentor", mentor);
+                request.setAttribute("mentorName", requests.get(0).getMentorName());
+                request.setAttribute("requestId", requestId);
+                
+                
+                
+//                System.out.println(mentor.getAvatar());
+                request.getRequestDispatcher("Rate_Comment.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("ViewDetail_MenteeRequest.jsp").forward(request, response);
+            }
+
+//            System.out.println(dateStrBegin);
+//            System.out.println(dateStrEnd);
         } catch (SQLException e) {
             throw new ServletException(e);
         }

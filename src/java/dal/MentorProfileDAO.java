@@ -97,40 +97,51 @@ public class MentorProfileDAO {
         return mentorsWithSkill;
     }
 
-    public List<MentorProfileDTO> getTop5Mentors() throws SQLException {
-        String sql = "    SELECT TOP (5) A.[user_name]\n" +
-"     , A.[gmail]\n" +
-"     , c.cv_id\n" +
-"     , A.[full_name]\n" +
-"     , A.[pass_word]\n" +
-"     , A.[dob]\n" +
-"     , A.[sex]\n" +
-"     , A.[address]\n" +
-"     , A.[phone]\n" +
-"     , A.[avatar]\n" +
-"     , A.[role_id]\n" +
-"     , A.[status_id]\n" +
-"     , m.rate\n" +
-"     , c.profession\n" +
-"     , c.profession_intro\n" +
-"     , c.achievement_description\n" +
-"     , c.service_description\n" +
-"     , ISNULL(f.avg_star, 0) AS avg_star\n" +
-"FROM [HappyProgrammingDB].[dbo].[Accounts] A\n" +
-"JOIN [HappyProgrammingDB].[dbo].[RequestsFormMentee] RFM\n" +
-"     ON A.[user_name] = RFM.[mentor_name]\n" +
-"JOIN CV c on c.mentor_name = A.[user_name]\n" +
-"JOIN Mentors m on m.mentor_name = A.[user_name]\n" +
-"LEFT JOIN (\n" +
-"    SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star\n" +
-"    FROM dbo.FeedBacks\n" +
-"    GROUP BY mentor_name\n" +
-") f ON A.[user_name] = f.mentor_name\n" +
-"WHERE A.[role_id] = 2 \n" +
-"  AND RFM.[status_id] = 1\n" +
-"GROUP BY A.[user_name], A.[gmail], A.[full_name], A.[pass_word], A.[dob], A.[sex], A.[address], A.[phone], A.[avatar], A.[role_id], A.[status_id], c.cv_id, m.rate, c.profession,\n" +
-"         c.profession_intro, c.achievement_description, c.service_description, f.avg_star\n" +
-"ORDER BY m.rate DESC;";
+    public List<MentorProfileDTO> getTop3Mentors() throws SQLException {
+      String sql = "WITH RankedMentors AS (" +
+             "    SELECT " +
+             "        A.[user_name], " +
+             "        A.[gmail], " +
+             "        c.cv_id, " +
+             "        A.[full_name], " +
+             "        A.[pass_word], " +
+             "        A.[dob], " +
+             "        A.[sex], " +
+             "        A.[address], " +
+             "        A.[phone], " +
+             "        A.[avatar], " +
+             "        A.[role_id], " +
+             "        A.[status_id], " +
+             "        m.rate, " +
+             "        c.profession, " +
+             "        c.profession_intro, " +
+             "        c.achievement_description, " +
+             "        c.service_description, " +
+             "        ISNULL(f.avg_star, 0) AS avg_star, " +
+             "        ROW_NUMBER() OVER(PARTITION BY A.[user_name] ORDER BY m.rate DESC) AS RowNum " +
+             "    FROM " +
+             "        [HappyProgrammingDB].[dbo].[Accounts] A " +
+             "    JOIN " +
+             "        [HappyProgrammingDB].[dbo].[RequestsFormMentee] RFM ON A.[user_name] = RFM.[mentor_name] " +
+             "    JOIN " +
+             "        [HappyProgrammingDB].[dbo].[CV] c ON c.mentor_name = A.[user_name] " +
+             "    JOIN " +
+             "        [HappyProgrammingDB].[dbo].[Mentors] m ON m.mentor_name = A.[user_name] " +
+             "    LEFT JOIN " +
+             "        (SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star " +
+             "         FROM [HappyProgrammingDB].[dbo].[FeedBacks] " +
+             "         GROUP BY mentor_name " +
+             "        ) f ON A.[user_name] = f.mentor_name " +
+             "    WHERE " +
+             "        A.[role_id] = 2 " +
+             "        AND RFM.[status_id] = 1 " +
+             ") " +
+             "SELECT * " +
+             "FROM RankedMentors " +
+             "WHERE RowNum = 1 " +
+             "ORDER BY rate DESC " +
+             "OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY;";
+
 
         ps = con.prepareStatement(sql);
         rs = ps.executeQuery();
@@ -214,7 +225,7 @@ public class MentorProfileDAO {
                 + "join cv c on c.cv_id = cvs.cv_id\n"
                 + "where c.status_id = 2 and cvs.cv_id = ?";
 
-        PreparedStatement ps = con.prepareStatement(sql);
+         ps = con.prepareStatement(sql);
         ps.setInt(1, cvID); // Set the mentorName parameter
 
         ResultSet rs = ps.executeQuery();
@@ -235,7 +246,7 @@ public class MentorProfileDAO {
                 + "INNER JOIN dbo.Accounts a ON m.mentee_name = a.user_name "
                 + "WHERE f.mentor_name = ?";
 
-        PreparedStatement ps = con.prepareStatement(sql);
+         ps = con.prepareStatement(sql);
         ps.setString(1, mentorName); // Set the mentorName parameter
 
         ResultSet rs = ps.executeQuery();
