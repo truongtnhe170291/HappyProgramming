@@ -28,6 +28,7 @@ import models.MentorProfileDTO;
 import models.RequestDTO;
 import models.Skill;
 import models.StaticMentor;
+import services.AccountService;
 import services.CVService;
 
 /**
@@ -42,17 +43,17 @@ public class Home extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            
             Account currentAccount = (Account) request.getSession().getAttribute("user");
             if (currentAccount == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
-
-            CVService cvService = CVService.getInstance();
-            CV cv = cvService.getCVByUserName(currentAccount.getUserName());
-            request.setAttribute("userAvatar", currentAccount.getAvatar());
-            request.setAttribute("userFullName", currentAccount.getFullName());
-            request.setAttribute("cv", cv);
+            AccountService accountService = AccountService.getInstance();
+            Account acc = accountService.getAccount(currentAccount.getUserName(), currentAccount.getPassword());
+            request.setAttribute("userAvatar", acc.getAvatar());
+            request.setAttribute("userFullName", acc.getFullName());
+            
             ScheduleDAO sdao = new ScheduleDAO();
             MentorDAO mentorDAO = new MentorDAO();
             double rate = sdao.calculateTotalEarnings(currentAccount.getUserName());

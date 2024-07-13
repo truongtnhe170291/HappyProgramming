@@ -84,7 +84,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex align-items-center user-member__title mb-30 mt-30">
-                                <h4 class="text-capitalize">add user</h4>
+                                <h4 class="text-capitalize">Update CV of mentor</h4>
                             </div>
                         </div>
                     </div>

@@ -270,7 +270,7 @@
                                     <img src="./img/${userAvatar}" alt="Avatar">
                                 </div>
                                 <div class="author-details">
-                                    <h2>Hello, <span class="highlight">${userFullName}</span></h2>
+                                    <h2>Hello, <span class="highlight">${userFullName} <span></h2>
                                 </div>
                             </div>
 
