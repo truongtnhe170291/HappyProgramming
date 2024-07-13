@@ -5,10 +5,15 @@
         <group>
             <file>file:/D:/SWP/HappyProgramming/src/java/controller/manager/ManagerBlog.java</file>
             <file>file:/D:/SWP/HappyProgramming/src/java/controller/manager/ListCVController.java</file>
+            <file>file:/D:/SWP/HappyProgramming/web/Mentee_Request.jsp</file>
             <file>file:/D:/SWP/HappyProgramming/src/java/controller/manager/UpdateBlog.java</file>
             <file>file:/D:/SWP/HappyProgramming/src/java/controller/manager/EditBlog.java</file>
             <file>file:/D:/SWP/HappyProgramming/src/java/controller/mentor/CVServlet.java</file>
+            <file>file:/D:/SWP/HappyProgramming/web/courseListSkillDetail.jsp</file>
             <file>file:/D:/SWP/HappyProgramming/web/homes.jsp</file>
+            <file>file:/D:/SWP/HappyProgramming/web/ApplyCV.jsp</file>
+            <file>file:/D:/SWP/HappyProgramming/src/java/dal/FeedBackDAO.java</file>
+            <file>file:/D:/SWP/HappyProgramming/web/MemberProfile.jsp</file>
         </group>
     </open-files>
 </project-private>
