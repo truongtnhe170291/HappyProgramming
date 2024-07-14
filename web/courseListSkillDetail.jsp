@@ -155,7 +155,7 @@
                                 <c:forEach items="${requestScope.mentors}" var="member"> 
                                     <a href="MentorProfileServlet?cvId=${member.cv_id}">
                                         <div class="slide">
-                                            <img src="./img/${member.avatar}" alt="Template 1"/>
+                                            <img src="./imgcv/${member.avatar}" alt="Template 1"/>
                                             <a href="MentorProfileServlet?cvId=${member.cv_id}">
                                                 <h3>${member.getFull_name()}</h3>
                                             </a>

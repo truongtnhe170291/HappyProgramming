@@ -79,29 +79,37 @@ public class BookScheduleServlet extends HttpServlet {
         String status = "";
         //get list schdule
         if (mentorDao.checkContainSelectSlotSave(acc.getUserName(), 4) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 1) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 2) || mentorDao.checkContainSelectSlotSave(acc.getUserName(), 3)) {
-            List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), c.getStart(), c.getEnd());
-            if (!listsp.isEmpty()) {
-                for (SchedulePublic s : listsp) {
-                    LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
-                    s.setNameOfDay(date.getDayOfWeek());
-                    status = s.getStatus();
+            LocalDate dateInStartAndEnd = LocalDate.parse(c.getStart()).plusWeeks(2).plusDays(2);
+            if (today.isBefore(dateInStartAndEnd)) {
+                List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), c.getStart(), c.getEnd());
+                if (!listsp.isEmpty()) {
+                    for (SchedulePublic s : listsp) {
+                        LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
+                        s.setNameOfDay(date.getDayOfWeek());
+                        status = s.getStatus();
+                    }
+                } else {
+                    listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), c.getStart(), c.getEnd());
+                    for (SchedulePublic s : listsp) {
+                        LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
+                        s.setNameOfDay(date.getDayOfWeek());
+                        status = s.getStatus();
+                    }
                 }
-            } else {
-                listsp = mentorDao.listSlotsCycleByMentor(acc.getUserName(), c.getStart(), c.getEnd());
-                for (SchedulePublic s : listsp) {
-                    LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
-                    s.setNameOfDay(date.getDayOfWeek());
-                    status = s.getStatus();
-                }
-            }
 
-            if (mentorDao.checkContainSelectSlotSave(acc.getUserName(), 3)) {
-                request.getSession().setAttribute("reject", mentorDao.getCycleByCycleID(listsp.get(0).getCycleID()).getNote());
+                if (mentorDao.checkContainSelectSlotSave(acc.getUserName(), 3)) {
+                    request.getSession().setAttribute("reject", mentorDao.getCycleByCycleID(listsp.get(0).getCycleID()).getNote());
+                }
+                for (SchedulePublic s : listsp) {
+                    System.out.println(s.getNameOfDay());
+                }
+                request.setAttribute("listScheduleSave", listsp);
+                request.setAttribute("mon", c.getStart());
+            } else {
+                request.setAttribute("mon", nextNextMonday.toString());
             }
-            for (SchedulePublic s : listsp) {
-                System.out.println(s.getNameOfDay());
-            }
-            request.setAttribute("listScheduleSave", listsp);
+        } else {
+            request.setAttribute("mon", nextNextMonday.toString());
         }
         request.setAttribute("status", status);
 
@@ -116,7 +124,6 @@ public class BookScheduleServlet extends HttpServlet {
 //            System.out.println(selectedSlot);
 //        }
 //        request.setAttribute("listSS", listSelectedSlot);
-        request.setAttribute("mon", nextNextMonday.toString());
         request.setAttribute("listSlot", listSlot);
         request.getRequestDispatcher("BookSchedule.jsp").forward(request, response);
     }
