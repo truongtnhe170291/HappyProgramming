@@ -141,7 +141,7 @@
                                     <div class="admin-topbar">
                                         <p class="mb-0">
                                             Don't have an account?
-                                            <a href="login.jsp" class="color-primary">
+                                            <a href="login" class="color-primary">
                                                 Sign In
                                             </a>
                                         </p>

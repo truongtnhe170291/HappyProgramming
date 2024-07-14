@@ -68,9 +68,11 @@
           <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Account</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="accountstatus">active?</a></li>
+                <li><a class="nav-link" href="accountstatus">active</a></li>
+                <li><a class="nav-link" href="ManagerBlog">Blog</a></li>
               </ul>
             </li>
+            
           </ul>
         </aside>
       </div>

@@ -1,4 +1,4 @@
-<%-- 
+x`<%-- 
     Document   : newPassword
     Created on : May 18, 2024, 1:11:14 PM
     Author     : 84979
@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!doctype html>
+
 <html>
 <head>
 <meta charset='utf-8'>
@@ -20,6 +20,8 @@
 	rel='stylesheet'>
 <script type='text/javascript'
 	src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <style>
 .placeicon {
 	font-family: fontawesome
@@ -29,16 +31,24 @@
 	background-color: #dee2e6;
 	border: #dee2e6
 }
+body{
+    background-color: #fff !important;
+}
+.bg-e{
+    background-color: #ccc !important;
+}
 </style>
-</head>
-<body oncontextmenu='return false' class='snippet-body bg-info'>
-	<link rel="stylesheet"
+<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+</head>
+
+	
+        <body>
 	<div>
 		<!-- Container containing all contents -->
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-12 col-md-9 col-lg-7 col-xl-6 mt-5">
+				<div class="col-12 col-md-9 col-lg-7 col-xl-6 mt-5 bg-e">
 					<!-- White Container -->
 					<div class="container bg-white rounded mt-2 mb-2 px-0">
 						<!-- Main Heading -->
@@ -66,14 +76,14 @@
 								</div>
 							
 								<!-- Log in Button -->
-								<div class="form-group row justify-content-center">
+								<div id="submitbutton_reset" class="form-group row justify-content-center">
 									<div class="col-3 px-3 mt-3">
-										<input type="submit" value="Reset"
+										<input  type="submit" value="Reset"
 											class="btn btn-block btn-info">
 									</div>
 								</div>
                                                                 <div class="form-group row justify-content-center px-3">
-									${status}
+									
 								</div>
                                                                 
 							</form>
@@ -106,6 +116,25 @@
 			</div>
 		</div>
 	</div>
+                                                                    <script>
+                               document.addEventListener('DOMContentLoaded', () => {
+const status =  `${statust}`;
+console.log(status);
+document.getElementById('submitbutton_reset').addEventListener('click', function(e){
+    e.preventDefault();
+        showToastMessage('confirm password not the same new password');
+      
+});
+    function showToastMessage(message) {
+                Toastify({
+                text: message,
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a"
+                }).showToast();
+                }
+            });                                             </script>
 	<script type='text/javascript'
 		src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js'></script>
 	

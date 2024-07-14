@@ -339,6 +339,46 @@
             .custome{
                 background-color: #80e27e !important;
             }
+  .pagination {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.prev {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.next {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.pagination a, .pagination span {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.pagination span {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+}
+
+
+
         </style>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -514,24 +554,27 @@
 
 
 
-                        <div class="pagination">
-                            <c:if test="${currentPage > 1}">
-                                <a href="ListRequestMentor?page=${currentPage - 1}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}" class="prev">Previous</a>
-                            </c:if>
-                            <c:forEach begin="1" end="${totalPages}" var="i">
-                                <c:choose>
-                                    <c:when test="${i == currentPage}">
-                                        <span class="active">${i}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="ListRequestMentor?page=${i}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}">${i}</a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                            <c:if test="${currentPage < totalPages}">
-                                <a href="ListRequestMentor?page=${currentPage + 1}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}" class="next">Next</a>
-                            </c:if>
-                        </div>
+                   <div class="pagination">
+    <c:if test="${currentPage > 1}">
+        <a href="ListRequestMentor?page=${currentPage - 1}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}" class="prev">Previous</a>
+    </c:if>
+    <c:forEach begin="1" end="${totalPages}" var="i">
+        <c:choose>
+            <c:when test="${i == currentPage}">
+                <span class="active">${i}</span>
+            </c:when>
+            <c:otherwise>
+                <a href="ListRequestMentor?page=${i}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}">${i}</a>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    <c:if test="${currentPage < totalPages}">
+        <a href="ListRequestMentor?page=${currentPage + 1}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}" class="next">Next</a>
+    </c:if>
+</div>
+
+
+
 
 
 

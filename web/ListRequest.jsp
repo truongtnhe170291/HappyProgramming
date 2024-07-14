@@ -570,6 +570,13 @@
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>
 
+                                            <c:if test="${request.status.statusId eq 1}">
+                                                <a href="ViewDetailRequest?requestId=${request.requestId}" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
+                                                    <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
+                                                </a>
+                                            </c:if>      
+                                            <!--uil-comment-alt-message-->
+
                                             <div class="modal fade ticket_modal custom_modal" id="${request.menteeName}${request.requestId}" role="dialog" tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
                                                     <div class="modal-content radius-xl">

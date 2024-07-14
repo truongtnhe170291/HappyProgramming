@@ -15,7 +15,6 @@ import java.util.Locale;
 import models.Account;
 import models.BookSchedule;
 import models.Day;
-import models.SchedulePublic;
 import models.SlotData;
 
 public class Testing {

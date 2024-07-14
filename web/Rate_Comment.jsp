@@ -4,6 +4,7 @@
     Author     : 84979
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -72,22 +73,21 @@
                  margin-top: 12px;
                  ">
                 <div class="mentor-info">
-                    <img src="mentor-avatar.jpg" alt="Mentor Avatar" class="mentor-avatar">
+                    <img src="./imgcv/${mentor.avatar}" alt="Mentor Avatar" class="mentor-avatar">
                     <div class="mentor-details">
-                        <h3>Mentor name</h3>
+                        <h3>${mentor.getFullName()}</h3>
                         <p>Company</p>
-                        <p>Sofia is one of our most experienced mentors.</p>
+                        <p>${mentor.getFullName()} is one of our most experienced mentors.</p>
                         <div class="tags">
-                            <span class="tag">Java</span>
-                            <span class="tag">Java</span>
-                            <span class="tag">Java</span>
-                            <span class="tag">Java</span>
-                            <span class="tag">Java</span>
+                            <c:forEach items="${mentor.listSkills}" var="skill">
+                                <span class="tag">${skill.skillName}</span>
+                            </c:forEach>
+
                         </div>
                     </div>
                 </div>
             </div>
-           <form  action="feedback" method="post"> 
+            <form  action="feedback" method="post"> 
                 <div class="rating" style="margin-right: 20rem;">
                     <div>Rating</div>
                     <input type="radio" id="star5" name="rate" value="5" />
@@ -132,14 +132,15 @@
                     </label>
                 </div>
                 <input type="hidden" name="rating" id="rating" value="0">
-                <input type="hidden" name="mentorname" id="mentorname" value="minh">
+                <input type="hidden" name="mentorname" id="mentorname" value="${mentorName}">
+                <input type="hidden" name="requestId" value="${requestId}">
                 <div class="comment-box">
                     <textarea name="comment" placeholder="Enter your comment..."></textarea>
                     <button type="submit" class="submit-btn">OK</button>
-               
+
                 </div>
-                           </form>
-  <!-- Corrected form tag -->
+            </form>
+            <!-- Corrected form tag -->
         </div>
     </body>
 </html>

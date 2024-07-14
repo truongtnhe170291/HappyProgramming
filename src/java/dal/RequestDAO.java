@@ -4,6 +4,8 @@
  */
 package dal;
 
+import java.sql.*;
+import java.util.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -236,8 +238,50 @@ public class RequestDAO {
         for (RequestDTO request : requests) {
             System.out.println(request);
         }
+           List<Map<String, Object>> requestStats = dao.getTotalRequestMonth("son");
+        
+        for (Map<String, Object> stats : requestStats) {
+            System.out.println("Year: " + stats.get("year") + 
+                               ", Month: " + stats.get("month") + 
+                               ", Mentor: " + stats.get("mentor_name") + 
+                               ", Total Requests: " + stats.get("total_requests"));
+        }
 
     }
+    public List<Map<String, Object>> getTotalRequestMonth(String mentorName) {
+    List<Map<String, Object>> result = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        String sql = "SELECT " +
+                     "YEAR(deadline_date) AS year, " +
+                     "MONTH(deadline_date) AS month, " +
+                     "mentor_name, " +
+                     "COUNT(request_id) AS total_requests " +
+                     "FROM RequestsFormMentee " +
+                     "WHERE mentor_name = ? " +
+                     "GROUP BY YEAR(deadline_date), MONTH(deadline_date), mentor_name " +
+                     "ORDER BY YEAR(deadline_date), MONTH(deadline_date)";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("year", rs.getInt("year"));
+            map.put("month", rs.getInt("month"));
+            map.put("mentor_name", rs.getString("mentor_name"));
+            map.put("total_requests", rs.getInt("total_requests"));
+            result.add(map);
+        }
+    } catch (SQLException e) {
+        System.out.println("getTotalRequestMonth: " + e.getMessage());
+    } 
+
+    return result;
+}
+
 
     public int getCountRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
         int count = 0;
@@ -927,17 +971,17 @@ public class RequestDAO {
 
         return statuses;
     }
-    
+
     public List<Status> getAllStatusesMentee() {
         List<Status> statuses = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             String sql = "select * from RequestStatuses r ";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 Status status = new Status(
                         rs.getInt("status_id"),
@@ -948,10 +992,10 @@ public class RequestDAO {
         } catch (SQLException e) {
             System.out.println("getAllStatuses: " + e.getMessage());
         }
-        
+
         return statuses;
     }
-    
+
     public List<RequestDTO> getRequestList(String menteeName) {
         String sql = "SELECT request_id, mentor_name, title, deadline_date, deadline_hour "
                 + "FROM RequestsFormMentee rfm "
@@ -1076,6 +1120,8 @@ public class RequestDAO {
         return -1;
 
     }
+    
+    
 
     public int insertRequestReturnRequestId(Request request) {
         String query = "INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price)"
