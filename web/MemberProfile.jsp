@@ -206,12 +206,12 @@
     </head>
     <body>
 
-        <header id="header" data-fullwidth="true">
+           <header id="header" data-fullwidth="true">
             <div class="header-inner">
                 <div class="container">
                     <!--Logo-->
                     <div id="logo">
-                        <a href="homes.jsp">
+                        <a href="homeMentee">
                             <span class="logo-default">FMASTER</span>
                             <span class="logo-dark">FMASTER</span>
                         </a>
@@ -245,7 +245,7 @@
                         <div class="container">
                             <nav>
                                 <ul>
-                                    <li><a href="homes.jsp">Home</a></li>
+                                  
 
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu">
@@ -275,30 +275,23 @@
                                                             <img src="./img/${user.avatar}" alt=""
                                                                  class="rounded-circle">
                                                         </div>
-                                                        <div>
-                                                            <span>UI Designer</span>
-                                                        </div>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <a href="UpdateAccountServlet">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
-
+                                                
                                                 <li>
                                                     <a href="wallet">
-                                                        <i class="uil uil-key-skeleton"></i> Your Wallet
+                                                      <i class="fas fa-wallet"></i> Your Wallet
                                                     </a>
                                                 </li>
-
+                                                
                                                 <li>
                                                     <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password
                                                     </a>
-                                                </li>
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-bell"></i> Help</a>
                                                 </li>
                                                 <li>
                                                     <a href="Signout_Servlet" class="nav-author__signout">
@@ -314,7 +307,7 @@
                     <!--END: NAVIGATION-->
                 </div>
             </div>
-        </header>
+        </header>   
 
         <section id="main_content">
 

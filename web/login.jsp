@@ -65,7 +65,7 @@
                                                             <span class="checkbox-text">Keep me logged in</span>
                                                         </label>
                                                     </div>
-                                                    <a href="forget-password.jsp">forget password?</a>
+                                                    <a href="forgotPassword">forget password?</a>
                                                 </div>
                                                 <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
                                                     <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value=" sign in"/>
@@ -76,7 +76,7 @@
 
                                     </form>
                                     <div id="backh" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                                        <a href="homes.jsp">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
+                                        <a href="homeMentee">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
 
                                     </div>
                                     <br/>
@@ -88,7 +88,7 @@
                                     <div class="admin-topbar d-flex flex-column g-3">
                                         <p class="mb-0 p-3">
                                             Don't have an account?
-                                            <a href="sign_up.jsp" class="color-primary">
+                                            <a href="signup" class="color-primary">
                                                 Sign up
                                             </a>
                                         </p>

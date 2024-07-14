@@ -80,7 +80,7 @@
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
                                                 <li>
-                                                    <a href="newPassword.jsp">
+                                                    <a href="newpassword">
                                                         <i class="uil uil-key-skeleton"></i> Change Password</a>
                                                 </li>
                                                 <li>

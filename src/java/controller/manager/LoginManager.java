@@ -86,7 +86,7 @@ public class LoginManager extends HttpServlet {
             // Check for empty username or password
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 request.setAttribute("mess", "Vui lòng nhập cả tên đăng nhập và mật khẩu");
-                request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
+                request.getRequestDispatcher("loginManager.jsp").forward(request, response);
                 return;
             }
 
@@ -95,22 +95,22 @@ public class LoginManager extends HttpServlet {
             WalletDAO dao = new WalletDAO();
             // Check if account exists
             if (acc == null) {
-                request.setAttribute("mess", "Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại thông tin và thử lại");
-                request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
+                request.setAttribute("mess", "Tên đăng nhập hoặc mật khẩu không chính xác.");
+                request.getRequestDispatcher("loginManager.jsp").forward(request, response);
                 return;
             }
 
             // Check if password matches
             if (!acc.getPassword().equals(password)) {
                 request.setAttribute("mess", "Tên đăng nhập hoặc mật khẩu không hợp lệ");
-                request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
+                request.getRequestDispatcher("loginManager.jsp").forward(request, response);
                 return;
             }
 
             // Redirect based on user role
             if (acc.getRoleId() == 1 || acc.getRoleId() == 2) {
                 request.setAttribute("mess", "Người dùng không đủ quyền truy cập trang này");
-                request.getRequestDispatcher("Login_manager.jsp").forward(request, response);
+                request.getRequestDispatcher("loginManager.jsp").forward(request, response);
             } else if (acc.getRoleId() == 3) {
                 session.setAttribute("user", acc);
                 List<Transaction> list = dao.getTransactionByPaging(acc.getUserName(), 1);

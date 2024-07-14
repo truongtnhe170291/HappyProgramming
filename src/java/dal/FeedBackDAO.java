@@ -58,14 +58,15 @@ public class FeedBackDAO {
         PreparedStatement ps = null;
 
         try {
-            String query = "INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO FeedBacks (mentor_name, mentee_name, star, request_id, comment, time_feedback) VALUES (?, ?, ?, ?, ?, ?)";
             con = new DBContext().connection; // Mở kết nối đến SQL
             ps = con.prepareStatement(query);
             ps.setString(1, feedback.getMentorName());
             ps.setString(2, feedback.getMenteeName());
             ps.setInt(3, feedback.getStar());
-            ps.setString(4, feedback.getComment());
-            ps.setDate(5, feedback.getTimeFeedBack());
+            ps.setInt(4, feedback.getRequestId());
+            ps.setString(5, feedback.getComment());
+            ps.setDate(6, feedback.getTimeFeedBack());
             ps.executeUpdate();
 
         } catch (SQLException e) {

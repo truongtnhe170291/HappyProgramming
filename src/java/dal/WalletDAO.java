@@ -59,6 +59,28 @@ public class WalletDAO {
         }
         return list;
     }
+    
+    public List<Transaction> getTransactionByPagingFilter(String user, int index) {
+        List<Transaction> list = new ArrayList<>();
+        try {
+            String sql = "select * from Transactions t where t.user_receive like ? or t.user_send like ? order by t.create_date desc"
+                    + " OFFSET ? ROWS FETCH FIRST 10 ROWS ONLY";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + user + "%");
+            ps.setString(2, "%" + user + "%");
+            ps.setInt(3, (index - 1) * 10);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Transaction(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4).toLocalDateTime(), rs.getLong(5), rs.getString(6)));
+            }
+        } catch (SQLException e) {
+            System.out.println("getWalletByUsenName " + e.getMessage());
+        }
+        return list;
+    }
+    
+    
 
     public int getNumberPageByUserNameTransaction(String username) {
         try {

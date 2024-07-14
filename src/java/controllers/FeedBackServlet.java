@@ -88,10 +88,19 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 int star = Integer.parseInt(request.getParameter("rate"));
                 String comment = VietnameseConverter.removeDiacritics(request.getParameter("comment"));
                 String mentorName = request.getParameter("mentorname");
+                String requestId_raw = request.getParameter("requestId");
+                int requestId = Integer.parseInt(requestId_raw);
                 java.util.Date utilDate = new java.util.Date(); // Current date
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Convert to java.sql.Date
 
-                FeedBack feedBack = new FeedBack(mentorName, account.getUserName(), star, comment, sqlDate);
+                System.out.println(star);
+                System.out.println(comment);
+                System.out.println(mentorName);
+                System.out.println(requestId);
+                System.out.println(sqlDate);
+                
+//                FeedBack feedBack = new FeedBack(mentorName, account.getUserName(), star, comment, sqlDate);
+                FeedBack feedBack = new FeedBack(mentorName, account.getUserName(), 4, requestId, comment, sqlDate);
 
                 FeedBackDAO feedBackDAO = new FeedBackDAO();
                 String status = feedBackDAO.addFeedBack(feedBack);
