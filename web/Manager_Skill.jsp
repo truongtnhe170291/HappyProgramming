@@ -15,27 +15,31 @@
 
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
-            .paginator{
+            .paginator {
+                float: right;
                 border: solid 1px rgba(0, 0, 0, .2);
                 width: fit-content;
                 padding: 10px 12px;
                 margin-top: 10px;
                 border-radius: 8px;
             }
-            .prev{
+
+            .prev {
                 border-right: solid 1px rgba(0, 0, 0, .2);
                 padding-top: 13px;
                 padding-bottom: 13px;
                 padding-right: 10px;
                 margin-right: 6px;
             }
-            .next{
+
+            .next {
                 border-left: solid 1px rgba(0, 0, 0, .2);
                 padding-top: 13px;
                 padding-bottom: 13px;
                 padding-left: 10px;
                 margin-left: 6px;
             }
+
         </style>
     </head>
     <body>
@@ -124,7 +128,7 @@
                                                     <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}" class="prev">Previous</a>
                                                 </c:if>
 
-                                                    <span class="pageNum">Page ${currentPage} of ${totalPages}</span>
+                                                <span class="pageNum">Page ${currentPage} of ${totalPages}</span>
 
                                                 <c:if test="${currentPage < totalPages}">
                                                     <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}" class="next">Next</a>
