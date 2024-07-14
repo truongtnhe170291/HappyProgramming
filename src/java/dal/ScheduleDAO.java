@@ -286,6 +286,31 @@ public class ScheduleDAO {
     return totalRequests;
 }
 
+    public int getTotalRequestsPeding() {
+        String sql = "SELECT COUNT(DISTINCT c.cycle_id) AS totalRequests FROM Selected_Slot ss \n"
+                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id\n"
+                + "JOIN Slots s ON s.slot_id = ss.slot_id \n"
+                + "JOIN Status_Selected sta ON sta.status_id = ss.status_id \n"
+                + "Where ss.status_id = 1";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalRequests");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("getTotalRequests: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        ScheduleDAO dao = new ScheduleDAO();
+        System.out.println(dao.getTotalRequests());
+
+    }
+
     public List<Status> getAllStatus() {
         List<Status> statusList = new ArrayList<>();
         String sql = "SELECT * FROM Status_Selected";
@@ -599,14 +624,6 @@ public class ScheduleDAO {
         }
 
         return totalEarnings;
-    }
-
-    public static void main(String[] args) {
-        ScheduleDAO sdao = new ScheduleDAO();
-        double salary = sdao.calculateTotalEarnings("son");
-        List<ScheduleCommon> list = sdao.getScheduleCommonByMentorName("son");
-        System.out.println(salary);
-
     }
 
     public List<ScheduleCommon> getScheduleCommonByMentorName(String userName) {

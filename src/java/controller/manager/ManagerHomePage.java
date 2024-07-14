@@ -6,6 +6,8 @@ package controller.manager;
 
 import dal.AccountDAO;
 import dal.CVDAO;
+import dal.ScheduleDAO;
+import dal.SkillDAO;
 import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,19 +50,26 @@ public class ManagerHomePage extends HttpServlet {
             throws ServletException, IOException {
         try {
             Account user = (Account) request.getSession().getAttribute("user");
-            if(user == null){
+            if (user == null) {
                 response.sendRedirect("LoginManager");
                 return;
             }
             CVDAO cvDao = new CVDAO();
             WalletDAO dao = new WalletDAO();
             AccountDAO accountDao = new AccountDAO();
+            ScheduleDAO scheduleDao = new ScheduleDAO();
+            SkillDAO skillDAO = new SkillDAO();
 
             int totalAccountRegisted = accountDao.listAccountRegisted().size();
             int totalCVs = cvDao.getTotalCVCountByStatus(1);
             int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
             List<Transaction> listTr = dao.getTransactionByPaging(user.getUserName(), 1);
+            int totalRequest = scheduleDao.getTotalRequestsPeding();
+            int totalSkills = skillDAO.getTotalSkillCount();
+
             request.setAttribute("totalCVs", totalCVs);
+            request.setAttribute("totalRequest", totalRequest);
+            request.setAttribute("totalSkills", totalSkills);
             request.setAttribute("numPage", numPage);
             request.setAttribute("listTran", listTr);
             request.setAttribute("totalAcc", totalAccountRegisted);
@@ -82,6 +91,51 @@ public class ManagerHomePage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+        Account user = (Account) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("LoginManager");
+            return;
+        }
+
+        CVDAO cvDao = new CVDAO();
+        WalletDAO dao = new WalletDAO();
+        AccountDAO accountDao = new AccountDAO();
+        ScheduleDAO scheduleDao = new ScheduleDAO();
+        SkillDAO skillDAO = new SkillDAO();
+
+        int totalAccountRegisted = accountDao.listAccountRegisted().size();
+        int totalCVs = cvDao.getTotalCVCountByStatus(1);
+        int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+        List<Transaction> listTr = dao.getTransactionByPaging(user.getUserName(), 1);
+        int totalRequest = scheduleDao.getTotalRequestsPeding();
+        int totalSkills = skillDAO.getTotalSkillCount();
+
+        String remitter = request.getParameter("remitterS");
+        boolean flag = true;
+        if (remitter.isEmpty()) {
+            flag = false;
+        }else{
+            flag = true;
+        }
+        
+        if (flag) {
+            listTr = dao.getTransactionByPagingFilter(remitter, 1);
+            System.out.println("helololo");
+            for (Transaction transaction : listTr) {
+                System.out.println(transaction);
+            }
+        } else {
+            listTr = null;
+        }
+
+        request.setAttribute("totalCVs", totalCVs);
+        request.setAttribute("totalRequest", totalRequest);
+        request.setAttribute("totalSkills", totalSkills);
+        request.setAttribute("numPage", numPage);
+        request.setAttribute("listTran", listTr);
+        request.setAttribute("totalAcc", totalAccountRegisted);
+        request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
+
     }
 
     /**

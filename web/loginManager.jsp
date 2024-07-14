@@ -58,7 +58,7 @@
                             
                         </form>
                             <div id="backh" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                                <a href="homes.jsp">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
+                                <a href="homeMentee">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
                                    
                               </div>
                          <br/>
