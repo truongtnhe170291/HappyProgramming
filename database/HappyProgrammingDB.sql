@@ -46,7 +46,12 @@ CREATE TABLE Accounts(
     status_id INT FOREIGN KEY REFERENCES AccountStatuses(status_id)
 );
 GO
-
+CREATE TABLE NoteAccount(
+    [user_name] NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
+    PRIMARY KEY ([user_name]),
+	note NVARCHAR(Max)
+);
+GO
 -- Create Mentees table
 CREATE TABLE Mentees(
     mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
@@ -186,12 +191,13 @@ CREATE TABLE RequestSkills(
 GO
 -- Create FeedBacks table
 CREATE TABLE FeedBacks(
+	feedback_id INT IDENTITY(1,1) PRIMARY KEY,
+	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
     mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
     mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
     star INT,
     comment NVARCHAR(1000),
     time_feedback DATE,
-    PRIMARY KEY (mentor_name, mentee_name)
 )
 GO
 CREATE TABLE Wallet(
@@ -588,12 +594,12 @@ INSERT INTO CVStatus (status_name) VALUES ('Draft');
 
 GO
 -- Insert into FeedBacks
-INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
+/*INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
 ('minh', 'truong', 5, 'Excellent mentor', '2024-05-01'),
 ('son', 'hieu', 4, 'Very helpful', '2024-05-02'),
 ('son', 'truong', 4, 'GOOD', '2024-05-02');
 GO
-
+*/
 
 
 INSERT INTO CV (mentor_name,gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar, status_id, note) 

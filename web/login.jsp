@@ -47,8 +47,8 @@
                                         <div class="card-body">
                                             <div class="edit-profile__body">
                                                 <div class="form-group mb-25">
-                                                    <label for="username">Username or Email Address</label>
-                                                    <input type="text" class="form-control" id="username" name="username">
+                                                    <label for="username">Username</label>
+                                                    <input type="text" class="form-control" id="username" placeholder="Username" name="username">
                                                 </div>
                                                 <div class="form-group mb-15">
                                                     <label for="password-field">password</label>
