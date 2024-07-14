@@ -467,11 +467,26 @@
             }
             .pagination {
                 display: flex;
-                list-style: none;
-                padding: 0;
+                width: fit-content;
+                margin-top: 10px;
             }
-            .pagination li {
-                margin: 0 5px;
+
+            .prev {
+                border-right: solid 1px rgba(0, 0, 0, .2);
+                padding-top: 13px;
+                padding-bottom: 13px;
+                padding-right: 10px;
+                padding-left: 10px;
+                margin-right: 6px;
+            }
+
+            .next {
+                border-left: solid 1px rgba(0, 0, 0, .2);
+                padding-top: 13px;
+                padding-bottom: 13px;
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-left: 6px;
             }
             .pagination a, .pagination span {
                 text-decoration: none;
@@ -737,6 +752,27 @@
                                 </c:if>
                             </ul>
                         </c:if>
+                        
+                        <ul class="pagination">
+                                    <li>
+                                        <a class="prev" href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
+                                    </li>
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <c:choose>
+                                        <c:when test="${i == currentPage}">
+                                            <li><span>${i}</span></li>
+                                                </c:when>
+                                                <c:otherwise>
+                                            <li>
+                                                <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                    <li>
+                                        <a class="next" href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
+                                    </li>
+                            </ul>
                     </div>
 
                 </div>

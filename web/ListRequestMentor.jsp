@@ -339,6 +339,37 @@
             .custome{
                 background-color: #80e27e !important;
             }
+            
+            .pagination {
+                float: right;
+                border: solid 1px rgba(0, 0, 0, .2);
+                width: fit-content;
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+
+            .prev {
+                border-right: solid 1px rgba(0, 0, 0, .2);
+                padding-top: 13px;
+                padding-bottom: 13px;
+                padding-right: 10px;
+                padding-left: 10px;
+                margin-right: 6px;
+            }
+
+            .next {
+                border-left: solid 1px rgba(0, 0, 0, .2);
+                padding-top: 13px;
+                padding-bottom: 13px;
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-left: 6px;
+            }
+            .active{
+                display: flex;
+                align-items: center;
+                padding: 0 6px;
+            }
         </style>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
