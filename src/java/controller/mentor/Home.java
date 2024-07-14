@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Account;
@@ -69,7 +70,8 @@ public class Home extends HttpServlet {
 
             int countMentee = rdao.getCountMentee(currentAccount.getUserName());
             request.setAttribute("countMentee", countMentee);
-
+            List<Map<String, Object>> totalR = rdao.getTotalRequestMonth(currentAccount.getUserName());
+            request.setAttribute("totalR", totalR); 
             List<RequestDTO> list = rdao.getRequestProcessing(currentAccount.getUserName());
             request.setAttribute("list", list);
             MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();

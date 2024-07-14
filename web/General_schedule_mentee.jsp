@@ -142,11 +142,65 @@ th {
 .poiter{
     pointer-events: none;
 }
+.schedule-containers {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+        font-size: 16px;
+    }
+
+    #attendanceStatus {
+        background-color: white;
+        padding: 15px;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    #attendanceStatus h3 {
+        color: #333;
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    #attendanceStatus p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #666;
+    }
+    .lime-green {
+  color: #32CD32  !important;
+}
+
+.error-red {
+  color: #FF0000 !important;
+}
 </style>
   </head>
   <body>
       <jsp:include page="header.jsp" />
     <div class="schedule-container">
+            <h1>General Schedule Mentee</h1>
+
       <div class="header">
         <div class="select-container">
           <label for="year">YEAR</label>
@@ -172,7 +226,65 @@ th {
     <div hidden class="select-container class-set-render">
                                                 <div hidden id="renderButton" >Render</div>
                                             </div>
+<div class="schedule-containers">
+    <h2 class="text-center">
+Class attendance statistics</h2>
+    <select id="skillSelect">
+        <option value="">Select a skill</option>
+        <c:forEach var="skill" items="${listSkill}">
+            <option value="${skill.skillName}">${skill.skillName}</option>
+        </c:forEach>
+    </select>
 
+    <select id="timeRangeSelect" style="display: none;">
+        <option value="">Select a time range</option>
+    </select>
+
+    <div id="attendanceStatus" style="display: none;"></div>
+</div>
+
+  <script>
+    $(document).ready(function() {
+        var skillData = ${skillDataJson};
+
+        $('#skillSelect').change(function() {
+            var selectedSkill = $(this).val();
+            var timeRangeSelect = $('#timeRangeSelect');
+            timeRangeSelect.empty().append('<option value="">Select a time range</option>');
+
+            if (selectedSkill && skillData[selectedSkill]) {
+                $.each(skillData[selectedSkill], function(timeRange, status) {
+                    timeRangeSelect.append($('<option>', {
+                        value: timeRange,
+                        text: timeRange
+                    }));
+                });
+                timeRangeSelect.show();
+            } else {
+                timeRangeSelect.hide();
+                $('#attendanceStatus').hide();
+            }
+        });
+
+        $('#timeRangeSelect').change(function() {
+            var selectedSkill = $('#skillSelect').val();
+            var selectedTimeRange = $(this).val();
+            var attendanceStatus = $('#attendanceStatus');
+
+            if (selectedSkill && selectedTimeRange && skillData[selectedSkill][selectedTimeRange]) {
+                var status = skillData[selectedSkill][selectedTimeRange];
+                var statusHtml = '<h3>Attendance Status:</h3>';
+                statusHtml += '<p class="error-red">Absent: ' + (status['Absent'] || 0) + '</p>';
+                statusHtml += '<p class="lime-green">Attended: ' + (status['Attended'] || 0) + '</p>';
+                statusHtml += '<p class="error-red">Not Yet: ' + (status['Not Yet'] || 0) + '</p>';
+                attendanceStatus.html(statusHtml).show();
+            } else {
+                attendanceStatus.hide();
+            }
+        });
+    });
+</script>
+                               
      <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const startTimeStr = '${startTime}';
@@ -414,7 +526,7 @@ th {
 
                     tbody.innerHTML = "";
 
-                    for (let i = 0; i < ${requestScope.listSlot.size()}; i++) {
+                    for (let i = 0; i < ${listSlot.size()}; i++) {
                         const row = document.createElement("tr");
                         row.innerHTML = `<td>Slot` + (i + 1) + `</td>` + "<td></td>".repeat(7);
                         tbody.appendChild(row);

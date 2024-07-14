@@ -27,7 +27,7 @@
                 <div class="container">
                     <!--Logo-->
                     <div id="logo">
-                        <a href="homes.jsp">
+                        <a href="homeMentee">
                             <span class="logo-default">FMASTER</span>
                             <span class="logo-dark">FMASTER</span>
                         </a>
@@ -61,7 +61,7 @@
                         <div class="container">
                             <nav>
                                 <ul>
-                                    <li><a href="homes.jsp">Home</a></li>
+                                  
 
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu">
@@ -74,7 +74,7 @@
                                         </ul>
                                     </li>
                                     <c:if test="${sessionScope.user == null}">
-                                        <li><a href="login.jsp">Login</a></li>
+                                        <li><a href="login">Login</a></li>
                                         <li><a href="sign_up.jsp">Sign up</a></li>
                                         </c:if>
 

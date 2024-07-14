@@ -84,7 +84,7 @@ public class BlogDAO {
     // Get List of Blogs
     public List<Blog> getBlogs() {
         List<Blog> blogs = new ArrayList<>();
-        String query = "SELECT * FROM Blogs";
+        String query = "SELECT * FROM Blogs ";
         try {
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
@@ -101,6 +101,27 @@ public class BlogDAO {
         }
         return blogs;
     }
+    
+    public List<Blog> getTop4newBlogs() {
+    List<Blog> blogs = new ArrayList<>();
+    String query = "SELECT TOP 4 * FROM Blogs WHERE status = 1 ORDER BY blog_id DESC";
+    try {
+        ps = con.prepareStatement(query);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Blog blog = new Blog();
+            blog.setBlogId(rs.getInt("blog_id"));
+            blog.setImg(rs.getString("img"));
+            blog.setLink(rs.getString("link"));
+            blog.setStatus(rs.getBoolean("status"));
+            blogs.add(blog);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return blogs;
+}
+
 }
 
 

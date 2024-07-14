@@ -1,10 +1,6 @@
-<%-- 
-    Document   : home
-    Created on : Jun 1, 2024, 12:09:21 AM
-    Author     : 84979
---%>
+<%-- Document : home Created on : Jun 1, 2024, 12:09:21 AM Author : 84979 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -18,16 +14,16 @@
         <title>Fmaster</title>
         <jsp:include page="style/linkcss.jsp" />
         <style>
-
-
             .nav-author__info {
                 display: flex;
                 align-items: center;
                 padding: 20px;
-                background-color: #fff; /* Nền của header */
+                background-color: #fff;
+                /* Nền của header */
                 margin: 20px;
                 border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Độ đậm của shadow */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                /* Độ đậm của shadow */
             }
 
             .author-img img {
@@ -46,10 +42,12 @@
 
             .skills {
                 margin: 20px;
-                background-color: #fff; /* Nền của phần skills */
+                background-color: #fff;
+                /* Nền của phần skills */
                 padding: 20px;
                 border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Độ đậm của shadow */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                /* Độ đậm của shadow */
             }
 
             .skills h3 {
@@ -61,7 +59,8 @@
                 font-weight: bold;
                 margin: 5px 0;
                 padding-left: 10px;
-                color: #007bff; /* Màu chữ của các skill */
+                color: #007bff;
+                /* Màu chữ của các skill */
             }
 
             .btn-add-skill {
@@ -77,10 +76,12 @@
 
             .rate-section {
                 margin: 20px;
-                background-color: #fff; /* Nền của phần rate-section */
+                background-color: #fff;
+                /* Nền của phần rate-section */
                 padding: 20px;
                 border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Độ đậm của shadow */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                /* Độ đậm của shadow */
             }
 
             .rate-section h2 {
@@ -91,7 +92,8 @@
             .tuition-price {
                 font-size: 24px;
                 font-weight: bold;
-                color: tomato; /* Màu của số tiền học phí */
+                color: tomato;
+                /* Màu của số tiền học phí */
             }
 
             .btn-set-rate {
@@ -104,10 +106,12 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
+
             .author-details .highlight {
                 color: #007bff;
                 font-weight: bold;
             }
+
             .feedback-table-wrap {
                 padding: 15px;
             }
@@ -156,6 +160,7 @@
             .order-bg-opacity-primary {
                 background-color: rgba(0, 123, 255, 0.1);
             }
+
             .feedback-table-wrap {
                 padding: 15px;
             }
@@ -224,6 +229,65 @@
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
+
+            .dashboard-container {
+                background-color: #f8f9fa !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+            }
+
+            .nav-author__info {
+                display: flex !important;
+                align-items: center !important;
+                padding: 20px !important;
+                background-color: #fff !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+                margin-bottom: 20px !important;
+            }
+
+            .author-img img {
+                width: 80px !important;
+                height: 80px !important;
+                border-radius: 50% !important;
+                margin-right: 20px !important;
+            }
+
+            .highlight {
+                color: #007bff !important;
+            }
+
+            .skills,
+            .rate-section,
+            .overview-section {
+                padding: 20px !important;
+                background-color: #fff !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+                margin-bottom: 20px !important;
+            }
+
+            .btn-add-skill,
+            .btn-set-rate {
+                margin-top: 10px !important;
+            }
+
+            .skills p {
+                margin: 0 !important;
+                font-size: 16px !important;
+            }
+
+            .dashboard-container {
+                margin-bottom: 20px;
+            }
+
+            .rating {
+                float: right;
+            }
+
+            .card_test {
+                opacity: 0;
+            }
         </style>
 
 
@@ -233,7 +297,8 @@
         <div class="mobile-search">
             <form action="/" class="search-form">
                 <img src="img/svg/search.svg" alt="search" class="svg">
-                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..." aria-label="Search">
+                <input class="form-control me-sm-2 box-shadow-none" type="search" placeholder="Search..."
+                       aria-label="Search">
             </form>
         </div>
         <div class="mobile-author-actions"></div>
@@ -256,7 +321,8 @@
                                     <div class="breadcrumb-action justify-content-center flex-wrap">
                                         <nav aria-label="breadcrumb">
                                             <ol class="breadcrumb">
-                                                <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>Statistical</a></li>
+                                                <li class="breadcrumb-item"><a href="#"><i
+                                                            class="uil uil-estate"></i>Statistical</a></li>
                                             </ol>
                                         </nav>
                                     </div>
@@ -265,42 +331,42 @@
                             </div>
 
 
-                            <div class="nav-author__info">
-                                <div class="author-img">
-                                    <img src="./img/${userAvatar}" alt="Avatar">
+                            <div class="container dashboard-container">
+                                <div class="nav-author__info">
+                                    <div class="author-img">
+                                        <img src="./img/${userAvatar}" alt="Avatar">
+                                    </div>
+                                    <div class="author-details">
+                                        <h2>Hello, <span class="highlight">${userFullName}</span></h2>
+                                    </div>
                                 </div>
-                                <div class="author-details">
-                                    <h2>Hello, <span class="highlight">${userFullName} <span></h2>
+
+                                <div class="skills">
+                                    <h3>Top Price Of Skill :</h3>
+                                    <c:forEach items="${skillList}" var="skill">
+                                        <p>• ${skill.skillName}</p>
+                                    </c:forEach>
+
+                                </div>
+
+                                <div class="rate-section">
+                                    <h2>My Salary:
+                                        <span class="tuition-price">
+                                            <fmt:formatNumber value="${rate}" type="number"
+                                                              maxFractionDigits="0" minFractionDigits="0" /> VND
+                                        </span>
+                                    </h2>
+                                </div>
+
+                                <div class="overview-section">
+                                    <h2>Over View Request</h2>
+                                    <form action="StatisticRequestMentor" method="GET">
+                                        <button type="submit" class="btn btn-primary">View Details</button>
+                                    </form>
+                                   <canvas id="requestChart"></canvas>
+                                
                                 </div>
                             </div>
-
-                            <div class="skills">
-                                <h3>Top Price Of Skill :</h3>
-                                <c:forEach items="${skillList}" var="skill">
-                                    <p>• ${skill.skillName}</p>
-                                </c:forEach>
-                                <form action="cv" method="post">
-                                    <button type="submit" class="btn-add-skill">Add CV skills </button>
-                                </form>
-                            </div>
-                                
-                                
-
-                            <div class="rate-section">
-                                <h2>My Salary : 
-                                    <span class="tuition-price">
-                                        <fmt:formatNumber value="${rate}" type="number" maxFractionDigits="0" minFractionDigits="0" /> VND
-                                    </span>
-                                </h2>
-                                <form action="cv" method="post">
-                                    <button type="submit" class="btn-set-rate">Set Rate</button>
-                                </form>
-                            </div>
-
-                            <form action="StatisticRequestMentor" method="GET">
-                                <h2>Over View Request</h2>
-                                <button type="submit" class="btn btn-primary">View Details</button>
-                            </form>
 
 
 
@@ -308,17 +374,23 @@
 
 
                                 <!-- Card 1  -->
-                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+                                <div
+                                    class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
 
 
 
 
 
-                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                    <div
+                                        class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
                                         <div class="ap-po-details__titlebar">
                                             <p>Total Requests</p>
                                             <h1>${staticMentor.invitedRequests}</h1>
-
+                                            <div class="ap-po-details-time card_test">
+                                                <span class="color-success"><i class="las la-arrow-up"></i>
+                                                    <strong>${staticMentor.completePercentage}%</strong></span>
+                                                <small>Accept</small>
+                                            </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-primary">
                                             <i class="uil uil-arrow-growth"></i>
@@ -331,13 +403,15 @@
 
                             <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
                                 <!-- Card 2 -->
-                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+                                <div
+                                    class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
 
 
 
 
 
-                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                    <div
+                                        class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
                                         <div class="ap-po-details__titlebar">
                                             <p>Accepted Requests</p>
                                             <h1>${staticMentor.acceptedRequests}</h1>
@@ -358,13 +432,15 @@
 
                             <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
                                 <!-- Card 3 -->
-                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+                                <div
+                                    class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
 
 
 
 
 
-                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                    <div
+                                        class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
                                         <div class="ap-po-details__titlebar">
                                             <p>Canceled Requests</p>
                                             <h1>${staticMentor.canceledRequests}</h1>
@@ -385,17 +461,23 @@
 
                             <div class="col-xxl-3 col-sm-6  col-ssm-12 mb-25">
                                 <!-- Card 4  -->
-                                <div class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
+                                <div
+                                    class="ap-po-details ap-po-details--luodcy  overview-card-shape radius-xl d-flex justify-content-between">
 
 
 
 
 
-                                    <div class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
+                                    <div
+                                        class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
                                         <div class="ap-po-details__titlebar">
                                             <p>Total Mentee Requests</p>
                                             <h1>${countMentee}</h1>
-
+                                            <div class="ap-po-details-time card_test">
+                                                <span class="color-success"><i class="las la-arrow-up"></i>
+                                                    <strong>${staticMentor.completePercentage}%</strong></span>
+                                                <small>Accept</small>
+                                            </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-info">
                                             <i class="uil uil-tachometer-fast"></i>
@@ -415,7 +497,8 @@
                                         <form action="ListRequestMentor" method="get">
                                             <input type="hidden" name="statusFilter" value="2">
                                             <input type="hidden" name="menteeNameFilter" value="">
-                                            <button type="submit" class="btn btn-primary">View Details</button>
+                                            <button type="submit" class="btn btn-primary">View
+                                                Details</button>
                                         </form>
                                     </div>
                                     <div class="card-body p-0">
@@ -450,7 +533,8 @@
                                 <div class="card border-0 px-25">
                                     <h2>Feedback From My Mentee</h2>
                                     <div class="tab-content">
-                                        <div class="tab-pane fade active show" id="feedback-list" role="tabpanel">
+                                        <div class="tab-pane fade active show" id="feedback-list"
+                                             role="tabpanel">
                                             <div class="feedback-table-wrap">
                                                 <div class="table-responsive">
                                                     <table class="table table--default table-borderless">
@@ -466,9 +550,13 @@
                                                             <c:forEach var="fb" items="${feedback}">
                                                                 <tr>
                                                                     <td>
-                                                                        <div class="feedback-img d-flex align-items-center">
-                                                                            <div class="feedback-img-wrapper order-bg-opacity-primary align-items-end">
-                                                                                <img class="img-fluid" src="img/${fb.avatar}" alt="img">
+                                                                        <div
+                                                                            class="feedback-img d-flex align-items-center">
+                                                                            <div
+                                                                                class="feedback-img-wrapper order-bg-opacity-primary align-items-end">
+                                                                                <img class="img-fluid"
+                                                                                     src="img/${fb.avatar}"
+                                                                                     alt="img">
                                                                             </div>
                                                                             <span>${fb.menteeName}</span>
                                                                         </div>
@@ -476,8 +564,10 @@
                                                                     <td>${fb.timeFeedBack}</td>
                                                                     <td>${fb.comment}</td>
                                                                     <td style="justify-content: center">
-                                                                        <div class="rating" data-rating="${fb.star}">
-                                                                            <span class="star-rating"></span>
+                                                                        <div class="rating"
+                                                                             data-rating="${fb.star}">
+                                                                            <span
+                                                                                class="star-rating"></span>
 
                                                                         </div>
                                                                     </td>
@@ -514,6 +604,45 @@
         </div>
         <div class="overlay-dark-sidebar"></div>
         <div class="customizer-overlay"></div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+         <script>
+        // Tạo các mảng JavaScript để lưu trữ tháng và số lượng yêu cầu
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const requestCounts = new Array(12).fill(null); // Khởi tạo mảng với 12 giá trị null
+
+        // Sử dụng JSTL c:forEach để duyệt qua danh sách 'totalR' và thêm giá trị vào mảng
+        <c:forEach var="entry" items="${totalR}">
+            const monthIndex = ${entry.month} - 1; // Chuyển đổi tháng về chỉ số (0-based index)
+            requestCounts[monthIndex] = ${entry.total_requests};
+        </c:forEach>;
+
+        // In ra console để kiểm tra
+        console.log("Months:", months);
+        console.log("Request Counts:", requestCounts);
+
+        // Khởi tạo biểu đồ với dữ liệu
+        const ctx = document.getElementById('requestChart').getContext('2d');
+        const requestChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Number of Requests',
+                    data: requestCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
         <script>
             document.addEventListener('DOMContentLoaded', (event) => {
                 document.querySelectorAll('.rating').forEach(rating => {

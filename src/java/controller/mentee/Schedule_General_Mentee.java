@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.mentee;
 
+import com.google.gson.Gson;
 import dal.MentorDAO;
 import dal.RequestDAO;
 import dal.ScheduleDAO;
@@ -15,105 +15,138 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import models.Account;
-import models.Day;
+
+import models.RequestDTO;
 import models.SchedulePublic;
+import models.Skill;
 import models.Slot;
 
-/**
- *
- * @author 84979
- */
-@WebServlet(name="Schedule_General_Mentee", urlPatterns={"/Schedule_General_Mentee"})
+@WebServlet(name = "Schedule_General_Mentee", urlPatterns = {"/Schedule_General_Mentee"})
 public class Schedule_General_Mentee extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Schedule_General_Mentee</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Schedule_General_Mentee at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+ 
+  
+
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        Account acc = (Account) request.getSession().getAttribute("user");
+        if (acc == null) {
+            response.sendRedirect("Login.jsp");
+            return;
         }
-    } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            Account acc = (Account) request.getSession().getAttribute("user");
-            if (acc == null) {
-                response.sendRedirect("Login.jsp");
-                return;
-            }
-            
-            MentorDAO mentorDao = new MentorDAO();
+        if (acc.getRoleId() == 1) {
+            ScheduleDAO dao = new ScheduleDAO();
             RequestDAO rdao = new RequestDAO();
+            MentorDAO mentorDao = new MentorDAO();
 
+            List<SchedulePublic> list = dao.getScheduleByMenteeName(acc.getUserName());
+            List<Skill> listSkill = rdao.getListSkillsByMenteeRequestWithOpenClass(acc.getUserName());
+            List<RequestDTO> listReqq = rdao.getAllRequestByStatusAndMentee(acc.getUserName(), 1);
+            List<RequestDTO> listReq = updateAbsentAndAttended(listReqq, list);
             ArrayList<Slot> listSlots = mentorDao.listSlots();
-            ArrayList<Day> listDays = mentorDao.listDays();
-            if (acc.getRoleId() == 1) {
-                ScheduleDAO dao = new ScheduleDAO();
-                List<SchedulePublic> list = dao.getScheduleByMenteeName(acc.getUserName());
-                request.setAttribute("listSchedule_gereral", list);
-                request.setAttribute("startTime", list.get(0).getStartTime());
 
+            // Sử dụng phương thức processSkillData mới
+            Map<String, Map<String, Map<String, Integer>>> skillData = processSkillData(listSkill, listReq);
+
+            request.setAttribute("listSchedule_gereral", list);
+            request.setAttribute("listSkill", listSkill);
+            request.setAttribute("startTime", list.isEmpty() ? null : list.get(0).getStartTime());
+            request.setAttribute("listRequests", listReq);
             request.setAttribute("listSlot", listSlots);
-                request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
-            }
+            
+            Gson gson = new Gson();
+            String skillDataJson = gson.toJson(skillData);
+            request.setAttribute("skillDataJson", skillDataJson);
+            request.setAttribute("skillDataJsons", skillData);
 
-        } catch (Exception e) {
-request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
+            // In ra console để kiểm tra
+            System.out.println("Processed Skill Data: " + skillData);
+            
+            request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
+        }
+    } catch (ServletException | IOException e) {
+        e.printStackTrace();
+        request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
+    }
+}
+
+private Map<String, Map<String, Map<String, Integer>>> processSkillData(List<Skill> skills, List<RequestDTO> listReq) {
+    Map<String, Map<String, Map<String, Integer>>> skillData = new HashMap<>();
+
+    for (Skill skill : skills) {
+        Map<String, Map<String, Integer>> timeRanges = new HashMap<>();
+
+        for (RequestDTO request : listReq) {
+            if (request.getListSkills().stream().anyMatch(s -> s.getSkillID() == skill.getSkillID())) {
+                // Lấy thời gian từ lịch trình đầu tiên (giả sử tất cả các lịch trình trong một yêu cầu có cùng thời gian)
+                if (!request.getListSchedule().isEmpty()) {
+                    SchedulePublic firstSchedule = request.getListSchedule().get(0);
+                    String timeRange = firstSchedule.getStartTime() + " - " + firstSchedule.getEndTime();
+                    timeRanges.putIfAbsent(timeRange, new HashMap<>());
+                    
+                    Map<String, Integer> attendanceCounts = timeRanges.get(timeRange);
+                    
+                    // Cập nhật số liệu dựa trên absent và attended của RequestDTO
+                    attendanceCounts.put("Absent", attendanceCounts.getOrDefault("Absent", 0) + request.getAbsent());
+                    attendanceCounts.put("Attended", attendanceCounts.getOrDefault("Attended", 0) + request.getAttended());
+                    int notYet = request.getListSchedule().size() - request.getAbsent() - request.getAttended();
+                    attendanceCounts.put("Not Yet", attendanceCounts.getOrDefault("Not Yet", 0) + notYet);
+                }
+            }
+        }
+
+        if (!timeRanges.isEmpty()) {
+            skillData.put(skill.getSkillName(), timeRanges);
         }
     }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    return skillData;
+}
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
+   
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
+
+    private List<RequestDTO> updateAbsentAndAttended(List<RequestDTO> listReq, List<SchedulePublic> list) {
+        for(RequestDTO rDTO : listReq){
+            int absent = 0;
+            int attended = 0;
+            for(SchedulePublic sp : list){
+                        System.out.println(rDTO.getRequestId()+"abc"+sp.getRequestId());
+
+                if(rDTO.getRequestId() == sp.getRequestId()){
+                    System.out.println(sp.getAttendanceStatus());
+                    if(sp.getAttendanceStatus() != null && sp.getAttendanceStatus().equals("Absent")){
+                        System.out.println(sp.getAttendanceStatus()+"1");
+                        absent++;
+                    }
+                    
+                    if(sp.getAttendanceStatus() != null && sp.getAttendanceStatus().equals("Attended")){
+                        attended++;
+                    }
+                }
+            }
+            rDTO.setAbsent(absent);
+            rDTO.setAttended(attended);
+        }
+        return listReq;
+    }
 
 }
