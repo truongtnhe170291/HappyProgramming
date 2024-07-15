@@ -29,7 +29,7 @@ import models.Status;
  *
  * @author Admin
  */
-@WebServlet(name = "HandleSlotMentor", urlPatterns = {"/HandleSlotMentor"})
+@WebServlet(name = "HandleRequestMentor", urlPatterns = {"/HandleSlotMentor"})
 public class HandleRequestMentor extends HttpServlet {
 
     /**
