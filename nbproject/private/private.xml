@@ -6,10 +6,24 @@
         <group/>
 =======
         <group>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/Rate_Comment.jsp</file>
-            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controllers/FeedBackServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/courseListSkillDetail.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/mentee/MenteeHomeServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/homes.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/changepass.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/mentee/StaticRequest.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/common/ChangPassServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/mentor/CVServlet.java</file>
             <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/dal/FeedBackDAO.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/common/SignUpServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/StaticRequestMentee.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/Rate_Comment.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/ApplyCV.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/common/ShowMentors_Servlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/control_nav.jsp</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controllers/FeedBackServlet.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/common/UpdateAccountServlet.java</file>
             <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/src/java/controller/mentee/ListRequest.java</file>
+            <file>file:/C:/Users/2k3so/OneDrive/Desktop/HappyPrograming/web/header.jsp</file>
         </group>
 >>>>>>> 34f5e6287a0483d74c5db33ce42f0eae746798a2
     </open-files>
