@@ -931,7 +931,6 @@ public class RequestDAO {
         int count = 0;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         try {
             String sql = "SELECT COUNT(DISTINCT mentee_name) AS countMentee FROM RequestsFormMentee WHERE mentor_name = ?";
             ps = con.prepareStatement(sql);

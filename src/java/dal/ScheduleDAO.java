@@ -431,16 +431,17 @@ public class ScheduleDAO {
         }
     }
 
-    public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId) {
+    public List<SchedulePublic> getListSchedulePublicByMentorNameAndStatus(String userName, int statusId, int cycleId) {
 
         List<SchedulePublic> list = new ArrayList<>();
         try {
             String sql = "SELECT ss.selected_id, ss.day_of_slot, ss.slot_id, c.start_time, c.end_time, s.slot_name from Selected_Slot ss join Cycle c on ss.cycle_id = c.cycle_id join Slots s on s.slot_id = ss.slot_id "
-                    + "where c.mentor_name = ? AND ss.status_id = ? order by day_of_slot";
+                    + "where c.mentor_name = ? AND ss.status_id = ? AND c.cycle_id = ? order by day_of_slot";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, userName);
             ps.setInt(2, statusId);
+            ps.setInt(3, cycleId);
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new SchedulePublic(rs.getInt(1), rs.getDate(2), rs.getString(3), rs.getDate(4), rs.getDate(5),

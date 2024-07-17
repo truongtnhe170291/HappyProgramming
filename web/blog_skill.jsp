@@ -71,7 +71,50 @@
 }
 
    
-    
+    .pagination {
+    display: flex !important;
+    justify-content: right !important;
+    margin-top: 20px !important;
+    margin-right: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.pagination .page-item {
+    list-style: none !important;
+}
+
+.pagination .page-link {
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    color: #007bff !important;
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff !important;
+    color: white !important;
+    border: 1px solid #007bff !important;
+}
+
+.pagination .prev {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+
+.pagination .next {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa !important;
+}
+
+.pagination .page-link:focus {
+    box-shadow: none !important;
+}
+
 </style>
 
     <head>
@@ -135,25 +178,38 @@
 
     <!-- Pagination -->
     <ul class="pagination">
-        <c:if test="${currentPage > 1}">
-            <li class="page-item"><a class="page-link" href="skill?page=${currentPage - 1}&searchTerm=${searchTerm}"><i class="fa fa-angle-left"></i></a></li>
-        </c:if>
-        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
-            <c:choose>
-                <c:when test="${loop.index == currentPage}">
-                    <li class="page-item active"><span class="page-link">${loop.index}</span></li>
-                </c:when>
-                <c:otherwise>
-                    <li class="page-item"><a class="page-link" href="skill?page=${loop.index}&searchTerm=${searchTerm}">${loop.index}</a></li>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-        <c:if test="${currentPage < totalPages}">
-            <li class="page-item"><a class="page-link" href="skill?page=${currentPage + 1}&searchTerm=${searchTerm}"><i class="fa fa-angle-right"></i></a></li>
-        </c:if>
-    </ul>
-    <!-- end: Pagination -->
-</div>
+    <c:if test="${currentPage > 1}">
+        <li class="page-item prev">
+            <a class="page-link" href="skill?page=${currentPage - 1}&searchTerm=${searchTerm}">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        </li>
+    </c:if>
+    <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+        <c:choose>
+            <c:when test="${loop.index == currentPage}">
+                <li class="page-item active">
+                    <span class="page-link">${loop.index}</span>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item">
+                    <a class="page-link" href="skill?page=${loop.index}&searchTerm=${searchTerm}">
+                        ${loop.index}
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    <c:if test="${currentPage < totalPages}">
+        <li class="page-item next">
+            <a class="page-link" href="skill?page=${currentPage + 1}&searchTerm=${searchTerm}">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+    </c:if>
+</ul>
+
 
         <!-- end: Body Inner -->
         <!-- Scroll top -->

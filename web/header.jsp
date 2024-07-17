@@ -33,23 +33,9 @@
                             </a>
                         </div>
                         <!--End: Logo-->
-                        <!-- Search -->
-                        <div id="search"><a id="btn-search-close" class="btn-search-close"
-                                aria-label="Close search form"><i class="icon-x"></i></a>
-                            <form class="search-form" action="search-results-page.html" method="get">
-                                <input class="form-control" name="q" type="text" placeholder="Type & Search..." />
-                                <span class="text-muted">Start typing & press "Enter" or "ESC" to close</span>
-                            </form>
-                        </div>
-                        <!-- end: search -->
+                        
                         <!--Header Extras-->
-                        <div class="header-extras">
-                            <ul>
-                                <li>
-                                    <a id="btn-search" href="#"> <i class="icon-search"></i></a>
-                                </li>
-                            </ul>
-                        </div>
+                        
                         <!--end: Header Extras-->
                         <!--Navigation Resposnive Trigger-->
                         <div id="mainMenu-trigger">
@@ -68,9 +54,9 @@
                                                 <li><a href="skill">SKILLS</a></li>
                                                 <c:if
                                                     test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
-                                                    <li><a href="StaticRequest">REQUEST STATIC</a></li>
-                                                    <li><a href="ListRequest">History Request</a></li>
-                                                    <li><a href="Schedule_General_Mentee">General Schedule</a></li>
+                                                    <li><a href="StaticRequest">STATISTICS REQUEST</a></li>
+                                                    <li><a href="ListRequest">HISTORY REQUEST</a></li>
+                                                    <li><a href="Schedule_General_Mentee">GENERAL SCHEDULE</a></li>
                                                 </c:if>
                                             </ul>
                                         </li>

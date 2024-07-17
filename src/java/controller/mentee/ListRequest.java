@@ -82,7 +82,7 @@ public class ListRequest extends HttpServlet {
 
             // Lấy thông tin phân trang
             int page = 1;
-            int pageSize = 3;
+            int pageSize = 5;
             if (request.getParameter("page") != null) {
                 page = Integer.parseInt(request.getParameter("page"));
             }

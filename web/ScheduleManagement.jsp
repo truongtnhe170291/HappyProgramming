@@ -416,8 +416,9 @@
                 margin-right: 4px;
             }
             .pagination {
+                float:right;
         display: flex;
-        justify-content: center;
+        justify-content: right;
         margin-top: 20px;
     }
     .pagination a, .pagination span {

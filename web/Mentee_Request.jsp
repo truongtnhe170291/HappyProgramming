@@ -327,8 +327,8 @@
                     </div>
                     <div class="breadcrumb">
                         <ul>
-                            <li><a href="homes.jsp">Home</a> </li>
-                            <li class="active"><a href="Mentee_Request.jsp">Mentee Request</a> </li>
+                            <li><a>Home</a> </li>
+                            <li class="active"><a >Mentee Request</a> </li>
                         </ul>
                     </div>
                 </div>
@@ -337,7 +337,7 @@
                 <c:set value="${requestScope.cv}" var="cv" />
                 <div class="content-box">
                     <div class="">
-                        <img src="./img/${cv.imgcv}" alt="Mentor Image" class="mentor-image">
+                        <img src="./imgcv/${cv.imgcv}" alt="Mentor Image" class="mentor-image">
                         <h5 class="text-center ml-1">${cv.fullName}</h5>
                         <section class="custompagect" id="page-content">
                             <div class="container">
@@ -856,31 +856,7 @@ function getFormValues() {
         week: item.week
     }));
 
-    if (!formData.title || !formData.description || !formData.deadlineDate || !formData.deadlineHour || !formData.skill) {
-        Toastify({
-            text: "Vui lòng điền đầy đủ thông tin.",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#FF6347",
-            stopOnFocus: true,
-        }).showToast();
-        return;
-    }
 
-    if (selectedSlots.length === 0) {
-        Toastify({
-            text: "Vui lòng chọn ít nhất một slot.",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#FF6347",
-            stopOnFocus: true,
-        }).showToast();
-        return;
-    }
 
     const requestData = {
         ...formData,
@@ -1093,11 +1069,7 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
                 showToastMessage("Hãy chọn ít nhất  slot .");
                 return false;
                }
-                else if(${wallet} < totalPriceInput.value){
-                 notifyBtn.disabled = true;
-                showToastMessage("Bạn không đủ tiền để Book lịch học.Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
-                return false;
-                }
+
                 else if (selectedSkills === 0) {
                 notifyBtn.disabled = true;
                 showToastMessage("Hãy chọn skill để book lịch.");

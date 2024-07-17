@@ -31,7 +31,8 @@
               crossorigin="anonymous">
 
 
-
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
         <style>
          .header {
@@ -525,6 +526,18 @@ display: contents;
     height: 50px;
     background-size: contain;
 }
+.no-schedule {
+  margin-top:20px;
+  width: 100%;
+  height: 60vh;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #333;
+}
+
         </style>
     </head>
 
@@ -544,7 +557,7 @@ display: contents;
     <aside class="col-md-4">
         <div class="box_style_1 profile">
             <p class="text-center">
-                <img src="./img/${mentor.avatar}" alt="Teacher" class="img-circle styled" style="width:100px;">
+                <img src="./imgcv/${mentor.avatar}" alt="Teacher" class="img-circle styled" style="width:100px;">
             </p>
             <ul>
                 <li>Name <strong class="pull-right">
@@ -565,7 +578,7 @@ display: contents;
                         <c:out value="${mentor.rate}" />
                     </strong></li>
                 <li> <strong class="pull-right">
-                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success">Book</a>
+                        <a href="request?cvId=${mentor.cvID}" class="btn btn-success martes_book">Book</a>
                     </strong></li>
             </ul>
         </div>
@@ -692,8 +705,10 @@ display: contents;
         <script src="jss/bootstrap.min.js"></script>
         <script src="jss/classie.js"></script>
         <script src="jss/uisearch.js"></script>
+      
           <script>
                 document.addEventListener('DOMContentLoaded', () => {
+            
                 let currentAction = "editable";
 const scheduleData = [
     <c:forEach items="${requestScope.listSchedule}" var="schedule">
@@ -717,8 +732,28 @@ const scheduleData = [
         <c:set var="end" value="${schedule.endTime}"/>
     </c:forEach>
 ];
-
-
+const s = `${noBook}`;
+const scheduleContainer = document.getElementById('schedule');
+function showToastMessage(message) {
+                Toastify({
+                text: message,
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                }).showToast();
+                }
+if (s !== '') {
+  scheduleContainer.innerHTML = '<div class="no-schedule">No Schedule</div>';
+  
+  document.querySelector('.pull-right a').addEventListener('click', (e) =>{
+      e.preventDefault();
+      showToastMessage('This Mentor does not have a schedule yet');
+  });
+}
+   
+    
+                
 let allSelectedSlots = [];
 console.log("Initial scheduleData:", scheduleData);
 
