@@ -56,10 +56,10 @@
 		  			}
 		  
 		  %>
-                              <div class="d-flex">
-                                 <input class="btn btn-primary btn-default btn-squared text-capitalize lh-normal px-md-50 py-15 signIn-createBtn" type="submit" value="Send Reset Instructions"/>
-                                    
-                              </div>
+                             <div class="text-center">
+    <input class="btn btn-primary btn-default btn-squared text-capitalize lh-normal px-md-50 py-15 signIn-createBtn mx-auto" type="submit" value="Send Reset"/>
+</div>
+
                               </form>
                            </div>
                         </div><!-- End: .card-body -->

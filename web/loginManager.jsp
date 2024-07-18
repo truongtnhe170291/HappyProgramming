@@ -39,7 +39,7 @@
                            <div class="edit-profile__body">
                               <div class="form-group mb-25">
                                  <label for="username">Username</label>
-                                 <input type="text" class="form-control" id="username" name="username">
+                                 <input type="text" class="form-control" id="username" name="username" placeholder="Username">
                               </div>
                               <div class="form-group mb-15">
                                  <label for="password-field">Password</label>
