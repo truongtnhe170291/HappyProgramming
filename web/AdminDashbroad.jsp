@@ -134,7 +134,7 @@
                                 <h4 class="page-title m-b-0">Homes</h4>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="Homes_manager.jsp">
+                                <a href="ManagerHomePage">
                                     <i class="fas fa-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">Active</li>
