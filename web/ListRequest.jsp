@@ -756,26 +756,7 @@
                             </ul>
                         </c:if>
                         
-                        <ul class="pagination">
-                                    <li>
-                                        <a class="prev" href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
-                                    </li>
-                                <c:forEach begin="1" end="${totalPages}" var="i">
-                                    <c:choose>
-                                        <c:when test="${i == currentPage}">
-                                            <li><span>${i}</span></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                            <li>
-                                                <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
-                                            </li>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                                    <li>
-                                        <a class="next" href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
-                                    </li>
-                            </ul>
+                        
                     </div>
 
                 </div>
