@@ -5,6 +5,7 @@
 
 package controller.manager;
 
+import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import models.Account;
+import models.Transaction;
+import models.Wallet;
 
 /**
  *
@@ -53,10 +58,42 @@ public class WalletManager extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    Account user = (Account) request.getSession().getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
+    // Tạo đối tượng DAO để thao tác với dữ liệu ví
+    WalletDAO dao = new WalletDAO();
+    Wallet wallet = dao.getWalletByUsenName(user.getUserName());
+
+    // Nếu ví chưa tồn tại, tạo ví mới với số dư ban đầu bằng 0
+    if (wallet == null) {
+        if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
+            wallet = dao.getWalletByUsenName(user.getUserName());
+        }
+    }
+
+    // Đặt ví vào request attribute
+    request.setAttribute("wallet", wallet);
+
+    // Lấy số lượng trang giao dịch
+    int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+
+    // Lấy danh sách giao dịch theo phân trang
+    int currentPage = 1; // Hoặc lấy từ request parameter nếu có
+    List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), currentPage);
+
+   
+    request.setAttribute("listTran", list);
+    request.setAttribute("numPage", numPage);
+
+    // Chuyển tiếp request và response đến trang Wallet.jsp
+    request.getRequestDispatcher("WalletManager.jsp").forward(request, response);
+}
 
     /** 
      * Handles the HTTP <code>POST</code> method.

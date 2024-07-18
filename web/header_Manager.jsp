@@ -18,7 +18,7 @@
         <div class="form-inline mr-auto">
           <ul class="navbar-nav mr-3">
             <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></li>
+	collapse-btn"> <i data-feather="align-justify"></i></a></li>
            
         
           </ul>
@@ -31,9 +31,13 @@
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello Manager</div>
               <div class="dropdown-divider"></div>
+               <a href="WalletManager" class="dropdown-item has-icon text">  <i class="fas fa-wallet"></i>
+                My Wallet
+              </a>
               <a href="logoutManager" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
+             
             </div>
           </li>
         </ul>
