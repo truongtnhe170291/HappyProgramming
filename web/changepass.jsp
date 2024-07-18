@@ -4,6 +4,7 @@ Created on : May 21, 2024, 4:14:32 PM
 Author     : 84979
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,7 +34,8 @@ Author     : 84979
                 width: 100%;
                 padding: 10px 0;
                 font-size: 16px;
-                color: rgba(24, 20, 20, 0.987);;
+                color: rgba(24, 20, 20, 0.987);
+                ;
                 margin-bottom: 30px;
                 border: none;
                 border-bottom: 1px solid rgba(24, 20, 20, 0.987);
@@ -47,7 +49,8 @@ Author     : 84979
                 left: 0;
                 padding: 10px 0;
                 font-size: 16px;
-                color: rgba(24, 20, 20, 0.987);;
+                color: rgba(24, 20, 20, 0.987);
+                ;
                 pointer-events: none;
                 transition: .5s;
             }
@@ -66,7 +69,8 @@ Author     : 84979
                 display: inline-block;
                 padding: 10px 20px;
                 font-size: 16px;
-                color: rgba(24, 20, 20, 0.987);;
+                color: rgba(24, 20, 20, 0.987);
+                ;
                 text-decoration: none;
                 text-transform: uppercase;
                 overflow: hidden;
@@ -77,7 +81,8 @@ Author     : 84979
 
             .login-box button:hover {
                 background: #03f40f;
-                color: rgba(24, 20, 20, 0.987);;
+                color: rgba(24, 20, 20, 0.987);
+                ;
                 border-radius: 5px;
                 box-shadow: 0 0 5px #03f40f,
                     0 0 25px #03f40f,
@@ -128,18 +133,21 @@ Author     : 84979
                 width: 100%;
                 text-align: center;
                 font-size: 30px;
-                color:rgba(24, 20, 20, 0.987);;
+                color:rgba(24, 20, 20, 0.987);
+                ;
 
             }
             .label{
                 font-size: 24px;
-                color:rgba(24, 20, 20, 0.987);;
+                color:rgba(24, 20, 20, 0.987);
+                ;
                 text-align: center;
                 margin-bottom: 10px;
             }
             .title{
                 font-size: 40px;
-                color:rgba(24, 20, 20, 0.987);;
+                color:rgba(24, 20, 20, 0.987);
+                ;
                 text-align: center;
                 margin-bottom: 10px;
             }
@@ -175,7 +183,6 @@ Author     : 84979
                             to home
                             <span></span>
                         </a>
-
                         <span></span>
                     </button>
 

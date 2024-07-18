@@ -5,6 +5,7 @@
 package controller.mentee;
 
 import dal.CVDAO;
+import dal.FeedBackDAO;
 import dal.MentorDAO;
 import dal.MentorProfileDAO;
 import dal.RequestDAO;
@@ -28,6 +29,7 @@ import java.util.List;
 import models.Account;
 import models.CV;
 import models.Day;
+import models.FeedBack;
 import models.Mentor;
 import models.MentorProfileDTO;
 import models.Request;
@@ -78,6 +80,7 @@ public class ViewDetailRequest extends HttpServlet {
             MentorDAO mentorDao = new MentorDAO();
             String menteeName = a.getUserName();
             RequestDAO rdao = new RequestDAO();
+            FeedBackDAO fbDao = new FeedBackDAO();
 
             ArrayList<Slot> listSlots = mentorDao.listSlots();
             ArrayList<Day> listDays = mentorDao.listDays();
@@ -126,18 +129,28 @@ public class ViewDetailRequest extends HttpServlet {
 
 //            System.out.println(middleDate.format(formatter));
 //            System.out.println(today);
-            if (today.isEqual(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
-                MentorDAO mentorDAO = new MentorDAO();
-                MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-                MentorProfileDTO mentor = mentorProfileDAO.getOneMentor(requests.get(0).getMentorName());
-                request.setAttribute("mentor", mentor);
-                request.setAttribute("mentorName", requests.get(0).getMentorName());
-                request.setAttribute("requestId", requestId);
-                
-                
-                
-//                System.out.println(mentor.getAvatar());
-                request.getRequestDispatcher("Rate_Comment.jsp").forward(request, response);
+            String isFeedback = request.getParameter("feedback");
+
+            if (isFeedback != null) {
+                if (today.isEqual(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
+                    MentorDAO mentorDAO = new MentorDAO();
+                    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+                    MentorProfileDTO mentor = mentorProfileDAO.getOneMentor(requests.get(0).getMentorName());
+                    request.setAttribute("mentor", mentor);
+                    request.setAttribute("mentorName", requests.get(0).getMentorName());
+                    request.setAttribute("requestId", requestId);
+
+                    if (fbDao.isContainFeedback(Integer.parseInt(requestId))) {
+                        FeedBack fb = fbDao.getFeedBackByRequestId(Integer.parseInt(requestId));
+                        request.setAttribute("feedbackObj", fb);
+                    } else {
+                        request.setAttribute("isContainFb", "no");
+                    }
+                    request.getRequestDispatcher("Rate_Comment.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("avaiableFb", "avaiableFb");
+                    request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+                }
             } else {
                 request.getRequestDispatcher("ViewDetail_MenteeRequest.jsp").forward(request, response);
             }

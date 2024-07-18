@@ -18,7 +18,7 @@ import models.Account;
  *
  * @author Admin
  */
-@WebServlet(name="HomeMentee", urlPatterns={"/homementor"})
+@WebServlet(name="HomeMentor", urlPatterns={"/homementor"})
 public class HomeMentor extends HttpServlet {
    
     /** 

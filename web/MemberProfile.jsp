@@ -314,7 +314,7 @@
             <div class="container">
 
                 <ol class="breadcrumb">
-                    <li><a href="homes.jsp">Home</a></li>
+                    <li><a href="homeMentee">Home</a></li>
                     <li class="active">Mentee Profile</li>
                 </ol>
                 <div class="row">
