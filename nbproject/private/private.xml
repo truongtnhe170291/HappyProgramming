@@ -3,11 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/META-INF/web.xml</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/common/LoginServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/src/java/controller/mentee/FeedBackServlet.java</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Mentor_Mentee_calendar.jsp</file>
-            <file>file:/D:/Workspase/Java_NetBeans/Project-SWP-HappyProgramming/HappyProgramming/web/Manager_Skill.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/ScheduleManagement.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/listCV.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/Manager_Blog.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/header_Manager.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/Manager_Skill.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/sidebar.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/AdminDashbroad.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/header.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/SkillsManagement.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/web/blog_skill.jsp</file>
+            <file>file:/D:/SWP/HappyPrograming1/src/java/dal/DBContext.java</file>
         </group>
     </open-files>
 </project-private>
