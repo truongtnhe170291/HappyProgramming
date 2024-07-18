@@ -2,16 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.mentee;
+package controller.manager;
 
-import dal.CVDAO;
 import dal.FeedBackDAO;
 import dal.MentorDAO;
 import dal.MentorProfileDAO;
 import dal.RequestDAO;
-import dal.ScheduleDAO;
-import dal.SkillDAO;
-import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -27,25 +23,21 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
-import models.CV;
 import models.Day;
 import models.FeedBack;
 import models.Mentor;
 import models.MentorProfileDTO;
-import models.Request;
 import models.RequestDTO;
 import models.SchedulePublic;
-import models.Skill;
 import models.Slot;
 import models.Status;
-import models.Wallet;
 
 /**
  *
  * @author 2k3so
  */
-@WebServlet(name = "ViewDetailRequest", urlPatterns = {"/ViewDetailRequest"})
-public class ViewDetailRequest extends HttpServlet {
+@WebServlet(name = "PayForMentor", urlPatterns = {"/PayForMentor"})
+public class PayForMentor extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,6 +48,23 @@ public class ViewDetailRequest extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet PayForMentor</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet PayForMentor at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -71,7 +80,7 @@ public class ViewDetailRequest extends HttpServlet {
         try {
             Account a = (Account) request.getSession().getAttribute("user");
             if (a == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("LoginManager.jsp");
                 return;
             }
 
@@ -90,7 +99,6 @@ public class ViewDetailRequest extends HttpServlet {
             LocalDate nextNextMonday = nextMonday.plusWeeks(1);
 
             // Lọc danh sách ngày cho một tuần
-            ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
             rdao.updateExpiredRequestsStatus();
 
@@ -99,7 +107,7 @@ public class ViewDetailRequest extends HttpServlet {
             List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
 
             int statusId = -1;
-            requests = rdao.getRequestOfMenteeByStatusNotPaging(menteeName, requestId);
+            requests = rdao.getRequestManager(requestId);
 
             List<SchedulePublic> listSchedule = requests.get(0).getListSchedule();
             RequestDTO requestDetail = requests.get(0);
@@ -162,52 +170,6 @@ public class ViewDetailRequest extends HttpServlet {
         }
     }
 
-    private ArrayList<Day> getOneWeekDays(ArrayList<Day> list) {
-        ArrayList<Day> listOne = new ArrayList<>();
-        if (list.isEmpty()) {
-            return listOne;
-        }
-
-        LocalDate referenceDate = list.get(0).getDate1().toLocalDate();
-
-        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        // Lọc các ngày trong tuần đó
-        for (Day day : list) {
-            LocalDate dayDate = day.getDate1().toLocalDate();
-            if (!dayDate.isBefore(startOfWeek) && !dayDate.isAfter(endOfWeek)) {
-                listOne.add(day);
-            }
-        }
-
-        return listOne;
-    }
-
-// Hàm lấy lịch trình cho một tuần
-    private List<SchedulePublic> getOneWeek(List<SchedulePublic> list) {
-        List<SchedulePublic> listOne = new ArrayList<>();
-        if (list.isEmpty()) {
-            return listOne;
-        }
-        LocalDate referenceDate = list.get(0).getDayOfSlot().toLocalDate();
-
-        // Tìm ngày đầu tiên và ngày cuối cùng của tuần chứa ngày cho trước
-        LocalDate startOfWeek = referenceDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = referenceDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        // Lọc các schedule trong tuần đó
-        for (SchedulePublic s : list) {
-            LocalDate slotDate = s.getDayOfSlot().toLocalDate();
-            if (!slotDate.isBefore(startOfWeek) && !slotDate.isAfter(endOfWeek)) {
-                listOne.add(s);
-            }
-        }
-
-        return listOne;
-    }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -219,7 +181,7 @@ public class ViewDetailRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**

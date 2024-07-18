@@ -5,6 +5,7 @@
 package controller.mentee;
 
 import dal.MentorDAO;
+import dal.MentorProfileDAO;
 import dal.RequestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,8 +15,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -24,7 +27,9 @@ import java.util.Date;
 import java.util.List;
 import models.Account;
 import models.Day;
+import models.FeedBack;
 import models.Mentor;
+import models.MentorProfileDTO;
 import models.RequestDTO;
 import models.SchedulePublic;
 import models.Slot;
@@ -143,8 +148,32 @@ public class ListRequest extends HttpServlet {
             }
 
             //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
+            LocalDate todayLocalDate = LocalDate.now();
+            String todayString = todayLocalDate.toString();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = null;
             
- 
+            try {
+                today = sdf.parse(todayString);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            for (RequestDTO requestDTO : requests) {
+                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+                if(listSchedule.get(listSchedule.size() - 1).getDayOfSlot().equals(today) || listSchedule.get(listSchedule.size() - 1).getDayOfSlot().before(today)){
+                    requestDTO.setIsEnoughPay(true);
+                }else{
+                    requestDTO.setIsEnoughPay(false);
+                }
+            }
+            
+            for (RequestDTO requestDTO : requests) {
+                System.out.println(requestDTO.isIsEnoughPay());
+            }
+            //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
+
             request.setAttribute("requests", requests);
             request.setAttribute("listSlots", listSlots);
             request.setAttribute("listDays", oneWeekDays);  // Chỉ hiển thị danh sách ngày của một tuần
