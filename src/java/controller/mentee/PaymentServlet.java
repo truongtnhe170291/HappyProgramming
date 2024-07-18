@@ -98,26 +98,25 @@ public class PaymentServlet extends HttpServlet {
                             sdao.updateStatusSelectedSlot(s.getSelectedId(), 6);
                             if (!listRequest.isEmpty()) {
                                 for (Request rqu : listRequest) {
-                                    System.out.println(s.getSlotId()+s.getDayOfSlot());
-                                    if (rdao.isDuplicateSlotAndDate(s.getSlotId(),s.getDayOfSlot(), r.getRequestId())) {
+                                    if (rdao.isDuplicateSlotAndDate(s.getSlotId(), s.getDayOfSlot(), rqu.getRequestId())) {
                                         listReject.add(rqu);
                                     }
                                 }
                             }
                         }
                         if (!listReject.isEmpty()) {
-                    Set<Request> listRejectAll = new HashSet<>(listReject);
-                    for (Request rquest : listRejectAll) {
-                        if (rdao.updateStatus(rquest.getRequestId(), 3)) {
-                            Wallet w = wdao.getWalletByUsenName(rquest.getMenteeName());
-                            w.setHold(w.getHold() - rquest.getPrice());
-                            wdao.updateWalletHold(w);
-                            Hold hol = new Hold(rquest.getMenteeName(), rquest.getRequestId(), rquest.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + rquest.getTitle(), false);
-                            wdao.inserHold(hol);
-                            rdao.updateNoteRequest(rquest.getRequestId(), "The schedule you selected was rejected because this request The schedule you selected was rejected because this request is duplicated with another request, Please choose another schedule");
+                            Set<Request> listRejectAll = new HashSet<>(listReject);
+                            for (Request rquest : listRejectAll) {
+                                if (rdao.updateStatus(rquest.getRequestId(), 3)) {
+                                    Wallet w = wdao.getWalletByUsenName(rquest.getMenteeName());
+                                    w.setHold(w.getHold() - rquest.getPrice());
+                                    wdao.updateWalletHold(w);
+                                    Hold hol = new Hold(rquest.getMenteeName(), rquest.getRequestId(), rquest.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + rquest.getTitle(), false);
+                                    wdao.inserHold(hol);
+                                    rdao.updateNoteRequest(rquest.getRequestId(), "The schedule you selected was rejected because this request The schedule you selected was rejected because this request is duplicated with another request, Please choose another schedule");
+                                }
+                            }
                         }
-                    }
-                }
                         response.sendRedirect("ListRequest");
                         //return;
                     }

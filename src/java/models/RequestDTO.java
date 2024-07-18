@@ -20,6 +20,7 @@ public class RequestDTO extends Request{
     private String note;
     private int cvId;
     private int absent, attended;
+    private boolean isEnoughPay;
     public RequestDTO() {
     }
 
@@ -86,6 +87,14 @@ public class RequestDTO extends Request{
 
     public void setListSkills(List<Skill> listSkills) {
         this.listSkills = listSkills;
+    }
+
+    public boolean isIsEnoughPay() {
+        return isEnoughPay;
+    }
+
+    public void setIsEnoughPay(boolean isEnoughPay) {
+        this.isEnoughPay = isEnoughPay;
     }
 
     public List<SchedulePublic> getListSchedule() {
