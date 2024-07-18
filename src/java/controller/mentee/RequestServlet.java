@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.CV;
+import models.Cycle;
 import models.FormData;
 import models.Hold;
 import models.Request;
@@ -67,10 +68,11 @@ public class RequestServlet extends HttpServlet {
             String userName = cvdao.getCVByCVId(cvId).getUserName();
             //get rate of mentor
             int rate = mentorDAO.getRateOfMentor(userName);
+            Cycle c = mentorDAO.getNewCycleByUser(userName);
             // get Schedule public by user mentor name
-            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
+            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2, c.getCycleId());
             if (listSchedule.isEmpty()) {
-                response.sendRedirect("homes.jsp");
+                response.sendRedirect("homeMentee");
                 return;
             }
 

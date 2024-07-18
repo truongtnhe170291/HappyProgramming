@@ -453,7 +453,6 @@ public class MentorDAO {
     }
 
     public Cycle getNewCycleByUser(String userName) {
-        Cycle c = new Cycle();
         try {
             String query = "SELECT TOP 1 * FROM Cycle c\n"
                     + "WHERE c.mentor_name = ?\n"
@@ -464,15 +463,17 @@ public class MentorDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                c = new Cycle(
+                Cycle c = new Cycle(
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(5));
+                c.setCycleId(rs.getInt("cycle_id"));
+                return c;
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        return c;
+        return null;
     }
 
     public Cycle getCycleByCycleID(int cycleId) {

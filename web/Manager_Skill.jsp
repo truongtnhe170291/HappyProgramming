@@ -15,27 +15,66 @@
 
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
-            .paginator{
-                border: solid 1px rgba(0, 0, 0, .2);
-                width: fit-content;
-                padding: 10px 12px;
-                margin-top: 10px;
-                border-radius: 8px;
-            }
-            .prev{
-                border-right: solid 1px rgba(0, 0, 0, .2);
-                padding-top: 13px;
-                padding-bottom: 13px;
-                padding-right: 10px;
-                margin-right: 6px;
-            }
-            .next{
-                border-left: solid 1px rgba(0, 0, 0, .2);
-                padding-top: 13px;
-                padding-bottom: 13px;
-                padding-left: 10px;
-                margin-left: 6px;
-            }
+   .paginator {
+       float:right;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.paginator .prev,
+.paginator .next {
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    color: #007bff !important;
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
+}
+
+.paginator .prev {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+
+.paginator .next {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+.paginator .prev:hover,
+.paginator .next:hover {
+    background-color: #f8f9fa !important;
+}
+
+.paginator .pageNum {
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    color: #007bff !important;
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
+    margin: 0 5px !important;
+}
+
+.paginator .pageNum.active {
+    background-color: #007bff !important;
+    color: white !important;
+    border: 1px solid #007bff !important;
+}
+
+.paginator .pageNum:hover {
+    background-color: #f8f9fa !important;
+}
+
+.paginator .prev[style*="hidden"], .paginator .next[style*="hidden"] {
+    visibility: hidden !important;
+}
+
+
+
         </style>
     </head>
     <body>
@@ -119,17 +158,16 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
-                                            <div class="paginator">
-                                                <c:if test="${currentPage > 1}">
-                                                    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}" class="prev">Previous</a>
-                                                </c:if>
+         <div class="paginator">
+    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}" class="prev" <c:if test="${currentPage <= 1}">style="visibility: hidden;"</c:if>>Previous</a>
 
-                                                    <span class="pageNum">Page ${currentPage} of ${totalPages}</span>
+    <span id="pagination-links"></span>
+    
+    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}" class="next" <c:if test="${currentPage >= totalPages}">style="visibility: hidden;"</c:if>>Next</a>
+</div>
 
-                                                <c:if test="${currentPage < totalPages}">
-                                                    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}" class="next">Next</a>
-                                                </c:if>
-                                            </div>
+
+
                                         </div>
                                         <!-- edit ở đây -->
                                         <div id="editPopup" class="popup">
@@ -315,7 +353,43 @@
                     </div>
                 </div>
             </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', () => {
+    const currentPage = ${currentPage};
+    const totalPages = ${totalPages};
+    const paginationLinks = document.getElementById('pagination-links');
+    
+    // Helper function to create a link element
+    function createLink(page, text, isActive) {
+        const a = document.createElement('a');
+        a.href = `skills?page=${page}&status=${status}&skillName=${skillName}`;
+        a.textContent = text;
+        a.className = 'pageNum';
+        if (isActive) a.classList.add('active');
+        return a;
+    }
 
+    // Display '1'
+    if (currentPage > 3) {
+        paginationLinks.appendChild(createLink(1, '1'));
+        paginationLinks.appendChild(document.createTextNode('...'));
+    }
+
+    // Display range of pages
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        paginationLinks.appendChild(createLink(i, i, i === currentPage));
+    }
+
+    // Display 'N'
+    if (currentPage < totalPages - 2) {
+        if (currentPage < totalPages - 3) {
+            paginationLinks.appendChild(document.createTextNode('...'));
+        }
+        paginationLinks.appendChild(createLink(totalPages, totalPages));
+    }
+});
+
+                                    </script>
             <script>
                 document.body.classList.remove('modal-open');
                 document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());

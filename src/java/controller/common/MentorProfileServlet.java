@@ -20,11 +20,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Account;
 import models.CV;
+import models.Cycle;
 import models.MentorProfileDTO;
 import models.Request;
 import models.SchedulePublic;
@@ -91,20 +93,30 @@ public class MentorProfileServlet extends HttpServlet {
             String userName = cvdao.getCVByCVId(cvId).getUserName();
             //get rate of mentor
             int rate = mentorDAO.getRateOfMentor(userName);
-            // get Schedule public by user mentor name
-            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
-            if (!listSchedule.isEmpty()) {
-                request.setAttribute("mon", listSchedule.get(0).getStartTime());
+            Cycle c = mentorDAO.getNewCycleByUser(userName);
+            if (c != null) {
+                if (LocalDate.now().isBefore(LocalDate.parse(c.getStart()))) {
 
-//                response.sendRedirect("homes.jsp");
-//                return;
-            }
+                    // get Schedule public by user mentor name
+                    List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2, c.getCycleId());
+                    if (listSchedule.isEmpty()) {
+                        System.out.println("Schedule not null");
+                        request.setAttribute("noBook", "No Shedules");
+                    } else {
 
-            for (SchedulePublic s : listSchedule) {
-                DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
-                s.setNameOfDay(nameOfDay);
+                        for (SchedulePublic s : listSchedule) {
+                            DayOfWeek nameOfDay = s.getDayOfSlot().toLocalDate().getDayOfWeek();
+                            s.setNameOfDay(nameOfDay);
+                        }
+                        request.setAttribute("listSchedule", listSchedule);
+                        request.setAttribute("mon", listSchedule.get(0).getStartTime());
+                    }
+                } else {
+                    request.setAttribute("noBook", "No Shedules");
+                }
+            } else {
+                request.setAttribute("noBook", "No Shedules");
             }
-            request.setAttribute("listSchedule", listSchedule);
             CV cv = cvdao.getCVByCVId(cvId);
 
             List<Slot> listSlot = mentorDAO.listSlots();

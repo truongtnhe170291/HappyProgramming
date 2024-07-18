@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import models.Account;
 
-@WebServlet(name = "NewPassword", urlPatterns = {"/newpassword"})
+@WebServlet(name = "NewPassword", urlPatterns = {"/NewPassword"})
 public class NewPassword extends HttpServlet {
 
      @Override
@@ -44,11 +44,11 @@ public class NewPassword extends HttpServlet {
                     	        
 					
 				} else {
-					request.setAttribute("status", "confirm password not the same new password");
+					request.setAttribute("statust", "confirm password not the same new password");
 					 request.getRequestDispatcher("newPassword.jsp").forward(request, response);
 				}
             } catch (Exception e) {
-                request.setAttribute("status", "error");
+                request.setAttribute("statust", "error");
 					 request.getRequestDispatcher("newPassword.jsp").forward(request, response);
             }
                 

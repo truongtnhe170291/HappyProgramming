@@ -415,6 +415,25 @@
             .V_o{
                 margin-right: 4px;
             }
+            .pagination {
+                float:right;
+        display: flex;
+        justify-content: right;
+        margin-top: 20px;
+    }
+    .pagination a, .pagination span {
+        padding: 8px 16px;
+        text-decoration: none;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+    .pagination span {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
         </style>
     </head>
 

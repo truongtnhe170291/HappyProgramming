@@ -220,7 +220,7 @@ textarea {
             <h1 class="page-title">Feedback for ${mentor.getFullName()}</h1>
             <div class="rate-comment-mentor">
                 <div class="mentor-info">
-                    <img src="./img/${mentor.avatar}" alt="Mentor Avatar" class="mentor-avatar">
+                    <img src="./imgcv/${mentor.avatar}" alt="Mentor Avatar" class="mentor-avatar">
                     <div class="mentor-details">
                         <h3>${mentor.getFullName()}</h3>
                         <p>Company</p>

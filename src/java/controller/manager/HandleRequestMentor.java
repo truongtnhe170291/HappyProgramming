@@ -113,7 +113,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
           ScheduleDAO scheduleDAO = new ScheduleDAO();
     MentorDAO mentorDao = new MentorDAO();
     int totalRequests = scheduleDAO.getTotalRequestByMentorName("son");
-     List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentor(1,2);
+     List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorName("son",1,5);
         System.out.println(totalRequests);
         System.out.println(list.size());
     }
