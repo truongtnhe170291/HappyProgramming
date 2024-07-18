@@ -84,8 +84,8 @@
                                                         <i class="uil uil-key-skeleton"></i> Change Password</a>
                                                 </li>
                                                 <li>
-                                                    <a href="">
-                                                        <i class="uil uil-users-alt"></i> Apply CV</a>
+                                                    <a href="WalletMentor">
+                                                        <i class="fas fa-wallet"></i> My Wallet</a>
                                                 </li>
                                                 
                                             </ul>

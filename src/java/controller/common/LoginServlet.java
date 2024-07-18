@@ -120,6 +120,9 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("mess", "Your account has been banned because you have violated the website's rules");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                }
+            } else if(acc.getRoleId() == 3){
+                request.setAttribute("mess", "You are not authorized to log in");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");

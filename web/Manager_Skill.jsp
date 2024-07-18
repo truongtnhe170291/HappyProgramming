@@ -33,6 +33,9 @@
     border: 1px solid #ddd !important;
     border-radius: 8px !important;
 }
+#pagination-links{
+      pointer-events: none;
+}
 
 .paginator .prev {
     border-top-left-radius: 8px !important;
