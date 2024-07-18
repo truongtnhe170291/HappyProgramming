@@ -25,13 +25,15 @@ public class ChangPassServlet extends HttpServlet {
         Account acc = (Account) request.getSession().getAttribute("user");
         //if not logged in yet, redirects user to login page to login
         if (acc == null) {
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+//            response.sendRedirect("login.jsp");
             return;
         }
         //if is logged in, redirect to change password jsp page
-        response.sendRedirect("changepass.jsp");
+//        response.sendRedirect("changepass.jsp");
+        request.getRequestDispatcher("changepass.jsp").forward(request, response);
     }
-    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *

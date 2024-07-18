@@ -13,7 +13,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 40px;
+            padding: 0px 40px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;

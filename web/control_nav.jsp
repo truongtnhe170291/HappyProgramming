@@ -80,7 +80,7 @@
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
                                                 <li>
-                                                    <a href="newpassword">
+                                                    <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password</a>
                                                 </li>
                                                 <li>
