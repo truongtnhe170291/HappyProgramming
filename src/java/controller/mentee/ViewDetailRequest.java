@@ -132,7 +132,7 @@ public class ViewDetailRequest extends HttpServlet {
             String isFeedback = request.getParameter("feedback");
 
             if (isFeedback != null) {
-                if (today.isEqual(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
+                if (today.isEqual(middleDate) || today.isAfter(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
                     MentorDAO mentorDAO = new MentorDAO();
                     MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
                     MentorProfileDTO mentor = mentorProfileDAO.getOneMentor(requests.get(0).getMentorName());
