@@ -123,11 +123,76 @@ public class FeedBackDAO {
         return status;
     }
 
+    public boolean isContainFeedback(int requetsID) {
+        try {
+            String query = "SELECT * FROM [FeedBacks] where [request_id] = ?";
+            con = new DBContext().connection; // Mở kết nối đến SQL
+            ps = con.prepareStatement(query);
+            ps.setInt(1, requetsID);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("isContainFeedback: " + e.getMessage());
+            status = "Error";
+        }
+        return false;
+    }
+
+    public FeedBack getFeedBackByRequestId(int requetsID) {
+        FeedBack fb = new FeedBack();
+        try {
+            String query = "SELECT * FROM [FeedBacks] where [request_id] = ?";
+            con = new DBContext().connection; // Mở kết nối đến SQL
+            ps = con.prepareStatement(query);
+            ps.setInt(1, requetsID);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                fb = new FeedBack(
+                        rs.getString("mentor_name"),
+                        rs.getString("mentee_name"),
+                        rs.getInt("star"),
+                        rs.getInt("request_id"),
+                        rs.getString("comment"),
+                        rs.getDate("time_feedback"));
+            }
+        } catch (Exception e) {
+            System.out.println("getFeedBackByRequestId: " + e.getMessage());
+            status = "Error";
+        }
+        return fb;
+    }
+
     public static void main(String[] args) {
         FeedBackDAO sd = new FeedBackDAO();
-        for (FeedBack s : sd.listFeedBacks()) {
-            System.out.println(s.toString());
-        }
+        System.out.println(sd.getFeedBackByRequestId(1));
+    }
+
+        public String updateFeedBack(FeedBack feedback) {
+        String status = "OK";
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            String query = "UPDATE [FeedBacks]\n"
+                    + "SET [mentor_name] = ?, [mentee_name] = ?, [star] = ?, [comment] = ?, [time_feedback] = ?\n"
+                    + "WHERE [request_id] = ?";
+            con = new DBContext().connection; // Mở kết nối đến SQL
+            ps = con.prepareStatement(query);
+            ps.setString(1, feedback.getMentorName());
+            ps.setString(2, feedback.getMenteeName());
+            ps.setInt(3, feedback.getStar());
+            ps.setString(4, feedback.getComment());
+            ps.setDate(5, feedback.getTimeFeedBack());
+            ps.setInt(6, feedback.getRequestId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Lỗi thêm phản hồi: " + e.getMessage());
+            e.printStackTrace(); // In stack trace để debug
+            status = "Lỗi: " + e.getMessage(); // Ghi lại thông báo lỗi chi tiết
+        } 
+        return status;
     }
 
 }

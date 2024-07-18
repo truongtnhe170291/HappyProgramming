@@ -7,7 +7,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List of Requests</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-vP0MSTlp4tfcX8OYKTBOCCi0A+zjRgw4ADYz2F0tL4J4/lA/FW5V6hfEjNUtAeECb6dJwyuV4EjZ1lkl9EP0dQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+              integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -489,6 +491,7 @@
                 color: #fff;
                 border-color: #007bff;
             }
+
         </style>
     </head>
 
@@ -571,7 +574,7 @@
                                             </a>
 
                                             <c:if test="${request.status.statusId eq 1}">
-                                                <a href="ViewDetailRequest?requestId=${request.requestId}" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
+                                                <a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                     <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
                                                 </a>
                                             </c:if>      
@@ -792,7 +795,15 @@
                 });
 
             </script>
-
+            <% 
+                 String avaiableFb = (String) request.getAttribute("avaiableFb");
+            %>
+            <script>
+                const isAvaiable = "<%= avaiableFb %>";
+                if(isAvaiable != "null"){
+                    alert("Not yet the date of implementation of feedback");
+                }
+            </script>
         </div>
     </body>
 
