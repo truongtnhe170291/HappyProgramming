@@ -588,6 +588,12 @@
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>
 
+                                            <%--<c:if test="${request.isEnoughPay eq true}">--%> 
+                                                <!--<a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">-->
+                                                    <!--<i class="uil uil-tachometer-fast align-center" style="color: blue;"></i>-->
+                                                <!--</a>-->
+                                            <%--</c:if>--%>   
+
                                             <c:if test="${request.status.statusId eq 1}">
                                                 <a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                     <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
@@ -817,7 +823,7 @@
             %>
             <script>
                 const isAvaiable = "<%= avaiableFb %>";
-                if(isAvaiable != "null"){
+                if (isAvaiable != "null") {
                     alert("Not yet the date of implementation of feedback");
                 }
             </script>

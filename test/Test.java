@@ -24,25 +24,12 @@ import models.RequestDTO;
 public class Test {
 
     public static void main(String[] args) {
-        MentorDAO mentorDao = new MentorDAO();
-        RequestDAO dao = new RequestDAO();
 
-        LocalDate today = LocalDate.now();
-
-        String startTimeStr = "2024-07-08";
-        String endTimeStr = "2024-07-14";
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
-        LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
-
-        long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-        LocalDate middleDate = startDate.plusDays(daysBetween / 2);
-
-        System.out.println(middleDate.format(formatter));
-        System.out.println(today.toString());
+        LocalDate todayLocalDate = LocalDate.now();
+        String todayString = todayLocalDate.toString();
         
-        
+        System.out.println(todayString);
+
     }
 
     public static String formatStringMoney(long amount) {

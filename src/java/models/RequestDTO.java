@@ -21,7 +21,17 @@ public class RequestDTO extends Request{
     private int cvId;
     private int absent, attended;
     private boolean isEnoughPay;
+    
     public RequestDTO() {
+    }
+    
+    public RequestDTO(List<Skill> listSkills, List<SchedulePublic> listSchedule, Status status, String note, int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour, boolean isEnoughPay) {
+        super(requestId, mentorName, menteeName, deadlineDate, title, description, statusId, deadlineHour);
+        this.listSkills = listSkills;
+        this.listSchedule = listSchedule;
+        this.status = status;
+        this.note = note;
+        this.isEnoughPay = isEnoughPay;
     }
 
     public RequestDTO(List<Skill> listSkills, List<SchedulePublic> listSchedule, Status status, String note, int requestId, String mentorName, String menteeName, LocalDate deadlineDate, String title, String description, int statusId, LocalTime deadlineHour) {
@@ -39,6 +49,14 @@ public class RequestDTO extends Request{
         
     }
 
+    public boolean isIsEnoughPay() {
+        return isEnoughPay;
+    }
+
+    public void setIsEnoughPay(boolean isEnoughPay) {
+        this.isEnoughPay = isEnoughPay;
+    }
+    
     public int getCvId() {
         return cvId;
     }
@@ -89,14 +107,6 @@ public class RequestDTO extends Request{
         this.listSkills = listSkills;
     }
 
-    public boolean isIsEnoughPay() {
-        return isEnoughPay;
-    }
-
-    public void setIsEnoughPay(boolean isEnoughPay) {
-        this.isEnoughPay = isEnoughPay;
-    }
-
     public List<SchedulePublic> getListSchedule() {
         return listSchedule;
     }
@@ -107,9 +117,7 @@ public class RequestDTO extends Request{
 
     @Override
     public String toString() {
-        return super.toString() + "RequestDTO{" + "listSkills=" + listSkills + ", listSchedule=" + listSchedule + ", status=" + status + ", note=" + note + '}'+"attend: "+attended+"  Absent: "+absent;
+        return "RequestDTO{" + "listSkills=" + listSkills + ", listSchedule=" + listSchedule + ", status=" + status + ", note=" + note + ", cvId=" + cvId + ", absent=" + absent + ", attended=" + attended + ", isEnoughPay=" + isEnoughPay + '}';
     }
-    
-    
-    
+
 }

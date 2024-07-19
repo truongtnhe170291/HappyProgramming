@@ -183,6 +183,53 @@ public class RequestDAO {
 
         return requests;
     }
+    
+    public List<RequestDTO> getRequestManager(String requestId) {
+        List<RequestDTO> requests = new ArrayList<>();
+        try {
+            String sql = " SELECT * "
+                    + " FROM RequestsFormMentee r join CV c on c.mentor_name = r.mentor_name "
+                    + " WHERE r.request_id = ? "
+                    + " ORDER BY [deadline_date] DESC ";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, requestId);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+                request.setCvId(rs.getInt("cv_id"));
+
+                // Fetch status using fetchStatusById method
+                int statusId = rs.getInt("status_id");
+                Status status = fetchStatusById(statusId, con);
+                request.setStatus(status);
+
+                requests.add(request);
+            }
+
+            for (RequestDTO requ : requests) {
+                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+                requ.setListSkills(skills);
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                requ.setListSchedule(listSchedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
+        }
+
+        return requests;
+    }
 
     public List<RequestDTO> getRequestOfMenteeByStatusNotPagingMentor(String mentorName, String requestId) {
         List<RequestDTO> requests = new ArrayList<>();
@@ -234,18 +281,12 @@ public class RequestDAO {
 
     public static void main(String[] args) {
         RequestDAO dao = new RequestDAO();
-        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "2");
-        for (RequestDTO request : requests) {
-            System.out.println(request);
-        }
-           List<Map<String, Object>> requestStats = dao.getTotalRequestMonth("son");
+        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "1");
         
-        for (Map<String, Object> stats : requestStats) {
-            System.out.println("Year: " + stats.get("year") + 
-                               ", Month: " + stats.get("month") + 
-                               ", Mentor: " + stats.get("mentor_name") + 
-                               ", Total Requests: " + stats.get("total_requests"));
+        for (RequestDTO request : requests) {
+            System.out.println(request.toString());
         }
+         
 
     }
     public List<Map<String, Object>> getTotalRequestMonth(String mentorName) {
@@ -849,18 +890,18 @@ public class RequestDAO {
     }
     
     
-    public List<RequestDTO> getAllRequestsByPagManager(int page, int pageSize) throws SQLException {
+    public List<RequestDTO> getAllRequestsByPagManager() throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         try {
             StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM RequestsFormMentee WHERE 1=1 AND status_id != 6");
             // Add pagination
-            sqlBuilder.append(" ORDER BY request_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+//            sqlBuilder.append(" ORDER BY request_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
             ps = con.prepareStatement(sqlBuilder.toString());
             int paramIndex = 1;
             // Calculate offset
-            int offset = (page - 1) * pageSize;
-            ps.setInt(paramIndex++, offset);
-            ps.setInt(paramIndex++, pageSize);
+//            int offset = (page - 1) * pageSize;
+//            ps.setInt(paramIndex++, offset);
+//            ps.setInt(paramIndex++, pageSize);
             rs = ps.executeQuery();
             while (rs.next()) {
                 RequestDTO request = new RequestDTO();
@@ -1598,5 +1639,7 @@ public class RequestDAO {
         }
         return list;
     }
+    
+    
 
 }
