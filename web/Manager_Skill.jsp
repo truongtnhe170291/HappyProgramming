@@ -15,66 +15,66 @@
 
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>
-   .paginator {
-       float:right;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    margin-top: 20px !important;
-    margin-bottom: 20px !important;
-}
+            .paginator {
+                float:right;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                margin-top: 20px !important;
+                margin-bottom: 20px !important;
+            }
 
-.paginator .prev,
-.paginator .next {
-    padding: 8px 16px !important;
-    text-decoration: none !important;
-    color: #007bff !important;
-    background-color: #fff !important;
-    border: 1px solid #ddd !important;
-    border-radius: 8px !important;
-}
-#pagination-links{
-      pointer-events: none;
-}
+            .paginator .prev,
+            .paginator .next {
+                padding: 8px 16px !important;
+                text-decoration: none !important;
+                color: #007bff !important;
+                background-color: #fff !important;
+                border: 1px solid #ddd !important;
+                border-radius: 8px !important;
+            }
+            #pagination-links{
+                pointer-events: none;
+            }
 
-.paginator .prev {
-    border-top-left-radius: 8px !important;
-    border-bottom-left-radius: 8px !important;
-}
+            .paginator .prev {
+                border-top-left-radius: 8px !important;
+                border-bottom-left-radius: 8px !important;
+            }
 
-.paginator .next {
-    border-top-right-radius: 8px !important;
-    border-bottom-right-radius: 8px !important;
-}
+            .paginator .next {
+                border-top-right-radius: 8px !important;
+                border-bottom-right-radius: 8px !important;
+            }
 
-.paginator .prev:hover,
-.paginator .next:hover {
-    background-color: #f8f9fa !important;
-}
+            .paginator .prev:hover,
+            .paginator .next:hover {
+                background-color: #f8f9fa !important;
+            }
 
-.paginator .pageNum {
-    padding: 8px 16px !important;
-    text-decoration: none !important;
-    color: #007bff !important;
-    background-color: #fff !important;
-    border: 1px solid #ddd !important;
-    border-radius: 8px !important;
-    margin: 0 5px !important;
-}
+            .paginator .pageNum {
+                padding: 8px 16px !important;
+                text-decoration: none !important;
+                color: #007bff !important;
+                background-color: #fff !important;
+                border: 1px solid #ddd !important;
+                border-radius: 8px !important;
+                margin: 0 5px !important;
+            }
 
-.paginator .pageNum.active {
-    background-color: #007bff !important;
-    color: white !important;
-    border: 1px solid #007bff !important;
-}
+            .paginator .pageNum.active {
+                background-color: #007bff !important;
+                color: white !important;
+                border: 1px solid #007bff !important;
+            }
 
-.paginator .pageNum:hover {
-    background-color: #f8f9fa !important;
-}
+            .paginator .pageNum:hover {
+                background-color: #f8f9fa !important;
+            }
 
-.paginator .prev[style*="hidden"], .paginator .next[style*="hidden"] {
-    visibility: hidden !important;
-}
+            .paginator .prev[style*="hidden"], .paginator .next[style*="hidden"] {
+                visibility: hidden !important;
+            }
 
 
 
@@ -161,88 +161,110 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
-         <div class="paginator">
-    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}" class="prev" <c:if test="${currentPage <= 1}">style="visibility: hidden;"</c:if>>Previous</a>
-
-    <span id="pagination-links"></span>
-    
-    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}" class="next" <c:if test="${currentPage >= totalPages}">style="visibility: hidden;"</c:if>>Next</a>
+                                           <div style="display: flex; justify-content: end; margin: 10px 0">
+    <c:if test="${totalPages > 1}">
+        <ul class="pagination">
+            <c:if test="${currentPage > 1}">
+                <li>
+                    <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}">Previous</a>
+                </li>
+            </c:if>
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <li><span>${i}</span></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li>
+                            <a href="skills?page=${i}&status=${status}&skillName=${skillName}">${i}</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:if test="${currentPage < totalPages}">
+                <li>
+                    <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}">Next</a>
+                </li>
+            </c:if>
+        </ul>
+    </c:if>
 </div>
 
 
 
-                                        </div>
-                                        <!-- edit ở đây -->
-                                        <div id="editPopup" class="popup">
-                                            <div class="popup-content">
-                                                <h2>Edit Skill</h2>
-                                                <form id="editForm" action="udatestatus" method="post">
-                                                    <input type="hidden" name="skillID">
-                                                    <label for="editName">Name: </label>
-                                                    <input type="text" id="editName" required name="editName"/>
 
-                                                    <label for="editStatus">Status:</label>
-                                                    <select id="editStatus" name="status">
-                                                        <option value="true">Enable</option>
-                                                        <option value="false">Disable</option>
-                                                    </select>
-
-                                                    <div class="popup-buttons">
-                                                        <button type="submit">Save</button>
-                                                        <button type="button" id="closePopup">Cancel</button>
-                                                    </div>
-
-                                                </form>
                                             </div>
-                                        </div>
-                                        <!-- add ở đây -->
-                                        <div id="addPopup" class="popup">
-                                            <div class="popup-content">
-                                                <h2>Add New Skill</h2>
-                                                <form id="addForm" action="createSkill" method="post" enctype="multipart/form-data">
-                                                    <label for="addName">Name:</label>
-                                                    <input type="text" id="addName" required name="skillName"/>
-                                                    <label for="newImg">Upload Image</label>
-                                                    <input name="img" type="file" id="newImg" required/>
-                                                    <label for="newDescription" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="newDescription" name="description" rows="3"></textarea>
-                                                    <input type="hidden" name="status" value="true">
-                                                    <div class="popup-buttons">
-                                                        <button type="submit">Add</button>
-                                                        <button type="button" id="closeAddPopup">Cancel</button>
-                                                    </div>
-                                                </form>
+                                            <!-- edit ở đây -->
+                                            <div id="editPopup" class="popup">
+                                                <div class="popup-content">
+                                                    <h2>Edit Skill</h2>
+                                                    <form id="editForm" action="udatestatus" method="post">
+                                                        <input type="hidden" name="skillID">
+                                                        <label for="editName">Name: </label>
+                                                        <input type="text" id="editName" required name="editName"/>
+
+                                                        <label for="editStatus">Status:</label>
+                                                        <select id="editStatus" name="status">
+                                                            <option value="true">Enable</option>
+                                                            <option value="false">Disable</option>
+                                                        </select>
+
+                                                        <div class="popup-buttons">
+                                                            <button type="submit">Save</button>
+                                                            <button type="button" id="closePopup">Cancel</button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
                                             </div>
+                                            <!-- add ở đây -->
+                                            <div id="addPopup" class="popup">
+                                                <div class="popup-content">
+                                                    <h2>Add New Skill</h2>
+                                                    <form id="addForm" action="createSkill" method="post" enctype="multipart/form-data">
+                                                        <label for="addName">Name:</label>
+                                                        <input type="text" id="addName" required name="skillName"/>
+                                                        <label for="newImg">Upload Image</label>
+                                                        <input name="img" type="file" id="newImg" required/>
+                                                        <label for="newDescription" class="form-label">Description</label>
+                                                        <textarea class="form-control" id="newDescription" name="description" rows="3"></textarea>
+                                                        <input type="hidden" name="status" value="true">
+                                                        <div class="popup-buttons">
+                                                            <button type="submit">Add</button>
+                                                            <button type="button" id="closeAddPopup">Cancel</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                </div>
-                <!-- Update Modal -->
-                <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true" style="    position: absolute;
-                     top: 50%;
-                     left: 50%;
-                     transform: translate(-50%, -40%);">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form action="skills" method="post" enctype="multipart/form-data">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="updateModalLabel">Update Skill</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" name="skillID" id="skillID">
-                                    <div class="mb-3">
-                                        <label for="skillName" class="form-label">Skill Name</label>
-                                        <input type="text" class="form-control" id="skillName" name="skillName" required>
+                    </div>
+                    <!-- Update Modal -->
+                    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true" style="    position: absolute;
+                         top: 50%;
+                         left: 50%;
+                         transform: translate(-50%, -40%);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="skills" method="post" enctype="multipart/form-data">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateModalLabel">Update Skill</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="img" class="form-label">Image URL</label>
-                                        <input type="file" name="img" />
-                                        <input type="hidden" name="existingImg" value="${skill.img}" />
+                                    <div class="modal-body">
+                                        <input type="hidden" name="skillID" id="skillID">
+                                        <div class="mb-3">
+                                            <label for="skillName" class="form-label">Skill Name</label>
+                                            <input type="text" class="form-control" id="skillName" name="skillName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="img" class="form-label">Image URL</label>
+                                            <input type="file" name="img" />
+                                            <input type="hidden" name="existingImg" value="${skill.img}" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Description</label>
@@ -356,43 +378,41 @@
                     </div>
                 </div>
             </div>
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', () => {
-    const currentPage = ${currentPage};
-    const totalPages = ${totalPages};
-    const paginationLinks = document.getElementById('pagination-links');
-    
-    // Helper function to create a link element
-    function createLink(page, text, isActive) {
-        const a = document.createElement('a');
-        a.href = `skills?page=${page}&status=${status}&skillName=${skillName}`;
-        a.textContent = text;
-        a.className = 'pageNum';
-        if (isActive) a.classList.add('active');
-        return a;
-    }
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const currentPage = ${currentPage};
+                    const totalPages = ${totalPages};
+                    const paginationLinks = document.getElementById('pagination-links');
+                    const status = '${status}';
+                    const skillName = '${skillName}';
 
-    // Display '1'
-    if (currentPage > 3) {
-        paginationLinks.appendChild(createLink(1, '1'));
-        paginationLinks.appendChild(document.createTextNode('...'));
-    }
+                    function createLink(page, text, isActive) {
+                        const a = document.createElement('a');
+                        a.href = `skills?page=${page}&status=${status}&skillName=${skillName}`;
+                        a.textContent = text;
+                        a.className = 'pageNum';
+                        if (isActive)
+                            a.classList.add('active');
+                        return a;
+                    }
 
-    // Display range of pages
-    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
-        paginationLinks.appendChild(createLink(i, i, i === currentPage));
-    }
+                    if (currentPage > 3) {
+                        paginationLinks.appendChild(createLink(1, '1'));
+                        paginationLinks.appendChild(document.createTextNode('...'));
+                    }
 
-    // Display 'N'
-    if (currentPage < totalPages - 2) {
-        if (currentPage < totalPages - 3) {
-            paginationLinks.appendChild(document.createTextNode('...'));
-        }
-        paginationLinks.appendChild(createLink(totalPages, totalPages));
-    }
-});
+                    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                        paginationLinks.appendChild(createLink(i, i, i === currentPage));
+                    }
 
-                                    </script>
+                    if (currentPage < totalPages - 2) {
+                        if (currentPage < totalPages - 3) {
+                            paginationLinks.appendChild(document.createTextNode('...'));
+                        }
+                        paginationLinks.appendChild(createLink(totalPages, totalPages));
+                    }
+                });
+            </script>
             <script>
                 document.body.classList.remove('modal-open');
                 document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());

@@ -608,11 +608,7 @@
                                                     <i class="uil uil-eye align-center" style="color: blue;"></i>
                                                 </a>
 
-                                                <%--<c:if test="${request.isEnoughPay eq true}">--%>
-                                                    <!--<a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">-->
-                                                    <!--<i class="uil uil-tachometer-fast align-center" style="color: blue;"></i>-->
-                                                    <!--</a>-->
-                                                    <%--< /c:if>--%>
+                                       
 
                                                         <c:if test="${request.status.statusId eq 1}">
                                                             <a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes"

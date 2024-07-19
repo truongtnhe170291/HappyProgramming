@@ -419,7 +419,7 @@
                                         <td>${tran.create_date}</td>
                                         <td>${tran.message}</td>
                                         <td class="test_trans ${tran.amount < 0 ? 'negative' : 'positive'}" value="${tran.amount}">
-                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount} VNĐ
+                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount} VND
                                         </td>
                                     </tr>
                                 </c:forEach>
