@@ -417,23 +417,23 @@
             }
             .pagination {
                 float:right;
-        display: flex;
-        justify-content: right;
-        margin-top: 20px;
-    }
-    .pagination a, .pagination span {
-        padding: 8px 16px;
-        text-decoration: none;
-        color: #007bff;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        margin: 0 4px;
-    }
-    .pagination span {
-        background-color: #007bff;
-        color: white;
-        border: 1px solid #007bff;
-    }
+                display: flex;
+                justify-content: right;
+                margin-top: 20px;
+            }
+            .pagination a, .pagination span {
+                padding: 8px 16px;
+                text-decoration: none;
+                color: #007bff;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                margin: 0 4px;
+            }
+            .pagination span {
+                background-color: #007bff;
+                color: white;
+                border: 1px solid #007bff;
+            }
         </style>
     </head>
 
@@ -498,54 +498,39 @@
                                                 <table class="table mb-0 table-borderless">
                                                     <thead>
                                                         <tr class="userDatatable-header">
-                                                            <th><span class="userDatatable-title">User Name</span></th>
-                                                            <th><span class="userDatatable-title">Deadline</span></th>
-                                                            <th><span class="userDatatable-title">Status</span></th>
-                                                            <th><span class="userDatatable-title">Action</span></th>
+                                                            <th>
+                                                                <span class="userDatatable-title">Title</span>
+                                                            </th>
+                                                            <th>
+                                                                <span class="userDatatable-title">Mentor Name</span>
+                                                            </th>
+                                                            <th>
+                                                                <span class="userDatatable-title">Deadline</span>
+                                                            </th>
+                                                            <th>
+                                                                <span class="userDatatable-title">Status</span>
+                                                            </th>
+                                                            <th>
+                                                                <span class="userDatatable-title">Actions</span>
+                                                            </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <c:forEach var="schedule" items="${list}">
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="userDatatable-content">
-                                                                        ${schedule.mentorName}</div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="userDatatable-content">${schedule.deadline}
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="userDatatable-content">${schedule.status}
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="btn-group d-flex align-items-center">
-                                                                        <a href="ViewDetailSchedule?mentorName=${schedule.mentorName}" class="btn btn-info btn-sm ">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                        <c:if test="${schedule.status == 'Pending'}">
-                                                                            <form action="HandleSlotMentor" method="post" class="V_o">
-                                                                                <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
-                                                                                <c:if test="${not empty schedule.list}">
-                                                                                    <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
-                                                                                </c:if>
-                                                                                <button type="submit" name="action" value="2" class="btn btn-success btn-sm">
-                                                                                    <i class="fas fa-check"></i>
-                                                                                </button>
-                                                                            </form>
-                                                                            <a href="#" class="btn btn-danger" onclick="openRejectModal('')">
-                                                                                <i class="fas fa-times"></i>
-                                                                            </a>
-                                                                            <form id="rejectForm" method="POST" action="HandleSlotMentor" style="display:none;">
-                                                                                <input type="hidden" name="mentorName" value="${schedule.mentorName}" />
-                                                                                <input type="hidden" name="action" value="3" />
-                                                                                <input type="hidden" name="cycleID" value="${schedule.cycleId}" />
-                                                                                <textarea id="rejectReason" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
-                                                                            </form>
-                                                                        </c:if>
-                                                                    </div>
-
+                                                    <tbody id="requestTableBody">
+                                                        <c:forEach var="request" items="${requests}">
+                                                            <tr class="request-row" data-status="${request.status.statusName}">
+                                                                <td>${request.title}</td>
+                                                                <td>${request.mentorName}</td>
+                                                                <td>${request.deadlineHour} ${request.deadlineDate}</td>
+                                                                <td>${request.status.statusName}</td>
+                                                                
+                                                                <td class="d-flex" style="margin-top:12px;">
+                                                                    
+                                                                    <c:if test="${request.isEnoughPay eq true}">
+                                                                        <a href="PayForMentor?requestId=${request.requestId}">Money for mentor</a>
+                                                                    </c:if>
+                                                                        
+                                                                    <a href="">View</a>   
+                                                                            
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>

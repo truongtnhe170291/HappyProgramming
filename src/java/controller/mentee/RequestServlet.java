@@ -87,7 +87,7 @@ public class RequestServlet extends HttpServlet {
                 request.setAttribute("Editable", "Editable");
                 Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
                 List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
-               
+
                 request.setAttribute("scheduleOfMentee", listScheduleByMentee);
                 request.setAttribute("skillOfMentee", s);
                 request.setAttribute("requestMentee", requ);
@@ -104,11 +104,9 @@ public class RequestServlet extends HttpServlet {
 
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
-         
-               
-          
-  List<SchedulePublic> listSchedule_General = scheduleDAO.getScheduleByMenteeName(acc.getUserName());
-                request.setAttribute("listSchedule_gereral", listSchedule_General);
+
+            List<SchedulePublic> listSchedule_General = scheduleDAO.getScheduleByMenteeName(acc.getUserName());
+            request.setAttribute("listSchedule_gereral", listSchedule_General);
             request.setAttribute("mon", listSchedule.get(0).getStartTime());
             request.setAttribute("listSlot", listSlot);
             request.setAttribute("skills", list);
@@ -253,7 +251,7 @@ public class RequestServlet extends HttpServlet {
                         // update request này
                         wallet.setHold(wallet.getHold() + requ.getPrice());
                         wdao.updateWalletHold(wallet);
-                        Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: "+re.getTitle(), true);
+                        Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
                         wdao.inserHold(h);
                     }
 
@@ -280,10 +278,10 @@ public class RequestServlet extends HttpServlet {
                         }
                     }
                     // update request này
-                        wallet.setHold(wallet.getHold() + re.getPrice());
-                        wdao.updateWalletHold(wallet);
-                        Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: "+re.getTitle(), true);
-                        wdao.inserHold(h);
+                    wallet.setHold(wallet.getHold() + re.getPrice());
+                    wdao.updateWalletHold(wallet);
+                    Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
+                    wdao.inserHold(h);
                 }
             }
 //            //insert request
