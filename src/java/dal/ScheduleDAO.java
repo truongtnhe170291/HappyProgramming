@@ -615,7 +615,7 @@ public class ScheduleDAO {
             attendancePs.close();
 
             // Subtract 10% from the total earnings
-            totalEarnings = totalEarnings * 0.9;
+            totalEarnings = totalEarnings * 1;
 
         } catch (SQLException e) {
             System.out.println("calculateTotalEarnings: " + e.getMessage());

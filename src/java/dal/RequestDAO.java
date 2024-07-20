@@ -183,7 +183,7 @@ public class RequestDAO {
 
         return requests;
     }
-    
+
     public List<RequestDTO> getRequestManager(String requestId) {
         List<RequestDTO> requests = new ArrayList<>();
         try {
@@ -282,71 +282,68 @@ public class RequestDAO {
     public static void main(String[] args) {
         RequestDAO dao = new RequestDAO();
         List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "1");
-        
+
         for (RequestDTO request : requests) {
             System.out.println(request.toString());
         }
-         
 
     }
+
     public List<Map<String, Object>> getTotalRequestMonth(String mentorName) {
-    List<Map<String, Object>> result = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+        List<Map<String, Object>> result = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-    try {
-        String sql = "SELECT " +
-                     "YEAR(deadline_date) AS year, " +
-                     "MONTH(deadline_date) AS month, " +
-                     "mentor_name, " +
-                     "COUNT(request_id) AS total_requests " +
-                     "FROM RequestsFormMentee " +
-                     "WHERE mentor_name = ? " +
-                     "GROUP BY YEAR(deadline_date), MONTH(deadline_date), mentor_name " +
-                     "ORDER BY YEAR(deadline_date), MONTH(deadline_date)";
-        ps = con.prepareStatement(sql);
-        ps.setString(1, mentorName);
-        rs = ps.executeQuery();
+        try {
+            String sql = "SELECT "
+                    + "YEAR(deadline_date) AS year, "
+                    + "MONTH(deadline_date) AS month, "
+                    + "mentor_name, "
+                    + "COUNT(request_id) AS total_requests "
+                    + "FROM RequestsFormMentee "
+                    + "WHERE mentor_name = ? "
+                    + "GROUP BY YEAR(deadline_date), MONTH(deadline_date), mentor_name "
+                    + "ORDER BY YEAR(deadline_date), MONTH(deadline_date)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, mentorName);
+            rs = ps.executeQuery();
 
-        while (rs.next()) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("year", rs.getInt("year"));
-            map.put("month", rs.getInt("month"));
-            map.put("mentor_name", rs.getString("mentor_name"));
-            map.put("total_requests", rs.getInt("total_requests"));
-            result.add(map);
+            while (rs.next()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("year", rs.getInt("year"));
+                map.put("month", rs.getInt("month"));
+                map.put("mentor_name", rs.getString("mentor_name"));
+                map.put("total_requests", rs.getInt("total_requests"));
+                result.add(map);
+            }
+        } catch (SQLException e) {
+            System.out.println("getTotalRequestMonth: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getTotalRequestMonth: " + e.getMessage());
-    } 
 
-    return result;
-}
-
+        return result;
+    }
 
     public int getCountRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
-    int count = 0;
-    String sql = "SELECT COUNT(*) " +
-                 "FROM RequestsFormMentee r " +
-                 "JOIN CV c ON c.mentor_name = r.mentor_name " +
-                 "WHERE r.mentee_name = ? " ;
-                
+        int count = 0;
+        String sql = "SELECT COUNT(*) "
+                + "FROM RequestsFormMentee r "
+                + "JOIN CV c ON c.mentor_name = r.mentor_name "
+                + "WHERE r.mentee_name = ? ";
 
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, menteeName);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                count = rs.getInt(1);
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, menteeName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("getCountRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
+            throw e;
         }
-    } catch (SQLException e) {
-        System.out.println("getCountRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
-        throw e;
+
+        return count;
     }
-
-    return count;
-}
-
 
     public int getCountRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
         int count = 0;
@@ -893,8 +890,7 @@ public class RequestDAO {
 
         return requests;
     }
-    
-    
+
     public List<RequestDTO> getAllRequestsByPagManager() throws SQLException {
         List<RequestDTO> requests = new ArrayList<>();
         try {
@@ -919,7 +915,7 @@ public class RequestDAO {
                 request.setTitle(rs.getString("title"));
                 request.setPrice(rs.getInt("price"));
                 request.setNote(rs.getString("note"));
-
+                request.setStatusId(rs.getInt("status_id"));
                 Status status = fetchStatusById(rs.getInt("status_id"), con); // Lấy status từ rs
                 request.setStatus(status);
 
@@ -941,19 +937,42 @@ public class RequestDAO {
 
         return requests;
     }
-    
-    
-    
 
     public void updateExpiredRequestsStatus() throws SQLException {
-        PreparedStatement ps = null;
         try {
-            String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
-                    + " SET status_id = 4 "
-                    + " WHERE deadline_date < CAST(GETDATE() AS DATE)"
-                    + " AND (status_id = 2 or status_id = 5)";
-            ps = con.prepareStatement(sql);
-            ps.executeUpdate();
+            List<Request> list = new ArrayList<>();
+            String sql1 = "select * from RequestsFormMentee where status_id = 2 or status_id = 5";
+            ps = con.prepareStatement(sql1);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Request r = new Request();
+                r.setRequestId(rs.getInt(1));
+                r.setMentorName(rs.getString(2));
+                r.setMenteeName(rs.getString(3));
+                r.setDeadlineDate(rs.getDate(4).toLocalDate());
+                r.setDeadlineHour(rs.getTime(5).toLocalTime());
+                r.setTitle(rs.getString(6));
+                r.setDescription(rs.getString(7));
+                r.setStatusId(rs.getInt(8));
+                r.setPrice(rs.getInt(9));
+                r.setNote(rs.getString(10));
+                list.add(r);
+            }
+            if (!list.isEmpty()) {
+                for (Request r : list) {
+                    LocalDate date = LocalDate.now();
+                    if (date.isAfter(r.getDeadlineDate())) {
+                        String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
+                                + "SET status_id = 4 where request_id = ?";
+                        ps = con.prepareStatement(sql);
+                        ps.setInt(1, r.getRequestId());
+                        ps.executeUpdate();
+                    }
+                }
+            }
+            
+            
+            
         } catch (SQLException e) {
             System.out.println("updateExpiredRequestsStatus: " + e.getMessage());
         }
@@ -1216,8 +1235,6 @@ public class RequestDAO {
         return -1;
 
     }
-    
-    
 
     public int insertRequestReturnRequestId(Request request) {
         String query = "INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price)"
@@ -1644,7 +1661,5 @@ public class RequestDAO {
         }
         return list;
     }
-    
-    
 
 }

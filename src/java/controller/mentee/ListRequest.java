@@ -62,7 +62,7 @@ public class ListRequest extends HttpServlet {
             // Lọc danh sách ngày cho một tuần
             ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
-//            rdao.updateExpiredRequestsStatus();
+            rdao.updateExpiredRequestsStatus();
 
             List<RequestDTO> requests = new ArrayList<>();
             List<Status> statuses = rdao.getAllStatusesMentee();

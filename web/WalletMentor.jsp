@@ -171,7 +171,7 @@
 
                         <div class="pagination">
                             <c:forEach var="i" begin="1" end="${numPage}">
-                                <a href="WalletMentorServlet?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                <a href="WalletMentor?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                             </c:forEach>
                         </div>
                     </div>

@@ -58,7 +58,6 @@ public class Home extends HttpServlet {
             ScheduleDAO sdao = new ScheduleDAO();
             MentorDAO mentorDAO = new MentorDAO();
             double rate = sdao.calculateTotalEarnings(currentAccount.getUserName());
-            System.out.println("Calculated rate: " + rate);
             request.setAttribute("rate", rate);
             SkillDAO skillDAO = new SkillDAO();
             List<Skill> skillList = skillDAO.topSkillPrice();

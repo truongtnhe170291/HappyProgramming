@@ -4,11 +4,13 @@
  */
 package controller.manager;
 
-import dal.FeedBackDAO;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dal.MentorDAO;
-import dal.MentorProfileDAO;
-import dal.RequestDAO;
 import dal.ScheduleDAO;
+import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,23 +18,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
+import java.io.BufferedReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.AttendanceRecord;
-import models.Day;
-import models.FeedBack;
-import models.Mentor;
-import models.MentorProfileDTO;
-import models.RequestDTO;
-import models.SchedulePublic;
-import models.Slot;
-import models.Status;
+import models.Transaction;
+import models.Wallet;
 
 /**
  *
@@ -90,94 +83,15 @@ public class PayForMentor extends HttpServlet {
             String requestId = request.getParameter("requestId");
             List<AttendanceRecord> listAtten = sdao.getListAttendanceRecoderByRequestId(requestId);
             int priceOfMentor = mentorDao.getRateOfMentor(listAtten.get(0).getMentorName());
-            // chuyển đến trang dữ liệu thô
             request.setAttribute("priceOfMentor", priceOfMentor);
             request.setAttribute("listAtten", listAtten);
             request.getRequestDispatcher("ListRequestFromMenteeManager.jsp").forward(request, response);
             
+
             
             
-            
-            
-            String menteeName = a.getUserName();
-            RequestDAO rdao = new RequestDAO();
-            FeedBackDAO fbDao = new FeedBackDAO();
-
-            ArrayList<Slot> listSlots = mentorDao.listSlots();
-            ArrayList<Day> listDays = mentorDao.listDays();
-
-            LocalDate today = LocalDate.now();
-            LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
-            LocalDate nextNextMonday = nextMonday.plusWeeks(1);
-
-            // Lọc danh sách ngày cho một tuần
-
-            rdao.updateExpiredRequestsStatus();
-
-            List<RequestDTO> requests = new ArrayList<>();
-            List<Status> statuses = rdao.getAllStatuses();
-            List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
-
-            int statusId = -1;
-            requests = rdao.getRequestManager(requestId);
-
-            List<SchedulePublic> listSchedule = requests.get(0).getListSchedule();
-            RequestDTO requestDetail = requests.get(0);
-            // Log schedules for debugging
-            String skill = requestDetail.getListSkills().get(0).getSkillName();
-
-            request.setAttribute("listScheduleSave", listSchedule);
-            request.setAttribute("startTime", listSchedule.get(0).getStartTime());
-            request.setAttribute("requestDetail", requestDetail);
-            request.setAttribute("skillName", skill);
-
-            request.setAttribute("mon", nextNextMonday.toString());
-
-            request.setAttribute("requests", requests);
-            request.setAttribute("listSlot", listSlots);
-
-            // kiểm tra xem hôm nay có phải là ngày nằm giữa các ngày của requestID này không
-            String startTimeStr = listSchedule.get(0).getDayOfSlot().toString();
-            String endTimeStr = listSchedule.get(listSchedule.size() - 1).getDayOfSlot().toString();
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
-            LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
-
-            long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-            LocalDate middleDate = startDate.plusDays(daysBetween / 2);
-
-//            System.out.println(middleDate.format(formatter));
-//            System.out.println(today);
-            String isFeedback = request.getParameter("feedback");
-
-            if (isFeedback != null) {
-                if (today.isEqual(middleDate) || today.isAfter(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
-                    MentorDAO mentorDAO = new MentorDAO();
-                    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-                    MentorProfileDTO mentor = mentorProfileDAO.getOneMentor(requests.get(0).getMentorName());
-                    request.setAttribute("mentor", mentor);
-                    request.setAttribute("mentorName", requests.get(0).getMentorName());
-                    request.setAttribute("requestId", requestId);
-
-                    if (fbDao.isContainFeedback(Integer.parseInt(requestId))) {
-                        FeedBack fb = fbDao.getFeedBackByRequestId(Integer.parseInt(requestId));
-                        request.setAttribute("feedbackObj", fb);
-                    } else {
-                        request.setAttribute("isContainFb", "no");
-                    }
-                    request.getRequestDispatcher("Rate_Comment.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("avaiableFb", "avaiableFb");
-                    request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-                }
-            } else {
-                request.getRequestDispatcher("ViewDetail_MenteeRequest.jsp").forward(request, response);
-            }
-
-//            System.out.println(dateStrBegin);
-//            System.out.println(dateStrEnd);
-        } catch (SQLException e) {
+        
+        } catch (Exception e) {
             throw new ServletException(e);
         }
     }
@@ -190,10 +104,110 @@ public class PayForMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+   @Override
+ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        PrintWriter out = response.getWriter();
+        
+        try {
+            StringBuilder buffer = new StringBuilder();
+            BufferedReader reader = request.getReader();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            String data = buffer.toString();
+            
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(data, JsonObject.class);
+            
+            int priceOfMentor = jsonObject.get("priceOfMentor").getAsInt();
+            int attendedCount = jsonObject.get("attendedCount").getAsInt();
+            int absentCount = jsonObject.get("absentCount").getAsInt();
+            int notYetCount = jsonObject.get("notYetCount").getAsInt();
+            int totalAmount = jsonObject.get("totalAmount").getAsInt();
+            
+            JsonArray listAttenJson = jsonObject.getAsJsonArray("listAtten");
+            List<AttendanceRecord> listAtten = new ArrayList<>();
+            for (JsonElement element : listAttenJson) {
+                JsonObject attenObject = element.getAsJsonObject();
+                AttendanceRecord atten = gson.fromJson(attenObject, AttendanceRecord.class);
+                listAtten.add(atten);
+            }
+            
+
+            
+       
+             WalletDAO walletDAO = new WalletDAO();
+        
+        String mentorName = listAtten.get(0).getMentorName();
+        long mentorAmount = attendedCount * priceOfMentor;
+        Wallet mentorWallet = new Wallet(mentorName, mentorAmount, 0);
+        walletDAO.updateWallet(mentorWallet);
+
+        String menteeName = listAtten.get(0).getMenteeName();
+        long menteeAmount = absentCount * priceOfMentor;
+        Wallet menteeWallet = new Wallet(menteeName, -menteeAmount, 0);
+        walletDAO.updateWallet(menteeWallet);
+
+        Wallet managerWallet = new Wallet("manager", totalAmount, 0);
+        walletDAO.updateWallet(managerWallet);
+
+     // Thêm các giao dịch
+LocalDateTime now = LocalDateTime.now();
+
+// Giao dịch cho mentor
+Transaction mentorTransaction = new Transaction();
+mentorTransaction.setUser_send(menteeName);
+mentorTransaction.setUser_receive(mentorName);
+mentorTransaction.setCreate_date(now);
+mentorTransaction.setAmount(mentorAmount);
+mentorTransaction.setMessage("Complete pre-course");
+walletDAO.insertTransaction(mentorTransaction);
+
+// Giao dịch cho mentee (nếu có buổi vắng mặt)
+if (menteeAmount > 0) {
+    Transaction menteeTransaction = new Transaction();
+    menteeTransaction.setUser_send(menteeName);
+    menteeTransaction.setUser_receive("manager");
+    menteeTransaction.setCreate_date(now);
+    menteeTransaction.setAmount(menteeAmount);
+    menteeTransaction.setMessage("Complete pre-course");
+    walletDAO.insertTransaction(menteeTransaction);
+}
+
+// Giao dịch cho manager
+Transaction managerTransaction = new Transaction();
+managerTransaction.setUser_send(menteeName);
+managerTransaction.setUser_receive("manager");
+managerTransaction.setCreate_date(now);
+managerTransaction.setAmount(totalAmount);
+managerTransaction.setMessage("Complete pre-course");
+walletDAO.insertTransaction(managerTransaction);
+
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("status", "success");
+            jsonResponse.addProperty("message", "Payment processed successfully");
+            jsonResponse.addProperty("amountPaid", totalAmount);
+            jsonResponse.addProperty("attendedSessions", attendedCount);
+            jsonResponse.addProperty("absentSessions", absentCount);
+            jsonResponse.addProperty("notYetSessions", notYetCount);
+            
+            out.print(gson.toJson(jsonResponse));
+        } catch (Exception e) {
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("status", "error");
+            errorResponse.addProperty("message", "An error occurred: " + e.getMessage());
+            out.print(new Gson().toJson(errorResponse));
+            
+            e.printStackTrace();
+        } finally {
+            out.flush();
+        }
     }
 
     /**

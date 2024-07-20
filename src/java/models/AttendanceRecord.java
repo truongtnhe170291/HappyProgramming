@@ -1,5 +1,6 @@
 package models;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class AttendanceRecord {
     private int attendanceId;
@@ -90,13 +91,7 @@ public class AttendanceRecord {
         this.skillName = skillName;
     }
 
-    public Date getDayOfSlot() {
-        return dayOfSlot;
-    }
-
-    public void setDayOfSlot(Date dayOfSlot) {
-        this.dayOfSlot = dayOfSlot;
-    }
+   
 
     public String getSlotId() {
         return slotId;
@@ -122,6 +117,14 @@ public class AttendanceRecord {
         this.attendanceStatus = attendanceStatus;
     }
 
+    public Date getDayOfSlot() {
+        return dayOfSlot;
+    }
+
+    public void setDayOfSlot(Date dayOfSlot) {
+        this.dayOfSlot = dayOfSlot;
+    }
+
     public Date getAttendanceDate() {
         return attendanceDate;
     }
@@ -129,6 +132,8 @@ public class AttendanceRecord {
     public void setAttendanceDate(Date attendanceDate) {
         this.attendanceDate = attendanceDate;
     }
+
+    
 
 
     @Override

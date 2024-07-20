@@ -453,7 +453,7 @@
                                 <a href="Homes_manager.jsp">
                                     <i class="fas fa-home"></i></a>
                             </li>
-                            <li class="breadcrumb-item">Schedule</li>
+                            <li class="breadcrumb-item">List Request</li>
 
                         </ul>
                         <div class="section-body">
@@ -461,7 +461,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4>List Schedule Mentor</h4>
+                                            <h4>List Requests Mentee</h4>
                                         </div>
                                         <div class="card-body">
                                             <!-- Form Search v� Filter -->
@@ -502,6 +502,9 @@
                                                                 <span class="userDatatable-title">Title</span>
                                                             </th>
                                                             <th>
+                                                                <span class="userDatatable-title">Mentee Name</span>
+                                                            </th>
+                                                            <th>
                                                                 <span class="userDatatable-title">Mentor Name</span>
                                                             </th>
                                                             <th>
@@ -519,6 +522,7 @@
                                                         <c:forEach var="request" items="${requests}">
                                                             <tr class="request-row" data-status="${request.status.statusName}">
                                                                 <td>${request.title}</td>
+                                                                <td>${request.menteeName}</td>
                                                                 <td>${request.mentorName}</td>
                                                                 <td>${request.deadlineHour} ${request.deadlineDate}</td>
                                                                 <td>${request.status.statusName}</td>
@@ -526,10 +530,10 @@
                                                                 <td class="d-flex" style="margin-top:12px;">
                                                                     
                                                                     <c:if test="${request.isEnoughPay eq true}">
-                                                                        <a href="PayForMentor?requestId=${request.requestId}">Money for mentor</a>
+                                                                        <a href="PayForMentor?requestId=${request.requestId}"><i class="fas fa-eye"></i></a>
                                                                     </c:if>
                                                                         
-                                                                    <a href="">View</a>   
+                                                                     
                                                                             
                                                                 </td>
                                                             </tr>

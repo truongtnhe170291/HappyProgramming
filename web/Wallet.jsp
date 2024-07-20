@@ -445,7 +445,7 @@
                     <h2>Wallet Information</h2>
                     <div class="wallet-details">
                          <div class="total-balance">
-                             <h3>Available: <span class="tss" id="real_binance" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}-${requestScope.wallet.hold}</span><span class="tss"> VND</span></h3>
+                             <h3>Available: <span class="tss" id="real_binance" value="${requestScope.wallet.real_balance - requestScope.wallet.hold}">${requestScope.wallet.real_balance -requestScope.wallet.hold}</span><span class="tss"> VND</span></h3>
                         </div>
                         <div class="total-balance">
                          <h3>Balance: <span class="tss" id="real_binances" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}</span><span class="tss"> VND</span></h3>

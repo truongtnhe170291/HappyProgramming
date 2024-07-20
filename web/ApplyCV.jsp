@@ -650,24 +650,53 @@
     </div>
     <div class="overlay-dark-sidebar"></div>
     <div class="customizer-overlay"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById('set-rate-as1').addEventListener('click', function () {
-            const rate = Number(document.querySelector(".rate_all").value);
-            console.log(rate);
-            if (rate <= 0) {
-                document.getElementById('set-rate-as1').classList.add('ev');
-                Toastify({
-                    text: ('Bạn chưa nhập Rate. Hãy điền rate !!!'),
-                    duration: 5000,
-                    gravity: "top",
-                    position: "right",
-                    backgroundColor: "#ff7b5a",
-                }).showToast();
-            }
-        });
+      <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the form elements
+        const applyForm = document.querySelector('form[action="aplly"]');
+        const setRateForm = document.querySelector('form[action="SetRate"]');
+        
+        // Handle Apply CV form submission
+        if (applyForm) {
+            applyForm.addEventListener('submit', function (event) {
+                const rate = Number(document.querySelector(".rate_all")?.value);
+
+                if (rate <= 0) {
+                    event.preventDefault();
+                    
+                    Toastify({
+                        text: 'Bạn chưa nhập Rate. Hãy điền rate !!!',
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                    }).showToast();
+                }
+            });
+        }
+
+        // Handle Set Rate form submission
+        if (setRateForm) {
+            setRateForm.addEventListener('submit', function (event) {
+                const rate = Number(document.querySelector(".rate_all")?.value);
+
+                if (rate <= 0) {
+                    event.preventDefault();
+
+                    Toastify({
+                        text: 'Bạn chưa nhập Rate. Hãy điền rate !!!',
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                    }).showToast();
+                }
+            });
+        }
     });
-    </script>
+</script>
+
+   
     <script>
         document.getElementById('set-rate-as1').addEventListener('click', function () {
             document.querySelector('.as1').classList.add('hidden');

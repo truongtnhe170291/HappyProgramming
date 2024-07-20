@@ -65,6 +65,10 @@
         <url-pattern>/udatestatus</url-pattern>
         <url-pattern>/ViewDetailSchedule</url-pattern>
         <url-pattern>/feedback</url-pattern>
+        <url-pattern>/requestmentee</url-pattern>
+        <url-pattern>/PayForMentor</url-pattern>
+        <url-pattern>/WalletManager</url-pattern>
+        <url-pattern>/WalletMentor</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Mentor_Filter</filter-name>
@@ -82,6 +86,7 @@
         <url-pattern>/cv</url-pattern>
         <url-pattern>/bookSchedule</url-pattern>
         <url-pattern>/aplly</url-pattern>
+        <url-pattern>/WalletMentor</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Mentee_Filter</filter-name>
@@ -112,6 +117,9 @@
         <url-pattern>/UpdateBlog</url-pattern>
         <url-pattern>/udatestatus</url-pattern>
         <url-pattern>/ViewDetailSchedule</url-pattern>
+        <url-pattern>/requestmentee</url-pattern>
+        <url-pattern>/PayForMentor</url-pattern>
+        <url-pattern>/WalletManager</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>SkillDetail</servlet-name>
@@ -458,5 +466,37 @@
     <servlet-mapping>
         <servlet-name>UpdateAttendanceServlet</servlet-name>
         <url-pattern>/UpdateAttendanceServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ListRequestServlet</servlet-name>
+        <servlet-class>controller.manager.ListRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListRequestServlet</servlet-name>
+        <url-pattern>/requestmentee</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PayForMentor</servlet-name>
+        <servlet-class>controller.manager.PayForMentor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PayForMentor</servlet-name>
+        <url-pattern>/PayForMentor</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>WalletManager</servlet-name>
+        <servlet-class>controller.manager.WalletManager</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WalletManager</servlet-name>
+        <url-pattern>/WalletManager</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>WalletMentor</servlet-name>
+        <servlet-class>controller.mentor.WalletMentor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WalletMentor</servlet-name>
+        <url-pattern>/WalletMentor</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -11,6 +11,12 @@
            width: 200px;
            transform: translateX(150px);
        }
+        #message{
+                text-align: center;
+                width: 80%;
+                margin: auto;
+                height: 80px;
+            }
    </style>
              <jsp:include page="style/linkcss.jsp" />
 
@@ -62,7 +68,7 @@
                                    
                               </div>
                          <br/>
-                       <div class="button-group align-items-center justify-content-center color-ruby">
+                       <div class="button-group align-items-center justify-content-center color-ruby" id="message">
                                     ${mess}
                                     ${status}
                                     ${messaget}
