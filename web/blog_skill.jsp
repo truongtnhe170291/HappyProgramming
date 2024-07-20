@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +17,19 @@
         display: flex;
         align-items: center;
     }
+.Img_allform{
+ height: 80% !important;
+    background-size: contain;
+    background-clip: initial;
 
+}
+.post-image{
+       height: 300px;
+}
+.post-item-wrap{
+   height: 500px;
+   max-height: 600px;
+}
     .search-form img {
         margin-right: 10px; /* Adjust as needed */
     }
@@ -57,7 +71,50 @@
 }
 
    
-    
+    .pagination {
+    display: flex !important;
+    justify-content: right !important;
+    margin-top: 20px !important;
+    margin-right: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.pagination .page-item {
+    list-style: none !important;
+}
+
+.pagination .page-link {
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    color: #007bff !important;
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff !important;
+    color: white !important;
+    border: 1px solid #007bff !important;
+}
+
+.pagination .prev {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+
+.pagination .next {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa !important;
+}
+
+.pagination .page-link:focus {
+    box-shadow: none !important;
+}
+
 </style>
 
     <head>
@@ -97,12 +154,20 @@
                 <div class="post-item border bc-general bc-music bc-economics">
                     <div class="post-item-wrap">
                         <div class="post-image">
-                            <img alt="" src="./img/${skill.img}">
+                            <img class="Img_allform" alt="" src="./img/${skill.img}">
                             <span class="post-meta-category"><a href=""></a></span>
                         </div>
                         <div class="post-item-description">
                             <h2><a href="showmentor?id=${skill.skillID}">${status.index + 1}. ${skill.skillName}</a></h2>
-                            <p>${skill.description}</p>
+                            
+                            <p><c:choose>
+                            <c:when test="${fn:length(skill.description) > 50}">
+                                ${fn:substring(skill.description, 0, 50)} ...
+                            </c:when>
+                            <c:otherwise>
+                                ${skill.description}
+                            </c:otherwise>
+                        </c:choose></p>
                         </div>
                     </div>
                 </div>
@@ -113,25 +178,38 @@
 
     <!-- Pagination -->
     <ul class="pagination">
-        <c:if test="${currentPage > 1}">
-            <li class="page-item"><a class="page-link" href="skill?page=${currentPage - 1}&searchTerm=${searchTerm}"><i class="fa fa-angle-left"></i></a></li>
-        </c:if>
-        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
-            <c:choose>
-                <c:when test="${loop.index == currentPage}">
-                    <li class="page-item active"><span class="page-link">${loop.index}</span></li>
-                </c:when>
-                <c:otherwise>
-                    <li class="page-item"><a class="page-link" href="skill?page=${loop.index}&searchTerm=${searchTerm}">${loop.index}</a></li>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-        <c:if test="${currentPage < totalPages}">
-            <li class="page-item"><a class="page-link" href="skill?page=${currentPage + 1}&searchTerm=${searchTerm}"><i class="fa fa-angle-right"></i></a></li>
-        </c:if>
-    </ul>
-    <!-- end: Pagination -->
-</div>
+    <c:if test="${currentPage > 1}">
+        <li class="page-item prev">
+            <a class="page-link" href="skill?page=${currentPage - 1}&searchTerm=${searchTerm}">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        </li>
+    </c:if>
+    <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+        <c:choose>
+            <c:when test="${loop.index == currentPage}">
+                <li class="page-item active">
+                    <span class="page-link">${loop.index}</span>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item">
+                    <a class="page-link" href="skill?page=${loop.index}&searchTerm=${searchTerm}">
+                        ${loop.index}
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    <c:if test="${currentPage < totalPages}">
+        <li class="page-item next">
+            <a class="page-link" href="skill?page=${currentPage + 1}&searchTerm=${searchTerm}">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+    </c:if>
+</ul>
+
 
         <!-- end: Body Inner -->
         <!-- Scroll top -->

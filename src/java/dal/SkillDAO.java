@@ -49,82 +49,103 @@ public class SkillDAO {
         }
         return list;
     }
+
     public List<Skill> getSkillsPage(int pageNumber, int pageSize) {
-    String sql = "SELECT * FROM Skills s WHERE s.status = 1 ORDER BY s.skill_name OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
-    List<Skill> list = new ArrayList<>();
-    try {
-        ps = con.prepareStatement(sql);
-        int offset = (pageNumber - 1) * pageSize;
-        ps.setInt(1, offset);
-        ps.setInt(2, pageSize);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            Skill s = new Skill(rs.getInt("skill_id"), rs.getString("skill_name"), rs.getString("img"), rs.getString("description"), rs.getBoolean("status"));
-            list.add(s);
+        String sql = "SELECT * FROM Skills s WHERE s.status = 1 ORDER BY s.skill_name OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+        List<Skill> list = new ArrayList<>();
+        try {
+            ps = con.prepareStatement(sql);
+            int offset = (pageNumber - 1) * pageSize;
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill(rs.getInt("skill_id"), rs.getString("skill_name"), rs.getString("img"), rs.getString("description"), rs.getBoolean("status"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-    } catch (SQLException e) {
-        System.out.println(e);
+        return list;
     }
-    return list;
-}
-    
+
     public int getTotalSkillCount() {
-    String sql = "SELECT COUNT(*) FROM Skills";
-    try (PreparedStatement ps = con.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-        if (rs.next()) {
-            return rs.getInt(1);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return 0;
-}
-
-
-
-    public List<Skill> searchSkills(String searchTerm, int pageNumber, int pageSize) {
-    String sql = "SELECT * FROM Skills WHERE skill_name LIKE ? ORDER BY skill_name OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
-    List<Skill> list = new ArrayList<>();
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, "%" + searchTerm + "%"); // Adding wildcards to search term
-        int offset = (pageNumber - 1) * pageSize;
-        ps.setInt(2, offset);
-        ps.setInt(3, pageSize);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Skill s = new Skill(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5));
-            list.add(s);
-        }
-    } catch (SQLException e) {
-        System.out.println(e);
-    }
-    return list;
-}
-    public int getCountSearchSkill(String searchTerm) {
-    String sql = "SELECT COUNT(*) FROM Skills WHERE skill_name LIKE ?";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, "%" + searchTerm + "%"); // Adding wildcards to search term
-        try (ResultSet rs = ps.executeQuery()) {
+        String sql = "SELECT COUNT(*) FROM Skills";
+        try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt(1);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return 0;
     }
-    return 0;
-}
 
+    public List<Skill> searchSkills(String searchTerm, int pageNumber, int pageSize) {
+        String sql = "SELECT * FROM Skills WHERE skill_name LIKE ? ORDER BY skill_name OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+        List<Skill> list = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + searchTerm + "%"); // Adding wildcards to search term
+            int offset = (pageNumber - 1) * pageSize;
+            ps.setInt(2, offset);
+            ps.setInt(3, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
 
+    public int getCountSearchSkill(String searchTerm) {
+        String sql = "SELECT COUNT(*) FROM Skills WHERE skill_name LIKE ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchTerm + "%"); // Adding wildcards to search term
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public static void main(String[] args) {
         SkillDAO sd = new SkillDAO();
-        for (Skill s : sd.getSkillByCVId(1)) {
-            System.out.println(s.getSkillName());
+        for (Skill s : sd.getSkillByMentorName("son")) {
+            System.out.println(s);
         }
     }
+    public List<Skill> getSkillByMentorName(String mentorName) {
+    String sql = "SELECT s.skill_id, s.skill_name " +
+                 "FROM CVSkills cs " +
+                 "JOIN Skills s ON cs.skill_id = s.skill_id " +
+                 "JOIN CV c ON cs.cv_id = c.cv_id " +
+                 "WHERE c.mentor_name = ?";
+    List<Skill> list = new ArrayList<>();
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Skill s = new Skill();
+            s.setSkillID(rs.getInt(1));
+            s.setSkillName(rs.getString(2));
+            list.add(s);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+    
 
     public List<Skill> getSkillByCVId(int cvId) {
         String sql = "SELECT cs.skill_id, s.skill_name from CVSkills cs join Skills s on cs.skill_id = s.skill_id WHERE cs.cv_id = ?";
@@ -164,21 +185,171 @@ public class SkillDAO {
     }
 
     //get all skills
-    public List<Skill> getAllSkills() {
-        String sql = "select * from Skills";
-        List<Skill> list = new ArrayList<>();
-        try {
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+   public List<Skill> getAllSkills(int page, int pageSize) {
+    String sql = "SELECT * FROM Skills ORDER BY skill_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    List<Skill> list = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        int offset = (page - 1) * pageSize;
+        ps.setInt(1, offset);
+        ps.setInt(2, pageSize);
+
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Skill s = new Skill(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5));
+                Skill s = new Skill(rs.getInt("skill_id"), 
+                                    rs.getString("skill_name"), 
+                                    rs.getString("img"), 
+                                    rs.getString("description"), 
+                                    rs.getBoolean("status"));
                 list.add(s);
             }
-        } catch (SQLException e) {
-            System.out.println(e);
         }
-        return list;
+    } catch (SQLException e) {
+        System.out.println(e);
     }
+    return list;
+}
+   public int getCountSkill() {
+    String sql = "SELECT COUNT(*) FROM Skills";
+    try (PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return 0;
+}
+
+
+    
+    public List<Skill> getAllSkillByStatus(boolean status, int page, int pageSize) {
+    String sql = "SELECT * FROM Skills WHERE status = ? ORDER BY skill_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    List<Skill> list = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setBoolean(1, status);
+        int offset = (page - 1) * pageSize;
+        ps.setInt(2, offset);
+        ps.setInt(3, pageSize);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Skill s = new Skill(rs.getInt("skill_id"), 
+                                    rs.getString("skill_name"), 
+                                    rs.getString("img"), 
+                                    rs.getString("description"), 
+                                    rs.getBoolean("status"));
+                list.add(s);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error in getAllSkillByStatus: " + e.getMessage());
+    }
+    return list;
+}
+    public int getCountSkillByStatus(boolean status) {
+    String sql = "SELECT COUNT(*) FROM Skills WHERE status = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setBoolean(1, status);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error in getCountSkillByStatus: " + e.getMessage());
+    }
+    return 0;
+}
+
+    
+    public List<Skill> getAllSkillBySkillName(String skillName, int page, int pageSize) {
+    String sql = "SELECT * FROM Skills WHERE skill_name LIKE ? ORDER BY skill_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    List<Skill> list = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, "%" + skillName + "%");
+        int offset = (page - 1) * pageSize;
+        ps.setInt(2, offset);
+        ps.setInt(3, pageSize);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Skill s = new Skill(
+                    rs.getInt("skill_id"), 
+                    rs.getString("skill_name"), 
+                    rs.getString("img"), 
+                    rs.getString("description"), 
+                    rs.getBoolean("status")
+                );
+                list.add(s);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+    public int getCountSkillBySkillName(String skillName) {
+    String sql = "SELECT COUNT(*) FROM Skills WHERE skill_name LIKE ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, "%" + skillName + "%");
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return 0;
+}
+
+
+    public List<Skill> getAllSkillByStatusAndSkillName(boolean status, String skillName, int page, int pageSize) {
+    String sql = "SELECT * FROM Skills WHERE status = ? AND skill_name LIKE ? ORDER BY skill_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    List<Skill> list = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setBoolean(1, status);
+        ps.setString(2, "%" + skillName + "%");
+        int offset = (page - 1) * pageSize;
+        ps.setInt(3, offset);
+        ps.setInt(4, pageSize);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Skill s = new Skill(
+                    rs.getInt("skill_id"), 
+                    rs.getString("skill_name"), 
+                    rs.getString("img"), 
+                    rs.getString("description"), 
+                    rs.getBoolean("status")
+                );
+                list.add(s);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+    public int getCountSkillByStatusAndSkillName(boolean status, String skillName) {
+    String sql = "SELECT COUNT(*) FROM Skills WHERE status = ? AND skill_name LIKE ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setBoolean(1, status);
+        ps.setString(2, "%" + skillName + "%");
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return 0;
+}
+
+
+
 
     //method to update skill
     public void updateSkill(int skill_id, String skill_name, String img, String description, boolean status) {
@@ -239,27 +410,89 @@ public class SkillDAO {
         }
     }
 
-    public void deleteSkill(int skillID) {
+    //  to get skill by ID
+    public Skill getSkillById(int skillId) {
+        String sql = "SELECT * FROM Skills WHERE skill_id = ?";
         try {
-            String sql = " delete from CVSkills where skill_id = ?";
             ps = con.prepareStatement(sql);
-            ps.setInt(1, skillID);
-            ps.executeUpdate();
-
-            sql = "DELETE FROM Skills WHERE skill_id =?";
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, skillID);
-            ps.executeUpdate();
+            ps.setInt(1, skillId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Skill(
+                        rs.getInt("skill_id"),
+                        rs.getString("skill_name"),
+                        rs.getString("img"),
+                        rs.getString("description"),
+                        rs.getBoolean("status")
+                );
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
-//    String sql = "DELETE FROM Skills WHERE skill_id =?";
-//    try (PreparedStatement ps = con.prepareStatement(sql)) {
-//        ps.setInt(1, skillID);
-//        ps.executeUpdate();
-//    } catch (SQLException e) {
-//        System.err.println("Error deleting skill: " + e.getMessage());
-//    }
+        return null;
     }
+
+    public List<Skill> getTopSkills(int skillId) {
+    List<Skill> topSkills = new ArrayList<>();
+    String sql = "SELECT TOP 3 s.skill_id, s.skill_name, s.img AS skill_image, s.description, s.status "
+               + "FROM Skills s "
+               + "JOIN RequestSkills rs ON s.skill_id = rs.skill_id "
+               + "WHERE s.skill_id != ? "
+               + "GROUP BY s.skill_id, s.skill_name, s.img, s.description, s.status "
+               + "ORDER BY COUNT(rs.request_id) DESC";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, skillId);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("skill_id");
+                String name = rs.getString("skill_name");
+                String image = rs.getString("skill_image");
+                String description = rs.getString("description");
+                boolean status = rs.getBoolean("status");
+
+                Skill skill = new Skill(id, name, image, description, status);
+                topSkills.add(skill);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error fetching top skills: " + e.getMessage());
+    }
+
+    return topSkills;
+}
+    
+    public List<Skill> topSkillPrice() {
+    List<Skill> topSkills = new ArrayList<>();
+    String sql = "SELECT TOP 5 s.skill_id, s.skill_name, s.img AS skill_image, s.description, s.status, SUM(rfm.price) AS total_price "
+               + "FROM Skills s "
+               + "JOIN RequestSkills rs ON s.skill_id = rs.skill_id "
+               + "JOIN RequestsFormMentee rfm ON rs.request_id = rfm.request_id "
+               + "WHERE rfm.status_id = 1 "
+               + "GROUP BY s.skill_id, s.skill_name, s.img, s.description, s.status "
+               + "ORDER BY COUNT(rfm.request_id) DESC";
+
+    try (PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            int id = rs.getInt("skill_id");
+            String name = rs.getString("skill_name");
+            String image = rs.getString("skill_image");
+            String description = rs.getString("description");
+            boolean status = rs.getBoolean("status");
+            int totalPrice = rs.getInt("total_price");
+
+            Skill skill = new Skill(id, name, image, description, status);
+           
+            topSkills.add(skill);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error fetching top skill prices: " + e.getMessage());
+    }
+
+    return topSkills;
+}
+
+
 
 }

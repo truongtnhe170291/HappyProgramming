@@ -12,7 +12,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import models.Account;
 import models.ScheduleCommon;
 import models.SchedulePublic;
@@ -24,29 +28,34 @@ import models.SchedulePublic;
 @WebServlet(name = "ScheduleCommonMentorServlet", urlPatterns = {"/scheduleCommonMentor"})
 public class ScheduleCommonMentorServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            Account acc = (Account) request.getSession().getAttribute("user");
-            if (acc == null) {
-                response.sendRedirect("Login.jsp");
-                return;
-            }
-            if (acc.getRoleId() == 2) {
-                ScheduleDAO dao = new ScheduleDAO();
-                List<ScheduleCommon> list = dao.getScheduleCommonByMentorName(acc.getUserName());
-                for(ScheduleCommon a : list){
-                    System.out.println(a.getSlotName());
-                }
-                request.setAttribute("listSchedule", list);
-                request.getRequestDispatcher("Mentor_Mentee_calendar.jsp").forward(request, response);
-            }
-
-        } catch (Exception e) {
-
+   @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        Account acc = (Account) request.getSession().getAttribute("user");
+        if (acc == null) {
+            response.sendRedirect("Login.jsp");
+            return;
         }
+        if (acc.getRoleId() == 2) {
+            ScheduleDAO dao = new ScheduleDAO();
+            
+            List<ScheduleCommon> list = dao.getScheduleCommonByMentorName(acc.getUserName());
+
+Set<String> uniqueMenteeNamesSet = new HashSet<>();
+for (ScheduleCommon schedule : list) {
+    uniqueMenteeNamesSet.add(schedule.getMenteeName());
+}
+List<String> uniqueMenteeNames = new ArrayList<>(uniqueMenteeNamesSet);
+
+request.setAttribute("listSchedule", list);
+request.setAttribute("uniqueMenteeNames", uniqueMenteeNames);
+            request.getRequestDispatcher("Mentor_Mentee_calendar.jsp").forward(request, response);
+        }
+    } catch (Exception e) {
+        // Xử lý exception
     }
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.

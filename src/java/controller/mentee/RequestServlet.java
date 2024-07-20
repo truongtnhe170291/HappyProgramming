@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -30,7 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.CV;
+import models.Cycle;
 import models.FormData;
+import models.Hold;
 import models.Request;
 import models.SchedulePublic;
 import models.Skill;
@@ -65,10 +68,11 @@ public class RequestServlet extends HttpServlet {
             String userName = cvdao.getCVByCVId(cvId).getUserName();
             //get rate of mentor
             int rate = mentorDAO.getRateOfMentor(userName);
+            Cycle c = mentorDAO.getNewCycleByUser(userName);
             // get Schedule public by user mentor name
-            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2);
+            List<SchedulePublic> listSchedule = scheduleDAO.getListSchedulePublicByMentorNameAndStatus(userName, 2, c.getCycleId());
             if (listSchedule.isEmpty()) {
-                response.sendRedirect("homes.jsp");
+                response.sendRedirect("homeMentee");
                 return;
             }
 
@@ -83,6 +87,7 @@ public class RequestServlet extends HttpServlet {
                 request.setAttribute("Editable", "Editable");
                 Skill s = skillDAO.getSkillByRequestId(requ.getRequestId());
                 List<SchedulePublic> listScheduleByMentee = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+
                 request.setAttribute("scheduleOfMentee", listScheduleByMentee);
                 request.setAttribute("skillOfMentee", s);
                 request.setAttribute("requestMentee", requ);
@@ -93,12 +98,15 @@ public class RequestServlet extends HttpServlet {
                     request.setAttribute("wallet", 0);
                 }
             } else {
-                request.setAttribute("wallet", wallet.getAvaiable_binance());
+                request.setAttribute("wallet", wallet.getReal_balance() - wallet.getHold());
             }
             CV cv = cvdao.getCVByCVId(cvId);
 
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
+
+            List<SchedulePublic> listSchedule_General = scheduleDAO.getScheduleByMenteeName(acc.getUserName());
+            request.setAttribute("listSchedule_gereral", listSchedule_General);
             request.setAttribute("mon", listSchedule.get(0).getStartTime());
             request.setAttribute("listSlot", listSlot);
             request.setAttribute("skills", list);
@@ -143,6 +151,7 @@ public class RequestServlet extends HttpServlet {
 
             for (FormData.Slot slot : formData.getSelectedSlots()) {
                 System.out.println(slot.getSlot() + " " + slot.getDay());
+                System.out.println("Test send");
             }
             System.out.println("break");
             String title = formData.getTitle();
@@ -158,21 +167,6 @@ public class RequestServlet extends HttpServlet {
             String endTime = formData.getEndtime();
             LocalDate deadlineDate = LocalDate.parse(deadlineDate_raw);
             LocalTime deadlineHour = LocalTime.parse(deadlineHour_raw);
-
-            //print
-            System.out.println("Title: " + title);
-            System.out.println("Description: " + description);
-            System.out.println("Raw Deadline Date: " + deadlineDate_raw);
-            System.out.println("Raw Deadline Hour: " + deadlineHour_raw);
-            System.out.println("Skill ID: " + skillId);
-            System.out.println("Total Price: " + totalPrice);
-            System.out.println("Mentor Name: " + mentorName);
-            System.out.println("Mentee Name: " + menteeName);
-            System.out.println("Action: " + action);
-            System.out.println("Start Time: " + startTime);
-            System.out.println("End Time: " + endTime);
-            System.out.println("Parsed Deadline Date: " + deadlineDate);
-            System.out.println("Parsed Deadline Hour: " + deadlineHour);
 
             RequestDAO dao = new RequestDAO();
             ScheduleDAO sdao = new ScheduleDAO();
@@ -253,11 +247,14 @@ public class RequestServlet extends HttpServlet {
                                 dao.insertRquestSelectedSlot(requestId, i);
                             }
                         }
+
+                        // update request này
+                        wallet.setHold(wallet.getHold() + requ.getPrice());
+                        wdao.updateWalletHold(wallet);
+                        Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
+                        wdao.inserHold(h);
                     }
 
-                    // update request này
-                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - requ.getPrice());
-                    wdao.updateWallet(wallet);
                 } else {
                     re.setStatusId(2);
                     int requestId = dao.insertRequestReturnRequestId(re);
@@ -280,8 +277,11 @@ public class RequestServlet extends HttpServlet {
                             dao.insertRquestSelectedSlot(requestId, i);
                         }
                     }
-                    wallet.setAvaiable_binance(wallet.getAvaiable_binance() - re.getPrice());
-                    wdao.updateWallet(wallet);
+                    // update request này
+                    wallet.setHold(wallet.getHold() + re.getPrice());
+                    wdao.updateWalletHold(wallet);
+                    Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
+                    wdao.inserHold(h);
                 }
             }
 //            //insert request

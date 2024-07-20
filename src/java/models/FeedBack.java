@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package models;
+
 import java.sql.Date;
+
 /**
  *
  * @author Admin
@@ -11,13 +13,23 @@ import java.sql.Date;
 public class FeedBack {
 
     private String mentorName, menteeName;
-    private int star;
+    private int star, requestId;
     private String comment;
-    private Date  timeFeedBack;
+    private Date timeFeedBack;
 
     public FeedBack() {
     }
-       public FeedBack(String mentorName, String menteeName, int star, String comment, Date timeFeedBack) {
+
+    public FeedBack(String mentorName, String menteeName, int star, int requestId, String comment, Date timeFeedBack) {
+        this.mentorName = mentorName;
+        this.menteeName = menteeName;
+        this.star = star;
+        this.requestId = requestId;
+        this.comment = comment;
+        this.timeFeedBack = timeFeedBack;
+    }
+    
+    public FeedBack(String mentorName, String menteeName, int star, String comment, Date timeFeedBack) {
         this.mentorName = mentorName;
         this.menteeName = menteeName;
         this.star = star;
@@ -31,10 +43,14 @@ public class FeedBack {
         this.comment = comment;
         this.timeFeedBack = timeFeedBack;
     }
-       
 
+    public int getRequestId() {
+        return requestId;
+    }
 
-   
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
 
     public int getStar() {
         return star;
@@ -43,8 +59,6 @@ public class FeedBack {
     public void setStar(int star) {
         this.star = star;
     }
-
-   
 
     public String getMentorName() {
         return mentorName;
@@ -61,8 +75,6 @@ public class FeedBack {
     public void setMenteeName(String menteeName) {
         this.menteeName = menteeName;
     }
-
-   
 
     public String getComment() {
         return comment;
@@ -82,9 +94,7 @@ public class FeedBack {
 
     @Override
     public String toString() {
-        return "FeedBack{" + "mentorName=" + mentorName + ", menteeName=" + menteeName + ", star=" + star + ", comment=" + comment + ", timeFeedBack=" + timeFeedBack + '}';
+        return "FeedBack{" + "mentorName=" + mentorName + ", menteeName=" + menteeName + ", star=" + star + ", requestId=" + requestId + ", comment=" + comment + ", timeFeedBack=" + timeFeedBack + '}';
     }
 
-   
-  
 }

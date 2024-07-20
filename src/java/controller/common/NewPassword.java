@@ -12,10 +12,14 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import models.Account;
 
-
-
-@WebServlet("/NewPassword")
+@WebServlet(name = "NewPassword", urlPatterns = {"/NewPassword"})
 public class NewPassword extends HttpServlet {
+
+     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+         request.getRequestDispatcher("newPassword.jsp").forward(request, response);
+    } 
 
         @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -40,11 +44,11 @@ public class NewPassword extends HttpServlet {
                     	        
 					
 				} else {
-					request.setAttribute("status", "confirm password not the same new password");
+					request.setAttribute("statust", "confirm password not the same new password");
 					 request.getRequestDispatcher("newPassword.jsp").forward(request, response);
 				}
             } catch (Exception e) {
-                request.setAttribute("status", "error");
+                request.setAttribute("statust", "error");
 					 request.getRequestDispatcher("newPassword.jsp").forward(request, response);
             }
                 

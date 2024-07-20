@@ -16,6 +16,7 @@ public class SchedulePublic {
     private String mentorName;
     private int selectedId;
     private Date dayOfSlot;
+    private String skillName;
     private String slotId;
     private Date startTime;
     private Date endTime;
@@ -25,6 +26,8 @@ public class SchedulePublic {
     private int cycleID;
     private String weekName;
     private String rejectMessage;
+    private String attendanceStatus;
+    private int requestId;
 
     public SchedulePublic() {
     }
@@ -37,7 +40,7 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
         this.cycleID = cycleID;
     }
-    
+
     public SchedulePublic(Date dayOfSlot, String slotId, int selectedId, int cycleID) {
         this.dayOfSlot = dayOfSlot;
         this.slotId = slotId;
@@ -52,7 +55,7 @@ public class SchedulePublic {
         this.cycleID = cycleID;
         this.status = status;
     }
-    
+
     public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay, int cycleID) {
         this.mentorName = mentorName;
         this.selectedId = selectedId;
@@ -64,7 +67,19 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
         this.cycleID = cycleID;
     }
-    
+
+    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay, int cycleID, String attendanceStatus) {
+        this.mentorName = mentorName;
+        this.selectedId = selectedId;
+        this.dayOfSlot = dayOfSlot;
+        this.slotId = slotId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.slot_name = slot_name;
+        this.nameOfDay = nameOfDay;
+        this.cycleID = cycleID;
+        this.attendanceStatus = attendanceStatus;
+    }
 
     public SchedulePublic(int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name) {
         this.selectedId = selectedId;
@@ -96,7 +111,7 @@ public class SchedulePublic {
         this.nameOfDay = nameOfDay;
     }
 
-    public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
+    public SchedulePublic(String mentorName, int selectedId, String skillName, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, DayOfWeek nameOfDay) {
         this.mentorName = mentorName;
         this.selectedId = selectedId;
         this.dayOfSlot = dayOfSlot;
@@ -105,6 +120,22 @@ public class SchedulePublic {
         this.endTime = endTime;
         this.slot_name = slot_name;
         this.nameOfDay = nameOfDay;
+    }
+
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
+
+    public void setAttendanceStatus(String attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
     }
 
     public SchedulePublic(String mentorName, int selectedId, Date dayOfSlot, String slotId, Date startTime, Date endTime, String slot_name, String status, String weekName) {
@@ -153,6 +184,14 @@ public class SchedulePublic {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
     public int getCycleID() {
@@ -229,7 +268,7 @@ public class SchedulePublic {
 
     @Override
     public String toString() {
-        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", nameOfDay=" + nameOfDay + ", status=" + status + ", cycleID=" + cycleID + ", weekName=" + weekName + ", rejectMessage=" + rejectMessage + '}';
+        return "SchedulePublic{" + "mentorName=" + mentorName + ", selectedId=" + selectedId + ", dayOfSlot=" + dayOfSlot + ", skillName=" + skillName + ", slotId=" + slotId + ", startTime=" + startTime + ", endTime=" + endTime + ", slot_name=" + slot_name + ", nameOfDay=" + nameOfDay + ", status=" + status + ", cycleID=" + cycleID + ", weekName=" + weekName + ", rejectMessage=" + rejectMessage + ", attendanceStatus=" + attendanceStatus + '}';
     }
 
 }

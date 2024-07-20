@@ -47,8 +47,8 @@
                                         <div class="card-body">
                                             <div class="edit-profile__body">
                                                 <div class="form-group mb-25">
-                                                    <label for="username">Username or Email Address</label>
-                                                    <input type="text" class="form-control" id="username" name="username">
+                                                    <label for="username">Username</label>
+                                                    <input type="text" class="form-control" id="username" placeholder="Username" name="username">
                                                 </div>
                                                 <div class="form-group mb-15">
                                                     <label for="password-field">password</label>
@@ -65,7 +65,7 @@
                                                             <span class="checkbox-text">Keep me logged in</span>
                                                         </label>
                                                     </div>
-                                                    <a href="forget-password.jsp">forget password?</a>
+                                                    <a href="forgotPassword">forget password?</a>
                                                 </div>
                                                 <div class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
                                                     <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value=" sign in"/>
@@ -75,10 +75,16 @@
                                         </div>
 
                                     </form>
-                                    <div id="backh" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                                        <a href="homes.jsp">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
-
-                                    </div>
+                                    <!--                                    <div id="backh" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                                            <a href="homeMentee">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
+                                    
+                                                                        </div>-->
+                                    <form action="homeMentee" method="get">
+                                        <div style="padding: 0px 80px" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                            <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/>
+                                        </div>
+                                    </form>
+                                    
                                     <br/>
                                     <div class="button-group align-items-center justify-content-center color-ruby" id="message">
                                         ${mess}
@@ -88,7 +94,7 @@
                                     <div class="admin-topbar d-flex flex-column g-3">
                                         <p class="mb-0 p-3">
                                             Don't have an account?
-                                            <a href="sign_up.jsp" class="color-primary">
+                                            <a href="signup" class="color-primary">
                                                 Sign up
                                             </a>
                                         </p>

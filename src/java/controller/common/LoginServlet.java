@@ -37,15 +37,7 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 
@@ -62,6 +54,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
@@ -114,7 +107,7 @@ public class LoginServlet extends HttpServlet {
             // Redirect based on user role
             if (acc.getRoleId() == 1) {
                if(acc.getStatusId()!=2){
-                response.sendRedirect("MenteeHomeServlet");
+                response.sendRedirect("homeMentee");
                }else{
                     request.setAttribute("mess", "Your account has been banned because you have violated the website's rules");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -127,6 +120,9 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("mess", "Your account has been banned because you have violated the website's rules");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                }
+            } else if(acc.getRoleId() == 3){
+                request.setAttribute("mess", "You are not authorized to log in");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (Exception e) {
             request.setAttribute("mess", "An error occurred while processing your request");

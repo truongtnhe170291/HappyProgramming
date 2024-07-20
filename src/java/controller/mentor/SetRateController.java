@@ -20,7 +20,7 @@ import models.Account;
  *
  * @author ADMIN
  */
-@WebServlet(name = "MentorSetRate", urlPatterns = {"/SetRate"})
+@WebServlet(name = "SetRateController", urlPatterns = {"/SetRate"})
 public class SetRateController extends HttpServlet {
 
     /**

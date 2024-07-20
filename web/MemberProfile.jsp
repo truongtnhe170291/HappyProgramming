@@ -12,7 +12,7 @@
         <meta charset="utf-8">
         <title>Fmaster</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
-               <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
         <!-- Favicons-->
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
@@ -32,175 +32,173 @@
 
         <style>
 
-.form {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: linear-gradient(145deg, #f3f4f6, #ffffff);
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-}
+            .form {
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 20px;
+                background: linear-gradient(145deg, #f3f4f6, #ffffff);
+                border-radius: 15px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease-in-out;
+            }
 
-.form:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
+            .form:hover {
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            }
 
-.form label span {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
+            .form label span {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #333;
+            }
 
-.form input,
-.form select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 20px 0;
-    display: inline-block;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
+            .form input,
+            .form select {
+                width: 100%;
+                padding: 10px;
+                margin: 5px 0 20px 0;
+                display: inline-block;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                background-color: #f9f9f9;
+                transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
 
-.form input:focus,
-.form select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-}
+            .form input:focus,
+            .form select:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+            }
 
-.form input[type="file"] {
-    display: none;
-}
+            .form input[type="file"] {
+                display: none;
+            }
 
-label[for="file-upload"] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-}
+            label[for="file-upload"] {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+            }
 
-label[for="file-upload"] img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #ddd;
-    transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
+            label[for="file-upload"] img {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 10px;
+                border: 3px solid #ddd;
+                transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            }
 
-label[for="file-upload"]:hover img {
-    border-color: #007bff;
-    transform: scale(1.05);
-}
-
-
+            label[for="file-upload"]:hover img {
+                border-color: #007bff;
+                transform: scale(1.05);
+            }
 
 
-.form h5 {
-    margin: 5px 0 10px 0;
-    font-size: 14px;
-    color: red;
-}
 
-.flext {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-}
-button {
-   
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center;
-    text-align: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -0%);
- --glow-color: rgb(217, 176, 255);
- --glow-spread-color: rgba(191, 123, 255, 0.781);
- --enhanced-glow-color: rgb(231, 206, 255);
- --btn-color: rgb(100, 61, 136);
- border: .25em solid var(--glow-color);
- padding: 1em 3em;
- color: var(--glow-color);
- font-size: 15px;
- font-weight: bold;
- background-color: var(--btn-color);
- border-radius: 1em;
- outline: none;
- box-shadow: 0 0 1em .25em var(--glow-color),
-        0 0 4em 1em var(--glow-spread-color),
-        inset 0 0 .75em .25em var(--glow-color);
- text-shadow: 0 0 .5em var(--glow-color);
- position: relative;
- transition: all 0.3s;
-}
 
-button::after {
- pointer-events: none;
- content: "";
- position: absolute;
- top: 120%;
- left: 0;
- height: 100%;
- width: 100%;
- background-color: var(--glow-spread-color);
- filter: blur(2em);
- opacity: .7;
- transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
-}
+            .form h5 {
+                margin: 5px 0 10px 0;
+                font-size: 14px;
+                color: red;
+            }
 
-button:hover {
- color: var(--btn-color);
- background-color: var(--glow-color);
- box-shadow: 0 0 1em .25em var(--glow-color),
-        0 0 4em 2em var(--glow-spread-color),
-        inset 0 0 .75em .25em var(--glow-color);
-}
+            .flext {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+            button {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center;
+                text-align: center;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -0%);
+                --glow-color: rgb(217, 176, 255);
+                /* --glow-spread-color: rgba(191, 123, 255, 0.781); */
+                --enhanced-glow-color: rgb(231, 206, 255);
+                /* --btn-color: rgb(100, 61, 136); */
+                border: .25em solid var(--glow-color);
+                padding: 1em 3em;
+                /* color: var(--glow-color); */
+                /* font-size: 15px; */
+                font-weight: bold;
+                /* background-color: var(--btn-color); */
+                border-radius: 1em;
+                outline: none;
+                /* box-shadow: 0 0 1em .25em var(--glow-color),
+                     0 0 4em 1em var(--glow-spread-color),
+                     inset 0 0 .75em .25em var(--glow-color); */
+                text-shadow: 0 0 .5em var(--glow-color);
+                position: relative;
+                transition: all 0.3s;
+            }
+            button::after {
+                pointer-events: none;
+                content: "";
+                position: absolute;
+                top: 120%;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: var(--glow-spread-color);
+                filter: blur(2em);
+                opacity: .7;
+                transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
+            }
 
-button:active {
- box-shadow: 0 0 0.6em .25em var(--glow-color),
-        0 0 2.5em 2em var(--glow-spread-color),
-        inset 0 0 .5em .25em var(--glow-color);
-}
-.account-profile__title h6 {
-    text-align: center;
-    color: #007bff;
-    font-size: 18px;
-    margin-top: 10px;
-}
+            button:hover {
+                color: var(--btn-color);
+                background-color: var(--glow-color);
+                box-shadow: 0 0 1em .25em var(--glow-color),
+                    0 0 4em 2em var(--glow-spread-color),
+                    inset 0 0 .75em .25em var(--glow-color);
+            }
 
-#profile-img {
-    border: 2px solid #007bff;
-}
+            button:active {
+                box-shadow: 0 0 0.6em .25em var(--glow-color),
+                    0 0 2.5em 2em var(--glow-spread-color),
+                    inset 0 0 .5em .25em var(--glow-color);
+            }
+            .account-profile__title h6 {
+                text-align: center;
+                color: #007bff;
+                font-size: 18px;
+                margin-top: 10px;
+            }
 
-.js-example-basic-single {
-    width: 100%;
-}
+            #profile-img {
+                border: 2px solid #007bff;
+            }
 
-@media (max-width: 600px) {
-    .form {
-        padding: 15px;
-    }
-    
-    .form button.submit {
-        padding: 10px;
-        font-size: 14px;
-    }
-    
-    label[for="file-upload"] img {
-        width: 100px;
-        height: 100px;
-    }
-}
+            .js-example-basic-single {
+                width: 100%;
+            }
 
-.rounded-circle {
+            @media (max-width: 600px) {
+                .form {
+                    padding: 15px;
+                }
+
+                .form button.submit {
+                    padding: 10px;
+                    font-size: 14px;
+                }
+
+                label[for="file-upload"] img {
+                    width: 100px;
+                    height: 100px;
+                }
+            }
+
+            .rounded-circle {
                 width: 200px;
                 height: 200px;
             }
@@ -208,12 +206,12 @@ button:active {
     </head>
     <body>
 
-        <header id="header" data-fullwidth="true">
+           <header id="header" data-fullwidth="true">
             <div class="header-inner">
                 <div class="container">
                     <!--Logo-->
                     <div id="logo">
-                        <a href="homes.jsp">
+                        <a href="homeMentee">
                             <span class="logo-default">FMASTER</span>
                             <span class="logo-dark">FMASTER</span>
                         </a>
@@ -247,7 +245,7 @@ button:active {
                         <div class="container">
                             <nav>
                                 <ul>
-                                    <li><a href="homes.jsp">Home</a></li>
+                                  
 
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu">
@@ -255,6 +253,7 @@ button:active {
                                                 <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                                 <li><a href="StaticRequest">REQUEST STATIC</a></li>
                                                 <li><a href="ListRequest">History Request</a></li>
+                                                <li><a href="Schedule_General_Mentee">General Schedule</a></li>
                                                 </c:if>
                                         </ul>
                                     </li>
@@ -276,24 +275,23 @@ button:active {
                                                             <img src="./img/${user.avatar}" alt=""
                                                                  class="rounded-circle">
                                                         </div>
-                                                        <div>
-                                                            <span>UI Designer</span>
-                                                        </div>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <a href="UpdateAccountServlet">
                                                         <i class="uil uil-user"></i> Profile</a>
                                                 </li>
-
+                                                
+                                                <li>
+                                                    <a href="wallet">
+                                                      <i class="fas fa-wallet"></i> Your Wallet
+                                                    </a>
+                                                </li>
+                                                
                                                 <li>
                                                     <a href="changepass">
                                                         <i class="uil uil-key-skeleton"></i> Change Password
                                                     </a>
-                                                </li>
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-bell"></i> Help</a>
                                                 </li>
                                                 <li>
                                                     <a href="Signout_Servlet" class="nav-author__signout">
@@ -309,14 +307,14 @@ button:active {
                     <!--END: NAVIGATION-->
                 </div>
             </div>
-        </header>
+        </header>   
 
         <section id="main_content">
 
             <div class="container">
 
                 <ol class="breadcrumb">
-                    <li><a href="homes.jsp">Home</a></li>
+                    <li><a href="homeMentee">Home</a></li>
                     <li class="active">Mentee Profile</li>
                 </ol>
                 <div class="row">
@@ -338,7 +336,7 @@ button:active {
                                                     <input id="file-upload" type="file" name="fileUpload" class="d-none">
                                                     <label for="file-upload" class="">
                                                         <img id="profile-img" class="ap-img__main rounded-circle wh-120 bg-lighter d-flex" src="./img/${user.avatar}" alt="profile">                                                                  
-                                                     
+
                                                     </label>
                                                 </div>
 
@@ -348,20 +346,20 @@ button:active {
                                         <label>
                                             <span>Username</span>
                                             <input class="input" type="text" name="username" value="${user.userName}" readonly>
-                                            
+
                                         </label>  
 
                                         <div style="margin-bottom: 15px">
                                             <label>
                                                 <span>Fullname</span>
                                                 <input id="fullname" class="input" type="text" placeholder="" name="fullname" required="" value="${user.fullName}">
-                                                
+
                                             </label>   
                                             <h5 id="nameError" style="display: none"><strong style="color: red;">Oh No!</strong> Your name is not valid.</h5>
                                         </div>
                                         <label>
                                             <label for="sexOption">
-                                                Sex
+                                                <span>Sex</span>
                                             </label>
                                             <select class="js-example-basic-single js-states form-control" id="sexOption" name="sex">
                                                 <option value="1" ${mentee.sex == '1' ? 'selected' : '1'}>Male</option>
@@ -371,32 +369,33 @@ button:active {
 
                                         <div style="margin-bottom: 15px">
                                             <label>
-                                                <input readonly id="email" class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
                                                 <span>Email</span>
+                                                <input readonly id="email" class="input" type="email" name="gmail" placeholder="" value="${user.gmail}" required="">
+
                                             </label> 
                                             <h5 id="emailError" style="display: none"><strong style="color: red;">Oh No!</strong> Your email is not valid.</h5>
                                         </div>
 
                                         <div style="margin-bottom: 15px">
                                             <label>
-                                                <input id="dob" class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="">
                                                 <span>Date of birth</span>
+                                                <input id="dob" class="input" type="date" name="dob" placeholder="" value="${user.dob}" required="">
                                             </label> 
                                             <h5 id="dobError" style="display: none"><strong style="color: red;">Oh No!</strong> Your date of birth is invalid.</h5>
                                         </div>
 
                                         <div style="margin-bottom: 15px">
                                             <label>
-                                                <input id="phoneNumber" class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10">
                                                 <span>Phone number</span>
+                                                <input id="phoneNumber" class="input" type="tel" placeholder="" name="phone" value="${user.phone}" required="" minlength="10" maxlength="10">
                                             </label>
                                             <h5 id="phoneError" style="display: none"><strong style="color: red;">Oh No!</strong> Your phone number is not valid.</h5>
                                         </div>
 
                                         <div style="margin-bottom: 15px">
                                             <label>
-                                                <input id="address" class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
                                                 <span>Address</span>
+                                                <input id="address" class="input" type="text" placeholder="" name="address" value="${user.address}" required="">
                                             </label>
                                             <h5 id="addressError" style="display: none"><strong style="color: red;">Oh No!</strong> Please input your Address.</h5>
                                         </div>
@@ -406,11 +405,11 @@ button:active {
                             </div><!-- End tab-pane --> 
 
 
-                                      
-                                </div>
-                            </div><!-- End tab-pane -->
-                        </div><!-- End col-md-8--> 
-                    </div>  
+
+                        </div>
+                    </div><!-- End tab-pane -->
+                </div><!-- End col-md-8--> 
+            </div>  
         </section><!-- End main_content-->
 
         <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>

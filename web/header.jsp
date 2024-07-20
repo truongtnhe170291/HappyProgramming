@@ -11,6 +11,8 @@
         <link href="css/style.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
         <style>
             .rounded-circle {
                 width: 200px;
@@ -25,29 +27,15 @@
                 <div class="container">
                     <!--Logo-->
                     <div id="logo">
-                        <a href="homes.jsp">
+                        <a href="homeMentee">
                             <span class="logo-default">FMASTER</span>
                             <span class="logo-dark">FMASTER</span>
                         </a>
                     </div>
                     <!--End: Logo-->
-                    <!-- Search -->
-                    <div id="search"><a id="btn-search-close" class="btn-search-close"
-                                        aria-label="Close search form"><i class="icon-x"></i></a>
-                        <form class="search-form" action="search-results-page.html" method="get">
-                            <input class="form-control" name="q" type="text" placeholder="Type & Search..." />
-                            <span class="text-muted">Start typing & press "Enter" or "ESC" to close</span>
-                        </form>
-                    </div>
-                    <!-- end: search -->
+
                     <!--Header Extras-->
-                    <div class="header-extras">
-                        <ul>
-                            <li>
-                                <a id="btn-search" href="#"> <i class="icon-search"></i></a>
-                            </li>
-                        </ul>
-                    </div>
+
                     <!--end: Header Extras-->
                     <!--Navigation Resposnive Trigger-->
                     <div id="mainMenu-trigger">
@@ -59,21 +47,22 @@
                         <div class="container">
                             <nav>
                                 <ul>
-                                    <li><a href="homes.jsp">Home</a></li>
+
 
                                     <li class="dropdown"><a href="#">Features</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="skill">SKILLS</a></li>
-                                                <c:if test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
-                                                <li><a href="StaticRequest">REQUEST STATIC</a></li>
-                                                <li><a href="ListRequest">History Request</a></li>
-                                                <li><a href="Schedule_General_Mentee">General Schedule</a></li>
+                                                <c:if
+                                                    test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
+                                                <li><a href="StaticRequest">STATISTICS REQUEST</a></li>
+                                                <li><a href="ListRequest">HISTORY REQUEST</a></li>
+                                                <li><a href="Schedule_General_Mentee">GENERAL SCHEDULE</a></li>
                                                 </c:if>
                                         </ul>
                                     </li>
                                     <c:if test="${sessionScope.user == null}">
-                                        <li><a href="login.jsp">Login</a></li>
-                                        <li><a href="sign_up.jsp">Sign up</a></li>
+                                        <li><a href="login">Login</a></li>
+                                        <li><a href="signup">Sign up</a></li>
                                         </c:if>
 
                                     <c:if test="${sessionScope.user != null}">
@@ -89,31 +78,27 @@
                                                             <img src="./img/${user.avatar}" alt=""
                                                                  class="rounded-circle">
                                                         </div>
-                                                        <div>
-                                                            <span>UI Designer</span>
-                                                        </div>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <a href="UpdateAccountServlet">
-                                                        <i class="uil uil-user"></i> Profile</a>
-                                                </li>
-                                                
-                                                <li>
-                                                    <a href="wallet">
-                                                        <i class="uil uil-key-skeleton"></i> Your Wallet
-                                                    </a>
-                                                </li>
-                                                
-                                                <li>
-                                                    <a href="changepass">
-                                                        <i class="uil uil-key-skeleton"></i> Change Password
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="">
-                                                        <i class="uil uil-bell"></i> Help</a>
-                                                </li>
+                                                <c:if
+                                                    test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
+                                                    <li>
+                                                        <a href="UpdateAccountServlet">
+                                                            <i class="uil uil-user"></i> Profile</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="wallet">
+                                                            <i class="fas fa-wallet"></i> Your Wallet
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="changepass">
+                                                            <i class="uil uil-key-skeleton"></i> Change Password
+                                                        </a>
+                                                    </li>
+                                                </c:if>
                                                 <li>
                                                     <a href="Signout_Servlet" class="nav-author__signout">
                                                         <i class="uil uil-sign-out-alt"></i> Sign Out</a>

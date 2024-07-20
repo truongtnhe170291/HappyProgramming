@@ -62,18 +62,18 @@
                                             <div class="edit-profile__body">
                                                 <div class="form-group mb-20">
                                                     <label for="username">Username</label>
-                                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" maxlength="30" minlength="3" required>
                                                     <div class="error-message" id="usernameError"></div>
                                                 </div>
                                                 <div class="form-group mb-20">
                                                     <label for="email">Email</label>
-                                                    <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                                                    <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com" maxlength="30" required>
                                                     <div class="error-message" id="emailError"></div>
                                                 </div>
                                                 <div class="form-group mb-15">
                                                     <label for="password-field">Password</label>
                                                     <div class="position-relative">
-                                                        <input id="password-field" type="password" class="form-control" name="password" placeholder="Password" required>
+                                                        <input id="password-field" type="password" class="form-control" name="password" placeholder="Password" maxlength="30" required>
                                                         <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                                                     </div>
                                                     <div class="error-message" id="passwordError"></div>
@@ -81,14 +81,14 @@
                                                 <div class="form-group mb-15">
                                                     <label for="confirm-password-field">Confirm Password</label>
                                                     <div class="position-relative">
-                                                        <input id="confirm-password-field" type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+                                                        <input id="confirm-password-field" type="password" class="form-control" name="confirm_password" maxlength="30" placeholder="Confirm Password" required>
                                                         <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                                                     </div>
                                                     <div class="error-message" id="confirmPasswordError"></div>
                                                 </div>
                                                 <div class="form-group mb-20">
                                                     <label for="fullname">Full Name</label>
-                                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="BUI THI A" required>
+                                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="BUI THI A" maxlength="30" required>
                                                     <div class="error-message" id="fullnameError"></div>
                                                 </div>
                                                 <div class="form-group mb-20">
@@ -141,7 +141,7 @@
                                     <div class="admin-topbar">
                                         <p class="mb-0">
                                             Don't have an account?
-                                            <a href="login.jsp" class="color-primary">
+                                            <a href="login" class="color-primary">
                                                 Sign In
                                             </a>
                                         </p>

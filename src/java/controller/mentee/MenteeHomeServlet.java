@@ -4,6 +4,8 @@
  */
 package controller.mentee;
 
+
+import dal.BlogDAO;
 import dal.MentorProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +16,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+import models.Blog;
+import models.MentorProfile;
 import models.MentorProfileDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "MenteeHomeServlet", urlPatterns = {"/MenteeHomeServlet"})
+@WebServlet(name = "MenteeHomeServlet", urlPatterns = {"/homeMentee"})
 public class MenteeHomeServlet extends HttpServlet {
 
     /**
@@ -58,21 +62,33 @@ public class MenteeHomeServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-//        processRequest(request, response);
-        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-
-        try {
-            List<MentorProfileDTO> topMentors = mentorProfileDAO.getTop5Mentors();
-            request.setAttribute("topMentors", topMentors);
-            request.getRequestDispatcher("homes.jsp").forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException("Unable to retrieve top mentors", e);
-        }
+  @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
         
+
+        MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
+        BlogDAO topnewBlog = new BlogDAO();
+
+       
+        List<Blog> topblog = topnewBlog.getTop4newBlogs();
+        List<MentorProfileDTO> topMentors = mentorProfileDAO.getTop3Mentors();
+
+      
+        request.setAttribute("topblog", topblog);
+        request.setAttribute("topMentors", topMentors);
+
+        // Add logging
+        System.out.println("Top 4 Blogs: " + topblog);
+        System.out.println("Top Mentors: " + topMentors);
+
+         request.getRequestDispatcher("homes.jsp").forward(request, response);
+    } catch (SQLException e) {
+        throw new ServletException("Unable to retrieve top mentors", e);
     }
+}
+
 
     /**
      * Handles the HTTP <code>POST</code> method.

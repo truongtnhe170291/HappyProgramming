@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Update CV of mentor</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>       
-            <style>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>       
+        <style>
             .author_2{
                 transform: translate(750px,-87px);
             }
@@ -184,7 +184,7 @@
                 justify-content: end;
             }
             .statusol{
-                
+
                 line-height: 20px;
                 text-align: center;
                 margin-top: 20px;
@@ -255,6 +255,70 @@
             #apply-cv-as1:hover, #set-rate-as2:hover {
                 background-color: #138496;
             }
+            
+                .status-radio label {
+              
+                    font-weight: bold;
+                    font-size: 18px;
+                    margin-bottom: 15px;
+                    display: block;
+                    color: #333;
+                }
+
+                .skills-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                }
+
+                .skill-item {
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 12px 20px;
+                    display: flex;
+                    align-items: center;
+                    transition: box-shadow 0.3s ease, transform 0.3s ease;
+                    cursor: pointer;
+                    width: 100%;
+                    max-width: 200px;
+                    text-align: center;
+                }
+
+                .skill-item:hover {
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    transform: translateY(-3px);
+                }
+
+                .form-check-input {
+                    margin-right: 10px;
+                   
+                    transform: scale(1.2);
+                }
+
+                .form-check-label {
+                    margin: 0;
+                    font-size: 16px;
+                    color: #555;
+                    flex-grow: 1;
+                    text-align: left;
+                }
+
+                @media (max-width: 768px) {
+                    .skills-container {
+                        flex-direction: column;
+                    }
+
+                    .skill-item {
+                        width: 100%;
+                    }
+                }
+                .form-group {
+                    margin-bottom: 25px;
+                }
+                ev{
+  pointer-events: none;
+}
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -295,7 +359,7 @@
                                     <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
                                         <li class="nav-item hes">
-                                            
+
                                             <form action="aplly" method="post" class="status-bar">
                                                 <input type="hidden" name="cvId" value="${cv.cvId}"/>
                                                 <div class="statusol">
@@ -306,120 +370,7 @@
                                                 </div>
                                                 <button type="submit" class="sets">
                                                     Apply CV
-                                                    <div class="star-1">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-2">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-3">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-4">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-5">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-6">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
+                                                    
                                                 </button>
                                             </form>                           
                                         </li>
@@ -431,7 +382,7 @@
                                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="row justify-content-center">
                                             <div class="col-xxl-4 col-10">
-                                                
+
                                                 <div class="mt-40 mb-50">
                                                     <div class="user-tab-info-title mb-35 text-capitalize">
                                                         <h5 class="fw-500">CV Information</h5>
@@ -461,7 +412,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name4">Full Name</label>
-                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Duran Clayton">
+                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Your full name ...">
                                                                 </div>
                                                                 <div style="display: none" id="nameError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your name is invalid.
@@ -471,7 +422,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber1">Mail</label>
-                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="Design">
+                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="example@gmail.com">
                                                                 </div>
                                                                 <div style="display: none" id="emailError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your email is invalid.
@@ -516,7 +467,7 @@
 
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber1">Address</label>
-                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Design">
+                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Your address ...">
                                                                 </div>
                                                                 <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your Address.
@@ -525,26 +476,39 @@
 
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
-                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Your profession ...">
+                                                            <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your profession.
+                                                                </div>
                                                             </div>
+                                                            
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession introduction</label>
-                                                                <textarea name="professionIntro"  type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
+                                                                <textarea name="professionIntro" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
+                                                            <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your professionIntro.
+                                                                </div>
                                                             </div>
 
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
-                                                                <textarea name="achievementDescription"  type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
+                                                                <textarea name="achievementDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
+                                                             <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your Achievement Description.
+                                                                </div>
                                                             </div>
 
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
-                                                                <textarea name="serviceDescription"  type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
+                                                                <textarea name="serviceDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
+                                                           <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> Please input your Service Description.
+                                                                </div>
                                                             </div>
 
-                                                            <div class="form-group mb-25 status-radio ">
+                                                            <div class="form-group mb-25 status-radio">
                                                                 <label for="hiringDateCheckbox">Skill</label>
-                                                                <div class="d-flex">
+                                                                <div class="d-flex skills-container">
                                                                     <c:forEach items="${requestScope.skills}" var="skill">
                                                                         <c:set var="isChecked" value="false"/>
                                                                         <c:forEach items="${cv.skills}" var="cvskill">
@@ -552,11 +516,10 @@
                                                                                 <c:set var="isChecked" value="true"/>
                                                                             </c:if>
                                                                         </c:forEach>
-                                                                        <div class="form-check">
-                                                                            <input name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox">
-                                                                            <label class="form-check-label" for="hiringDateCheckbox">${skill.skillName}</label>
+                                                                        <div class="form-check skill-item">
+                                                                            <input style="margin-left:10px;" name="skills" class="form-check-input" type="checkbox" <c:if test="${isChecked}">checked</c:if> value="${skill.skillID}" id="hiringDateCheckbox-${skill.skillID}">
+                                                                            <label class="form-check-label" for="hiringDateCheckbox-${skill.skillID}">${skill.skillName}</label>
                                                                         </div>
-
                                                                     </c:forEach>
                                                                 </div>
                                                             </div>
@@ -621,120 +584,7 @@
 
                                                 <button type="submit" class="sets">
                                                     Set Rate
-                                                    <div class="star-1">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-2">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-3">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-4">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-5">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="star-6">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            xml:space="preserve"
-                                                            version="1.1"
-                                                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                                            viewBox="0 0 784.11 815.53"
-                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            >
-                                                        <defs></defs>
-                                                        <g id="Layer_x0020_1">
-                                                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                                        <path
-                                                            class="fil0"
-                                                            d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                            ></path>
-                                                        </g>
-                                                        </svg>
-                                                    </div>
+                                                    
                                                 </button>
                                             </li>
                                         </ul>
@@ -800,21 +650,53 @@
     </div>
     <div class="overlay-dark-sidebar"></div>
     <div class="customizer-overlay"></div>
- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const rate = Number(document.querySelector(".rate_all").value);
-            console.log(rate);
-            if (rate <= 0) {
-                 Toastify({
-                text: ('Bạn chưa nhập Rate. Hãy điền rate !!!'),
+      <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the form elements
+        const applyForm = document.querySelector('form[action="aplly"]');
+        const setRateForm = document.querySelector('form[action="SetRate"]');
+        
+        // Handle Apply CV form submission
+        if (applyForm) {
+            applyForm.addEventListener('submit', function (event) {
+                const rate = Number(document.querySelector(".rate_all")?.value);
+
+                if (rate <= 0) {
+                    event.preventDefault();
+                    
+                    Toastify({
+                        text: 'Bạn chưa nhập Rate. Hãy điền rate !!!',
                         duration: 5000,
                         gravity: "top",
                         position: "right",
                         backgroundColor: "#ff7b5a",
-                }).showToast();
-            }
-        });
-    </script>
+                    }).showToast();
+                }
+            });
+        }
+
+        // Handle Set Rate form submission
+        if (setRateForm) {
+            setRateForm.addEventListener('submit', function (event) {
+                const rate = Number(document.querySelector(".rate_all")?.value);
+
+                if (rate <= 0) {
+                    event.preventDefault();
+
+                    Toastify({
+                        text: 'Bạn chưa nhập Rate. Hãy điền rate !!!',
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                    }).showToast();
+                }
+            });
+        }
+    });
+</script>
+
+   
     <script>
         document.getElementById('set-rate-as1').addEventListener('click', function () {
             document.querySelector('.as1').classList.add('hidden');
@@ -827,203 +709,98 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var emailInput = document.getElementById('email');
-            var emailError = document.getElementById('emailError');
-            var mailcv = document.getElementById('mailcv');
-            var mailcvErr = document.getElementById('mailcvErr');
-            var phoneInput = document.getElementById('phoneNumber');
-            var phoneError = document.getElementById('phoneError');
-            var nameInput = document.getElementById('fullname');
-            var nameError = document.getElementById('nameError');
-            var dobInput = document.getElementById('dob');
-            var dobError = document.getElementById('dobError');
-            var dobcv = document.getElementById('dobcv');
-            var dobcvErr = document.getElementById('dobcvErr');
-            var submitForm = document.getElementById('submitForm');
-            var addressInput = document.getElementById('address');
-            var addressError = document.getElementById('addressError');
+    document.addEventListener('DOMContentLoaded', function() {
+    const submitButton = document.getElementById('submitForm2'); 
 
-            var emailInput2 = document.getElementById('email2');
-            var emailError2 = document.getElementById('emailError2');
-            var nameInput2 = document.getElementById('fullname2');
-            var nameError2 = document.getElementById('nameError2');
-            var dobInput2 = document.getElementById('dob2');
-            var dobError2 = document.getElementById('dobError2');
-            var submitForm2 = document.getElementById('submitForm2');
-            var addressInput2 = document.getElementById('address2');
-            var addressError2 = document.getElementById('addressError2');
-            var sucess = document.querySelector('.color-success');
-            var danger = document.querySelector('.color-danger');
-            var warning = document.querySelector('.color-warning');
-            var send = document.querySelector('.sets');
+    const nameInput = document.getElementById('fullname2');
+    const emailInput = document.getElementById('email2');
+    const dobInput = document.getElementById('dob2');
+    const addressInput = document.getElementById('address2');
+    const professionInput = document.getElementsByName('profession')[0];
+    const professionIntroInput = document.getElementsByName('professionIntro')[0];
+    const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
+    const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
 
-            send.addEventListener('click', (e) => {
-                danger.style.display = 'none';
-                sucess.style.display = 'block';
-                warning.style.display = 'none';
+    const nameError = document.getElementById('nameError2');
+    const emailError = document.getElementById('emailError2');
+    const dobError = document.getElementById('dobError2');
+    const addressErrors = document.querySelectorAll('#addressError2');
 
-            });
-            submitForm2.addEventListener('click', (e) => {
-                danger.style.display = 'none';
-                sucess.style.display = 'none';
-                warning.style.display = 'block';
-            });
+    function validateForm() {
+        let isValid = true;
 
-            if (addressInput) {
-                addressInput.addEventListener('input', function () {
-                    var addressValue = addressInput.value;
-                    if (addressValue === "") {
-                        addressError.style.display = 'block';
-                        submitForm.disabled = true;
-                    } else {
-                        addressError.style.display = 'none';
-                        submitForm.disabled = false;
-                    }
-                });
-            }
+        if (!nameInput.value.trim()) {
+            nameError.style.display = 'block';
+            isValid = false;
+        } else {
+            nameError.style.display = 'none';
+        }
 
-            if (addressInput2) {
-                addressInput2.addEventListener('input', function () {
-                    var addressValue = addressInput2.value;
-                    if (addressValue === "") {
-                        addressError2.style.display = 'block';
-                        submitForm2.disabled = true;
-                    } else {
-                        addressError2.style.display = 'none';
-                        submitForm2.disabled = false;
-                    }
-                });
-            }
+        if (!emailInput.value.trim()) {
+            emailError.style.display = 'block';
+            isValid = false;
+        } else {
+            emailError.style.display = 'none';
+        }
 
-            if (emailInput) {
-                emailInput.addEventListener('input', function () {
-                    var emailValue = emailInput.value;
-                    if (!validateEmail(emailValue)) {
-                        emailError.style.display = 'block';
-                        submitForm.disabled = true;
-                    } else {
-                        emailError.style.display = 'none';
-                        submitForm.disabled = false;
-                    }
-                });
-            }
+        if (!dobInput.value.trim()) {
+            dobError.style.display = 'block';
+            isValid = false;
+        } else {
+            dobError.style.display = 'none';
+        }
 
-            if (emailInput2) {
-                emailInput2.addEventListener('input', function () {
-                    var emailValue = emailInput2.value;
-                    if (!validateEmail(emailValue)) {
-                        emailError2.style.display = 'block';
-                        submitForm2.disabled = true;
-                    } else {
-                        emailError2.style.display = 'none';
-                        submitForm2.disabled = false;
-                    }
-                });
-            }
+        if (!addressInput.value.trim()) {
+            addressErrors[0].style.display = 'block';
+            isValid = false;
+        } else {
+            addressErrors[0].style.display = 'none';
+        }
 
-            if (phoneInput) {
-                phoneInput.addEventListener('input', function () {
-                    var phoneValue = phoneInput.value;
-                    if (!validatePhone(phoneValue)) {
-                        phoneError.style.display = 'block';
-                        submitForm.disabled = true;
-                    } else {
-                        phoneError.style.display = 'none';
-                        submitForm.disabled = false;
-                    }
-                });
-            }
+        if (!professionInput.value.trim()) {
+            addressErrors[1].style.display = 'block';
+            isValid = false;
+        } else {
+            addressErrors[1].style.display = 'none';
+        }
 
-            if (nameInput) {
-                nameInput.addEventListener('input', function () {
-                    var nameValue = nameInput.value;
-                    if (!validateName(nameValue)) {
-                        nameError.style.display = 'block';
-                        submitForm.disabled = true;
-                    } else {
-                        nameError.style.display = 'none';
-                        submitForm.disabled = false;
-                    }
-                });
-            }
+        if (!professionIntroInput.value.trim()) {
+            addressErrors[2].style.display = 'block';
+            isValid = false;
+        } else {
+            addressErrors[2].style.display = 'none';
+        }
 
-            if (nameInput2) {
-                nameInput2.addEventListener('input', function () {
-                    var nameValue = nameInput2.value;
-                    if (!validateName(nameValue)) {
-                        nameError2.style.display = 'block';
-                        submitForm2.disabled = true;
-                    } else {
-                        nameError2.style.display = 'none';
-                        submitForm2.disabled = false;
-                    }
-                });
-            }
+        if (!achievementDescriptionInput.value.trim()) {
+            addressErrors[3].style.display = 'block';
+            isValid = false;
+        } else {
+            addressErrors[3].style.display = 'none';
+        }
 
-            if (dobInput) {
-                dobInput.addEventListener('input', function () {
-                    var dobValue = dobInput.value;
-                    if (!validateBirthDate(dobValue)) {
-                        dobError.style.display = 'block';
-                        submitForm.disabled = true;
-                    } else {
-                        dobError.style.display = 'none';
-                        submitForm.disabled = false;
-                    }
-                });
-            }
+        if (!serviceDescriptionInput.value.trim()) {
+            addressErrors[4].style.display = 'block';
+            isValid = false;
+        } else {
+            addressErrors[4].style.display = 'none';
+        }
 
-            if (dobInput2) {
-                dobInput2.addEventListener('input', function () {
-                    var dobValue = dobInput2.value;
-                    if (!validateBirthDate(dobValue)) {
-                        dobError2.style.display = 'block';
-                        submitForm2.disabled = true;
-                    } else {
-                        dobError2.style.display = 'none';
-                        submitForm2.disabled = false;
-                    }
-                });
-            }
+        submitButton.disabled = !isValid;
 
-            function validatePhone(phone) {
-                var re = /^(0|84)(2(0[3-9]|1[0-689]|2[0-25-9]|3[2-9]|4[0-9]|5[124-9]|6[0369]|7[0-7]|8[0-9]|9[012346789])|3[2-9]|5[25689]|7[06-9]|8[0-9]|9[012346789])([0-9]{7})$/;
-                return re.test(phone);
-            }
+        return isValid;
+    }
 
-            function validateEmail(email) {
-                var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
+    const inputs = [nameInput, emailInput, dobInput, addressInput, professionInput, professionIntroInput, achievementDescriptionInput, serviceDescriptionInput];
 
-            function validateName(name) {
-                var re = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
-                return re.test(name);
-            }
+    inputs.forEach(input => {
+        input.addEventListener('input', validateForm);
+        input.addEventListener('change', validateForm);
+    });
 
-            function validateBirthDate(birthDate) {
-                var currentDate = new Date();
+    validateForm(); // Initial check
+});
 
-                var selectedDate = new Date(birthDate);
 
-                if (selectedDate >= currentDate) {
-                    return false;
-                }
-                return true;
-            }
-        });
-
-        document.getElementById('file-uploadcv').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('profile-imgcv').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
 
     </script>
 </body>

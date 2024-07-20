@@ -144,7 +144,26 @@
                 padding: 10px 0;
                 border-bottom: 1px solid #eee;
             }
+            .pts{
+                margin-top: 12px;
+                float:right;
+                    display:flex;
+            }
+.pt a {
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    margin: 0 2px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
+.pt a.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
             .wallet-icon {
                 width: 32px;
                 height: 32px;
@@ -278,7 +297,131 @@
             .negative-amount {
                 color: red;
             }
+            .hold_history {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
 
+            .hold_history tr {
+                border-bottom: 1px solid #ccc;
+            }
+
+            .hold_history td {
+                padding: 10px;
+                text-align: left;
+            }
+
+            .hold_history .test_trans {
+                text-align: right;
+            }
+
+            .hold_history .negative {
+                color: red;
+            }
+
+            .hold_history .positive {
+                color: #27ae60;
+            }
+
+            .hold_history a {
+                text-decoration: none;
+                color: #007bff;
+                margin: 0 5px;
+            }
+
+            .hold_history a:hover {
+                text-decoration: underline;
+            }
+            .hold_history {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            .hold_history tr {
+                border-bottom: 1px solid #ccc;
+            }
+
+            .hold_history td {
+                padding: 10px;
+                text-align: left;
+            }
+
+            .hold_history .test_trans {
+                text-align: right;
+            }
+
+            .hold_history .negative {
+                color: red;
+            }
+
+            .hold_history .positive {
+                color: #27ae60;
+            }
+
+            .hold_history a {
+                text-decoration: none;
+                color: #007bff;
+                margin: 0 5px;
+            }
+
+            .hold_history a:hover {
+                text-decoration: underline;
+            }
+           
+            .no-transaction-message {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 200px;
+                background-color: rgba(0, 0, 0, 0.1);
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                font-size: 18px;
+                color: #333;
+            }
+
+            #holdContent .pt,
+            #historyContent .pt {
+                display: none;
+            }
+.wallet-container {
+                width:120%;
+                max-width:120%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 15px;
+                padding: 30px;
+                color: #fff;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+                margin-bottom: 30px;
+            }
+
+            .wallet-container h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .wallet-details p {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .wallet-details strong {
+                font-weight: 600;
+            }
+
+            #walletId, #realBalance {
+                font-size: 22px;
+                font-weight: 700;
+            }
+            .tss{
+                font-size: 15px;
+                font-weight: bold;
+               color: #f0f0f0 !important;
+            }
         </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
@@ -297,18 +440,30 @@
                 </header>
                 <main>
                     <section class="wallet-overview">
-                        <div class="total-balance">
-                            <h3>Available: <span id="available_binance" value="${requestScope.wallet.avaiable_binance}">${requestScope.wallet.avaiable_binance}</span><span> VND</span></h3>
+                       
+                        <div class="wallet-container">
+                    <h2>Wallet Information</h2>
+                    <div class="wallet-details">
+                         <div class="total-balance">
+                             <h3>Available: <span class="tss" id="real_binance" value="${requestScope.wallet.real_balance - requestScope.wallet.hold}">${requestScope.wallet.real_balance -requestScope.wallet.hold}</span><span class="tss"> VND</span></h3>
                         </div>
                         <div class="total-balance">
-                            <h3>Balance: <span id="real_binance" value="${requestScope.wallet.real_binance}">${requestScope.wallet.real_binance}</span><span> VND</span></h3>
+                         <h3>Balance: <span class="tss" id="real_binances" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}</span><span class="tss"> VND</span></h3>
+
                         </div>
+                        <div class="total-balance">
+                            <h3>Hold: <span class="tss" id="available_binance" value="${requestScope.wallet.hold}">${requestScope.wallet.hold}</span><span class="tss"> VND</span></h3>
+                        </div>
+                    </div>
+                </div>
+
 
                         <!--            <div class="wallet-list"></div>-->
                     </section>
                     <section class="transaction-history">
                         <div class="tabs">
                             <button class="active" id="historyBtn">History</button>
+                            <button  id="holdBtn">Hold</button>
                             <button id="depositBtn">Deposit</button>
                         </div>
                         <div id="historyContent" class="tab-content active">
@@ -317,16 +472,47 @@
                                     <tr>
                                         <td>${tran.create_date}</td>
                                         <td>${tran.message}</td>
-                                        <td class="test_trans" value="${tran.amount}">${tran.user_send == sessionScope.user.userName?"-":"+"}${tran.amount}</td>
+                                        <td class="test_trans ${tran.amount < 0 ? 'negative' : 'positive'}" value="${tran.amount}">
+                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount} VND
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </table>
-                            <div>
-                                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                                    <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
-                                </c:forEach>
+                            <div class="pts">
+                            <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+                            <div class="pt">
+                                
+  <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
+                               
                             </div>
+                                     </c:forEach>
+                             </div>
                         </div>
+
+                        <div id="holdContent" class="tab-content">
+                            <table class="hold_history">
+                                <c:forEach items="${requestScope.listHold}" var="hold">
+                                    <tr>
+                                        <td class="dateTime">${hold.create_date}</td>
+                                        <td>${hold.message}</td>
+                                        <td class="test_trans ${hold.amount < 0 ? 'negative' : 'positive'}" value="${hold.amount}">
+                                            ${hold.hold ? "+" : "-"}${hold.amount} VNĐ
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                            <div class="pts">
+                                                            <c:forEach begin="1" end="${requestScope.numPageHold}" var="i">
+
+                            <div class="pt">
+                                    <a href="PagingHold?action=menteeHold&index=${i}">${i}</a> &nbsp;
+                            </div>
+                                                            </c:forEach>
+                                </div>
+
+                        </div>
+
+
                         <div id="depositContent" class="tab-content">
                             <div class="deposit-form">
                                 <h2>Deposit Funds</h2>
@@ -357,43 +543,136 @@
                             </div>
                         </div>
                     </section>
+
                 </main>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
-            function formatCurrency(amount) {
-                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            document.addEventListener("DOMContentLoaded", function () {
+                function formatNumberWithDots(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+                function updateBalanceDisplay(elementId) {
+                    const element = document.getElementById(elementId);
+                    const value = parseInt(element.getAttribute("value"), 10);
+                    element.textContent = formatNumberWithDots(value);
+                }
+
+                updateBalanceDisplay("available_binance");
+                updateBalanceDisplay("real_binance");
+                updateBalanceDisplay("real_binances");
+            });
+        </script>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all pagination links within divs with class 'pt'
+    const paginationLinks = document.querySelectorAll('div.pt a');
+
+    function setActiveLink() {
+        const currentPage = window.location.href.split('&index=')[1];
+        if (currentPage) {
+            
+            paginationLinks.forEach(link => {
+                let t = `&index=`+currentPage; 
+                if (link.href.includes(t)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    // Initially set the active link when the page loads
+    setActiveLink();
+
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Remove active class from all pagination links
+            paginationLinks.forEach(link => link.classList.remove('active'));
+            
+            // Add active class to the clicked link
+            this.classList.add('active');
+        });
+    });
+
+    // Update active link when the page is loaded or navigated to a new page
+    window.addEventListener('popstate', setActiveLink);
+});
+</script>
+
+
+        <script>
+            function formatDateTime(dateTime) {
+                return dateTime.replace("T", " ");
             }
 
-            window.onload = function () {
-                document.querySelectorAll('.test_trans').forEach(function (element) {
-                    let amount = element.getAttribute('value');
-                    element.innerText = element.innerText.charAt(0) + formatCurrency(amount);
+            document.addEventListener("DOMContentLoaded", function () {
+                const dateTimeCells = document.querySelectorAll(".hold_history td.dateTime");
+                dateTimeCells.forEach(cell => {
+                    cell.textContent = formatDateTime(cell.textContent);
                 });
+            });
+        </script>
+        <script>
+            const historyContent = document.getElementById('historyContent');
+            const holdContent = document.getElementById('holdContent');
+            const hasHistoryTransactions = historyContent.querySelectorAll('.transactions tr').length > 0;
+            const hasHoldTransactions = holdContent.querySelectorAll('.hold_history tr').length > 0;
 
-                let realBinance = document.getElementById('real_binance');
-                realBinance.innerText = formatCurrency(realBinance.getAttribute('value'));
-
-                let availableBinance = document.getElementById('available_binance');
-                availableBinance.innerText = formatCurrency(availableBinance.getAttribute('value'));
+            if (!hasHistoryTransactions) {
+                const noTransactionMessage = document.createElement('p');
+                noTransactionMessage.textContent = 'No Transaction';
+                noTransactionMessage.classList.add('no-transaction-message');
+                historyContent.appendChild(noTransactionMessage);
             }
+
+            if (!hasHoldTransactions) {
+                const noTransactionMessage = document.createElement('p');
+                noTransactionMessage.textContent = 'No Hold';
+                noTransactionMessage.classList.add('no-transaction-message');
+                holdContent.appendChild(noTransactionMessage);
+            }
+
+            if (hasHistoryTransactions && hasHoldTransactions) {
+                document.querySelectorAll('.pt').forEach((element) => element.style.display = 'block');
+            }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                function formatNumberWithDotss(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VNĐ";
+                }
+
+                function updateTransactionAmounts(selector) {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        const value = parseInt(element.getAttribute("value"), 10);
+                        const sign = element.textContent.trim().charAt(0);
+                        const formattedValue = formatNumberWithDotss(Math.abs(value));
+                        element.textContent = sign + formattedValue;
+                    });
+                }
+
+                updateTransactionAmounts("#historyContent .test_trans");
+                updateTransactionAmounts("#holdContent .test_trans");
+            });
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const amountInput = document.getElementById('amount');
                 const depositBtn = document.querySelector('.deposit-btn');
-
                 amountInput.addEventListener('input', function () {
                     validateAmount(this.value);
                 });
-
                 function validateAmount(value) {
                     let parsedAmount = parseInt(value);
-                    if (parsedAmount < 5000 || parsedAmount > 10000000) {
+                    if (parsedAmount < 100000 || parsedAmount > 10000000) {
                         depositBtn.disabled = true;
                         Toastify({
-                            text: 'Amount must be between 5,000 and 10,000,000',
+                            text: 'Amount must be between 100,000 and 10,000,000',
                             duration: 3000,
                             gravity: 'top',
                             position: 'right',
@@ -406,8 +685,6 @@
                     }
                 }
             });
-
-
         </script>
         <script>
             document.querySelectorAll('.transactions td:first-child').forEach(function (td) {
@@ -418,13 +695,9 @@
                     td.style.color = 'red';
                 }
             });
-
-
-
             const wallets = [
                 {name: "SHIBA INU", amount: 39900, value: 0.24, icon: "shiba.png"},
             ];
-
             const transactions = [
                 {
                     date: "26 Jun 2021",
@@ -433,7 +706,6 @@
                     amount: "+0.000247 XTZ",
                 },
             ];
-
             function populateWallets() {
                 const walletList = document.querySelector(".wallet-list");
                 wallets.forEach(wallet => {
@@ -475,18 +747,14 @@
                     switchTab(e.target.id.replace("Btn", "Content"));
                 }
             });
-
             document.getElementById("depositForm").addEventListener("submit", function (e) {
                 e.preventDefault();
-
                 const crypto = document.getElementById("cryptoSelect").value;
                 const amount = document.getElementById("amount").value;
                 const address = document.getElementById("walletAddress").value;
-
                 this.reset();
                 switchTab("historyContent");
             });
-
             window.onload = () => {
                 populateWallets();
                 populateTransactions();

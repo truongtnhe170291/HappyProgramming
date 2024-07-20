@@ -84,7 +84,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex align-items-center user-member__title mb-30 mt-30">
-                                <h4 class="text-capitalize">add user</h4>
+                                <h4 class="text-capitalize">Update CV of mentor</h4>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name1">Full Name</label>
-                                                                    <input type="text" class="form-control" id="fullname" name="fullname" value="${mentor.fullName}" placeholder="Your name...">
+                                                                    <input type="text" class="form-control" id="fullname" name="fullname" maxlength="30" value="${mentor.fullName}" placeholder="Your name...">
                                                                 </div>
                                                                 <div style="display: none" id="nameError" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your name is not valid.
@@ -178,7 +178,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber5">phone number</label>
-                                                                    <input id="phoneNumber" type="tel" class="form-control" id="phoneNumber" name="phone" value="${mentor.phone}" placeholder="Your phone number...">
+                                                                    <input id="phoneNumber" type="tel" class="form-control" id="phoneNumber" name="phone" max="10" value="${mentor.phone}" placeholder="Your phone number...">
                                                                 </div>
                                                                 <div style="display: none" id="phoneError" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your phone number is not valid.

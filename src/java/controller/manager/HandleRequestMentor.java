@@ -23,12 +23,13 @@ import models.Day;
 import models.ScheduleDTO;
 import models.SchedulePublic;
 import models.Slot;
+import models.Status;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "HandleSlotMentor", urlPatterns = {"/HandleSlotMentor"})
+@WebServlet(name = "HandleRequestMentor", urlPatterns = {"/HandleSlotMentor"})
 public class HandleRequestMentor extends HttpServlet {
 
     /**
@@ -40,22 +41,6 @@ public class HandleRequestMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HandleRequestMentor</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HandleRequestMentor at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -66,23 +51,71 @@ public class HandleRequestMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-      
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    ScheduleDAO scheduleDAO = new ScheduleDAO();
+    MentorDAO mentorDao = new MentorDAO();
 
-        ScheduleDAO scheduleDAO = new ScheduleDAO();
+    // Lấy các tham số từ request
+    String mentorName = request.getParameter("mentorName");
+    String statusFilter = request.getParameter("statusFilter");
+    String pageParam = request.getParameter("page");
+    int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+    int pageSize = 2; // Số lượng item trên mỗi trang
 
-        List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorByStatus(1);
-        MentorDAO mentorDao = new MentorDAO();
-        ArrayList<Slot> listSlot = mentorDao.listSlots();
-//        ArrayList<Day> listDay = mentorDao.listDays();
-        
-        request.setAttribute("list", list);
-        request.setAttribute("listSlot", listSlot);
-        
-        request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
+    List<ScheduleDTO> list;
+    int totalRequests;
 
+    // Xử lý các trường hợp search và filter
+    if (mentorName != null && !mentorName.isEmpty() && statusFilter != null && !statusFilter.isEmpty()) {
+        // Search và Filter
+        int statusId = Integer.parseInt(statusFilter);
+        list = scheduleDAO.searchRequestByMentorNameAndStatus(mentorName, statusId, page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequestByMentorNameAndStatus(mentorName, statusId);
+    } else if (mentorName != null && !mentorName.isEmpty() && (statusFilter == null || statusFilter.isEmpty())) {
+        // Chỉ Search
+        list = scheduleDAO.getAllRequestByMentorName(mentorName, page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequestByMentorName(mentorName);
+    } else if (statusFilter != null && !statusFilter.isEmpty() && (mentorName == null || mentorName.isEmpty())) {
+        // Chỉ Filter
+        int statusId = Integer.parseInt(statusFilter);
+        list = scheduleDAO.getAllRequestByMentorByStatus(statusId, page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequestByStatus(statusId);
+    } else {
+        // Không Search, Không Filter
+        list = scheduleDAO.getAllRequestByMentor(page, pageSize);
+        totalRequests = scheduleDAO.getTotalRequests();
+    }
+
+    // Tính số trang dựa trên tổng số request và pageSize
+    int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
+
+    // Lấy danh sách các Slot từ MentorDAO
+    ArrayList<Slot> listSlot = mentorDao.listSlots();
+    List<Status> statusList = scheduleDAO.getAllStatus();
+
+    // Đặt các thuộc tính vào request để chuyển đến trang ScheduleManagement.jsp
+    request.setAttribute("list", list);
+    request.setAttribute("statusList", statusList);
+    request.setAttribute("listSlot", listSlot);
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.setAttribute("mentorName", mentorName);
+    request.setAttribute("statusFilter", statusFilter);
+    request.setAttribute("pageSize", pageSize); // Gán pageSize vào request
+
+    request.getRequestDispatcher("ScheduleManagement.jsp").forward(request, response);
+}
+
+
+    public static void main(String[] args) {
+          ScheduleDAO scheduleDAO = new ScheduleDAO();
+    MentorDAO mentorDao = new MentorDAO();
+    int totalRequests = scheduleDAO.getTotalRequestByMentorName("son");
+     List<ScheduleDTO> list = scheduleDAO.getAllRequestByMentorName("son",1,5);
+        System.out.println(totalRequests);
+        System.out.println(list.size());
     }
 
 
@@ -102,7 +135,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         // Lấy mentorName, cycleId và action từ request
         int cycleId = Integer.parseInt(request.getParameter("cycleID"));
         int action = Integer.parseInt(request.getParameter("action"));
-        String message = request.getParameter("messageInput");
+        String message = request.getParameter("notes");
         System.out.println(cycleId + ""+ action);
         // Kiểm tra action và gọi hàm tương ứng
         System.out.println(message);

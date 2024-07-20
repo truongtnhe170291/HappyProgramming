@@ -48,7 +48,7 @@
                                     <a href="bookSchedule">Booking Calendar</a>
                                 </li>
                                 <li class="l_sidebar">
-                                    <a href="scheduleCommonMentor">View Schedule</a>
+                                    <a href="scheduleCommonMentor">My Schedule</a>
                                 </li>
                             </ul>
                         </li>
@@ -65,6 +65,9 @@
                                 </li>
                                  <li class="">
                                     <a href="StatisticRequestMentor">Statistic Request</a>
+                                </li>
+                                 <li class="">
+                                    <a href="MyMentee">My Mentee</a>
                                 </li>
                             </ul>
                             

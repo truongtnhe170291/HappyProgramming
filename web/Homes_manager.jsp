@@ -13,9 +13,58 @@
         <link rel="stylesheet" href="assetss/css/components.css">
         <!-- Custom style CSS -->
         <link rel="stylesheet" href="assetss/css/custom.css">
-    </head>
 
+        <style>
+            /* Add this to your style.css or inside a <style> tag in the <head> section */
+            .amount.positive {
+                color: green;
+            }
+
+            .amount.negative {
+                color: red;
+            }
+
+        </style>
+
+        <script>
+            function formatNumber(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            function formatDate(dateString) {
+                const options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                };
+                const date = new Date(dateString);
+                return date.toLocaleDateString('vi-VN', options);
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const balanceElement = document.getElementById('realBalance');
+                if (balanceElement) {
+                    balanceElement.textContent = formatNumber(balanceElement.textContent);
+                }
+
+                const amountElements = document.querySelectorAll('.amount');
+                amountElements.forEach(function (element) {
+                    element.textContent = formatNumber(element.textContent) + ' VND';
+                });
+
+                const dateElements = document.querySelectorAll('.transaction-date');
+                dateElements.forEach(function (element) {
+                    element.textContent = formatDate(element.textContent);
+                });
+            });
+        </script>
+
+    </head>
     <body>
+
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
@@ -27,49 +76,67 @@
                             <li class="breadcrumb-item">
                                 <h4 class="page-title m-b-0">Dashboard</h4>
                             </li>
-                            <li class="breadcrumb-item">
-                                <a href="index.html">
-                                    <i class="fas fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+
                         </ul>
                         <div class="row">
-                            <div class="col-lg-4 col-sm-6">
+                            <div class="col-lg-3 col-sm-6">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="info-box7-block">
                                             <h6 class="m-b-20 text-right">Total Request CV</h6>
                                             <h4 class="text-right"><i class="fas fa-address-card pull-left bg-indigo c-icon"></i><span>${totalCVs} CVs</span>
                                             </h4>
-                                            <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-green m-r-5"></i><span
-                                                    class="text-success font-weight-bold">23%</span> then previous month</p>
+                                            <div style="display: flex; justify-content: space-between">
+                                                <!--                                                <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-green m-r-5"></i><span
+                                                                                                        class="text-success font-weight-bold">23%</span> then previous month</p>
+                                                <!--<a style="padding-top: 18px" href="listCV">View detail</a>-->
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-6">
+                            <div class="col-lg-3 col-sm-6">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="info-box7-block">
                                             <h6 class="m-b-20 text-right">Registered Users</h6>
                                             <h4 class="text-right"><i class="fas fa-users pull-left bg-cyan c-icon"></i><span>${totalAcc} Accounts</span>
                                             </h4>
-                                            <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-red m-r-5"></i><span
-                                                    class="col-red font-weight-bold">3%</span> then previous month</p>
+                                            <div style="display: flex; justify-content: space-between">
+                                                <!--                                                <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-up col-red m-r-5"></i><span
+                                                                                                        class="col-red font-weight-bold">3%</span> then previous month</p>
+                                                <!--<a style="padding-top: 18px" href="accountstatus">View detail</a>-->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-6">
+                            <div class="col-lg-3 col-sm-6">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="info-box7-block">
-                                            <h6 class="m-b-20 text-right">Total Earning</h6>
+                                            <h6 class="m-b-20 text-right">Total Request Schedule</h6>
                                             <h4 class="text-right"><i
-                                                    class="fas fa-dollar-sign pull-left bg-green c-icon"></i><span>$3.58M</span>
+                                                    class="fas fa-calendar pull-left bg-brown c-icon"></i><span>${totalRequest} Requests</span>
                                             </h4>
-                                            <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-down col-red m-r-5"></i><span
-                                                    class="col-red font-weight-bold">05%</span> then previous month</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="card">
+                                    <div class="card-statistic-4">
+                                        <div class="info-box7-block">
+                                            <h6 class="m-b-20 text-right">Total Skills</h6>
+                                            <h4 class="text-right"><i
+                                                    class="fas fa-code pull-left bg-green c-icon"></i><span>${totalSkills} Skills</span>
+                                            </h4>
+                                            <div style="display: flex; justify-content: space-between">
+                                                <!--                                                <p class="mb-0 mt-3 text-muted"><i class="fas fa-arrow-circle-down col-red m-r-5"></i><span
+                                                                                                        class="col-red font-weight-bold">05%</span> then previous month</p>
+                                                <!--<a style="padding-top: 18px" href="">View detail</a>-->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -83,11 +150,11 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Assign Project List</h4>
+                                        <h4>History Transactions</h4>
                                         <div class="card-header-form">
-                                            <form>
+                                            <form action="ManagerHomePage" method="post">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search">
+                                                    <input type="text" name="remitterS" class="form-control" placeholder="Search remitter...">
                                                     <div class="input-group-btn">
                                                         <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                                     </div>
@@ -114,8 +181,8 @@
                                                         </td>
                                                         <td>${tran.message}</td>
 
-                                                        <td>
-                                                            <div class="badge-outline col-green">+${tran.amount}</div>
+                                                        <td class="amount ${tran.user_send == sessionScope.user.userName ? 'negative' : 'positive'}">
+                                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount}
                                                         </td>
 
                                                     </tr>
@@ -123,16 +190,23 @@
 
                                             </table>
                                         </div>
+                                        <c:if test="${listTran eq null}">
+                                            <p style="text-align: center; color: red">There are no suitable record...</p>
+                                        </c:if>
+
+                                    </div> 
+
+                                    <div style="display: flex; justify-content: center; margin-bottom: 5px">
+                                        <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+                                            <a style="color: green" href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
+                                        </c:forEach>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
-                        <div>
-                            <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                                <a href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
-                            </c:forEach>
-                        </div>
+
                     </section>
                     <div class="settingSidebar">
                         <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>

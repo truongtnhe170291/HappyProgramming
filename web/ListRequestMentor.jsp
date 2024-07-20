@@ -236,7 +236,155 @@
             .empty-cell {
                 height: 100%;
             }
+            .filter-container {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                background-color: #f5f5f5;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }
+
+            .filter-group {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+
+            .filter-group label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            .filter-group select,
+            .filter-group input {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+            .filter-group select {
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+                background-repeat: no-repeat;
+                background-position: right 12px top 50%;
+                background-size: 12px auto;
+            }
+
+            .filter-button {
+                width: 120px !important;
+                margin-top: 30px;
+                background-color: #4CAF50 !important;
+                color: #000;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s;
+            }
+
+            .filter-button:hover {
+                background-color: #ccc !important;
+            }
+            .d-flex {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            .btn-primary {
+                padding: 0 !important;
+                width: 40px !important;
+                height: 40px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: #fff !important;
+                border: none !important;
+                margin: 0 5px !important;
+            }
+
+            .fas, .uil {
+                font-size: 18px !important;
+                color: #000 !important;
+                width: auto !important;
+                height: auto !important;
+                line-height: normal !important;
+            }
+
+            form {
+                margin: 0 !important;
+            }
+
+            button[type="submit"] {
+                padding: 0 !important;
+                width: 40px !important;
+                height: 40px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border: none !important;
+                border-radius: 0.42rem !important;
+            }
+
+            .action-btn {
+                margin: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            .custome{
+                background-color: #80e27e !important;
+            }
+            .pagination {
+                display: flex;
+                justify-content: right;
+                margin-top: 20px;
+                margin-right: 20px;
+                margin-bottom: 20px;
+            }
+
+            .prev {
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+            }
+
+            .next {
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+
+            .pagination a, .pagination span {
+                padding: 8px 16px;
+                text-decoration: none;
+                color: #007bff;
+                background-color: #fff;
+                border: 1px solid #ddd;
+            }
+
+            .pagination span {
+                background-color: #007bff;
+                color: white;
+                border: 1px solid #007bff;
+            }
+
+            .pagination a:hover {
+                background-color: #007bff;
+                color: white;
+                border: 1px solid #007bff;
+            }
+
+
+
+
         </style>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
     </head>
 
     <body class="layout-light side-menu">
@@ -254,20 +402,27 @@
 
             <jsp:include page="sidebar.jsp" />
             <div class="contents">
-                <form method="get" action="ListRequestMentor">
-                    <label for="statusFilter">Filter by Status:</label>
-                    <select name="statusFilter" id="statusFilter">
-                        <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
-                        <c:forEach items="${listStatus}" var="status">
-                            <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
-                                ${status.statusName}
-                            </option>
-                        </c:forEach>
-                    </select>
-                    <button type="submit">Filter</button>
-                </form>
-
                 <h1>List of Requests</h1>
+                <form method="get" action="ListRequestMentor" class="filter-search-form">
+                    <div class="filter-container">
+                        <div class="filter-group">
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select name="statusFilter" id="statusFilter">
+                                <option value="" ${empty param.statusFilter ? 'selected' : ''}>All</option>
+                                <c:forEach items="${listStatus}" var="status">
+                                    <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : ''}>
+                                        ${status.statusName}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="menteeNameFilter">Search by Mentee Name:</label>
+                            <input type="text" name="menteeNameFilter" id="menteeNameFilter" value="${param.menteeNameFilter}" placeholder="Enter mentee name"/>
+                        </div>
+                        <button type="submit" class="filter-button">Apply</button>
+                    </div>
+                </form>
                 <div class="userDatatable userDatatable--ticket mt-1">
                     <div class="table-responsive">
                         <table class="table mb-0 table-borderless">
@@ -297,6 +452,7 @@
                                         <span class="userDatatable-title">Actions</span>
                                     </th>
 
+
                                 </tr>
                             </thead>
 
@@ -316,346 +472,239 @@
                                     <td class="status-cell" data-status="${request.status.statusName}">
                                         ${request.status.statusName}</td>
 
-                                    <td class="d-flex" style="margin-top:12px;">
-                                        <form method="POST" action="ListRequest">
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <div class="action-btn">
+                                    <td class="d-flex">                   
+                                        <!--                                    <a href="#" class="btn btn-primary align-center centaxs"
+                                                                               style="background-color: #fff; border: none;">
+                                        
+                                                                                <i class="fas fa-eye align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
+                                                                            </a>-->
+
+                                        <a href="DetailSchedule_mentor?requestId=${request.requestId}" class="btn btn-primary align-center centaxs"
+                                           style="background-color: #fff; border: none;">
+
+                                            <i class="fas fa-eye align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
+                                        </a>
+
+                                        <c:if test="${request.status.statusId == 2}">
+                                            <form method="POST" action="success">
+                                                <input type="hidden" name="requestId" value="${request.requestId}" />
+                                                <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
+                                                        type="submit">
+                                                    <li>
+                                                        <a href="#" class="edit">
+                                                            <i class="uil uil-check"></i>
+                                                        </a>
+                                                    </li>
+                                                </button>
+                                            </form>
+
+                                            <div class="action-btn" style="margin-top:24px;margin-left: 7px;margin-right: 7px; ">
                                                 <a href="#" class="btn btn-primary align-center centaxs"
                                                    data-bs-toggle="modal"
                                                    data-bs-target="#${request.menteeName}${request.requestId}"
                                                    style="background-color: #fff; border: none;">
 
-                                                    <i class="uil uil-eye  align-center" style="color: blue;"></i>
+                                                    <i class="fas fa-times align-center" style="color: #000; width:10px;height:25px;line-height: 25px" ></i>
                                                 </a>
+                                                <form method="POST" action="reject">
 
-                                                <div class="modal fade ticket_modal"
-                                                     id="${request.menteeName}${request.requestId}" role="dialog"
-                                                     tabindex="-1" aria-hidden="true">
+                                                    <div class="modal fade ticket_modal"
+                                                         id="${request.menteeName}${request.requestId}" role="dialog"
+                                                         tabindex="-1" aria-hidden="true">
+                                                        <div
+                                                            class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
+                                                            <div class="modal-content radius-xl custom_modal">
+                                                                <div class="modal-body pb-sm-50 pb-30">
 
-                                                    <div
-                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
-                                                        <div class="modal-content radius-xl custom_modal">
-                                                            <div class="modal-body pb-sm-50 pb-30">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close"
-                                                                            data-bs-dismiss="modal" aria-label="Close">
-                                                                        <img src="img/svg/x.svg" alt="x"
-                                                                             class="svg">
-                                                                    </button>
-                                                                </div>
-                                                                <div class="ticket_modal-modal">
-                                                                    <h1>Request Details</h1>
-                                                                    <div class="text-center">Title: ${request.title}
-                                                                    </div><br>
-                                                                    <div class="text-center">Mentor Name:
-                                                                        ${request.mentorName}</div><br>
-                                                                    <div class="text-center">Description:
-                                                                        ${request.description}</div><br>
-                                                                    <div class="text-center">Deadline:
-                                                                        ${request.deadlineHour}
-                                                                        ${request.deadlineDate}</div><br>
-
-                                                                    <div class="form-container">
-                                                                        <table class="schedule-table" border="1"
-                                                                               width="100%">
-                                                                            <thead>
-                                                                                <tr
-                                                                                    style=" background-color: #4a86e8;">
-                                                                                    <th rowspan="2"
-                                                                                        style=" background-color: #4a86e8;">
-                                                                                        WEEK
-                                                                                    </th>
-                                                                                    <c:forEach var="day"
-                                                                                               items="${listDays}">
-                                                                                        <th class="equal-width text-center"
-                                                                                            style=" background-color: #4a86e8;">
-                                                                                            ${day.dateName}</th>
-                                                                                        </c:forEach>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <c:forEach var="day"
-                                                                                               items="${listDays}">
-                                                                                        <th class="equal-width text-center"
-                                                                                            style=" background-color: #4a86e8 ;">
-                                                                                            ${day.dateValue}</th>
-                                                                                        </c:forEach>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="tableslot">
-                                                                                <c:forEach var="slot"
-                                                                                           items="${listSlots}"
-                                                                                           varStatus="loop">
-                                                                                    <tr>
-                                                                                        <td>Slot ${slot.slot_name}
-                                                                                        </td>
-                                                                                        <c:forEach var="day"
-                                                                                                   items="${listDays}">
-                                                                                            <c:set var="found"
-                                                                                                   value="false" />
-                                                                                            <td>
-                                                                                                <c:forEach
-                                                                                                    var="scheduleItem"
-                                                                                                    items="${request.listSchedule}">
-                                                                                                    <c:if
-                                                                                                        test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
-                                                                                                        <div
-                                                                                                            class="slot-info">
-                                                                                                            <c:forEach
-                                                                                                                var="skill"
-                                                                                                                items="${request.listSkills}">
-                                                                                                                <div
-                                                                                                                    class="class-code">
-                                                                                                                    ${skill.skillName}
-                                                                                                                </div>
-                                                                                                            </c:forEach>
-                                                                                                            <span
-                                                                                                                class="view-materials">View
-                                                                                                                Materials</span>
-                                                                                                            <span
-                                                                                                                class="edu-next">EduNext</span>
-                                                                                                            <div
-                                                                                                                class="room-info">
-                                                                                                                startTime:${scheduleItem.startTime}
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="attendance attended">
-                                                                                                                endTime:
-                                                                                                                ${scheduleItem.endTime}
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="time-info">
-                                                                                                                ${scheduleItem.slot_name}
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <c:set
-                                                                                                            var="found"
-                                                                                                            value="true" />
-                                                                                                    </c:if>
-                                                                                                </c:forEach>
-                                                                                                <c:if
-                                                                                                    test="${not found}">
-                                                                                                    <div
-                                                                                                        class="empty-cell">
-                                                                                                    </div>
-                                                                                                </c:if>
-                                                                                            </td>
-                                                                                        </c:forEach>
-                                                                                    </tr>
-                                                                                </c:forEach>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <input type="hidden" id="selectedSlots"
-                                                                               name="selectedSlots" value="">
+                                                                    <div class="modal-body">
+                                                                        <h2>Enter reason reject</h2>
+                                                                        <br/>
+                                                                        <input type="hidden" id="requestId" name="requestId" value="${request.requestId}" />
+                                                                        <textarea id="rejectReason" name="notes" class="form-control" placeholder="Enter reason why reject..." required></textarea>
                                                                     </div>
-
-
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary custome" onclick="submitRejectForm()">Reject</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+
                                                         </div>
 
+
                                                     </div>
-                                                </div>
+                                                </form>
+
                                             </div>
-
-                                        </form>
-                                        <form method="POST" action="success">
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <button style="border-radius: 0.42rem 0.42rem 0.42rem 0.42rem;"
-                                                    type="submit">
-                                                <li>
-                                                    <a href="#" class="edit">
-                                                        <i class="uil uil-check"></i>
-                                                    </a>
-                                                </li>
-                                            </button>
-                                        </form>
-                                        <form id="rejectForm">
-
-                                            <button type="button" class="btn btn-danger" onclick="openRejectModal()">
-                                                <i class="uil uil-times"></i> Reject
-                                            </button>
-                                        </form>
-
-
-
-
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>
                         </table>
-
                         <div class="modal fade" id="rejectReasonModal" tabindex="-1" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="rejectReasonModalLabel">Lý do từ chối</h5>
+                                        <h5 class="modal-title" id="rejectReasonModalLabel">Enter reason why reject...</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="rejectForm" method="POST" action="reject">
-                                            <input type="hidden" id="requestId" name="requestId" value="" />
-                                            <textarea id="rejectReason" name="note" class="form-control" placeholder="Nhập lý do từ chối..." required></textarea>
-                                            <!-- Thêm thuộc tính name="note" vào textarea -->
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                        <button type="submit" class="btn btn-primary" onclick="submitRejectForm()">Từ chối</button>
-                                    </div>
-                                    </form>
+
                                 </div>
                             </div>
                         </div>
 
 
 
-                        <div>
+                        <div class="pagination">
                             <c:if test="${currentPage > 1}">
-                                <a href="ListRequestMentor?page=${currentPage - 1}&statusFilter=${statusFilter}">Previous</a>
+                                <a href="ListRequestMentor?page=${currentPage - 1}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}" class="prev">Previous</a>
                             </c:if>
                             <c:forEach begin="1" end="${totalPages}" var="i">
                                 <c:choose>
                                     <c:when test="${i == currentPage}">
-                                        <span>${i}</span>
+                                        <span class="active">${i}</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="ListRequestMentor?page=${i}&statusFilter=${statusFilter}">${i}</a>
+                                        <a href="ListRequestMentor?page=${i}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}">${i}</a>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
                             <c:if test="${currentPage < totalPages}">
-                                <a href="ListRequestMentor?page=${currentPage + 1}&statusFilter=${statusFilter}">Next</a>
+                                <a href="ListRequestMentor?page=${currentPage + 1}&statusFilter=${statusFilter}&menteeNameFilter=${menteeNameFilter}" class="next">Next</a>
                             </c:if>
                         </div>
+
+
+
+
+
+
 
                     </div>
                 </div>
             </div>
-            <script type="text/javascript">
-                function openRejectModal(requestId) {
-                    // Gán giá trị requestId vào input hidden trong form
-                    document.getElementById('requestId').value = requestId;
+        </main>
+        <script>
+            function openRejectModal(requestId) {
+                document.getElementById('requestId').value = requestId;
 
-                    // Hiển thị modal
-                    const rejectModal = new bootstrap.Modal(document.getElementById('rejectReasonModal'), {
-                        keyboard: false
-                    });
-                    rejectModal.show();
+                const rejectModal = new bootstrap.Modal(document.getElementById('rejectReasonModal'), {
+                    keyboard: false
+                });
+                rejectModal.show();
+            }
+
+            function submitRejectForm() {
+                const reasonInput = document.getElementById('rejectReason');
+                const reason = reasonInput.value.trim();
+                if (reason.length === 0) {
+                    alert('Please enter reason.');
+                    return;
+                }
+                const rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectReasonModal'));
+                rejectModal.hide();
+            }
+        </script>
+
+
+
+        <script>document.addEventListener("DOMContentLoaded", function () {
+                const roomInfos = document.querySelectorAll('.room-info');
+
+                if (roomInfos.length === 0)
+                    return; // Nếu không có room-info nào, kết thúc sớm
+
+                const firstRoomInfo = roomInfos[0];
+                const time_start = firstRoomInfo.textContent.trim();
+
+                function formatDate(date) {
+                    return (
+                            date.getFullYear().toString().padStart(4, "0") +
+                            "-" +
+                            (date.getMonth() + 1).toString().padStart(2, "0") +
+                            "-" +
+                            date.getDate().toString().padStart(2, "0")
+                            );
                 }
 
-                function submitRejectForm() {
-                    const reasonInput = document.getElementById('rejectReason');
-                    const reason = reasonInput.value.trim();
-                    if (reason.length === 0) {
-                        alert('Vui lòng nhập lý do từ chối.');
-                        return;
-                    }
-
-                    // Form sẽ tự động submit vì nút submit có type="submit"
-                    // Đóng modal sau khi submit
-                    const rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectReasonModal'));
-                    rejectModal.hide();
+                function getMonday(d) {
+                    d = new Date(d);
+                    var day = d.getDay(),
+                            diff = d.getDate() - day + (day === 0 ? -6 : 1);
+                    return new Date(d.setDate(diff));
                 }
-            </script>
 
-
-
-            <script>document.addEventListener("DOMContentLoaded", function () {
-                    const roomInfos = document.querySelectorAll('.room-info');
-
-                    if (roomInfos.length === 0)
-                        return; // Nếu không có room-info nào, kết thúc sớm
-
-                    const firstRoomInfo = roomInfos[0];
-                    const time_start = firstRoomInfo.textContent.trim();
-
-                    function formatDate(date) {
-                        return (
-                                date.getFullYear().toString().padStart(4, "0") +
-                                "-" +
-                                (date.getMonth() + 1).toString().padStart(2, "0") +
-                                "-" +
-                                date.getDate().toString().padStart(2, "0")
-                                );
+                function getWeekOptions(startDate) {
+                    const options = [];
+                    for (let week = 0; week < 4; week++) {
+                        const mondayOfWeek = new Date(startDate);
+                        mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
+                        const sundayOfWeek = new Date(mondayOfWeek);
+                        sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
+                        const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
+                        options.push({value: week + 1, text: optionText});
                     }
+                    return options;
+                }
 
-                    function getMonday(d) {
-                        d = new Date(d);
-                        var day = d.getDay(),
-                                diff = d.getDate() - day + (day === 0 ? -6 : 1);
-                        return new Date(d.setDate(diff));
+                const startDate = new Date(time_start);
+                const weekSelect = document.createElement("select");
+                weekSelect.id = "week";
+
+                const weekOptions = getWeekOptions(startDate);
+
+                weekOptions.forEach((option) => {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.text;
+                    weekSelect.appendChild(optionElement);
+                });
+
+                // Chỉ thêm <select> vào <th> một lần
+                const thElement = document.querySelector("th[rowspan='2']");
+                if (thElement) {
+                    thElement.appendChild(weekSelect);
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const statusCells = document.querySelectorAll(".status-cell");
+
+                statusCells.forEach(cell => {
+                    const status = cell.getAttribute("data-status");
+                    console.log(status);
+                    switch (status) {
+                        case "Open Class":
+                            cell.classList.add("status-open");
+                            break;
+                        case "Processing":
+                        case "Wait For Payment":
+                            cell.classList.add("status-processing");
+                            break;
+                        case "Out Of Date":
+                        case "Rejected":
+                            cell.classList.add("status-cancel");
+                            break;
+                        default:
+                            break;
                     }
-
-                    function getWeekOptions(startDate) {
-                        const options = [];
-                        for (let week = 0; week < 4; week++) {
-                            const mondayOfWeek = new Date(startDate);
-                            mondayOfWeek.setDate(mondayOfWeek.getDate() + week * 7);
-                            const sundayOfWeek = new Date(mondayOfWeek);
-                            sundayOfWeek.setDate(sundayOfWeek.getDate() + 6);
-                            const optionText = formatDate(mondayOfWeek) + " to " + formatDate(sundayOfWeek);
-                            options.push({value: week + 1, text: optionText});
+                    if (status !== "Processing") {
+                        const parentRow = cell.closest("tr");
+                        if (parentRow) {
+                            const forms = parentRow.querySelectorAll("form");
+                            forms.forEach(form => {
+                                const icon = form.querySelector("i.uil-check, i.uil-times");
+                                if (icon) {
+                                    form.style.display = "none";
+                                }
+                            });
                         }
-                        return options;
-                    }
-
-                    const startDate = new Date(time_start);
-                    const weekSelect = document.createElement("select");
-                    weekSelect.id = "week";
-
-                    const weekOptions = getWeekOptions(startDate);
-
-                    weekOptions.forEach((option) => {
-                        const optionElement = document.createElement("option");
-                        optionElement.value = option.value;
-                        optionElement.textContent = option.text;
-                        weekSelect.appendChild(optionElement);
-                    });
-
-                    // Chỉ thêm <select> vào <th> một lần
-                    const thElement = document.querySelector("th[rowspan='2']");
-                    if (thElement) {
-                        thElement.appendChild(weekSelect);
                     }
                 });
-            </script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-
-                    const statusCells = document.querySelectorAll(".status-cell");
-
-                    statusCells.forEach(cell => {
-                        const status = cell.getAttribute("data-status");
-                        console.log(status);
-                        switch (status) {
-                            case "Open Class":
-                                cell.classList.add("status-open");
-                                break;
-                            case "Processing":
-                            case "Wait For Payment":
-                                cell.classList.add("status-processing");
-                                break;
-                            case "Out Of Date":
-                            case "Rejected":
-                                cell.classList.add("status-cancel");
-                                break;
-                            default:
-                                break;
-                        }
-                        if (status !== "Processing") {
-                            const parentRow = cell.closest("tr");
-                            if (parentRow) {
-                                const forms = parentRow.querySelectorAll("form");
-                                forms.forEach(form => {
-                                    const icon = form.querySelector("i.uil-check, i.uil-times");
-                                    if (icon) {
-                                        form.style.display = "none";
-                                    }
-                                });
-                            }
-                        }
-                    });
-                });
-            </script>
+            });
+        </script>
 
 
     </body>

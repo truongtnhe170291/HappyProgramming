@@ -29,7 +29,7 @@ public class SignUpDAO {
 //        String hashedPassword = md5.getMd5(account.getPassword());
 
         
-       String sql = "INSERT INTO Accounts ([user_name], gmail, full_name, pass_word, dob, sex, address, phone, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+       String sql = "INSERT INTO Accounts ([user_name], gmail, full_name, pass_word, dob, sex, address, phone, role_id, status_id, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, account.getUserName());
@@ -42,7 +42,7 @@ public class SignUpDAO {
             statement.setString(8, account.getPhone());
             statement.setInt(9, account.getRoleId());
             statement.setInt(10, account.getStatusId());
-
+            statement.setString(11, account.getAvatar());
             int rowsInserted = statement.executeUpdate();
             return rowsInserted > 0;
         } catch (SQLException e) {
