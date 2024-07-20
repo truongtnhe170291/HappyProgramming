@@ -841,6 +841,57 @@ public class RequestDAO {
 
         return requests;
     }
+    
+    
+    public List<RequestDTO> getAllRequestsByPagManager(int page, int pageSize) throws SQLException {
+        List<RequestDTO> requests = new ArrayList<>();
+        try {
+            StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM RequestsFormMentee WHERE 1=1 AND status_id != 6");
+            // Add pagination
+            sqlBuilder.append(" ORDER BY request_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+            ps = con.prepareStatement(sqlBuilder.toString());
+            int paramIndex = 1;
+            // Calculate offset
+            int offset = (page - 1) * pageSize;
+            ps.setInt(paramIndex++, offset);
+            ps.setInt(paramIndex++, pageSize);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                RequestDTO request = new RequestDTO();
+                request.setRequestId(rs.getInt("request_id"));
+                request.setMentorName(rs.getString("mentor_name"));
+                request.setMenteeName(rs.getString("mentee_name"));
+                request.setDeadlineDate(rs.getDate("deadline_date").toLocalDate());
+                request.setDeadlineHour(rs.getTime("deadline_hour").toLocalTime());
+                request.setDescription(rs.getString("description"));
+                request.setTitle(rs.getString("title"));
+                request.setPrice(rs.getInt("price"));
+                request.setNote(rs.getString("note"));
+
+                Status status = fetchStatusById(rs.getInt("status_id"), con); // Lấy status từ rs
+                request.setStatus(status);
+
+                requests.add(request);
+            }
+
+            // Lấy danh sách kỹ năng và lịch trình cho từng request
+            for (RequestDTO requ : requests) {
+                List<Skill> skills = fetchRequestSkills(requ.getRequestId(), con);
+                requ.setListSkills(skills);
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                List<SchedulePublic> listSchedule = scheduleDAO.getScheduleByRequestId(requ.getRequestId());
+                requ.setListSchedule(listSchedule);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRequestsByMenteeStatusMentorTime SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return requests;
+    }
+    
+    
+    
 
     public void updateExpiredRequestsStatus() throws SQLException {
         PreparedStatement ps = null;
@@ -925,7 +976,6 @@ public class RequestDAO {
         int count = 0;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         try {
             String sql = "SELECT COUNT(DISTINCT mentee_name) AS countMentee FROM RequestsFormMentee WHERE mentor_name = ?";
             ps = con.prepareStatement(sql);

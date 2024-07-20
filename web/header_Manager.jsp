@@ -57,6 +57,7 @@
                 <li><a class="nav-link" href="listCV">List CV</a></li>
                 
                 <li><a class="nav-link" href="skills">List Skills</a></li>
+                <li><a class="nav-link" href="">List Request</a></li>
               </ul>
             </li>
             <li class="dropdown">

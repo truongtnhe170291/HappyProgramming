@@ -107,6 +107,14 @@ public class RequestDTO extends Request{
         this.listSkills = listSkills;
     }
 
+    public boolean isIsEnoughPay() {
+        return isEnoughPay;
+    }
+
+    public void setIsEnoughPay(boolean isEnoughPay) {
+        this.isEnoughPay = isEnoughPay;
+    }
+
     public List<SchedulePublic> getListSchedule() {
         return listSchedule;
     }

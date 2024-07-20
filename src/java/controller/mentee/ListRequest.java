@@ -48,7 +48,7 @@ public class ListRequest extends HttpServlet {
         try {
             Account a = (Account) request.getSession().getAttribute("user");
             if (a == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("login");
                 return;
             }
 

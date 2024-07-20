@@ -37,13 +37,13 @@
             <jsp:include page="header.jsp"/>
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
                 <!-- Slide 1 -->
-                <div class="slide" data-bg-video="video/pexels-waves.mp4">
+                <div class="slide" data-bg-video="video/Happy Programing_1.mp4">
                     <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-center text-light">
                             <!-- Captions -->
-                            <h1 data-caption-animate="zoom-out">WELCOME TO THE WORLD OF FMASTER</h1>
-                            <p>Welcome aboard FMaster—the ultimate destination for creative minds. Whether you're here to learn, to create, or to be inspired, your journey starts now. So, dive in, explore, and let your imagination soar. The world of FMaster is yours to conquer..</p>
+                            <h1 data-caption-animate="zoom-out"></h1>
+                            <p style="margin-top:50px;transform: translateY(50px);">Welcome aboard FMaster—the ultimate destination for creative minds. Whether you're here to learn, to create, or to be inspired, your journey starts now. So, dive in, explore, and let your imagination soar. The world of FMaster is yours to conquer..</p>
 
                             <!-- end: Captions -->
                         </div>
@@ -51,8 +51,8 @@
                 </div>
                 <!-- end: Slide 1 -->
                 <!-- Slide 2 -->
-                <div class="slide" data-bg-video="video/pexels-waves.mp4">
-                    <div class="bg-overlay"></div>
+                <div class="slide" data-bg-video="video/Happy Programing.mp4">
+                     <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-start text-light">
                             <!-- Captions -->
