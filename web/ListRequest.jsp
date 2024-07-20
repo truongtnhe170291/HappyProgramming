@@ -588,6 +588,12 @@
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>
 
+                                            <%--<c:if test="${request.isEnoughPay eq true}">--%> 
+                                                <!--<a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">-->
+                                                    <!--<i class="uil uil-tachometer-fast align-center" style="color: blue;"></i>-->
+                                                <!--</a>-->
+                                            <%--</c:if>--%>   
+
                                             <c:if test="${request.status.statusId eq 1}">
                                                 <a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                     <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
@@ -755,27 +761,27 @@
                                 </c:if>
                             </ul>
                         </c:if>
-                        
+
                         <ul class="pagination">
-                                    <li>
-                                        <a class="prev" href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
-                                    </li>
-                                <c:forEach begin="1" end="${totalPages}" var="i">
-                                    <c:choose>
-                                        <c:when test="${i == currentPage}">
-                                            <li><span>${i}</span></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                            <li>
-                                                <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
-                                            </li>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                                    <li>
-                                        <a class="next" href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
-                                    </li>
-                            </ul>
+                            <li>
+                                <a class="prev" href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
+                            </li>
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <c:choose>
+                                    <c:when test="${i == currentPage}">
+                                        <li><span>${i}</span></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                        <li>
+                                            <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                            <li>
+                                <a class="next" href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
+                            </li>
+                        </ul>
                     </div>
 
                 </div>
@@ -836,7 +842,7 @@
             %>
             <script>
                 const isAvaiable = "<%= avaiableFb %>";
-                if(isAvaiable != "null"){
+                if (isAvaiable != "null") {
                     alert("Not yet the date of implementation of feedback");
                 }
             </script>

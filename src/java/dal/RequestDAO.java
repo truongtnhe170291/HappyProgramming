@@ -234,18 +234,12 @@ public class RequestDAO {
 
     public static void main(String[] args) {
         RequestDAO dao = new RequestDAO();
-        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "2");
-        for (RequestDTO request : requests) {
-            System.out.println(request);
-        }
-           List<Map<String, Object>> requestStats = dao.getTotalRequestMonth("son");
+        List<RequestDTO> requests = dao.getRequestOfMenteeByStatusNotPagingMentor("son", "1");
         
-        for (Map<String, Object> stats : requestStats) {
-            System.out.println("Year: " + stats.get("year") + 
-                               ", Month: " + stats.get("month") + 
-                               ", Mentor: " + stats.get("mentor_name") + 
-                               ", Total Requests: " + stats.get("total_requests"));
+        for (RequestDTO request : requests) {
+            System.out.println(request.toString());
         }
+         
 
     }
     public List<Map<String, Object>> getTotalRequestMonth(String mentorName) {
@@ -1548,5 +1542,7 @@ public class RequestDAO {
         }
         return list;
     }
+    
+    
 
 }
