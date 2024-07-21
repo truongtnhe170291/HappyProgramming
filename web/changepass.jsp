@@ -179,7 +179,7 @@ Author     : 84979
                     </button>
                     <br/>
                     <button>
-                        <a href="homeMentee">
+                        <a href="${sessionScope.user.roleId == 2 ?"home":"homeMentee"}">
                             to home
                             <span></span>
                         </a>

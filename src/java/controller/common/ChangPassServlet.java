@@ -81,7 +81,7 @@ public class ChangPassServlet extends HttpServlet {
         acc.setPassword(rp);
         //if successfully submitted form then update password and redirect user to login page
         if (accountService.changePassWord(acc)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
         }
 
     }
