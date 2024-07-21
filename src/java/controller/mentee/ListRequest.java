@@ -197,8 +197,8 @@ public class ListRequest extends HttpServlet {
             request.setAttribute("totalPages", totalPages);
 
             request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException(e);
+        } catch (Exception e) {
+            response.sendRedirect("PageError");
         }
     }
 

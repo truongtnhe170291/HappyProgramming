@@ -146,65 +146,67 @@
 
 
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>History Transactions</h4>
-                                        <div class="card-header-form">
-                                            <form action="ManagerHomePage" method="post">
-                                                <div class="input-group">
-                                                    <input type="text" name="remitterS" class="form-control" placeholder="Search remitter...">
-                                                    <div class="input-group-btn">
-                                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Remitter</th>
-                                                        <th>Time</th>
-                                                        <th>Message</th>
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <c:forEach items="${listTran}" var="tran">
-                                                    <tr>
-                                                        <td >${tran.user_send}</td>
-                                                        <td>
-                                                            ${tran.create_date}
-                                                        </td>
-                                                        <td>${tran.message}</td>
-
-                                                        <td class="amount ${tran.user_send == sessionScope.user.userName ? 'negative' : 'positive'}">
-                                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount}
-                                                        </td>
-
-                                                    </tr>
-                                                </c:forEach>
-
-                                            </table>
-                                        </div>
-                                        <c:if test="${listTran eq null}">
-                                            <p style="text-align: center; color: red">There are no suitable record...</p>
-                                        </c:if>
-
-                                    </div> 
-
-                                    <div style="display: flex; justify-content: center; margin-bottom: 5px">
-                                        <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                                            <a style="color: green" href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
-                                        </c:forEach>
-                                    </div>
-
-                                </div>
+                       <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>History Transactions</h4>
+                <div class="card-header-form">
+                    <div class="input-group">
+                        <input type="text" id="search-remitter" class="form-control" placeholder="Search sender...">
+                        <form action="ManagerHomePage" method="post">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                             </div>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="search-receiver" class="form-control" placeholder="Search receiver...">
+                    </div>
+                    <div class="input-group">
+                        <input type="date" id="search-date" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Sender</th>
+                                <th>Receiver</th>
+                                <th>Time</th>
+                                <th>Message</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-body">
+                            <c:forEach items="${listTran}" var="tran">
+                                <tr>
+                                    <td class="sender">${tran.user_send}</td>
+                                    <td class="receiver">${tran.user_receive}</td>
+                                    <td class="date">${tran.create_date}</td>
+                                    <td>${tran.message}</td>
+                                    <td class="amount ${tran.user_send == sessionScope.user.userName ? 'negative' : 'positive'}">
+                                        ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <c:if test="${listTran eq null}">
+                    <p style="text-align: center; color: red">There are no suitable record...</p>
+                </c:if>
+            </div> 
+            <div style="display: flex; justify-content: center; margin-bottom: 5px">
+                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+                    <a style="color: green" href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+</div>
 
 
                     </section>
@@ -303,6 +305,37 @@
 
             </div>
         </div>
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', () => {
+        const searchRemitter = document.getElementById('search-remitter');
+        const searchReceiver = document.getElementById('search-receiver');
+        const searchDate = document.getElementById('search-date');
+        const transactionBody = document.getElementById('transaction-body');
+        const rows = Array.from(transactionBody.getElementsByTagName('tr'));
+
+        function filterTransactions() {
+            const remitterValue = searchRemitter.value.toLowerCase();
+            const receiverValue = searchReceiver.value.toLowerCase();
+            const dateValue = searchDate.value;
+
+            rows.forEach(row => {
+                const sender = row.querySelector('.sender').textContent.toLowerCase();
+                const receiver = row.querySelector('.receiver').textContent.toLowerCase();
+                const date = row.querySelector('.date').textContent.split(' ')[0];
+
+                const matchesRemitter = sender.includes(remitterValue);
+                const matchesReceiver = receiver.includes(receiverValue);
+                const matchesDate = !dateValue || date === dateValue;
+
+                row.style.display = matchesRemitter && matchesReceiver && matchesDate ? '' : 'none';
+            });
+        }
+
+        searchRemitter.addEventListener('input', filterTransactions);
+        searchReceiver.addEventListener('input', filterTransactions);
+        searchDate.addEventListener('input', filterTransactions);
+    });
+                                            </script>
         <!-- General JS Scripts -->
         <script src="assetss/js/app.min.js"></script>
         <!-- JS Libraies -->

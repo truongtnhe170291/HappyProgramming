@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <error-page>
+        <error-code>404</error-code>
+        <location>/Error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/PageError</location>
+    </error-page>
     <filter>
         <filter-name>Login_Filter</filter-name>
         <filter-class>filter.Login_Filter</filter-class>
@@ -498,5 +506,13 @@
     <servlet-mapping>
         <servlet-name>WalletMentor</servlet-name>
         <url-pattern>/WalletMentor</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PageError</servlet-name>
+        <servlet-class>controller.common.PageError</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PageError</servlet-name>
+        <url-pattern>/PageError</url-pattern>
     </servlet-mapping>
 </web-app>
