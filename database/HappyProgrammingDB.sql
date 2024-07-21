@@ -87,7 +87,7 @@ GO
 CREATE TABLE CVStatus(
 	status_id INT IDENTITY(1,1) PRIMARY KEY,
     status_name NVARCHAR(100)
-)
+);
 GO
 -- Create CV table
 CREATE TABLE CV(
@@ -198,13 +198,13 @@ CREATE TABLE FeedBacks(
     star INT,
     comment NVARCHAR(1000),
     time_feedback DATE,
-)
+);
 GO
 CREATE TABLE Wallet(
 	wallet_id NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
 	real_balance DECIMAL(15, 0),
 	hold DECIMAL(15, 0)
-)
+);
 
 GO
 CREATE TABLE Hold(
@@ -223,7 +223,7 @@ CREATE TABLE Transactions(
 	create_date DATETIME,
 	amount DECIMAL(15, 0),
 	[message] NVARCHAR(1000)
-)
+);
 GO
 CREATE TABLE Attendance (
     attendance_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -594,20 +594,20 @@ INSERT INTO CVStatus (status_name) VALUES ('Draft');
 
 GO
 -- Insert into FeedBacks
-/*INSERT INTO FeedBacks (mentor_name, mentee_name, star, comment, time_feedback) VALUES 
-('minh', 'truong', 5, 'Excellent mentor', '2024-05-01'),
-('son', 'hieu', 4, 'Very helpful', '2024-05-02'),
-('son', 'truong', 4, 'GOOD', '2024-05-02');
+INSERT INTO FeedBacks (request_id, mentor_name, mentee_name, star, comment, time_feedback) VALUES 
+(NULL, 'son', 'hieu', 4, 'Very helpful', '2024-05-02'),
+(NULL,'minh', 'truong', 5, 'Excellent mentor', '2024-05-01'),
+(NULL, 'son', 'truong', 4, 'GOOD', '2024-05-02');
 GO
-*/
+
 
 
 INSERT INTO CV (mentor_name,gmail, full_name, dob, sex, [address], profession, profession_intro, achievement_description, service_description, avatar, status_id, note) 
 VALUES 
-('minh', 'example1@gmail.com', 'John Doe', '1985-01-15', 1, '123 Main St', 'Software Engineer', 'Experienced in Java and Python', 'Created a successful app', 'Offering software development services', 'avatar1.jpg', 1, null),
-('son', 'example2@gmail.com', 'Jane Smith', '1990-02-20', 0, '456 Elm St', 'Graphic Designer', 'Expert in Adobe Suite', 'Designed award-winning logos', 'Providing graphic design services', 'avatar2.jpg', 2, 'Thông tin OK'),
-('abc', 'example3@gmail.com', 'Alice Johnson', '1987-03-10', 0, '789 Oak St', 'Data Scientist', 'Specialized in machine learning', 'Published papers in AI', 'Offering data analysis services', 'avatar3.jpg', 3, 'Thông tin OK'),
-('xyz', 'example4@gmail.com', 'Bob Brown', '1982-04-25', 1, '101 Maple St', 'Network Engineer', 'Expert in network infrastructure', 'Implemented large scale networks', 'Providing network engineering services', 'avatar4.jpg', 1, null);
+('minh', 'example1@gmail.com', 'John Doe', '1985-01-15', 1, '123 Main St', 'Software Engineer', 'Experienced in Java and Python', 'Created a successful app', 'Offering software development services', 'mentor1.jpg', 1, null),
+('son', 'example2@gmail.com', 'Jane Smith', '1990-02-20', 0, '456 Elm St', 'Graphic Designer', 'Expert in Adobe Suite', 'Designed award-winning logos', 'Providing graphic design services', 'mentor2.jpg', 2, 'Thông tin OK'),
+('abc', 'example3@gmail.com', 'Alice Johnson', '1987-03-10', 0, '789 Oak St', 'Data Scientist', 'Specialized in machine learning', 'Published papers in AI', 'Offering data analysis services', 'default_cv_img.jpg', 3, 'Thông tin OK'),
+('xyz', 'example4@gmail.com', 'Bob Brown', '1982-04-25', 1, '101 Maple St', 'Network Engineer', 'Expert in network infrastructure', 'Implemented large scale networks', 'Providing network engineering services', 'default_cv_img.jpg', 1, null);
 
 GO
 
@@ -671,6 +671,7 @@ INSERT INTO RequestStatuses (status_name) VALUES ('Rejected');
 INSERT INTO RequestStatuses (status_name) VALUES ('Out Of Date');
 INSERT INTO RequestStatuses (status_name) VALUES ('Wait For Payment');
 INSERT INTO RequestStatuses (status_name) VALUES ('Saved');
+INSERT INTO RequestStatuses (status_name) VALUES ('Done');
 GO
 /*
 INSERT INTO RequestsFormMentee (mentor_name, mentee_name, deadline_date, deadline_hour, title, [description], status_id, price, note)
