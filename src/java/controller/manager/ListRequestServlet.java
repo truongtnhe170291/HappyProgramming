@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -71,94 +72,106 @@ public class ListRequestServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            Account a = (Account) request.getSession().getAttribute("user");
-            if (a == null) {
-                response.sendRedirect("LoginManager");
-                return;
-            }
-
-            MentorDAO mentorDao = new MentorDAO();
-            String menteeName = a.getUserName();
-            RequestDAO rdao = new RequestDAO();
-
-            ArrayList<Slot> listSlots = mentorDao.listSlots();
-            ArrayList<Day> listDays = mentorDao.listDays();
-
-            // Lọc danh sách ngày cho một tuần
-            ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
-
-            rdao.updateExpiredRequestsStatus();
-
-            List<RequestDTO> requests = new ArrayList<>();
-            List<Status> statuses = rdao.getAllStatusesMentee();
-            List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
-
-            int statusId = -1;
-            
-            requests = rdao.getAllRequestsByPagManager();
-
-            // Log schedules for debugging
-            for (RequestDTO requestDTO : requests) {
-                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);  // Lọc lịch trình theo tuần
-                requestDTO.setListSchedule(oneWeekSchedule);  // Cập nhật danh sách lịch trình cho requestDTO
-
-                for (SchedulePublic schedule : oneWeekSchedule) {
-                    System.out.println("Request ID: " + requestDTO.getRequestId()
-                            + " Schedule: " + schedule.getSlotId()
-                            + " " + schedule.getDayOfSlot());
-                }
-            }
-
-            //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
-            LocalDate todayLocalDate = LocalDate.now();
-            String todayString = todayLocalDate.toString();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date today = null;
-            
-            try {
-                today = sdf.parse(todayString);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            for (RequestDTO requestDTO : requests) {
-                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                if(requestDTO.getStatusId() == 1 && (listSchedule.get(listSchedule.size() - 1).getDayOfSlot().equals(today) || listSchedule.get(listSchedule.size() - 1).getDayOfSlot().before(today))){
-                    requestDTO.setIsEnoughPay(true);
-                }else{
-                    requestDTO.setIsEnoughPay(false);
-                }
-            }
-            
-            for (RequestDTO requestDTO : requests) {
-                System.out.println(requestDTO);
-            }
-            //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
-
-            request.setAttribute("requests", requests);
-            request.setAttribute("listSlots", listSlots);
-            request.setAttribute("listDays", oneWeekDays);  // Chỉ hiển thị danh sách ngày của một tuần
-            request.setAttribute("mentors1", mentors1);
-            request.setAttribute("statuses", statuses);
-            request.setAttribute("statusId", statusId);
-//            request.setAttribute("mentorName", mentorName);
-//            request.setAttribute("startTime", startTimeFilter);
-//            request.setAttribute("endTime", endTimeFilter);
-//            request.setAttribute("currentPage", page);
-//            request.setAttribute("pageSize", pageSize);
-//            request.setAttribute("totalPages", totalPages);
-
-            request.getRequestDispatcher("RequestManagement_list.jsp").forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException(e);
+  @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        Account a = (Account) request.getSession().getAttribute("user");
+        if (a == null) {
+            response.sendRedirect("LoginManager");
+            return;
         }
+
+        MentorDAO mentorDao = new MentorDAO();
+        String menteeName = a.getUserName();
+        RequestDAO rdao = new RequestDAO();
+
+        ArrayList<Slot> listSlots = mentorDao.listSlots();
+        ArrayList<Day> listDays = mentorDao.listDays();
+
+        // Lọc danh sách ngày cho một tuần
+        ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
+
+        rdao.updateExpiredRequestsStatus();
+
+        String statusFilterParam = request.getParameter("statusFilter");
+        String mentorNameFilter = request.getParameter("mentorName");
+        String pageParam = request.getParameter("page");
+        int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+        int pageSize = 5; // Số lượng yêu cầu trên mỗi trang
+
+        List<RequestDTO> requests;
+        int totalRequests;
+
+        if ((statusFilterParam != null && !statusFilterParam.isEmpty()) && (mentorNameFilter != null && !mentorNameFilter.isEmpty())) {
+            int statusFilter = Integer.parseInt(statusFilterParam);
+            requests = rdao.getRequestMenteeByStatusAndMentorName(statusFilter, mentorNameFilter, page, pageSize);
+            totalRequests = rdao.getTotalRequestMenteeCountByStatusAndMentorName(statusFilter, mentorNameFilter);
+        } else if (statusFilterParam != null && !statusFilterParam.isEmpty()) {
+            int statusFilter = Integer.parseInt(statusFilterParam);
+            requests = rdao.getRequestMenteeByStatus(statusFilter, page, pageSize);
+            totalRequests = rdao.getTotalRequestMenteeCountByStatus(statusFilter);
+        } else if (mentorNameFilter != null && !mentorNameFilter.isEmpty()) {
+            requests = rdao.getRequestMenteeByMentorName(mentorNameFilter, page, pageSize);
+            totalRequests = rdao.getTotalRequestMenteeCountByMentorName(mentorNameFilter);
+        } else {
+            requests = rdao.getRequestOfManagerInDeadlineByStatus(page, pageSize);
+            totalRequests = rdao.getTotalRequestMentee();
+        }
+
+        int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
+
+        List<Status> statuses = rdao.getAllStatusesMentee();
+        List<Status> listStatus = rdao.getAllStatuses();
+        List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
+
+        // Lọc lịch trình cho một tuần
+        for (RequestDTO requestDTO : requests) {
+            List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+            List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);
+            requestDTO.setListSchedule(oneWeekSchedule);
+        }
+
+        // Kiểm tra điều kiện
+        LocalDate todayLocalDate = LocalDate.now();
+        String todayString = todayLocalDate.toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = null;
+        
+        try {
+            today = sdf.parse(todayString);
+        } catch (ParseException e) {
+        }
+
+        for (RequestDTO requestDTO : requests) {
+            System.out.println(requestDTO);
+            List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+            System.out.println(listSchedule.get(listSchedule.size() - 1).getDayOfSlot());
+            if(requestDTO.getStatus().getStatusId() == 1 && (listSchedule.get(listSchedule.size() - 1).getDayOfSlot().equals(today) || listSchedule.get(listSchedule.size() - 1).getDayOfSlot().before(today))){
+                requestDTO.setIsEnoughPay(true);
+            } else {
+                requestDTO.setIsEnoughPay(false);
+            }
+        }
+
+        request.setAttribute("requests", requests);
+        request.setAttribute("listSlots", listSlots);
+        request.setAttribute("listDays", oneWeekDays);
+        request.setAttribute("mentors1", mentors1);
+        request.setAttribute("statuses", statuses);
+        request.setAttribute("listStatus", listStatus);
+        request.setAttribute("statusFilter", statusFilterParam != null ? statusFilterParam : "");
+        request.setAttribute("mentorNameFilter", mentorNameFilter != null ? mentorNameFilter : "");
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        request.getRequestDispatcher("RequestManagement_list.jsp").forward(request, response);
+    } catch (SQLException e) {
+        throw new ServletException(e);
     }
+}
+
 
     private ArrayList<Day> getOneWeekDays(ArrayList<Day> list) {
         ArrayList<Day> listOne = new ArrayList<>();
@@ -205,7 +218,15 @@ public class ListRequestServlet extends HttpServlet {
 
         return listOne;
     }
-    
+        public static void main(String[] args) throws SQLException {
+            RequestDAO rdao = new RequestDAO();
+            List<RequestDTO> requests = rdao.getAllRequestsByPagManager();
+               for (RequestDTO requestDTO : requests) {
+            List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
+                   System.out.println(listSchedule);
+               }
+        
+    }
     /**
      * Handles the HTTP <code>POST</code> method.
      *

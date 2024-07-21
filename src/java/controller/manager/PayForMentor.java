@@ -149,18 +149,20 @@ public class PayForMentor extends HttpServlet {
             // mentor
             String mentorName = listAtten.get(0).getMentorName();
             Wallet wmentor = walletDAO.getWalletByUsenName(mentorName);
+            System.out.println("start");
+            System.out.println(attendedAmount);
             if (wmentor != null) {
-                Wallet mentorWallet = new Wallet(mentorName, attendedCount + wmentor.getReal_balance(), 0);
+                Wallet mentorWallet = new Wallet(mentorName, attendedAmount + wmentor.getReal_balance(), 0);
                 walletDAO.updateWallet(mentorWallet);
             } else {
-                Wallet mentorWallet = new Wallet(mentorName, attendedCount, 0);
-                walletDAO.updateWallet(mentorWallet);
+                Wallet mentorWallet = new Wallet(mentorName, attendedAmount, 0);
+                walletDAO.insertWallet(mentorWallet);
             }
 
             //mentee
             String menteeName = listAtten.get(0).getMenteeName();
             Wallet wmentee = walletDAO.getWalletByUsenName(menteeName);
-            Wallet menteeWallet = new Wallet(menteeName, wmentee.getReal_balance() + absentCount + notYetCount, 0);
+            Wallet menteeWallet = new Wallet(menteeName, wmentee.getReal_balance() + absentAmount + notYetAmount, 0);
             walletDAO.updateWallet(menteeWallet);
 
             //manager
@@ -168,7 +170,7 @@ public class PayForMentor extends HttpServlet {
             long managemon = absentAmount + notYetAmount;
             System.out.println("start");
             System.out.println(managemon);
-            Wallet managerWallet = new Wallet(acc.getUserName(), totalAmount + wmanager.getReal_balance() - absentAmount - notYetAmount - attendedAmount, 0);
+            Wallet managerWallet = new Wallet(acc.getUserName(), wmanager.getReal_balance() - absentAmount - notYetAmount - attendedAmount, 0);
 
             walletDAO.updateWallet(managerWallet);
 

@@ -536,7 +536,7 @@ console.log("Updated scheduleData:", scheduleData);
  function showToastMessage(message) {
                 Toastify({
                 text: message,
-                        duration: 5000,
+                        duration: 1500,
                         gravity: "top",
                         position: "right",
                         backgroundColor: "#ff7b5a",
@@ -548,7 +548,7 @@ const totalPriceInput = document.getElementById("totalPriceInput");
 
         if (${wallet} < totalPriceInput.value) {
             notifyBtn.disabled = true;
-            showToastMessage("Bạn không đủ tiền để Book lịch học. Hãy vào phần Wallet để nạp thêm tiền vào tài khoản!!!");
+            showToastMessage("You don't have enough money to book a class schedule. Go to the Wallet section to add money to your account!!!");
             return false;
         }else {
             notifyBtn.disabled = false;
@@ -699,8 +699,8 @@ console.log("Items in week 2:", tmp);
                 if (filteredSchedule.status === "not-selected") {
                     if(checkConflict(day, slot)){
                         Toastify({
-                        text: `Lịch chung của bạn đã tồn tại slot `+filteredSchedule.slot+ ` ngày ` +filteredSchedule.day+ ` tuần ` + filteredSchedule.week +` rồi, vui lòng chọn slot khác!`,
-                        duration: 3000,
+                        text: `Your shared calendar slot already exists `+filteredSchedule.slot+ ` day ` +filteredSchedule.day+ ` week ` + filteredSchedule.week +` then, please choose another slot!`,
+                        duration: 1500,
                         close: true,
                         gravity: "top",
                         position: "right",
@@ -878,8 +878,8 @@ function getFormValues() {
         updateSchedule();
         updateTotalPrice();
         Toastify({
-            text: "Lưu thành công!",
-            duration: 3000,
+            text: "Saved successfully !!!",
+            duration: 1500,
             close: true,
             gravity: "top",
             position: "right",
@@ -890,8 +890,8 @@ function getFormValues() {
     .catch(error => {
         console.error("Failed to save:", error);
         Toastify({
-            text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
-            duration: 3000,
+            text: "An error occurred while saving. Please try again.",
+            duration: 1500,
             close: true,
             gravity: "top",
             position: "right",
@@ -918,8 +918,8 @@ function getFormValues() {
     
 if (!formData.title || !formData.description || !formData.deadlineDate || !formData.deadlineHour || !formData.skill) {
         Toastify({
-            text: "Vui lòng điền đầy đủ thông tin.",
-            duration: 3000,
+            text: "Please complete all information.",
+            duration: 1500,
             close: true,
             gravity: "top",
             position: "right",
@@ -951,8 +951,8 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
         updateSchedule();
         updateTotalPrice();
         Toastify({
-            text: "Gửi yêu cầu thành công! Bạn sẽ được chuyển hướng về home",
-            duration: 3000,
+            text: "Request sent successfully! You will be redirected home",
+            duration: 1500,
             close: true,
             gravity: "top",
             position: "right",
@@ -966,9 +966,10 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
     .catch(error => {
         console.error("Failed to save:", error);
         Toastify({
-            text: "Đã xảy ra lỗi khi lưu. Vui lòng thử lại.",
-            duration: 3000,
+            text: "An error occurred while saving. Please try again.",           
+            duration: 1500,
             close: true,
+            
             gravity: "top",
             position: "right",
             backgroundColor: "#FF6347",
@@ -1022,7 +1023,7 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
                 function showToastMessage(message) {
                 Toastify({
                 text: message,
-                        duration: 5000,
+                        duration:1500,
                         gravity: "top",
                         position: "right",
                         backgroundColor: "#ff7b5a",
@@ -1061,18 +1062,23 @@ if (!formData.title || !formData.description || !formData.deadlineDate || !formD
                 
                 if ( deadlineDate < daybyday  || deadlineDate >= currentDate) {
                 notifyBtn.disabled = true;
-                showToastMessage("Hãy nhập đúng ngày !!!.");
+                showToastMessage("Please enter the correct date!!!.");
                 return false;
                 }    
                else if(totalPriceInput.value <= 0){
                     notifyBtn.disabled = true;
-                showToastMessage("Hãy chọn ít nhất  slot .");
+                showToastMessage("Please choose at least slot .");
+                return false;
+               }
+               else if(totalPriceInput.value > balance){
+                    notifyBtn.disabled = true;
+                showToastMessage("Not enough money to book an appointment.");
                 return false;
                }
 
                 else if (selectedSkills === 0) {
                 notifyBtn.disabled = true;
-                showToastMessage("Hãy chọn skill để book lịch.");
+                showToastMessage("Please select a skill to schedule.");
                 return false;
                 }
                 

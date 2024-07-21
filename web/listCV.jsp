@@ -391,8 +391,14 @@
                 right: 20px;
             }
 
-
-
+            .add_event{
+                display: none !important;
+                opacity: 0  !important;
+                background-color: transparent !important;
+                color: transparent !important;
+                transform: translateY(-200px);
+            }
+    
         </style>
     </head>
 
@@ -403,8 +409,7 @@
 
                 <jsp:include page="header_Manager.jsp" />
 
-                <div class="navbar-bg"></div>
-                <nav class="navbar navbar-expand-lg main-navbar sticky">
+                <nav id="nv" class="navbar navbar-expand-lg main-navbar sticky">
                     <div class="form-inline mr-auto">
                         <ul class="navbar-nav mr-3">
                             <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
@@ -732,14 +737,23 @@
         <script src="assetss/js/custom.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', (e) => {
+                let removedElement = null;
+
                 const eyeIcons = document.querySelectorAll(".fas.fa-eye");
                 eyeIcons.forEach(function (icon) {
                     icon.addEventListener('click', function () {
                         const popup = this.parentElement.querySelector('.popup');
                         popup.style.display = 'block';
-                        window.onload = function () {
-                            document.querySelector('.theme-white .navbar').style.setProperty('background-color', 'rgba(0, 0, 0, 0.5)', 'important');
-                        };
+                        document.querySelector('.main-sidebar').classList.add('add_event');
+                                                document.querySelector('.breadcrumb').classList.add('add_event');
+
+                        document.getElementById('nv').classList.add('add_event');
+ removedElement = document.querySelector('.navbar.navbar-expand-lg.main-navbar.sticky');
+    if (removedElement) {
+        removedElement.parentNode.removeChild(removedElement);
+    }                     
+                        document.querySelectorAll('.form-inline').forEach((ele)=> ele.classList.add('add_event'));
+                       
                     });
                 });
 
@@ -747,12 +761,39 @@
                 closeButtons.forEach(function (button) {
                     button.addEventListener('click', function () {
                         const popup = this.closest('.popup');
+                          document.querySelector('.breadcrumb').classList.remove('add_event');
+                        document.querySelector('.main-sidebar').classList.remove('add_event');
+                        document.getElementById('nv').classList.remove('add_event');
+                       if (removedElement) {
+        const mainWrapper = document.querySelector('.main-wrapper');
+        if (mainWrapper.firstChild) {
+            mainWrapper.insertBefore(removedElement, mainWrapper.firstChild.nextSibling);
+        } else {
+            mainWrapper.appendChild(removedElement);
+        }
+        removedElement = null;
+    }
+                        document.querySelectorAll('.form-inline').forEach((ele)=> ele.classList.remove('add_event'));
                         popup.style.display = 'none';
                     });
                 });
 
                 window.onclick = function (event) {
                     if (event.target.classList.contains('popup')) {
+                                                  document.querySelector('.breadcrumb').classList.remove('add_event');
+
+                         document.querySelector('.main-sidebar').classList.remove('add_event');
+                        document.getElementById('nv').classList.remove('add_event');
+                       if (removedElement) {
+        const mainWrapper = document.querySelector('.main-wrapper');
+        if (mainWrapper.firstChild) {
+            mainWrapper.insertBefore(removedElement, mainWrapper.firstChild.nextSibling);
+        } else {
+            mainWrapper.appendChild(removedElement);
+        }
+        removedElement = null;
+    }
+                        document.querySelectorAll('.form-inline').forEach((ele)=> ele.classList.remove('add_event'));
                         event.target.style.display = 'none';
                     }
                 };

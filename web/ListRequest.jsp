@@ -478,49 +478,38 @@
                 margin-right: 10px;
             }
 
-            .pagination {
-                display: flex;
-                width: fit-content;
-                margin-top: 10px;
-            }
+           .pagination {
+               margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    list-style-type: none;
+    padding: 0;
+}
 
-            .prev {
-                border-right: solid 1px rgba(0, 0, 0, .2);
-                padding-top: 13px;
-                padding-bottom: 13px;
-                padding-right: 10px;
-                padding-left: 10px;
-                margin-right: 6px;
-            }
+.pagination li {
+    margin: 0 5px;
+}
 
-            .next {
-                border-left: solid 1px rgba(0, 0, 0, .2);
-                padding-top: 13px;
-                padding-bottom: 13px;
-                padding-left: 10px;
-                padding-right: 10px;
-                margin-left: 6px;
-            }
+.pagination a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-            .pagination a,
-            .pagination span {
-                text-decoration: none;
-                padding: 5px 10px;
-                border: 1px solid #ddd;
-                color: #007bff;
-                display: block;
-            }
+.pagination a:hover {
+    background-color: #f1f1f1;
+}
 
-            .pagination a:hover {
-                background-color: #007bff;
-                color: #fff;
-            }
-
-            .pagination span {
-                background-color: #007bff;
-                color: #fff;
-                border-color: #007bff;
-            }
+.pagination .active a {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
         </style>
     </head>
 
@@ -773,7 +762,7 @@
                                                 <!-- Edit and Delete buttons -->
                                                 <c:if test="${request.status.statusId == 6}">
                                                     <form method="GET" action="request" ">
-                                                        <input type=" hidden" name="cvId" value="${request.cvId}" />
+                                                        <input type="hidden" name="cvId" value="${request.cvId}" />
                                                         <button type="submit" class="edit-btn btn "
                                                                 style="width: 59.5px; height: 41px;border-radius: 0.42rem;" ">
                                                             <i class=" fas fa-pencil-alt"></i>
@@ -811,21 +800,28 @@
                                         </td>
                                     </tr>
                                 </c:forEach>
+             </table>
+               <ul class="pagination">
+    <c:if test="${currentPage > 1}">
+        <li>
+            <a href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
+        </li>
+    </c:if>
+    <c:forEach var="i" begin="1" end="${totalPages}">
+        <li class="${currentPage == i ? 'active' : ''}">
+            <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
+        </li>
+    </c:forEach>
+    <c:if test="${currentPage < totalPages}">
+        <li>
+            <a href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
+        </li>
+    </c:if>
+</ul>
+</div>
+</div></div>
+             
 
-                                <c:if test="${currentPage < totalPages}">
-                                <li>
-                                    <a href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
-                                </li>
-                            </c:if>
-
-
-                    </div>
-
-
-                </div>
-
-            </div>
-        </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Function to format date as DD-MM-YYYY
@@ -878,7 +874,7 @@
 
         </script>
 
-    </div>
+    
 </body>
 
 </html>

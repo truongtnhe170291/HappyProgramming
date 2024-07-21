@@ -75,7 +75,65 @@
             .paginator .prev[style*="hidden"], .paginator .next[style*="hidden"] {
                 visibility: hidden !important;
             }
+/* Container styles */
+.manage-skills-container {
+    font-family: Arial, sans-serif !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+}
 
+/* Button styles */
+.add-btn {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    transition: background-color 0.3s !important;
+}
+
+.add-btn:hover {
+    background-color: #45a049 !important;
+}
+
+/* Form styles */
+form {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-top: 20px !important;
+}
+
+label {
+    font-weight: bold !important;
+    margin-right: 5px !important;
+}
+
+select, input[type="text"] {
+    padding: 8px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+}
+
+button[type="submit"] {
+    background-color: #008CBA !important;
+    color: white !important;
+    padding: 8px 15px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: background-color 0.3s !important;
+}
+
+button[type="submit"]:hover {
+    background-color: #007B9A !important;
+}
 
 
         </style>
@@ -161,34 +219,35 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
-                                           <div style="display: flex; justify-content: end; margin: 10px 0">
+<div id="pagination-container" style="display: flex; justify-content: end; margin: 10px 0;"></div>
     <c:if test="${totalPages > 1}">
-        <ul class="pagination">
+        <ul class="pagination paginator">
             <c:if test="${currentPage > 1}">
-                <li>
+                <li class="prev">
                     <a href="skills?page=${currentPage - 1}&status=${status}&skillName=${skillName}">Previous</a>
                 </li>
             </c:if>
             <c:forEach begin="1" end="${totalPages}" var="i">
                 <c:choose>
                     <c:when test="${i == currentPage}">
-                        <li><span>${i}</span></li>
+                        <li class="pageNum active"><span>${i}</span></li>
                     </c:when>
                     <c:otherwise>
-                        <li>
+                        <li class="pageNum">
                             <a href="skills?page=${i}&status=${status}&skillName=${skillName}">${i}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
             <c:if test="${currentPage < totalPages}">
-                <li>
+                <li class="next">
                     <a href="skills?page=${currentPage + 1}&status=${status}&skillName=${skillName}">Next</a>
                 </li>
             </c:if>
         </ul>
     </c:if>
 </div>
+
 
 
 
@@ -378,40 +437,71 @@
                     </div>
                 </div>
             </div>
+                             
             <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const currentPage = ${currentPage};
-                    const totalPages = ${totalPages};
-                    const paginationLinks = document.getElementById('pagination-links');
-                    const status = '${status}';
-                    const skillName = '${skillName}';
+             document.addEventListener('DOMContentLoaded', function() {
+    const paginationLinks = document.getElementById('pagination-links');
 
-                    function createLink(page, text, isActive) {
-                        const a = document.createElement('a');
-                        a.href = `skills?page=${page}&status=${status}&skillName=${skillName}`;
-                        a.textContent = text;
-                        a.className = 'pageNum';
-                        if (isActive)
-                            a.classList.add('active');
-                        return a;
-                    }
+    if (!paginationLinks) {
+        console.error('Element with ID "pagination-links" not found.');
+        return;
+    }
 
-                    if (currentPage > 3) {
-                        paginationLinks.appendChild(createLink(1, '1'));
-                        paginationLinks.appendChild(document.createTextNode('...'));
-                    }
+    const currentPage = ${currentPage};
+    const totalPages = ${totalPages};
+    const status = '${status}';
+    const skillName = '${skillName}';
 
-                    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
-                        paginationLinks.appendChild(createLink(i, i, i === currentPage));
-                    }
+    function createLink(page, text, isActive) {
+        const a = document.createElement('a');
+        a.href = `skills?page=${page}&status=${status}&skillName=${skillName}`;
+        a.textContent = text;
+        a.className = 'pageNum';
+        if (isActive) a.classList.add('active');
+        return a;
+    }
 
-                    if (currentPage < totalPages - 2) {
-                        if (currentPage < totalPages - 3) {
-                            paginationLinks.appendChild(document.createTextNode('...'));
-                        }
-                        paginationLinks.appendChild(createLink(totalPages, totalPages));
-                    }
-                });
+    function createButton(text, page, isDisabled) {
+        const button = document.createElement('a');
+        button.textContent = text;
+        button.className = isDisabled ? 'pageNum disabled' : 'pageNum';
+        if (!isDisabled) {
+            button.href = `skills?page=${page}&status=${status}&skillName=${skillName}`;
+        }
+        return button;
+    }
+
+    // Clear existing pagination content
+    paginationLinks.innerHTML = '';
+
+    // Previous button
+    paginationLinks.appendChild(createButton('Previous', currentPage - 1, currentPage === 1));
+
+    // First page link and ellipsis
+    if (totalPages > 1) {
+        if (currentPage > 3) {
+            paginationLinks.appendChild(createLink(1, '1'));
+            paginationLinks.appendChild(document.createTextNode('...'));
+        }
+
+        // Page number links around the current page
+        for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+            paginationLinks.appendChild(createLink(i, i, i === currentPage));
+        }
+
+        // Last page link and ellipsis
+        if (currentPage < totalPages - 2) {
+            if (currentPage < totalPages - 3) {
+                paginationLinks.appendChild(document.createTextNode('...'));
+            }
+            paginationLinks.appendChild(createLink(totalPages, totalPages));
+        }
+    }
+
+    // Next button
+    paginationLinks.appendChild(createButton('Next', currentPage + 1, currentPage === totalPages));
+});
+
             </script>
             <script>
                 document.body.classList.remove('modal-open');

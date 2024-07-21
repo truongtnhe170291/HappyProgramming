@@ -450,7 +450,7 @@
                                 <h4 class="page-title m-b-0">Homes</h4>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="Homes_manager.jsp">
+                                <a>
                                     <i class="fas fa-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">List Request</li>
@@ -465,7 +465,7 @@
                                         </div>
                                         <div class="card-body">
                                             <!-- Form Search v� Filter -->
-                                            <form method="get" action="HandleSlotMentor" class="mb-3">
+                                            <form method="get" action="requestmentee" class="mb-3">
                                                 <div class="form-row">
                                                     </tr>
                                                     <div class="col-md-4">
@@ -473,7 +473,7 @@
                                                         <select class="form-control" id="statusFilter" name="statusFilter">
                                                             <option value="" ${empty param.statusFilter ? 'selected' : '' }>
                                                                 All</option>
-                                                                <c:forEach items="${statusList}" var="status">
+                                                                <c:forEach items="${listStatus}" var="status">
                                                                 <option value="${status.statusId}"
                                                                         ${param.statusFilter==status.statusId ? 'selected' : ''
                                                                         }>
@@ -550,7 +550,7 @@
                                             <ul class="pagination">
                                                 <c:if test="${currentPage > 1}">
                                                     <li>
-                                                        <a href="HandleSlotMentor?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">Previous</a>
+                                                        <a href="requestmentee?page=${currentPage - 1}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">Previous</a>
                                                     </li>
                                                 </c:if>
                                                 <c:forEach begin="1" end="${totalPages}" var="i">
@@ -560,14 +560,14 @@
                                                                 </c:when>
                                                                 <c:otherwise>
                                                             <li>
-                                                                <a href="HandleSlotMentor?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">${i}</a>
+                                                                <a href="requestmentee?page=${i}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">${i}</a>
                                                             </li>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
                                                 <c:if test="${currentPage < totalPages}">
                                                     <li>
-                                                        <a href="HandleSlotMentor?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">Next</a>
+                                                        <a href="requestmentee?page=${currentPage + 1}&mentorName=${mentorName}&statusFilter=${statusFilter}&pageSize=${pageSize}">Next</a>
                                                     </li>
                                                 </c:if>
                                             </ul>

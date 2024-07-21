@@ -39,7 +39,7 @@ public class SkillsController extends HttpServlet {
 
             String pageParam = request.getParameter("page");
             int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-            int pageSize = 3;
+            int pageSize = 5;
 
             String statusParam = request.getParameter("status");
             String skillName = request.getParameter("skillName");
