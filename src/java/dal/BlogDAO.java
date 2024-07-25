@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Blog;
 import java.sql.SQLException;
+
 /**
  *
  * @author DIEN MAY XANH
  */
 public class BlogDAO {
-     private Connection con;
+
+    private Connection con;
     private String status = "OK";
 
     PreparedStatement ps;
@@ -31,7 +33,6 @@ public class BlogDAO {
             status = "Error";
         }
     }
-
 
     // Create Blog
     public boolean createBlog(String img, String link, boolean status) {
@@ -80,7 +81,6 @@ public class BlogDAO {
         }
     }
 
-
     // Get List of Blogs
     public List<Blog> getBlogs() {
         List<Blog> blogs = new ArrayList<>();
@@ -101,27 +101,32 @@ public class BlogDAO {
         }
         return blogs;
     }
-    
+
     public List<Blog> getTop4newBlogs() {
-    List<Blog> blogs = new ArrayList<>();
-    String query = "SELECT TOP 4 * FROM Blogs WHERE status = 1 ORDER BY blog_id DESC";
-    try {
-        ps = con.prepareStatement(query);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            Blog blog = new Blog();
-            blog.setBlogId(rs.getInt("blog_id"));
-            blog.setImg(rs.getString("img"));
-            blog.setLink(rs.getString("link"));
-            blog.setStatus(rs.getBoolean("status"));
-            blogs.add(blog);
+        List<Blog> blogs = new ArrayList<>();
+        String query = "SELECT TOP 4 * FROM Blogs WHERE status = 1 ORDER BY blog_id DESC";
+        try {
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlogId(rs.getInt("blog_id"));
+                blog.setImg(rs.getString("img"));
+                blog.setLink(rs.getString("link"));
+                blog.setStatus(rs.getBoolean("status"));
+                blogs.add(blog);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return blogs;
     }
-    return blogs;
+
+    public static void main(String[] args) {
+        BlogDAO b = new BlogDAO();
+        List<Blog> list = b.getTop4newBlogs();
+        for(Blog bl : list){
+            System.out.println(bl.getStatus());
+        }
+    }
 }
-
-}
-
-

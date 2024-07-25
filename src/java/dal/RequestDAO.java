@@ -14,11 +14,13 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Hold;
 import models.Mentee;
 import models.Mentor;
 import models.MyMenteeDTO;
@@ -29,6 +31,7 @@ import models.Skill;
 import models.StaticMentee;
 import models.StaticMentor;
 import models.Status;
+import models.Wallet;
 
 public class RequestDAO {
 
@@ -1216,9 +1219,10 @@ public class RequestDAO {
     }
 
     public void updateExpiredRequestsStatus() throws SQLException {
+        WalletDAO dao = new WalletDAO();
         try {
             List<Request> list = new ArrayList<>();
-            String sql1 = "select * from RequestsFormMentee where status_id = 2 or status_id = 5";
+            String sql1 = "select * from RequestsFormMentee where status_id = 2 or status_id = 5 or status_id = 6";
             ps = con.prepareStatement(sql1);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -1238,13 +1242,21 @@ public class RequestDAO {
             if (!list.isEmpty()) {
                 for (Request r : list) {
                     LocalDate date = LocalDate.now();
-                    if (date.isAfter(r.getDeadlineDate())) {
+                    if (date.isEqual(r.getDeadlineDate()) || date.isAfter(r.getDeadlineDate())) {
                         String sql = "UPDATE [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
                                 + "SET status_id = 4 where request_id = ?";
                         ps = con.prepareStatement(sql);
                         ps.setInt(1, r.getRequestId());
                         ps.executeUpdate();
+                        if (r.getStatusId() == 2 || r.getStatusId() == 5) {
+                            Wallet w = dao.getWalletByUsenName(r.getMenteeName());
+                            w.setHold(w.getHold() - r.getPrice());
+                            dao.updateWalletHold(w);
+                            Hold h = new Hold(r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
+                            dao.inserHold(h);
+                        }
                     }
+
                 }
             }
 

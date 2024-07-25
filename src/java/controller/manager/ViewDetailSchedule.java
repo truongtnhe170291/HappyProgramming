@@ -85,7 +85,7 @@ public class ViewDetailSchedule extends HttpServlet {
         String status = "";
         String startDate = "";
         //get list schdule
-        if (mentorDao.checkContainSelectSlotSave(mentorName, 6) || mentorDao.checkContainSelectSlotSave(mentorName, 1) || mentorDao.checkContainSelectSlotSave(mentorName, 2)) {
+        if (mentorDao.checkContainSelectSlotSave(mentorName, 6) || mentorDao.checkContainSelectSlotSave(mentorName, 1) || mentorDao.checkContainSelectSlotSave(mentorName, 5) || mentorDao.checkContainSelectSlotSave(mentorName, 3) || mentorDao.checkContainSelectSlotSave(mentorName, 2)) {
             List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(mentorName, c.getStart(), c.getEnd());
             if (!listsp.isEmpty()) {
                 for (SchedulePublic s : listsp) {
@@ -109,7 +109,7 @@ public class ViewDetailSchedule extends HttpServlet {
         // get list Slot
         List<Slot> listSlot = mentorDao.listSlots();
 
-        request.setAttribute("mon", nextNextMonday);
+        request.setAttribute("mon", c.getStart());
         request.setAttribute("listSlot", listSlot);
         request.getRequestDispatcher("ViewDetailSchedule_manager.jsp").forward(request, response);
     }

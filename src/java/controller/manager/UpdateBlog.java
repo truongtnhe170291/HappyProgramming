@@ -93,7 +93,7 @@ public class UpdateBlog extends HttpServlet {
             // Retrieve image part
             Part filePart = request.getPart("img");
             String fileName = filePart.getSubmittedFileName();
-            String uploadDirectory = "D:\\SWP\\HappyProgramming\\web\\imgblog\\";
+            String uploadDirectory = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\imgblog\\";
 
 
             // Ensure upload directory exists

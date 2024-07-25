@@ -60,8 +60,8 @@
                     </div>
                     <div class="breadcrumb">
                         <ul>
-                            <li><a href="homes.jsp">Home</a> </li>
-                            <li class="active"><a href="Mentor_calendar.jsp">Calendar</a> </li>
+                            <li><a>Home</a> </li>
+                            <li class="active"><a>Calendar</a> </li>
                         </ul>
                     </div>
                 </div>

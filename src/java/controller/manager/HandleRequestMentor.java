@@ -62,7 +62,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     String statusFilter = request.getParameter("statusFilter");
     String pageParam = request.getParameter("page");
     int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-    int pageSize = 2; // Số lượng item trên mỗi trang
+    int pageSize = 5; // Số lượng item trên mỗi trang
 
     List<ScheduleDTO> list;
     int totalRequests;

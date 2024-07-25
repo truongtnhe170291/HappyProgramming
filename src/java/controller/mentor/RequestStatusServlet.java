@@ -72,7 +72,7 @@ public class RequestStatusServlet extends HttpServlet {
                 }
 
             } else if ("/reject".equals(action)) {
-                String note = request.getParameter("note");
+                String note = request.getParameter("notes");
                 if (requestDao.updateStatus(requestId, 3)) {
                     Request r = requestDao.getRequestById(requestId);
                     Wallet w = wdao.getWalletByUsenName(r.getMenteeName());

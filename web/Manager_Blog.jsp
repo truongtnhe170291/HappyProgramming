@@ -143,7 +143,7 @@
         <c:forEach items="${requestScope.blog}" var="blog">
             <tr>
                 <td>${blog.blogId}</td>
-                <td><img src="uploads/${blog.img}" alt="Blog Image"></td>
+                <td><img src="imgblog/${blog.img}" alt="Blog Image"></td>
                 <td class="tooool">${blog.link}</td>
                 <td>${blog.status ? 'Enabled' : 'Disabled'}</td>
                 <td class="actions">

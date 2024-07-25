@@ -63,6 +63,14 @@
         padding: 20px 0;
         text-align: center;
     }
+    .portfolio-image{
+        width: 100%;
+        height: 100% !important;
+            background-size: contain;
+           max-height:100%;
+    }
+    .test{ height: 250px !important;
+            background-size: contain;}
         </style>
     </head>
 
@@ -168,8 +176,9 @@
                                         <a href="${topblog.link}"><img class="test" src="./imgblog/${topblog.img}" alt="test" /></a>
                                     </div>
                                     <div class="portfolio-description">
-                                        <a title="Paper Pouch!" data-lightbox="image" href="./imgblog/${topblog.img}"><i class="icon-maximize"></i></a>
+                                        <a title="${topblog.link}" data-lightbox="image" href="./imgblog/${topblog.img}"><i class="icon-maximize"></i></a>
                                         <a href="${topblog.link}"><i class="icon-link"></i></a>
+                                        
                                     </div>
                                 </div>
                             </div>

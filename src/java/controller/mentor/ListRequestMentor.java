@@ -48,7 +48,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String mentorName = a.getUserName();
         RequestDAO rdao = new RequestDAO();
         MentorDAO mentorDao = new MentorDAO();
-
+        rdao.updateExpiredRequestsStatus();
         String statusFilterParam = request.getParameter("statusFilter");
         String menteeNameFilter = request.getParameter("menteeNameFilter");
         String pageParam = request.getParameter("page");
