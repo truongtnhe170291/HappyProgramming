@@ -1,4 +1,5 @@
 ﻿
+
 USE master;
 GO
 
@@ -104,7 +105,7 @@ CREATE TABLE CV(
     service_description NVARCHAR(MAX),
     avatar NVARCHAR(250),
 	status_id INT FOREIGN KEY REFERENCES CVStatus(status_id),
-	note NVARCHAR(1000)
+	note NVARCHAR(Max)
 );
 GO
 
@@ -129,7 +130,7 @@ CREATE TABLE Cycle(
     cycle_id INT IDENTITY(1,1) PRIMARY KEY,
 	start_time DATE,
 	end_time DATE,
-	note NVARCHAR(1000),
+	note NVARCHAR(Max),
 	mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
 	deadline_date DATE,
 	unique(start_time, end_time,mentor_name)
@@ -168,8 +169,8 @@ CREATE TABLE RequestsFormMentee(
     mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
     deadline_date DATE,
     deadline_hour TIME,
-    title NVARCHAR(200),
-    [description] NVARCHAR(200),
+    title NVARCHAR(1000),
+    [description] NVARCHAR(MAX),
     status_id INT FOREIGN KEY REFERENCES RequestStatuses(status_id),
 	price INT,
 	note NVARCHAR(1000)
@@ -177,7 +178,8 @@ CREATE TABLE RequestsFormMentee(
 GO 
 CREATE TABLE RquestSelectedSlot(
 	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
-	selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id)
+	selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id),
+	PRIMARY KEY (request_id, selected_id)
 );
 
 GO
@@ -196,23 +198,25 @@ CREATE TABLE FeedBacks(
     mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
     mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
     star INT,
-    comment NVARCHAR(1000),
+    comment NVARCHAR(Max),
     time_feedback DATE,
 );
 GO
 CREATE TABLE Wallet(
 	wallet_id NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
 	real_balance DECIMAL(15, 0),
-	hold DECIMAL(15, 0)
+	hold DECIMAL(15, 0),
+	PRIMARY KEY (wallet_id)
 );
 
 GO
 CREATE TABLE Hold(
+	hold_id INT IDENTITY(1,1) PRIMARY KEY,
 	[user_name] NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
 	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
 	amount DECIMAL(15, 0),
 	create_date DATETIME,
-	[message] NVARCHAR(1000),
+	[message] NVARCHAR(Max),
 	hold bit
 )
 GO
@@ -222,7 +226,7 @@ CREATE TABLE Transactions(
 	user_receive NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
 	create_date DATETIME,
 	amount DECIMAL(15, 0),
-	[message] NVARCHAR(1000)
+	[message] NVARCHAR(Max)
 );
 GO
 CREATE TABLE Attendance (
@@ -1614,38 +1618,40 @@ INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'ava_taylor
 INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'hieu', CAST(5750000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
 INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'manager', CAST(3350000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
 GO
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:22:50.237' AS DateTime), N'Hold money by request with title: Learn C++', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:23:19.110' AS DateTime), N'Return the money hold by request with title: Learn C++', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:06.453' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:56.203' AS DateTime), N'Cancel hold money because paid request with title: Learn Javascript', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:07.817' AS DateTime), N'Hold money by request with title: Learn PHP', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:54.343' AS DateTime), N'Cancel hold money because paid request with title: Learn PHP', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:11:22.187' AS DateTime), N'Hold money by request with title: Learn CSS', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:12:25.877' AS DateTime), N'Return the money hold by request with title: Learn CSS', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:13:52.033' AS DateTime), N'Hold money by request with title: Request CSS again', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:20:41.457' AS DateTime), N'Hold money by request with title: Learn Java', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:16:17.880' AS DateTime), N'Hold money by request with title: Request Ruby', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:38:13.127' AS DateTime), N'Hold money by request with title: Request C#', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-15T18:43:01.007' AS DateTime), N'Return the money hold by request with title: Request C#', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Request CSS again', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn Javascript', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn SQL', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:49:07.430' AS DateTime), N'Hold money by request with title: Learn Skill Ruby', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:51:51.853' AS DateTime), N'Cancel hold money because paid request with title: Learn Skill Ruby', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:54:51.650' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:55:44.007' AS DateTime), N'Return the money hold by request with title: Learn Apache Cassandra', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:32:30.617' AS DateTime), N'Hold money by request with title: Request PowerShell', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:34:05.287' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:37:23.913' AS DateTime), N'Cancel hold money because paid request with title: Learn Apache Cassandra', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:29:03.933' AS DateTime), N'Hold money by request with title: Learn Python', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:29.470' AS DateTime), N'Return the money hold by request with title: Learn Python', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:36:05.903' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:07:48.863' AS DateTime), N'Cancel hold money because paid request with title: Learn C', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:35:20.597' AS DateTime), N'Return the money hold by request with title: Request PowerShell', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:30:50.463' AS DateTime), N'Hold money by request with title: Learn SQL', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:05:26.693' AS DateTime), N'Hold money by request with title: Learn C', 1)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:21:54.260' AS DateTime), N'Cancel hold money because paid request with title: Learn Java', 0)
-INSERT [dbo].[Hold] ([user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Cancel hold money because paid request with title: Request Ruby', 0)
+SET IDENTITY_INSERT [dbo].[Hold] ON
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (1, N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:22:50.237' AS DateTime), N'Hold money by request with title: Learn C++', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (2, N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:23:19.110' AS DateTime), N'Return the money hold by request with title: Learn C++', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (3, N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:06.453' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (4, N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:56.203' AS DateTime), N'Cancel hold money because paid request with title: Learn Javascript', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (5, N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:07.817' AS DateTime), N'Hold money by request with title: Learn PHP', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (6, N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:54.343' AS DateTime), N'Cancel hold money because paid request with title: Learn PHP', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (7, N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:11:22.187' AS DateTime), N'Hold money by request with title: Learn CSS', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (8, N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:12:25.877' AS DateTime), N'Return the money hold by request with title: Learn CSS', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (9, N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:13:52.033' AS DateTime), N'Hold money by request with title: Request CSS again', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (10, N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:20:41.457' AS DateTime), N'Hold money by request with title: Learn Java', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (11, N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:16:17.880' AS DateTime), N'Hold money by request with title: Request Ruby', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (12, N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:38:13.127' AS DateTime), N'Hold money by request with title: Request C#', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (13, N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-15T18:43:01.007' AS DateTime), N'Return the money hold by request with title: Request C#', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (14, N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Request CSS again', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (15, N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn Javascript', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (16, N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn SQL', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (17, N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:49:07.430' AS DateTime), N'Hold money by request with title: Learn Skill Ruby', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (18, N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:51:51.853' AS DateTime), N'Cancel hold money because paid request with title: Learn Skill Ruby', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (19, N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:54:51.650' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (20, N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:55:44.007' AS DateTime), N'Return the money hold by request with title: Learn Apache Cassandra', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (21, N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:32:30.617' AS DateTime), N'Hold money by request with title: Request PowerShell', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (22, N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:34:05.287' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (23, N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:37:23.913' AS DateTime), N'Cancel hold money because paid request with title: Learn Apache Cassandra', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (24, N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:29:03.933' AS DateTime), N'Hold money by request with title: Learn Python', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (25, N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:29.470' AS DateTime), N'Return the money hold by request with title: Learn Python', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (26, N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:36:05.903' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (27, N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:07:48.863' AS DateTime), N'Cancel hold money because paid request with title: Learn C', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (28, N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:35:20.597' AS DateTime), N'Return the money hold by request with title: Request PowerShell', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (29, N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:30:50.463' AS DateTime), N'Hold money by request with title: Learn SQL', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (30, N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:05:26.693' AS DateTime), N'Hold money by request with title: Learn C', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (31, N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:21:54.260' AS DateTime), N'Cancel hold money because paid request with title: Learn Java', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (32, N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Cancel hold money because paid request with title: Request Ruby', 0)
+SET IDENTITY_INSERT [dbo].[Hold] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Transactions] ON 
 

@@ -79,7 +79,7 @@ public class PaymentServlet extends HttpServlet {
                     //update hold
                     wallet.setHold(wallet.getHold() - r.getPrice());
                     wdao.updateWalletHold(wallet);
-                    Hold h = new Hold(r.getMenteeName(), requestId, r.getPrice(), LocalDateTime.now(), "Cancel hold money because paid request with title: " + r.getTitle(), false);
+                    Hold h = new Hold(0,r.getMenteeName(), requestId, r.getPrice(), LocalDateTime.now(), "Cancel hold money because paid request with title: " + r.getTitle(), false);
                     wdao.inserHold(h);
                     wdao.insertTransaction(new Transaction(0, a.getUserName(), "manager", LocalDateTime.now(), r.getPrice(), "Pay request to mentor with title: " + r.getTitle()));
                     wallet = wdao.getWalletByUsenName("manager");
@@ -112,7 +112,7 @@ public class PaymentServlet extends HttpServlet {
                                     Wallet w = wdao.getWalletByUsenName(rquest.getMenteeName());
                                     w.setHold(w.getHold() - rquest.getPrice());
                                     wdao.updateWalletHold(w);
-                                    Hold hol = new Hold(rquest.getMenteeName(), rquest.getRequestId(), rquest.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + rquest.getTitle(), false);
+                                    Hold hol = new Hold(0, rquest.getMenteeName(), rquest.getRequestId(), rquest.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + rquest.getTitle(), false);
                                     wdao.inserHold(hol);
                                     rdao.updateNoteRequest(rquest.getRequestId(), "The schedule you selected was rejected because this request The schedule you selected was rejected because this request is duplicated with another request, Please choose another schedule");
                                 }

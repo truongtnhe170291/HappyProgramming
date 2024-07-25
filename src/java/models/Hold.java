@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  * @author Admin
  */
 public class Hold {
+    private int holdId;
     private String userName;
     private int requestId;
     private long amount;
@@ -18,7 +19,10 @@ public class Hold {
     private String message;
     private boolean hold;
 
-    public Hold(String userName, int requestId, long amount, LocalDateTime create_date, String message, boolean hold) {
+
+
+    public Hold(int holdId, String userName, int requestId, long amount, LocalDateTime create_date, String message, boolean hold) {
+        this.holdId = holdId;
         this.userName = userName;
         this.requestId = requestId;
         this.amount = amount;
@@ -27,6 +31,15 @@ public class Hold {
         this.hold = hold;
     }
 
+    public int getHoldId() {
+        return holdId;
+    }
+
+    public void setHoldId(int holdId) {
+        this.holdId = holdId;
+    }
+
+    
     public String getUserName() {
         return userName;
     }

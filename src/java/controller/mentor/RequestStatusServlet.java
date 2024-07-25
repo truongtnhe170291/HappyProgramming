@@ -64,7 +64,7 @@ public class RequestStatusServlet extends HttpServlet {
                             Wallet w = wdao.getWalletByUsenName(r.getMenteeName());
                             w.setHold(w.getHold() - r.getPrice());
                             wdao.updateWalletHold(w);
-                            Hold h = new Hold(r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
+                            Hold h = new Hold(0, r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
                             wdao.inserHold(h);
                             requestDao.updateNoteRequest(r.getRequestId(), "The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule");
                         }
@@ -78,7 +78,7 @@ public class RequestStatusServlet extends HttpServlet {
                     Wallet w = wdao.getWalletByUsenName(r.getMenteeName());
                     w.setHold(w.getHold() - r.getPrice());
                     wdao.updateWalletHold(w);
-                    Hold h = new Hold(r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
+                    Hold h = new Hold(0, r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
                     wdao.inserHold(h);
                     requestDao.updateNoteRequest(requestId, note);
                 }

@@ -1252,7 +1252,7 @@ public class RequestDAO {
                             Wallet w = dao.getWalletByUsenName(r.getMenteeName());
                             w.setHold(w.getHold() - r.getPrice());
                             dao.updateWalletHold(w);
-                            Hold h = new Hold(r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
+                            Hold h = new Hold(0, r.getMenteeName(), r.getRequestId(), r.getPrice(), LocalDateTime.now(), "Return the money hold by request with title: " + r.getTitle(), false);
                             dao.inserHold(h);
                         }
                     }

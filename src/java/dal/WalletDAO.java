@@ -114,7 +114,7 @@ public class WalletDAO {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Hold(rs.getString("user_name"), rs.getInt("request_id"), rs.getLong("amount"), rs.getTimestamp("create_date").toLocalDateTime(), rs.getString("message"), rs.getBoolean("hold")));
+                list.add(new Hold(rs.getInt("hold_id"),rs.getString("user_name"), rs.getInt("request_id"), rs.getLong("amount"), rs.getTimestamp("create_date").toLocalDateTime(), rs.getString("message"), rs.getBoolean("hold")));
             }
         } catch (SQLException e) {
             System.out.println("getWalletByUsenName " + e.getMessage());

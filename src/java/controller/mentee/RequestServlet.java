@@ -251,7 +251,7 @@ public class RequestServlet extends HttpServlet {
                         // update request này
                         wallet.setHold(wallet.getHold() + requ.getPrice());
                         wdao.updateWalletHold(wallet);
-                        Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
+                        Hold h = new Hold(0, re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
                         wdao.inserHold(h);
                     }
 
@@ -280,7 +280,7 @@ public class RequestServlet extends HttpServlet {
                     // update request này
                     wallet.setHold(wallet.getHold() + re.getPrice());
                     wdao.updateWalletHold(wallet);
-                    Hold h = new Hold(re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
+                    Hold h = new Hold(0, re.getMenteeName(), requestId, re.getPrice(), LocalDateTime.now(), "Hold money by request with title: " + re.getTitle(), true);
                     wdao.inserHold(h);
                 }
             }
