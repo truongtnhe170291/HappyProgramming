@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.AttendanceRecord;
+import models.Request;
 import models.Transaction;
 import models.Wallet;
 
@@ -146,6 +147,7 @@ public class PayForMentor extends HttpServlet {
             }
 
             WalletDAO walletDAO = new WalletDAO();
+            RequestDAO requestDAO = new RequestDAO();
             // mentor
             String mentorName = listAtten.get(0).getMentorName();
             Wallet wmentor = walletDAO.getWalletByUsenName(mentorName);
@@ -173,10 +175,11 @@ public class PayForMentor extends HttpServlet {
             Wallet managerWallet = new Wallet(acc.getUserName(), wmanager.getReal_balance() - absentAmount - notYetAmount - attendedAmount, 0);
 
             walletDAO.updateWallet(managerWallet);
-
+            
             // Thêm các giao dịch
             LocalDateTime now = LocalDateTime.now();
             int request_id = listAtten.get(0).getRequestId();
+            Request r = requestDAO.getRequestById(request_id);
 // Giao dịch cho mentor
             if (attendedAmount > 0) {
                 Transaction mentorTransaction = new Transaction();
@@ -184,7 +187,7 @@ public class PayForMentor extends HttpServlet {
                 mentorTransaction.setUser_receive(mentorName);
                 mentorTransaction.setCreate_date(now);
                 mentorTransaction.setAmount(attendedAmount);
-                mentorTransaction.setMessage("Complete pre-course for request: " + request_id);
+                mentorTransaction.setMessage("Complete pre-course for request: " + r.getTitle()+" - "+menteeName);
                 walletDAO.insertTransaction(mentorTransaction);
             }
 // Giao dịch cho mentee (nếu có buổi vắng mặt)
