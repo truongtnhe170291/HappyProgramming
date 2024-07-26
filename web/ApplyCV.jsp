@@ -656,17 +656,43 @@
         const applyForm = document.querySelector('form[action="aplly"]');
         const setRateForm = document.querySelector('form[action="SetRate"]');
         
-        // Handle Apply CV form submission
+              const submitButton = document.getElementById('submitForm2'); 
+
+    const nameInput = document.getElementById('fullname2');
+    const emailInput = document.getElementById('email2');
+    const dobInput = document.getElementById('dob2');
+    const addressInput = document.getElementById('address2');
+    const professionInput = document.getElementsByName('profession')[0];
+    const professionIntroInput = document.getElementsByName('professionIntro')[0];
+    const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
+    const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
+
+    const nameError = document.getElementById('nameError2');
+    const emailError = document.getElementById('emailError2');
+    const dobError = document.getElementById('dobError2');
+    const addressErrors = document.querySelectorAll('#addressError2');
+ 
         if (applyForm) {
             applyForm.addEventListener('submit', function (event) {
                 const rate = Number(document.querySelector(".rate_all")?.value);
-
+if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim() && !addressInput.value.trim() && !professionInput.value.trim() && !professionIntroInput.value.trim() && !achievementDescriptionInput.value.trim() && !serviceDescriptionInput.value.trim()){
+       event.preventDefault();
+                    
+                    Toastify({
+                        text: 'Please enter all information!!!',
+                        duration: 2000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#ff7b5a",
+                    }).showToast();
+     
+ }
                 if (rate <= 0) {
                     event.preventDefault();
                     
                     Toastify({
-                        text: 'Bạn chưa nhập Rate. Hãy điền rate !!!',
-                        duration: 5000,
+                        text: 'You have not entered Rate yet. Please fill in rate !!!',
+                        duration: 2000,
                         gravity: "top",
                         position: "right",
                         backgroundColor: "#ff7b5a",
@@ -684,8 +710,8 @@
                     event.preventDefault();
 
                     Toastify({
-                        text: 'Bạn chưa nhập Rate. Hãy điền rate !!!',
-                        duration: 5000,
+                        text: 'You have not entered Rate yet. Please fill in rate !!!',
+                        duration: 2000,
                         gravity: "top",
                         position: "right",
                         backgroundColor: "#ff7b5a",

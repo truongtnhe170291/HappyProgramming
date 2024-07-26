@@ -23,7 +23,27 @@
             .amount.negative {
                 color: red;
             }
-
+ .pagination {
+        display: flex;
+        gap: 5px;
+    }
+    .page-link {
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .page-link:hover {
+        background-color: #f0f0f0;
+    }
+    .page-link.active {
+        background-color: #0074D9;
+        color: white;
+        border-color: #4CAF50;
+    }
         </style>
 
         <script>
@@ -199,11 +219,14 @@
                     <p style="text-align: center; color: red">There are no suitable record...</p>
                 </c:if>
             </div> 
-            <div style="display: flex; justify-content: center; margin-bottom: 5px">
-                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                    <a style="color: green" href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
-                </c:forEach>
-            </div>
+           <div style="display: flex; justify-content: flex-end; margin-bottom: 5px;">
+    <div class="pagination">
+        <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+            <a href="transaction?action=manager&index=${i}" 
+               class="page-link ${param.index == i ? 'active' : ''}">${i}</a>
+        </c:forEach>
+    </div>
+</div>
         </div>
     </div>
 </div>
