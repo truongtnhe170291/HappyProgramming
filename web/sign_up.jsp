@@ -8,6 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>FMASTER</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <jsp:include page="style/linkcss.jsp" />
         <style>
             .error-message {
@@ -165,125 +167,209 @@
         </div>
 
         <script>
-            document.getElementById('signupForm').addEventListener('submit', function (event) {
+          document.addEventListener('DOMContentLoaded', function() {
+    const signupForm = document.getElementById('signupForm');
+    const mentorBtn = document.querySelector(".btn-mentor");
+    const menteeBtn = document.querySelector(".btn-mentee");
+    const roleInput = document.getElementById("role");
+    const roleDisplay = document.getElementById("roleDisplay");
+    const mainContent = document.querySelector('.main-content');
+    const mentorButton = document.querySelector('.btn-17:nth-of-type(1)');
+    const menteeButton = document.querySelector('.btn-17:nth-of-type(2)');
 
-                clearErrors();
+    signupForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        clearErrors();
 
-                // Validate fields
-                let valid = true;
-                if (!validateUsername())
-                    valid = false;
-                if (!validateEmail())
-                    valid = false;
-                if (!validatePassword())
-                    valid = false;
-                if (!validateConfirmPassword())
-                    valid = false;
-                if (!validateFullName())
-                    valid = false;
-                if (!validatePhoneNumber())
-                    valid = false;
-                if (!validateDOB())
-                    valid = false;
-                if (!validateSex())
-                    valid = false;
-                if (!validateAddress())
-                    valid = false;
+        let valid = true;
+        if (!validateUsername()) valid = false;
+        if (!validateEmail()) valid = false;
+        if (!validatePassword()) valid = false;
+        if (!validateConfirmPassword()) valid = false;
+        if (!validateFullName()) valid = false;
+        if (!validatePhoneNumber()) valid = false;
+        if (!validateDOB()) valid = false;
+        if (!validateSex()) valid = false;
+        if (!validateAddress()) valid = false;
 
-                // If all fields are valid, submit the form
-                if (valid) {
-                    this.submit();
-                }
-            });
+        if (valid) {
+            this.submit();
+        }
+    });
 
-            function clearErrors() {
-                document.querySelectorAll('.error-message').forEach(function (element) {
-                    element.innerHTML = '';
-                });
-            }
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(function (element) {
+            element.innerHTML = '';
+        });
+    }
 
+    function validateUsername() {
+        const username = document.getElementById('username').value;
+        if (!username) {
+            document.getElementById('usernameError').innerText = 'Username is required.';
+            return false;
+        }
+        return true;
+    }
 
-            function validateEmail() {
-                const email = document.getElementById('email').value;
-                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-                if (!email) {
-                    document.getElementById('emailError').innerText = 'Email is required.';
-                    return false;
-                } else if (!emailPattern.test(email)) {
-                    document.getElementById('emailError').innerText = 'Invalid email format.';
-                    return false;
-                }
-                return true;
-            }
+    function validateEmail() {
+        const email = document.getElementById('email').value;
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!email) {
+            document.getElementById('emailError').innerText = 'Email is required.';
+            return false;
+        } else if (!emailPattern.test(email)) {
+            document.getElementById('emailError').innerText = 'Invalid email format.';
+            return false;
+        }
+        return true;
+    }
 
+    function validatePassword() {
+        const password = document.getElementById('password-field').value;
+        if (!password) {
+            document.getElementById('passwordError').innerText = 'Password is required.';
+            return false;
+        }
+        return true;
+    }
 
-            function validateDOB() {
-                const dob = document.getElementById('Dob').value;
-                if (!dob) {
-                    document.getElementById('dobError').innerText = 'Date of birth is required.';
-                    return false;
-                }
-                return true;
-            }
-            document.getElementById('submitBtn').addEventListener('click', function (event) {
+    function validateConfirmPassword() {
+        const password = document.getElementById('password-field').value;
+        const confirmPassword = document.getElementById('confirm-password-field').value;
+        if (password !== confirmPassword) {
+            showToast("Confirm password not the same as password!");
+            return false;
+        }
+        return true;
+    }
 
-                const dobInput = document.getElementById('Dob');
-                const dobValue = new Date(dobInput.value);
-                const today = new Date();
-                const age = today.getFullYear() - dobValue.getFullYear();
-                const monthDiff = today.getMonth() - dobValue.getMonth();
-                const dayDiff = today.getDate() - dobValue.getDate();
-                const errorMessage = document.getElementById('error-message');
+    function validateFullName() {
+        const fullname = document.getElementById('fullname').value;
+        if (!fullname) {
+                        showToast("Full name is required.");
 
-                if (age < 6 || (age === 6 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
-                    errorMessage.style.display = 'block';
-                    dobInput.setCustomValidity('Bạn phải đủ 6 tuổi.');
-                    dobInput.reportValidity();
-                    dobInput.focus();
-                } else {
-                    errorMessage.style.display = 'none';
-                    dobInput.setCustomValidity('');
-                }
-            });
+            document.getElementById('fullnameError').innerText = 'Full name is required.';
+            return false;
+        } else if (/\d/.test(fullname)) {
+            showToast("Full name must not contain numbers");
+            document.getElementById('fullnameError').innerText = 'Full name must not contain numbers.';
+            return false;
+        }
+        return true;
+    }
 
-            const mainContent = document.querySelector('.main-content');
-            const mentorButton = document.querySelector('.btn-17:nth-of-type(1)');
-            const menteeButton = document.querySelector('.btn-17:nth-of-type(2)');
-            document.addEventListener("DOMContentLoaded", function () {
-                const mentorBtn = document.querySelector(".btn-mentor");
-                const menteeBtn = document.querySelector(".btn-mentee");
-                const roleInput = document.getElementById("role");
-                const roleDisplay = document.getElementById("roleDisplay");
-                mentorBtn.addEventListener("click", function () {
-                    roleInput.value = 2;
-                    roleDisplay.value = "Mentor";
-                    console.log(roleDisplay.value);
-                    console.log(roleInput.value);
-                });
+    function validatePhoneNumber() {
+        const tel = document.getElementById('tel').value;
+        if (!tel) {
+                                    showToast("Phone number is required.");
 
-                menteeBtn.addEventListener("click", function () {
-                    roleInput.value = 1;
-                    roleDisplay.value = "Mentee";
-                    console.log(roleDisplay.textContent);
-                });
-            });
-            mainContent.style.display = 'none';
+            document.getElementById('telError').innerText = 'Phone number is required.';
+            return false;
+        } else if (!/^\d+$/.test(tel)) {
+                                                showToast("Phone number must contain only digits.");
 
-            mentorButton.addEventListener('click', function () {
-                mainContent.style.display = 'block';
-                mentorButton.style.display = 'block';
-                menteeButton.style.display = 'none';
-                mentorButton.classList.add('merge');
-            });
+            document.getElementById('telError').innerText = 'Phone number must contain only digits.';
+            return false;
+        }
+        return true;
+    }
 
-            menteeButton.addEventListener('click', function () {
-                mainContent.style.display = 'block';
-                menteeButton.style.display = 'block';
-                mentorButton.style.display = 'none';
-                menteeButton.classList.add('merge');
+    function validateDOB() {
+        const dob = document.getElementById('Dob').value;
+        if (!dob) {
+            document.getElementById('error-message').innerText = 'Date of birth is required.';
+            return false;
+        }
+        return true;
+    }
 
+    function validateSex() {
+        const sex = document.getElementById('sex').value;
+        if (!sex) {
+            document.getElementById('sexError').innerText = 'Sex is required.';
+            return false;
+        }
+        return true;
+    }
 
-            });
+    function validateAddress() {
+        const address = document.getElementById('Address').value;
+        if (!address) {
+            showToast('Address is required.');
+            document.getElementById('addressError').innerText = 'Address is required.';
+            return false;
+        }
+        return true;
+    }
+
+    function showToast(message) {
+        Toastify({
+            text: message,
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+        }).showToast();
+    }
+
+    // Real-time validation
+    document.getElementById('tel').addEventListener('input', validatePhoneNumber);
+    document.getElementById('fullname').addEventListener('input', validateFullName);
+    document.getElementById('confirm-password-field').addEventListener('input', validateConfirmPassword);
+
+    // Date of Birth validation
+    document.getElementById('submitBtn').addEventListener('click', function (event) {
+        const dobInput = document.getElementById('Dob');
+        const dobValue = new Date(dobInput.value);
+        const today = new Date();
+        const age = today.getFullYear() - dobValue.getFullYear();
+        const monthDiff = today.getMonth() - dobValue.getMonth();
+        const dayDiff = today.getDate() - dobValue.getDate();
+        const errorMessage = document.getElementById('error-message');
+
+        if (age < 6 || (age === 6 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+            errorMessage.style.display = 'block';
+            errorMessage.innerText = 'You must be at least 6 years old.';
+            dobInput.setCustomValidity('You must be at least 6 years old.');
+            dobInput.reportValidity();
+            dobInput.focus();
+            event.preventDefault();
+        } else {
+            errorMessage.style.display = 'none';
+            dobInput.setCustomValidity('');
+        }
+    });
+
+    // Role selection
+    mentorBtn.addEventListener("click", function () {
+        roleInput.value = 2;
+        roleDisplay.value = "Mentor";
+    });
+
+    menteeBtn.addEventListener("click", function () {
+        roleInput.value = 1;
+        roleDisplay.value = "Mentee";
+    });
+
+    // Main content display
+    mainContent.style.display = 'none';
+
+    mentorButton.addEventListener('click', function () {
+        mainContent.style.display = 'block';
+        mentorButton.style.display = 'block';
+        menteeButton.style.display = 'none';
+        mentorButton.classList.add('merge');
+    });
+
+    menteeButton.addEventListener('click', function () {
+        mainContent.style.display = 'block';
+        menteeButton.style.display = 'block';
+        mentorButton.style.display = 'none';
+        menteeButton.classList.add('merge');
+    });
+});
         </script>
 
         <jsp:include page="style/linkJS.jsp" />

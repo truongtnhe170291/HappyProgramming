@@ -75,6 +75,7 @@ public class ManagerHomePage extends HttpServlet {
             request.setAttribute("totalAcc", totalAccountRegisted);
             request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
         } catch (Exception e) {
+            
         }
 
     }

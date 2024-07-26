@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!DOCTYPE html>
+
 <html lang="en">
 
     <head>
@@ -71,6 +71,9 @@
     }
     .test{ height: 250px !important;
             background-size: contain;}
+    
+    .test_img{ height: 350px !important;
+            background-size: contain;}
         </style>
     </head>
 
@@ -80,21 +83,20 @@
             <jsp:include page="header.jsp"/>
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
                 <!-- Slide 1 -->
-                <div class="slide" data-bg-video="video/Happy Programing_1.mp4">
+                <div class="slide" data-bg-video="video/HappyPrograming_1.mp4">
                     <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-center text-light">
                             <!-- Captions -->
                             <h1 data-caption-animate="zoom-out"></h1>
                             <p style="margin-top:50px;transform: translateY(50px);">Welcome aboard FMaster—the ultimate destination for creative minds. Whether you're here to learn, to create, or to be inspired, your journey starts now. So, dive in, explore, and let your imagination soar. The world of FMaster is yours to conquer..</p>
-
                             <!-- end: Captions -->
                         </div>
                     </div>
                 </div>
                 <!-- end: Slide 1 -->
                 <!-- Slide 2 -->
-                <div class="slide" data-bg-video="video/Happy Programing.mp4">
+                <div class="slide" data-bg-video="video/HappyPrograming_1.mp4">
                      <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-start text-light">
@@ -246,7 +248,7 @@
                                 <div class="post-item-wrap">
                                     <div class="post-image">
                                         <a href="#">
-                                            <img alt="" src="./img/${member.avatar}">
+                                            <img class="test_img" alt="" src="./img/${member.avatar}">
                                         </a>
                                     </div>
                                     <div class="post-item-description">
@@ -258,7 +260,7 @@
                                         <div class="star-rating" data-rating="${member.starAVG}">
                                             <!-- Render star rating here if available -->
                                         </div>
-                                        <p>Learn:
+                                        <p>Coaching:
                                             <c:forEach items="${member.listSkills}" var="skill">
                                                 ${skill.skillName}
                                                 <c:if test="${not loop.last}">,</c:if>

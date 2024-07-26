@@ -339,14 +339,14 @@
         <main class="main-content">
 
             <jsp:include page="sidebar.jsp" />
-
+            
             <div class="contents">
 
                 <div class="container-fluid as1">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex align-items-center user-member__title mb-30 mt-30">
-                                <h4 class="text-capitalize" id="apply-cv-as1">Apply CV</h4>
+                                <h4  class="text-capitalize" id="apply-cv-as1">Apply CV</h4>
                                 <h4 class="text-capitalize" id="set-rate-as1">Set Rate</h4>
 
                             </div>
@@ -364,11 +364,9 @@
                                                 <input type="hidden" name="cvId" value="${cv.cvId}"/>
                                                 <div class="statusol">
                                                     CV Status: 
-                                                    <span class="bg-opacity-success color-success userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
-                                                    <span class="bg-opacity-danger color-danger userDatatable-content-status" style="display:none;font-size: 15px;">${requestScope.cv.status.statusName}</span>
-                                                    <span class="bg-opacity-warning color-warning userDatatable-content-status" style="font-size: 15px;">${requestScope.cv.status.statusName}</span>
+                                                    <span id="tatus" class="bg-opacity-warning color-warning userDatatable-content-status" style="font-size: 15px;">${requestScope.cv.status.statusName}</span>
                                                 </div>
-                                                <button type="submit" class="sets">
+                                                <button type="submit" id="Apply_CV" class="sets">
                                                     Apply CV
                                                     
                                                 </button>
@@ -421,7 +419,7 @@
 
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
-                                                                    <label for="phoneNumber1">Mail</label>
+                                                                    <label for="phoneNumber1">Email</label>
                                                                     <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="example@gmail.com">
                                                                 </div>
                                                                 <div style="display: none" id="emailError2" class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -521,6 +519,13 @@
                                                                             <label class="form-check-label" for="hiringDateCheckbox-${skill.skillID}">${skill.skillName}</label>
                                                                         </div>
                                                                     </c:forEach>
+                                                                   
+                                                                    
+                                                                </div>
+                                                                <br />
+                                                                 <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                    <strong style="color: red">Oh no!</strong> 
+Please choose more than 1 skill
                                                                 </div>
                                                             </div>
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
@@ -533,7 +538,6 @@
                                         </div>
                                     </div>
                                     <div class="feedback-container">
-                                        <img src="path/to/admin-avatar.jpg" alt="Admin Avatar">
                                         <div class="feedback-content">
                                             <strong>Feedback From Manager:</strong>
                                             <p>${cv.note}</p>
@@ -650,14 +654,42 @@
     </div>
     <div class="overlay-dark-sidebar"></div>
     <div class="customizer-overlay"></div>
+   
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+             document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('profile-imgcv').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }});
+    let statis = document.getElementById('tatus').textContent; 
+    const submitButton = document.getElementById('submitForm2'); 
+  
+
+    if(statis === null || statis.trim() === ''){
+        statis = 'No Apply CV';
+        console.log("statis was empty, set to 'No Apply CV'");
+    } else {
+            document.getElementById('tatus').textContent = '${requestScope.cv.status.statusName}' ;
+
+        console.log("statis has value:", statis);
+    }
+
+document.getElementById('tatus').textContent = '${requestScope.cv.status.statusName}' === '' ? 'No Apply CV' : '${requestScope.cv.status.statusName}';
+    console.log("Final statis:", statis);
+});
+    </script>
       <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Get the form elements
         const applyForm = document.querySelector('form[action="aplly"]');
         const setRateForm = document.querySelector('form[action="SetRate"]');
-        
               const submitButton = document.getElementById('submitForm2'); 
-
     const nameInput = document.getElementById('fullname2');
     const emailInput = document.getElementById('email2');
     const dobInput = document.getElementById('dob2');
@@ -736,8 +768,10 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
     </script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const submitButton = document.getElementById('submitForm2'); 
+    const submitButton = document.getElementById('Apply_CV'); 
+        let statis = document.getElementById('tatus').textContent; 
 
+ console.log(submitButton.textContent);
     const nameInput = document.getElementById('fullname2');
     const emailInput = document.getElementById('email2');
     const dobInput = document.getElementById('dob2');
@@ -746,6 +780,8 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
     const professionIntroInput = document.getElementsByName('professionIntro')[0];
     const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
     const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
+        const skillCheckboxes = document.querySelectorAll('input[name="skills"]');
+              const submitButtons = document.getElementById('submitForm2'); 
 
     const nameError = document.getElementById('nameError2');
     const emailError = document.getElementById('emailError2');
@@ -762,19 +798,35 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
             nameError.style.display = 'none';
         }
 
-        if (!emailInput.value.trim()) {
-            emailError.style.display = 'block';
-            isValid = false;
-        } else {
-            emailError.style.display = 'none';
-        }
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email pattern
+if (!emailInput.value.trim() || !emailPattern.test(emailInput.value.trim())) {
+    emailError.textContent = 'Please enter a valid email address.';
+    emailError.style.display = 'block';
+    isValid = false;
+} else {
+    emailError.style.display = 'none';
+}
 
-        if (!dobInput.value.trim()) {
-            dobError.style.display = 'block';
-            isValid = false;
-        } else {
-            dobError.style.display = 'none';
-        }
+// Date of Birth validation
+if (!dobInput.value.trim()) {
+    dobError.textContent = 'Please enter your date of birth.';
+    dobError.style.display = 'block';
+    isValid = false;
+} else {
+    const dob = new Date(dobInput.value.trim());
+    const today = new Date();
+    const age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const isBirthdayPassed = monthDiff > 0 || (monthDiff === 0 && today.getDate() >= dob.getDate());
+
+    if (age < 15 || (age === 15 && !isBirthdayPassed)) {
+        dobError.textContent = 'You must be older than 15 years.';
+        dobError.style.display = 'block';
+        isValid = false;
+    } else {
+        dobError.style.display = 'none';
+    }
+}
 
         if (!addressInput.value.trim()) {
             addressErrors[0].style.display = 'block';
@@ -803,6 +855,7 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
         } else {
             addressErrors[3].style.display = 'none';
         }
+       
 
         if (!serviceDescriptionInput.value.trim()) {
             addressErrors[4].style.display = 'block';
@@ -811,7 +864,23 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
             addressErrors[4].style.display = 'none';
         }
 
-        submitButton.disabled = !isValid;
+            let checkedSkills = document.querySelectorAll('input[name="skills"]:checked');
+        if(checkedSkills.length === 0){
+            addressErrors[5].style.display = 'block';
+            isValid = false;
+
+        } else {
+            addressErrors[5].style.display = 'none';
+
+        }
+        
+         if(statis === 'No Apply CV' || statis.trim() === ''){
+                        submitButton.disabled = true;
+
+        }else{
+             submitButton.disabled = false;
+        }
+        submitButtons.disabled = !isValid;
 
         return isValid;
     }
@@ -822,7 +891,9 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
         input.addEventListener('input', validateForm);
         input.addEventListener('change', validateForm);
     });
-
+skillCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', validateForm);
+    });
     validateForm(); // Initial check
 });
 

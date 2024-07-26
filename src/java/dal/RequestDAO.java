@@ -1426,11 +1426,11 @@ public class RequestDAO {
         StaticMentor stats = null;
         String sql = "SELECT "
                 + "COUNT(DISTINCT request_id) AS TotalRequests, "
-                + "SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) AS AcceptedRequests, "
+                + "SUM(CASE WHEN status_id = 7 THEN 1 ELSE 0 END) AS AcceptedRequests, "
                 + "COUNT(DISTINCT request_id) AS InvitedRequests, "
                 + "SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) AS CanceledRequests, "
                 + "ROUND(SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCanceledRequests, "
-                + "ROUND(SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCompletedRequests "
+                + "ROUND(SUM(CASE WHEN status_id = 7 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS PercentCompletedRequests "
                 + "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
                 + "WHERE mentor_name = ?";
 
@@ -1461,7 +1461,7 @@ public class RequestDAO {
         List<MyMenteeDTO> requests = new ArrayList<>();
         String sql = "SELECT request_id, mentee_name, title, price "
                 + "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] "
-                + "WHERE mentor_name = ? AND status_id = 1";
+                + "WHERE mentor_name = ? AND status_id = 7";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, mentorName);

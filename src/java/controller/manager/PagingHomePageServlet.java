@@ -4,6 +4,10 @@
  */
 package controller.manager;
 
+import dal.AccountDAO;
+import dal.CVDAO;
+import dal.ScheduleDAO;
+import dal.SkillDAO;
 import dal.WalletDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,9 +83,22 @@ public class PagingHomePageServlet extends HttpServlet {
                     response.sendRedirect("LoginManager");
                     return;
                 }
+                CVDAO cvDao = new CVDAO();
+                AccountDAO accountDao = new AccountDAO();
+                ScheduleDAO scheduleDao = new ScheduleDAO();
+                SkillDAO skillDAO = new SkillDAO();
+                int totalAccountRegisted = accountDao.listAccountRegisted().size();
+                int totalCVs = cvDao.getTotalCVCountByStatus(1);
+                int totalRequest = scheduleDao.getTotalRequestsPeding();
+                int totalSkills = skillDAO.getTotalSkillCount();
                 List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), index);
                 int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
                 request.setAttribute("listTran", list);
+                request.setAttribute("totalCVs", totalCVs);
+                request.setAttribute("totalRequest", totalRequest);
+                request.setAttribute("totalSkills", totalSkills);
+                request.setAttribute("numPage", numPage);
+                request.setAttribute("totalAcc", totalAccountRegisted);
                 request.setAttribute("numPage", numPage);
                 request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
                 //paging for manager
@@ -92,22 +109,22 @@ public class PagingHomePageServlet extends HttpServlet {
                     return;
                 }
                 // Tạo đối tượng DAO để thao tác với dữ liệu ví
-            Wallet wallet = dao.getWalletByUsenName(user.getUserName());
+                Wallet wallet = dao.getWalletByUsenName(user.getUserName());
 
-            // Nếu ví chưa tồn tại, tạo ví mới với số dư ban đầu bằng 0
-            if (wallet == null) {
-                if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
-                    wallet = dao.getWalletByUsenName(user.getUserName());
+                // Nếu ví chưa tồn tại, tạo ví mới với số dư ban đầu bằng 0
+                if (wallet == null) {
+                    if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
+                        wallet = dao.getWalletByUsenName(user.getUserName());
+                    }
                 }
-            }
 
-            // Đặt ví vào request attribute
-            request.setAttribute("wallet", wallet);
+                // Đặt ví vào request attribute
+                request.setAttribute("wallet", wallet);
                 List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), index);
                 int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
                 request.setAttribute("listTran", list);
                 request.setAttribute("numPage", numPage);
-                
+
                 //listHold
                 List<Hold> listHold = dao.getHoldByPaging(user.getUserName(), 1);
                 int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());

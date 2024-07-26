@@ -56,7 +56,7 @@ public class CVServlet extends HttpServlet {
             SkillDAO skillDAO = new SkillDAO();
             CVService cVService = CVService.getInstance();
             request.setAttribute("cv", cVService.getCVByUserName(curentAccount.getUserName()));
-            
+
             MentorDAO dao = new MentorDAO();
             request.setAttribute("rate", dao.getRateOfMentor(curentAccount.getUserName()));
             List<Skill> list = skillDAO.getSkills();
@@ -89,19 +89,18 @@ public class CVServlet extends HttpServlet {
             String achievementDescription = VietnameseConverter.removeDiacritics(request.getParameter("achievementDescription"));
             String serviceDescription = VietnameseConverter.removeDiacritics(request.getParameter("serviceDescription"));
             String[] _skills = request.getParameterValues("skills");
-            if(_skills == null){
-                response.sendRedirect("cv");
-                return;
-            }
-            int[] skills;
-            if (_skills.length > 0) {
-                skills = new int[_skills.length];
-                for (int i = 0; i < _skills.length; i++) {
-                    skills[i] = Integer.parseInt(_skills[i]);
+            int[] skills = null;
+            if (_skills != null) {
+                if (_skills.length > 0) {
+                    skills = new int[_skills.length];
+                    for (int i = 0; i < _skills.length; i++) {
+                        skills[i] = Integer.parseInt(_skills[i]);
+                    }
+                } else {
+                    skills = new int[0];
                 }
-            } else {
-                skills = new int[0];
             }
+
             boolean sex;
             sex = _sex.equals("1");
             // insert anh save img file
@@ -115,7 +114,7 @@ public class CVServlet extends HttpServlet {
             System.out.println(fileName);
             //Get CV by username
             Account acc = (Account) request.getSession().getAttribute("user");
-            if(acc == null){
+            if (acc == null) {
                 response.sendRedirect("Login.jsp");
                 return;
             }
@@ -158,15 +157,8 @@ public class CVServlet extends HttpServlet {
             request.setAttribute("user", accountService.getAccount(acc.getUserName(), acc.getPassword()));
             CV c = new CV(0, username, gmail, fullname, java.sql.Date.valueOf(dob), sex, address, profession, professionIntro, achievementDescription, serviceDescription, skills, fileName, 4);
             CVService cvService = CVService.getInstance();
-            CV newCv = cvService.createOrUpdateCV(c);
-            if (newCv != null) {
-                request.setAttribute("cv", newCv);
-                request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
-            } else {
-                String msg = "Create or Update Fail";
-                request.setAttribute("msg", msg);
-                request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
-            }
+            cvService.createOrUpdateCV(c);
+            response.sendRedirect("cv");
 
         } catch (ServletException | IOException | NumberFormatException e) {
             System.out.println(e);
