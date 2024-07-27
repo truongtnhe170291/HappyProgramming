@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="author" content="INSPIRO" />
-<link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+        <link rel="icon" type="image/png" href="images/favicon.png">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- Document title -->
         <title>Create request</title>
@@ -493,6 +493,12 @@ const scheduleData = [
 ];
 let allSelectedSlots = scheduleData.filter(item => item.status === 'selected')
         .map(item => ({day: item.day, slot: item.slot, week: item.week}));
+
+function updateAllSelectedSlots() {
+    allSelectedSlots = scheduleData.filter(item => item.status === 'selected')
+        .map(item => ({day: item.day, slot: item.slot, week: item.week}));
+    console.log("Updated allSelectedSlots:", allSelectedSlots);
+}
 console.log("Initial scheduleData:", scheduleData);
 
 function generateWeeks(startDate) {
@@ -729,6 +735,8 @@ console.log("Items in week 2:", tmp);
                 
                 }
             }
+                updateAllSelectedSlots();
+
             updateTotalPrice();
             validateForm(); 
         });
@@ -850,11 +858,7 @@ function getFormValues() {
     currentAction = "editable";
 
     const startDate = new Date('${start}');
-    const selectedSlots = allSelectedSlots.map(item => ({
-        slot: item.slot,
-        day: item.day,
-        week: item.week
-    }));
+    const selectedSlots = allSelectedSlots;
 
 
 

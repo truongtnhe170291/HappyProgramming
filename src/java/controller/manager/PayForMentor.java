@@ -151,8 +151,6 @@ public class PayForMentor extends HttpServlet {
             // mentor
             String mentorName = listAtten.get(0).getMentorName();
             Wallet wmentor = walletDAO.getWalletByUsenName(mentorName);
-            System.out.println("start");
-            System.out.println(attendedAmount);
             if (wmentor != null) {
                 Wallet mentorWallet = new Wallet(mentorName, attendedAmount + wmentor.getReal_balance(), 0);
                 walletDAO.updateWallet(mentorWallet);
