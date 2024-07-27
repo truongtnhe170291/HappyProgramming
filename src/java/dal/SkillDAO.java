@@ -468,7 +468,7 @@ public class SkillDAO {
                + "FROM Skills s "
                + "JOIN RequestSkills rs ON s.skill_id = rs.skill_id "
                + "JOIN RequestsFormMentee rfm ON rs.request_id = rfm.request_id "
-               + "WHERE rfm.status_id = 1 "
+               + "WHERE rfm.status_id = 7 "
                + "GROUP BY s.skill_id, s.skill_name, s.img, s.description, s.status "
                + "ORDER BY COUNT(rfm.request_id) DESC";
 
