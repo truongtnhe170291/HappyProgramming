@@ -237,7 +237,7 @@
                             <div class="post-item border">
                                 <div class="post-item-wrap">
                                     <div class="post-image">
-                                        <a href="#">
+                                        <a href="MentorProfileServlet?cvId=${member.cvID}">
                                             <img class="test_img" alt="" src="./img/${member.avatar}">
                                         </a>
                                     </div>
