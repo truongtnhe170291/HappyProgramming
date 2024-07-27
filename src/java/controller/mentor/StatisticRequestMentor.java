@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
 import models.Account;
 import models.RequestDTO;
@@ -87,8 +88,8 @@ throws ServletException, IOException {
         
         // Chuyển hướng đến trang StaticRequestMentor.jsp
         request.getRequestDispatcher("StaticRequestMentor.jsp").forward(request, response);
-    } catch (Exception e) {
-        throw new ServletException(e);
+    } catch (ServletException | IOException | SQLException e) {
+        response.sendRedirect("PageError");
     }
 }
 

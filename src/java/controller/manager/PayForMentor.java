@@ -90,8 +90,8 @@ public class PayForMentor extends HttpServlet {
             request.setAttribute("listAtten", listAtten);
             request.getRequestDispatcher("ListRequestFromMenteeManager.jsp").forward(request, response);
 
-        } catch (Exception e) {
-            throw new ServletException(e);
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
     }
 

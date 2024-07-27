@@ -134,6 +134,7 @@ public class PagingHomePageServlet extends HttpServlet {
                 request.getRequestDispatcher("Wallet.jsp").forward(request, response);
             }
         } catch (IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 

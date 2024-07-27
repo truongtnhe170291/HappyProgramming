@@ -85,7 +85,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
          request.getRequestDispatcher("homes.jsp").forward(request, response);
     } catch (SQLException e) {
-        throw new ServletException("Unable to retrieve top mentors", e);
+        response.sendRedirect("PageError");
     }
 }
 

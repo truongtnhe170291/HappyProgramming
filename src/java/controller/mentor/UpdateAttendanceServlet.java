@@ -53,7 +53,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
         }
 
     } catch (JsonIOException | JsonSyntaxException | IOException e) {
-        response.getWriter().write("Invalid data format: " + e.getMessage());
+        response.sendRedirect("PageError");
     }
 }
 

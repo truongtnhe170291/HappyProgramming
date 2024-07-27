@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.mentee;
 
 import dal.RequestDAO;
@@ -18,36 +17,39 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name="EditOrDeleteRequest", urlPatterns={"/EditOrDeleteRequest"})
+@WebServlet(name = "EditOrDeleteRequest", urlPatterns = {"/EditOrDeleteRequest"})
 public class EditOrDeleteRequest extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EditOrDeleteRequest</title>");  
+            out.println("<title>Servlet EditOrDeleteRequest</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EditOrDeleteRequest at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet EditOrDeleteRequest at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -55,36 +57,38 @@ public class EditOrDeleteRequest extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    int requestId = Integer.parseInt(request.getParameter("requestId"));
+        try {
+            int requestId = Integer.parseInt(request.getParameter("requestId"));
 
-  
-    RequestDAO requestDAO = new RequestDAO();
+            RequestDAO requestDAO = new RequestDAO();
 
-    
-    requestDAO.deleteRequest(requestId);
+            requestDAO.deleteRequest(requestId);
 
- 
-    response.sendRedirect("ListRequest");
-}
+            response.sendRedirect("ListRequest");
+        } catch (IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
+        }
+    }
 
-
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -86,7 +86,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         // Chuyển hướng đến trang MyMentee.jsp
         request.getRequestDispatcher("MyMentee.jsp").forward(request, response);
     } catch (Exception e) {
-        throw new ServletException(e);
+        response.sendRedirect("PageError");
     }
 }
 

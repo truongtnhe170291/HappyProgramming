@@ -8,6 +8,8 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Document title -->
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
     <title>POLO | The Multi-Purpose HTML5 Template</title>
     <!-- Stylesheets & Fonts -->
     <link href="css/plugins.css" rel="stylesheet">

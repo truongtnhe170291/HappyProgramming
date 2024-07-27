@@ -168,7 +168,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         request.getRequestDispatcher("RequestManagement_list.jsp").forward(request, response);
     } catch (SQLException e) {
-        throw new ServletException(e);
+        response.sendRedirect("PageError");
     }
 }
 

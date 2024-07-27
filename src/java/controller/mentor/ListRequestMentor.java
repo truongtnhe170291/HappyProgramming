@@ -105,7 +105,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         request.getRequestDispatcher("ListRequestMentor.jsp").forward(request, response);
     } catch (SQLException e) {
-        throw new ServletException(e);
+        response.sendRedirect("PageError");
     }
 }
 

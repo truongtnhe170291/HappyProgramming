@@ -27,29 +27,33 @@ public class CreateSkillController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String skillName = VietnameseConverter.removeDiacritics(request.getParameter("skillName"));
-        Part filePart = request.getPart("img"); // Retrieves <input type="file" name="img">
-        String description = VietnameseConverter.removeDiacritics(request.getParameter("description"));
-        boolean status = true; // Default status to active
+        try {
+            String skillName = VietnameseConverter.removeDiacritics(request.getParameter("skillName"));
+            Part filePart = request.getPart("img"); // Retrieves <input type="file" name="img">
+            String description = VietnameseConverter.removeDiacritics(request.getParameter("description"));
+            boolean status = true; // Default status to active
 
-        String fileName = getFileName(filePart);
-        //C:\Users\ADMIN\Documents\GitHub\HappyProgramming\web\img
-        String uploadPath = "C:\\Users\\ADMIN\\Documents\\GitHub\\HappyProgramming\\web\\img" + File.separator + fileName;
-        
-        // Save the file
-        File file = new File(uploadPath);
-        try (InputStream fileContent = filePart.getInputStream()) {
-            Files.copy(fileContent, file.toPath());
+            String fileName = getFileName(filePart);
+            //C:\Users\ADMIN\Documents\GitHub\HappyProgramming\web\img
+            String uploadPath = "C:\\Users\\ADMIN\\Documents\\GitHub\\HappyProgramming\\web\\img" + File.separator + fileName;
+
+            // Save the file
+            File file = new File(uploadPath);
+            try (InputStream fileContent = filePart.getInputStream()) {
+                Files.copy(fileContent, file.toPath());
+            }
+
+            Skill newSkill = new Skill();
+            newSkill.setSkillName(skillName);
+            newSkill.setImg("img/" + fileName); // Storing the relative path to the image
+            newSkill.setDescription(description);
+            newSkill.setStatus(status);
+
+            skillDAO.saveSkill(newSkill);
+            response.sendRedirect("skills");
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
-
-        Skill newSkill = new Skill();
-        newSkill.setSkillName(skillName);
-        newSkill.setImg("img/" + fileName); // Storing the relative path to the image
-        newSkill.setDescription(description);
-        newSkill.setStatus(status);
-        
-        skillDAO.saveSkill(newSkill);
-        response.sendRedirect("skills");
     }
 
     private String getFileName(Part part) {

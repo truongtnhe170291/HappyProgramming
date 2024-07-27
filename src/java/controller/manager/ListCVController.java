@@ -5,7 +5,6 @@
 package controller.manager;
 
 import dal.CVDAO;
-import dal.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,10 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
-import models.CV;
 import models.CVDTO;
-import models.Skill;
 import models.Status;
 
 /**
@@ -107,9 +105,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         // Chuyển hướng đến trang listCV.jsp
         request.getRequestDispatcher("listCV.jsp").forward(request, response);
-    } catch (Exception e) {
-        e.printStackTrace();
-        throw new ServletException("Database error: " + e.getMessage());
+    } catch (ServletException | IOException | NumberFormatException | SQLException e) {
+        response.sendRedirect("PageError");
     } 
 }
 
@@ -132,10 +129,14 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try{
         CVDAO dao = new CVDAO();
         List<CVDTO> list = dao.getAllCV(1,3);
         request.setAttribute("cvList", list);
         request.getRequestDispatcher("listCV.jsp").forward(request, response);
+        }catch(ServletException | IOException e){
+            response.sendRedirect("PageError");
+        }
     }
 
     /**

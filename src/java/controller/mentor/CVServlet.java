@@ -63,6 +63,7 @@ public class CVServlet extends HttpServlet {
             request.setAttribute("skills", list);
             request.getRequestDispatcher("ApplyCV.jsp").forward(request, response);
         } catch (IOException e) {
+            response.sendRedirect("PageError");
         }
     }
 
@@ -161,7 +162,7 @@ public class CVServlet extends HttpServlet {
             response.sendRedirect("cv");
 
         } catch (ServletException | IOException | NumberFormatException e) {
-            System.out.println(e);
+            response.sendRedirect("PageError");
         }
 
     }

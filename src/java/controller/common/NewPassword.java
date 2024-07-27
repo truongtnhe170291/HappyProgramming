@@ -24,7 +24,6 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter Out = response.getWriter();
         HttpSession session = request.getSession();
         String newPassword = request.getParameter("password");
         String confPassword = request.getParameter("confPassword");

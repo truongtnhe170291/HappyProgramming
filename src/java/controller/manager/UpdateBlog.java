@@ -132,7 +132,7 @@ public class UpdateBlog extends HttpServlet {
             }
 
         } catch (NumberFormatException | IOException | ServletException e) {
-            response.getWriter().write("Error processing request: " + e.getMessage());
+            response.sendRedirect("PageError");
         }
     }
     

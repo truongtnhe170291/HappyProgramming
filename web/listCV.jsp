@@ -6,6 +6,8 @@
         <meta charset="UTF-8">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
         <title>List Request Manager</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
@@ -136,14 +138,9 @@
 
             /* Style for the popup content */
             .popup-content {
-                background-color: #fefefe;
-                margin: 5% auto;
+              
                 padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-height: 80%;
-                overflow-y: auto;
-                /* Enable vertical scrolling */
+               
             }
 
             /* Close button style */
@@ -399,6 +396,13 @@
                 transform: translateY(-200px);
             }
     
+            #notePopup{
+                transform: translate(-50%, -50%) !important;
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                
+            }
         </style>
     </head>
 

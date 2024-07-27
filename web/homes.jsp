@@ -13,6 +13,8 @@
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <meta name="author" content="INSPIRO" />
         <meta name="description" content=" html">
         <link rel="icon" type="image/png" href="images/favicon.png">
@@ -83,7 +85,7 @@
             <jsp:include page="header.jsp"/>
             <div id="slider" class="inspiro-slider slider-fullscreen dots-creative" data-fade="true">
                 <!-- Slide 1 -->
-                <div class="slide" data-bg-video="video/HappyPrograming_1.mp4">
+                <div  class="slide" data-bg-video="video/HappyPrograming_1.mp4" >
                     <div class="bg-overlay"></div>
                     <div class="container">
                         <div class="slide-captions text-center text-light">
@@ -95,19 +97,7 @@
                     </div>
                 </div>
                 <!-- end: Slide 1 -->
-                <!-- Slide 2 -->
-                <div class="slide" data-bg-video="video/HappyPrograming_1.mp4">
-                     <div class="bg-overlay"></div>
-                    <div class="container">
-                        <div class="slide-captions text-start text-light">
-                            <!-- Captions -->
-                            <h1>100+ Quality mentors</h1>
-                            <p class="text-small">FMASTER: Discover & Develop Your Passion for Programming with Mentor Code: Detailed Instructions from Basic to Advanced</p>
-                            <!-- end: Captions -->
-                        </div>
-                    </div>
-                </div>
-                <!-- end: Slide 2 -->
+                
             </div>
             <section class="background-grey">
                 <div class="container">
@@ -410,6 +400,20 @@
                 <script src="js/jquery.js"></script>
                 <script src="js/plugins.js"></script>
                 <script src="js/functions.js"></script>
+                    <script>
+                        const video = document.getElementById('video');
+  var playPromise = video.play();
+ 
+  if (playPromise !== undefined) {
+    playPromise.then(_ => {
+     
+      video.pause();
+    })
+    .catch(error => {
+     
+    });
+  }
+                </script>
                 </body>
 
                 </html>

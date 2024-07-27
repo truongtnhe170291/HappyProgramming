@@ -83,7 +83,8 @@ public class ChangPassServlet extends HttpServlet {
             //if successfully submitted form then update password and redirect user to login page
             if (accountService.changePassWord(acc)) {
                 request.getSession().removeAttribute("user");
-                response.sendRedirect("login");
+                request.setAttribute("messaget", "Change pass successful");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (ServletException | IOException e) {
             response.sendRedirect("PageError");

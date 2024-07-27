@@ -75,23 +75,27 @@ public class UpdateAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AccountDAO dao = new AccountDAO();
-        HttpSession session = request.getSession();
-        Account curentAccount = (Account) session.getAttribute("user");
-        if(curentAccount == null){
-            response.sendRedirect("login.jsp");
-            return;
-        }
-        Account acc = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
-        if (acc.getRoleId() == 1) {
-            request.setAttribute("user", acc);
-            request.getRequestDispatcher("MemberProfile.jsp").forward(request, response);
-            return;
-        }
-        if (acc.getRoleId() == 2) {
-            MentorDAO mentorDao = new MentorDAO();
-            request.setAttribute("user", acc);
-            request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
+        try {
+            AccountDAO dao = new AccountDAO();
+            HttpSession session = request.getSession();
+            Account curentAccount = (Account) session.getAttribute("user");
+            if (curentAccount == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            Account acc = dao.getAccount(curentAccount.getUserName(), curentAccount.getPassword());
+            if (acc.getRoleId() == 1) {
+                request.setAttribute("user", acc);
+                request.getRequestDispatcher("MemberProfile.jsp").forward(request, response);
+                return;
+            }
+            if (acc.getRoleId() == 2) {
+                request.setAttribute("user", acc);
+                request.getRequestDispatcher("mentor_info.jsp").forward(request, response);
+                request.getRequestDispatcher("control_nav.jsp").forward(request, response);
+            }
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
 
     }
@@ -107,53 +111,54 @@ public class UpdateAccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            String userName = request.getParameter("username");
+            String fullName = VietnameseConverter.removeDiacritics(request.getParameter("fullname"));
+            String sex = request.getParameter("sex");
+            String gmail = request.getParameter("gmail");
+            String dob = request.getParameter("dob");
+            String phone = request.getParameter("phone");
+            String address = VietnameseConverter.removeDiacritics(request.getParameter("address"));
+            Part filePart = request.getPart("fileUpload");
 
-        String userName = request.getParameter("username");
-        String fullName = VietnameseConverter.removeDiacritics(request.getParameter("fullname"));
-        String sex = request.getParameter("sex");
-        String gmail = request.getParameter("gmail");
-        String dob = request.getParameter("dob");
-        String phone = request.getParameter("phone");
-        String address = VietnameseConverter.removeDiacritics(request.getParameter("address"));
-        Part filePart = request.getPart("fileUpload");
+            // D:\Workspase\Java_NetBeans\Project-SWP-HappyProgramming\HappyProgramming\web\img
+            String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\img\\";
 
-        // D:\Workspase\Java_NetBeans\Project-SWP-HappyProgramming\HappyProgramming\web\img
-        String upload = "D:\\Workspase\\Java_NetBeans\\Project-SWP-HappyProgramming\\HappyProgramming\\web\\img\\";
+            Account curentAccount = (Account) request.getSession().getAttribute("user");
 
-        Account curentAccount = (Account) request.getSession().getAttribute("user");
-
-        String oldavata = curentAccount.getAvatar();
-        System.out.println(curentAccount.getFullName());
-        System.out.println(oldavata);
-        // Lấy tên tệp
-        String fileName = filePart.getSubmittedFileName();
-        System.out.println(fileName);
-        if (!fileName.equals("") && !fileName.equals(oldavata)) {
-            String uploadDirectory = upload + fileName;
-            System.out.println(uploadDirectory);
-            System.out.println("sdfsdfsdjfsd");
-            try (OutputStream out = new FileOutputStream(uploadDirectory)) {
-                InputStream in = filePart.getInputStream();
-                byte[] bytes = new byte[in.available()];
-                in.read(bytes);
-                out.write(bytes);
-                out.close();
-            } catch (IOException e) {
-                System.out.println(e);
+            String oldavata = curentAccount.getAvatar();
+            System.out.println(curentAccount.getFullName());
+            System.out.println(oldavata);
+            // Lấy tên tệp
+            String fileName = filePart.getSubmittedFileName();
+            System.out.println(fileName);
+            if (!fileName.equals("") && !fileName.equals(oldavata)) {
+                String uploadDirectory = upload + fileName;
+                System.out.println(uploadDirectory);
+                System.out.println("sdfsdfsdjfsd");
+                try (OutputStream out = new FileOutputStream(uploadDirectory)) {
+                    InputStream in = filePart.getInputStream();
+                    byte[] bytes = new byte[in.available()];
+                    in.read(bytes);
+                    out.write(bytes);
+                    out.close();
+                } catch (IOException e) {
+                    System.out.println(e);
+                    fileName = "default.jpg";
+                }
+            } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
+                fileName = oldavata;
+            } else {
                 fileName = "default.jpg";
             }
-        } else if (fileName.equals(oldavata) && !fileName.equals("") || fileName.equals("") && oldavata != null) {
-            fileName = oldavata;
-        } else {
-            fileName = "default.jpg";
-        }
-        AccountDAO dao = new AccountDAO();
-        try {
+            AccountDAO dao = new AccountDAO();
             dao.updateAccount(userName, fullName, dob, sex, address, gmail, fileName, phone);
+            Account acc = (Account) request.getSession().getAttribute("user");
+            acc.setAvatar(fileName);
+            request.getSession().setAttribute("user", acc);
             response.sendRedirect("UpdateAccountServlet");
-        } catch (NullPointerException e) {
-            dao.updateAccount(userName, fullName, dob, sex, address, gmail, fileName, phone);
-            response.sendRedirect("UpdateAccountServlet");
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
     }
 

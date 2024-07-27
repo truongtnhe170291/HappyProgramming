@@ -68,6 +68,7 @@ public class ChangeCVStatusServlet extends HttpServlet {
                 response.sendRedirect("listCV");
             }
         } catch (NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
 
     }

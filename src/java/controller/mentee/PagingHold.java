@@ -81,6 +81,7 @@ public class PagingHold extends HttpServlet {
 
             }
         } catch (ServletException | IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 

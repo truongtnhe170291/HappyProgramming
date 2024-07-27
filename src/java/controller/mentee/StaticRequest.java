@@ -77,7 +77,7 @@ throws ServletException, IOException {
         // Chuyển hướng đến trang StaticRequestMentee.jsp
         request.getRequestDispatcher("StaticRequestMentee.jsp").forward(request, response);
     } catch (Exception e) {
-        throw new ServletException(e);
+        response.sendRedirect("PageError");
     }
 }
 

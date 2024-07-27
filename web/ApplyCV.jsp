@@ -255,70 +255,70 @@
             #apply-cv-as1:hover, #set-rate-as2:hover {
                 background-color: #138496;
             }
-            
-                .status-radio label {
-              
-                    font-weight: bold;
-                    font-size: 18px;
-                    margin-bottom: 15px;
-                    display: block;
-                    color: #333;
-                }
 
+            .status-radio label {
+
+                font-weight: bold;
+                font-size: 18px;
+                margin-bottom: 15px;
+                display: block;
+                color: #333;
+            }
+
+            .skills-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .skill-item {
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+                cursor: pointer;
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+
+            .skill-item:hover {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                transform: translateY(-3px);
+            }
+
+            .form-check-input {
+                margin-right: 10px;
+
+                transform: scale(1.2);
+            }
+
+            .form-check-label {
+                margin: 0;
+                font-size: 16px;
+                color: #555;
+                flex-grow: 1;
+                text-align: left;
+            }
+
+            @media (max-width: 768px) {
                 .skills-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 20px;
+                    flex-direction: column;
                 }
 
                 .skill-item {
-                    background-color: #fff;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 12px 20px;
-                    display: flex;
-                    align-items: center;
-                    transition: box-shadow 0.3s ease, transform 0.3s ease;
-                    cursor: pointer;
                     width: 100%;
-                    max-width: 200px;
-                    text-align: center;
                 }
-
-                .skill-item:hover {
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                    transform: translateY(-3px);
-                }
-
-                .form-check-input {
-                    margin-right: 10px;
-                   
-                    transform: scale(1.2);
-                }
-
-                .form-check-label {
-                    margin: 0;
-                    font-size: 16px;
-                    color: #555;
-                    flex-grow: 1;
-                    text-align: left;
-                }
-
-                @media (max-width: 768px) {
-                    .skills-container {
-                        flex-direction: column;
-                    }
-
-                    .skill-item {
-                        width: 100%;
-                    }
-                }
-                .form-group {
-                    margin-bottom: 25px;
-                }
-                ev{
-  pointer-events: none;
-}
+            }
+            .form-group {
+                margin-bottom: 25px;
+            }
+            ev{
+                pointer-events: none;
+            }
         </style>
 
         <jsp:include page="style/linkcss.jsp" />
@@ -339,7 +339,7 @@
         <main class="main-content">
 
             <jsp:include page="sidebar.jsp" />
-            
+
             <div class="contents">
 
                 <div class="container-fluid as1">
@@ -368,7 +368,7 @@
                                                 </div>
                                                 <button type="submit" id="Apply_CV" class="sets">
                                                     Apply CV
-                                                    
+
                                                 </button>
                                             </form>                           
                                         </li>
@@ -475,15 +475,15 @@
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
                                                                 <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Your profession ...">
-                                                            <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your profession.
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession introduction</label>
                                                                 <textarea name="professionIntro" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.professionIntro}</textarea>
-                                                            <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your professionIntro.
                                                                 </div>
                                                             </div>
@@ -491,7 +491,7 @@
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Achievement Description</label>
                                                                 <textarea name="achievementDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.achievementDescription}</textarea>
-                                                             <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your Achievement Description.
                                                                 </div>
                                                             </div>
@@ -499,7 +499,7 @@
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Service Description</label>
                                                                 <textarea name="serviceDescription" rows="9" type="text" class="form-control" id="phoneNumber1">${cv.serviceDescription}</textarea>
-                                                           <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your Service Description.
                                                                 </div>
                                                             </div>
@@ -519,13 +519,13 @@
                                                                             <label class="form-check-label" for="hiringDateCheckbox-${skill.skillID}">${skill.skillName}</label>
                                                                         </div>
                                                                     </c:forEach>
-                                                                   
-                                                                    
+
+
                                                                 </div>
                                                                 <br />
-                                                                 <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                                <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> 
-Please choose more than 1 skill
+                                                                    Please choose more than 1 skill
                                                                 </div>
                                                             </div>
                                                             <div class="button-group d-flex pt-20 justify-content-md-end justify-content-start">
@@ -584,11 +584,8 @@ Please choose more than 1 skill
                                         <ul class="nav px-30 ap-tab-main text-capitalize flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
                                             <li class="nav-item hes">
-
-
                                                 <button type="submit" class="sets">
                                                     Set Rate
-                                                    
                                                 </button>
                                             </li>
                                         </ul>
@@ -654,11 +651,11 @@ Please choose more than 1 skill
     </div>
     <div class="overlay-dark-sidebar"></div>
     <div class="customizer-overlay"></div>
-   
-   
+
+
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-             document.getElementById('file-uploadcv').addEventListener('change', function (event) {
+            document.getElementById('file-uploadcv').addEventListener('change', function (event) {
                 const file = event.target.files[0];
                 if (file) {
                     const reader = new FileReader();
@@ -666,95 +663,118 @@ Please choose more than 1 skill
                         document.getElementById('profile-imgcv').src = e.target.result;
                     };
                     reader.readAsDataURL(file);
-                }});
-    let statis = document.getElementById('tatus').textContent; 
-    const submitButton = document.getElementById('submitForm2'); 
-  
+                }
+            });
+            let statis = document.getElementById('tatus').textContent;
+            const submitButton = document.getElementById('submitForm2');
 
-    if(statis === null || statis.trim() === ''){
-        statis = 'No Apply CV';
-        console.log("statis was empty, set to 'No Apply CV'");
-    } else {
-            document.getElementById('tatus').textContent = '${requestScope.cv.status.statusName}' ;
 
-        console.log("statis has value:", statis);
-    }
+            if (statis === null || statis.trim() === '') {
+                statis = 'No Apply CV';
+                console.log("statis was empty, set to 'No Apply CV'");
+            } else {
+                document.getElementById('tatus').textContent = '${requestScope.cv.status.statusName}';
 
-document.getElementById('tatus').textContent = '${requestScope.cv.status.statusName}' === '' ? 'No Apply CV' : '${requestScope.cv.status.statusName}';
-    console.log("Final statis:", statis);
-});
+                console.log("statis has value:", statis);
+            }
+
+            document.getElementById('tatus').textContent = '${requestScope.cv.status.statusName}' === '' ? 'No Apply CV' : '${requestScope.cv.status.statusName}';
+            console.log("Final statis:", statis);
+        });
     </script>
-      <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Get the form elements
-        const applyForm = document.querySelector('form[action="aplly"]');
-        const setRateForm = document.querySelector('form[action="SetRate"]');
-              const submitButton = document.getElementById('submitForm2'); 
-    const nameInput = document.getElementById('fullname2');
-    const emailInput = document.getElementById('email2');
-    const dobInput = document.getElementById('dob2');
-    const addressInput = document.getElementById('address2');
-    const professionInput = document.getElementsByName('profession')[0];
-    const professionIntroInput = document.getElementsByName('professionIntro')[0];
-    const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
-    const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the form elements
+            const applyForm = document.querySelector('form[action="aplly"]');
+            const setRateForm = document.querySelector('form[action="SetRate"]');
+            const submitButton = document.getElementById('submitForm2');
+            const nameInput = document.getElementById('fullname2');
+            const emailInput = document.getElementById('email2');
+            const dobInput = document.getElementById('dob2');
+            const addressInput = document.getElementById('address2');
+            const professionInput = document.getElementsByName('profession')[0];
+            const professionIntroInput = document.getElementsByName('professionIntro')[0];
+            const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
+            const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
 
-    const nameError = document.getElementById('nameError2');
-    const emailError = document.getElementById('emailError2');
-    const dobError = document.getElementById('dobError2');
-    const addressErrors = document.querySelectorAll('#addressError2');
- 
-        if (applyForm) {
-            applyForm.addEventListener('submit', function (event) {
-                const rate = Number(document.querySelector(".rate_all")?.value);
-if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim() && !addressInput.value.trim() && !professionInput.value.trim() && !professionIntroInput.value.trim() && !achievementDescriptionInput.value.trim() && !serviceDescriptionInput.value.trim()){
-       event.preventDefault();
-                    
-                    Toastify({
-                        text: 'Please enter all information!!!',
-                        duration: 2000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                    }).showToast();
-     
- }
-                if (rate <= 0) {
-                    event.preventDefault();
-                    
-                    Toastify({
-                        text: 'You have not entered Rate yet. Please fill in rate !!!',
-                        duration: 2000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                    }).showToast();
-                }
-            });
-        }
+            const nameError = document.getElementById('nameError2');
+            const emailError = document.getElementById('emailError2');
+            const dobError = document.getElementById('dobError2');
+            const addressErrors = document.querySelectorAll('#addressError2');
 
-        // Handle Set Rate form submission
-        if (setRateForm) {
-            setRateForm.addEventListener('submit', function (event) {
-                const rate = Number(document.querySelector(".rate_all")?.value);
+            if (applyForm) {
+                applyForm.addEventListener('submit', function (event) {
+                    const rate = Number(document.querySelector(".rate_all")?.value);
+                    if (!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim() && !addressInput.value.trim() && !professionInput.value.trim() && !professionIntroInput.value.trim() && !achievementDescriptionInput.value.trim() && !serviceDescriptionInput.value.trim()) {
+                        event.preventDefault();
 
-                if (rate <= 0) {
-                    event.preventDefault();
+                        Toastify({
+                            text: 'Please enter all information!!!',
+                            duration: 2000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
 
-                    Toastify({
-                        text: 'You have not entered Rate yet. Please fill in rate !!!',
-                        duration: 2000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#ff7b5a",
-                    }).showToast();
-                }
-            });
-        }
-    });
-</script>
+                    }
+                    if (rate <= 0) {
+                        event.preventDefault();
 
-   
+                        Toastify({
+                            text: 'You have not entered Rate yet. Please fill in rate !!!',
+                            duration: 2000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                    }
+                    if (rate >= 1000000) {
+                        event.preventDefault();
+
+                        Toastify({
+                            text: 'Your rate too high, please enter another rate !!!',
+                            duration: 2000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                    }
+                });
+            }
+
+            // Handle Set Rate form submission
+            if (setRateForm) {
+                setRateForm.addEventListener('submit', function (event) {
+                    const rate = Number(document.querySelector(".rate_all")?.value);
+
+                    if (rate <= 0) {
+                        event.preventDefault();
+
+                        Toastify({
+                            text: 'You have not entered Rate yet. Please fill in rate !!!',
+                            duration: 2000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                    }
+                    if (rate >= 1000000) {
+                        event.preventDefault();
+
+                        Toastify({
+                            text: 'Your rate too high, please enter another rate !!!',
+                            duration: 2000,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff7b5a",
+                        }).showToast();
+                    }
+                });
+            }
+        });
+    </script>
+
+
     <script>
         document.getElementById('set-rate-as1').addEventListener('click', function () {
             document.querySelector('.as1').classList.add('hidden');
@@ -767,135 +787,135 @@ if(!nameInput.value.trim() && !emailInput.value.trim() && !dobInput.value.trim()
         });
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const submitButton = document.getElementById('Apply_CV'); 
-        let statis = document.getElementById('tatus').textContent; 
+        document.addEventListener('DOMContentLoaded', function () {
+            const submitButton = document.getElementById('Apply_CV');
+            let statis = document.getElementById('tatus').textContent;
 
- console.log(submitButton.textContent);
-    const nameInput = document.getElementById('fullname2');
-    const emailInput = document.getElementById('email2');
-    const dobInput = document.getElementById('dob2');
-    const addressInput = document.getElementById('address2');
-    const professionInput = document.getElementsByName('profession')[0];
-    const professionIntroInput = document.getElementsByName('professionIntro')[0];
-    const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
-    const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
-        const skillCheckboxes = document.querySelectorAll('input[name="skills"]');
-              const submitButtons = document.getElementById('submitForm2'); 
+            console.log(submitButton.textContent);
+            const nameInput = document.getElementById('fullname2');
+            const emailInput = document.getElementById('email2');
+            const dobInput = document.getElementById('dob2');
+            const addressInput = document.getElementById('address2');
+            const professionInput = document.getElementsByName('profession')[0];
+            const professionIntroInput = document.getElementsByName('professionIntro')[0];
+            const achievementDescriptionInput = document.getElementsByName('achievementDescription')[0];
+            const serviceDescriptionInput = document.getElementsByName('serviceDescription')[0];
+            const skillCheckboxes = document.querySelectorAll('input[name="skills"]');
+            const submitButtons = document.getElementById('submitForm2');
 
-    const nameError = document.getElementById('nameError2');
-    const emailError = document.getElementById('emailError2');
-    const dobError = document.getElementById('dobError2');
-    const addressErrors = document.querySelectorAll('#addressError2');
+            const nameError = document.getElementById('nameError2');
+            const emailError = document.getElementById('emailError2');
+            const dobError = document.getElementById('dobError2');
+            const addressErrors = document.querySelectorAll('#addressError2');
 
-    function validateForm() {
-        let isValid = true;
+            function validateForm() {
+                let isValid = true;
 
-        if (!nameInput.value.trim()) {
-            nameError.style.display = 'block';
-            isValid = false;
-        } else {
-            nameError.style.display = 'none';
-        }
+                if (!nameInput.value.trim()) {
+                    nameError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    nameError.style.display = 'none';
+                }
 
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email pattern
-if (!emailInput.value.trim() || !emailPattern.test(emailInput.value.trim())) {
-    emailError.textContent = 'Please enter a valid email address.';
-    emailError.style.display = 'block';
-    isValid = false;
-} else {
-    emailError.style.display = 'none';
-}
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email pattern
+                if (!emailInput.value.trim() || !emailPattern.test(emailInput.value.trim())) {
+                    emailError.textContent = 'Please enter a valid email address.';
+                    emailError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    emailError.style.display = 'none';
+                }
 
 // Date of Birth validation
-if (!dobInput.value.trim()) {
-    dobError.textContent = 'Please enter your date of birth.';
-    dobError.style.display = 'block';
-    isValid = false;
-} else {
-    const dob = new Date(dobInput.value.trim());
-    const today = new Date();
-    const age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    const isBirthdayPassed = monthDiff > 0 || (monthDiff === 0 && today.getDate() >= dob.getDate());
+                if (!dobInput.value.trim()) {
+                    dobError.textContent = 'Please enter your date of birth.';
+                    dobError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    const dob = new Date(dobInput.value.trim());
+                    const today = new Date();
+                    const age = today.getFullYear() - dob.getFullYear();
+                    const monthDiff = today.getMonth() - dob.getMonth();
+                    const isBirthdayPassed = monthDiff > 0 || (monthDiff === 0 && today.getDate() >= dob.getDate());
 
-    if (age < 15 || (age === 15 && !isBirthdayPassed)) {
-        dobError.textContent = 'You must be older than 15 years.';
-        dobError.style.display = 'block';
-        isValid = false;
-    } else {
-        dobError.style.display = 'none';
-    }
-}
+                    if (age < 15 || (age === 15 && !isBirthdayPassed)) {
+                        dobError.textContent = 'You must be older than 15 years.';
+                        dobError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        dobError.style.display = 'none';
+                    }
+                }
 
-        if (!addressInput.value.trim()) {
-            addressErrors[0].style.display = 'block';
-            isValid = false;
-        } else {
-            addressErrors[0].style.display = 'none';
-        }
+                if (!addressInput.value.trim()) {
+                    addressErrors[0].style.display = 'block';
+                    isValid = false;
+                } else {
+                    addressErrors[0].style.display = 'none';
+                }
 
-        if (!professionInput.value.trim()) {
-            addressErrors[1].style.display = 'block';
-            isValid = false;
-        } else {
-            addressErrors[1].style.display = 'none';
-        }
+                if (!professionInput.value.trim()) {
+                    addressErrors[1].style.display = 'block';
+                    isValid = false;
+                } else {
+                    addressErrors[1].style.display = 'none';
+                }
 
-        if (!professionIntroInput.value.trim()) {
-            addressErrors[2].style.display = 'block';
-            isValid = false;
-        } else {
-            addressErrors[2].style.display = 'none';
-        }
+                if (!professionIntroInput.value.trim()) {
+                    addressErrors[2].style.display = 'block';
+                    isValid = false;
+                } else {
+                    addressErrors[2].style.display = 'none';
+                }
 
-        if (!achievementDescriptionInput.value.trim()) {
-            addressErrors[3].style.display = 'block';
-            isValid = false;
-        } else {
-            addressErrors[3].style.display = 'none';
-        }
-       
+                if (!achievementDescriptionInput.value.trim()) {
+                    addressErrors[3].style.display = 'block';
+                    isValid = false;
+                } else {
+                    addressErrors[3].style.display = 'none';
+                }
 
-        if (!serviceDescriptionInput.value.trim()) {
-            addressErrors[4].style.display = 'block';
-            isValid = false;
-        } else {
-            addressErrors[4].style.display = 'none';
-        }
 
-            let checkedSkills = document.querySelectorAll('input[name="skills"]:checked');
-        if(checkedSkills.length === 0){
-            addressErrors[5].style.display = 'block';
-            isValid = false;
+                if (!serviceDescriptionInput.value.trim()) {
+                    addressErrors[4].style.display = 'block';
+                    isValid = false;
+                } else {
+                    addressErrors[4].style.display = 'none';
+                }
 
-        } else {
-            addressErrors[5].style.display = 'none';
+                let checkedSkills = document.querySelectorAll('input[name="skills"]:checked');
+                if (checkedSkills.length === 0) {
+                    addressErrors[5].style.display = 'block';
+                    isValid = false;
 
-        }
-        
-         if(statis === 'No Apply CV' || statis.trim() === ''){
-                        submitButton.disabled = true;
+                } else {
+                    addressErrors[5].style.display = 'none';
 
-        }else{
-             submitButton.disabled = false;
-        }
-        submitButtons.disabled = !isValid;
+                }
 
-        return isValid;
-    }
+                if (statis === 'No Apply CV' || statis.trim() === '') {
+                    submitButton.disabled = true;
 
-    const inputs = [nameInput, emailInput, dobInput, addressInput, professionInput, professionIntroInput, achievementDescriptionInput, serviceDescriptionInput];
+                } else {
+                    submitButton.disabled = false;
+                }
+                submitButtons.disabled = !isValid;
 
-    inputs.forEach(input => {
-        input.addEventListener('input', validateForm);
-        input.addEventListener('change', validateForm);
-    });
-skillCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', validateForm);
-    });
-    validateForm(); // Initial check
-});
+                return isValid;
+            }
+
+            const inputs = [nameInput, emailInput, dobInput, addressInput, professionInput, professionIntroInput, achievementDescriptionInput, serviceDescriptionInput];
+
+            inputs.forEach(input => {
+                input.addEventListener('input', validateForm);
+                input.addEventListener('change', validateForm);
+            });
+            skillCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', validateForm);
+            });
+            validateForm(); // Initial check
+        });
 
 
 

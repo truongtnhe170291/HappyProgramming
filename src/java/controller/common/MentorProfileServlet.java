@@ -129,7 +129,7 @@ public class MentorProfileServlet extends HttpServlet {
             request.setAttribute("mentor", mentor);
             request.getRequestDispatcher("Mentor.jsp").forward(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("PageError");
         }
 
     }
