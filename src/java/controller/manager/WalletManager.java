@@ -79,7 +79,7 @@ public class WalletManager extends HttpServlet {
                     wallet = dao.getWalletByUsenName(user.getUserName());
                 }
             }
-
+            String pageParam = request.getParameter("page");
             // Đặt ví vào request attribute
             request.setAttribute("wallet", wallet);
 
@@ -87,7 +87,7 @@ public class WalletManager extends HttpServlet {
             int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
 
             // Lấy danh sách giao dịch theo phân trang
-            int currentPage = 1; // Hoặc lấy từ request parameter nếu có
+            int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;// Hoặc lấy từ request parameter nếu có
             List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), currentPage);
 
             request.setAttribute("listTran", list);
