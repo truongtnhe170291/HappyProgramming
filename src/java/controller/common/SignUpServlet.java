@@ -125,6 +125,7 @@ public class SignUpServlet extends HttpServlet {
             mySession.setAttribute("gmail", gmail);
             dispatcher.forward(request, response);
         } else {
+            request.getRequestDispatcher("sign_up.jsp").forward(request, response);
             request.setAttribute("error", "password not the same confirm password");
         }
 

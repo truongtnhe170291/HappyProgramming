@@ -10,7 +10,6 @@ import dal.ScheduleDAO;
 import dal.SkillDAO;
 import dal.WalletDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -74,7 +73,8 @@ public class ManagerHomePage extends HttpServlet {
             request.setAttribute("listTran", listTr);
             request.setAttribute("totalAcc", totalAccountRegisted);
             request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
-        } catch (Exception e) {
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
 
     }
@@ -90,7 +90,7 @@ public class ManagerHomePage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        try{
         Account user = (Account) request.getSession().getAttribute("user");
         if (user == null) {
             response.sendRedirect("LoginManager");
@@ -135,6 +135,9 @@ public class ManagerHomePage extends HttpServlet {
         request.setAttribute("listTran", listTr);
         request.setAttribute("totalAcc", totalAccountRegisted);
         request.getRequestDispatcher("Homes_manager.jsp").forward(request, response);
+        }catch(ServletException | IOException e){
+            response.sendRedirect("PageError");
+        }
 
     }
 

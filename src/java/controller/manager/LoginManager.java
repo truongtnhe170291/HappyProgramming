@@ -122,8 +122,7 @@ public class LoginManager extends HttpServlet {
                 // ...
             }
         } catch (ServletException | IOException e) {
-            request.setAttribute("mess", "Đã xảy ra lỗi khi xử lý yêu cầu của bạn");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            response.sendRedirect("PageError");
         }
     }
 

@@ -1267,7 +1267,7 @@ public class RequestDAO {
 
     public StaticMentee getStaticRequest(String menteeName) {
         String sql = "SELECT COUNT(DISTINCT request_id) AS TotalRequests, "
-                + "SUM(DATEDIFF(HOUR, '00:00:00', deadline_hour)) AS TotalHour, "
+               
                 + "COUNT(DISTINCT mentor_name) AS TotalMentors "
                 + "FROM [HappyProgrammingDB].[dbo].[RequestsFormMentee] where mentee_name = ?";
         try {
@@ -1276,9 +1276,9 @@ public class RequestDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int totalRequest = rs.getInt("TotalRequests");
-                int totalHour = rs.getInt("TotalHour");
+              
                 int totalMentor = rs.getInt("TotalMentors");
-                return new StaticMentee(totalRequest, totalHour, totalMentor);
+                return new StaticMentee(totalRequest, totalMentor);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

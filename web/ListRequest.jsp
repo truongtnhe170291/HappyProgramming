@@ -6,6 +6,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List of Requests</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
               integrity="sha512-vP0MSTlp4tfcX8OYKTBOCCi0A+zjRgw4ADYz2F0tL4J4/lA/FW5V6hfEjNUtAeECb6dJwyuV4EjZ1lkl9EP0dQ=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -478,38 +480,38 @@
                 margin-right: 10px;
             }
 
-           .pagination {
-               margin-top: 30px;
-    display: flex;
-    justify-content: flex-end;
-    list-style-type: none;
-    padding: 0;
-}
+            .pagination {
+                margin-top: 30px;
+                display: flex;
+                justify-content: flex-end;
+                list-style-type: none;
+                padding: 0;
+            }
 
-.pagination li {
-    margin: 0 5px;
-}
+            .pagination li {
+                margin: 0 5px;
+            }
 
-.pagination a {
-    display: block;
-    padding: 8px 16px;
-    text-decoration: none;
-    color: #000;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-}
+            .pagination a {
+                display: block;
+                padding: 8px 16px;
+                text-decoration: none;
+                color: #000;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                transition: background-color 0.3s, color 0.3s;
+            }
 
-.pagination a:hover {
-    background-color: #f1f1f1;
-}
+            .pagination a:hover {
+                background-color: #f1f1f1;
+            }
 
-.pagination .active a {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-}
+            .pagination .active a {
+                background-color: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
         </style>
     </head>
 
@@ -523,10 +525,11 @@
                         <form method="GET" action="ListRequest">
                             <label for="statusFilter">Filter by Status: </label>
                             <select id="statusFilter" name="statusFilter">
-                                <option value="all" ${statusId==-1 ? 'selected' : '' }>All</option>
+                              
+                                <option value="all" ${statusFilter == 'all' ? 'selected' : '' }>All</option>
                                 <c:forEach var="status" items="${statuses}">
-                                    <option value="${status.statusId}" ${statusId==status.statusId ? 'selected' : ''
-                                            }>
+                                    <!-- Chọn trạng thái tương ứng nếu statusId trùng với giá trị của trạng thái -->
+                                    <option value="${status.statusId}" ${statusFilter == status.statusId.toString() ? 'selected' : ''}>
                                         ${status.statusName}
                                     </option>
                                 </c:forEach>
@@ -534,293 +537,141 @@
 
                             <label for="mentorNameFilter">Filter by Mentor Name: </label>
                             <select id="mentorNameFilter" name="mentorNameFilter">
-                                <option value="all" ${empty param.mentorNameFilter ? 'selected' : '' }>All</option>
+                                <!-- Chọn "All" nếu mentorNameFilter là null hoặc rỗng -->
+                                <option value="all" ${mentorNameFilter == 'all' ? 'selected' : '' }>All</option>
                                 <c:forEach var="mentor" items="${mentors1}">
-                                    <option value="${mentor.userName}" ${mentorName==mentor.userName ? 'selected'
-                                                     : '' }>
-                                                ${mentor.userName}
-                                            </option>
-                                    </c:forEach>
-                                </select>
-
-                                <label for="startTimeFilter">Filter by Start Time: </label>
-                                <input type="date" id="startTimeFilter" name="startTimeFilter"
-                                       value="${startTime != null ? startTime : ''}">
-
-                                <label for="endTimeFilter">Filter by End Time: </label>
-                                <input type="date" id="endTimeFilter" name="endTimeFilter"
-                                       value="${endTime != null ? endTime : ''}">
-
-                                <button type="submit">Filter</button>
-                            </form>
-                        </div>
-
-
-                        <table class="table mb-0 table-borderless">
-                            <thead>
-                                <tr class="userDatatable-header">
-                                    <th>
-                                        <span class="userDatatable-title">Title</span>
-                                    </th>
-                                    <th>
-                                        <span class="userDatatable-title">Mentor Name</span>
-                                    </th>
-                                    <th>
-                                        <span class="userDatatable-title">Deadline</span>
-                                    </th>
-                                    <th>
-                                        <span class="userDatatable-title">Status</span>
-                                    </th>
-                                    <th>
-                                        <span class="userDatatable-title">Actions</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="requestTableBody">
-                                <c:forEach var="request" items="${requests}">
-                                    <tr class="request-row" data-status="${request.status.statusName}">
-                                        <td>${request.title}</td>
-                                        <td>${request.mentorName}</td>
-                                        <td>${request.deadlineHour} ${request.deadlineDate}</td>
-                                        <td>${request.status.statusName}</td>
-                                        <td class="d-flex" style="margin-top:12px;">
-                                            <!-- View button -->
-                                            <input type="hidden" name="requestId" value="${request.requestId}" />
-                                            <div class="action-btn">
-                                                <!--                                            <a href="#" class="btn btn-primary align-center centaxs" data-bs-toggle="modal" data-bs-target="#${request.menteeName}${request.requestId}" style="background-color: #fff; border: none;">
-                                                <i class="uil uil-eye align-center" style="color: blue;"></i>
-                                            </a>-->
-
-                                                <a href="ViewDetailRequest?requestId=${request.requestId}&action=view" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
-                                                    <i class="uil uil-eye align-center" style="color: blue;"></i>
-                                                </a>
-
-                                                <%--<c:if test="${request.isEnoughPay eq true}">--%> 
-                                                    <!--<a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">-->
-                                                <!--<i class="uil uil-tachometer-fast align-center" style="color: blue;"></i>-->
-                                                <!--</a>-->
-                                                <%--</c:if>--%>   
-
-                                                <c:if test="${request.isEnoughPay eq true}">
-                                                    <a href="ViewDetailRequest?requestId=${request.requestId}&action=feedback" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
-                                                        <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
-                                                    </a>
-                                                </c:if>
-
-                                                <!--uil-comment-alt-message-->
-
-                                                <div class="modal fade ticket_modal custom_modal"
-                                                     id="${request.menteeName}${request.requestId}" role="dialog"
-                                                     tabindex="-1" aria-hidden="true">
-                                                    <div
-                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom_modal">
-                                                        <div class="modal-content radius-xl">
-                                                            <div class="modal-body pb-sm-50 pb-30">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close">
-                                                                        <img src="img/svg/x.svg" alt="x"
-                                                                             class="svg">
-                                                                    </button>
-                                                                </div>
-                                                                <div class="ticket_modal-modal">
-                                                                    <h1>Request Details</h1>
-                                                                    <div class="text-center">Title:
-                                                                        ${request.title}</div><br>
-                                                                    <div class="text-center">Mentor Name:
-                                                                        ${request.mentorName}</div><br>
-                                                                    <div class="text-center">Description:
-                                                                        ${request.description}</div><br>
-                                                                    <div class="text-center">Deadline:
-                                                                        ${request.deadlineHour}
-                                                                        ${request.deadlineDate}</div><br>
-
-                                                                    <div class="form-container">
-                                                                        <table border="1" width="100%">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th rowspan="2">WEEK
-                                                                                        <div
-                                                                                            class="select-container">
-                                                                                            <select
-                                                                                                id="week"></select>
-                                                                                        </div>
-                                                                                    </th>
-                                                                                    <c:forEach var="day"
-                                                                                               items="${listDays}">
-                                                                                        <th class="equal-width">
-                                                                                            ${day.dateName}</th>
-                                                                                        </c:forEach>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <c:forEach var="slot"
-                                                                                           items="${listSlots}"
-                                                                                           varStatus="loop">
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            <c:choose>
-                                                                                                <c:when
-                                                                                                    test="${slot.slot_name == '7:00 - 9:00'}">
-                                                                                                    Slot 1
-                                                                                                </c:when>
-                                                                                                <c:when
-                                                                                                    test="${slot.slot_name == '9:00 - 11:00'}">
-                                                                                                    Slot 2
-                                                                                                </c:when>
-                                                                                                <c:when
-                                                                                                    test="${slot.slot_name == '13:00 - 15:00'}">
-                                                                                                    Slot 3
-                                                                                                </c:when>
-                                                                                                <c:when
-                                                                                                    test="${slot.slot_name == '15:00 - 17:00'}">
-                                                                                                    Slot 4
-                                                                                                </c:when>
-                                                                                                <c:otherwise>
-                                                                                                    Invalid Slot
-                                                                                                </c:otherwise>
-                                                                                            </c:choose>
-                                                                                        </td>
-                                                                                        <c:forEach var="day"
-                                                                                                   items="${listDays}">
-                                                                                            <c:set var="found"
-                                                                                                   value="false" />
-                                                                                            <c:forEach
-                                                                                                var="scheduleItem"
-                                                                                                items="${request.listSchedule}">
-                                                                                                <c:if
-                                                                                                    test="${scheduleItem.nameOfDay == day.dateWeek && scheduleItem.slotId == slot.slot_id}">
-                                                                                                    <td>
-                                                                                                        <div
-                                                                                                            class="slot-info">
-
-                                                                                                            <div
-                                                                                                                class="class-code">
-                                                                                                                Subject:
-                                                                                                                <c:forEach
-                                                                                                                    items="${request.listSkills}"
-                                                                                                                    var="skill">
-                                                                                                                    ${skill.skillName}
-                                                                                                                </c:forEach>
-                                                                                                            </div>
-
-                                                                                                            <div
-                                                                                                                class="class-code">
-                                                                                                                time:
-                                                                                                                ${scheduleItem.slot_name}
-                                                                                                            </div>
-                                                                                                            <div class="start class-code"
-                                                                                                                 value="${scheduleItem.startTime}">
-                                                                                                                startTime:
-                                                                                                                ${scheduleItem.startTime}
-                                                                                                            </div>
-                                                                                                            <div
-                                                                                                                class="class-code">
-                                                                                                                endTime:
-                                                                                                                ${scheduleItem.endTime}
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </td>
-                                                                                                    <c:set
-                                                                                                        var="found"
-                                                                                                        value="true" />
-                                                                                                </c:if>
-                                                                                            </c:forEach>
-                                                                                            <c:if
-                                                                                                test="${not found}">
-                                                                                                <td></td>
-                                                                                            </c:if>
-                                                                                        </c:forEach>
-                                                                                    </tr>
-                                                                                </c:forEach>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <br />
-
-                                                                        <c:if
-                                                                            test="${request.status.statusId == 3}">
-                                                                            <div class="reject-note">
-                                                                                <div class="reject-icon">!</div>
-                                                                                <div class="reject-message">
-                                                                                    Reason for reject:
-                                                                                    ${request.note}</div>
-                                                                            </div>
-                                                                        </c:if>
-
-
-
-                                                                        <input type="hidden" id="selectedSlots"
-                                                                               name="selectedSlots" value="">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Edit and Delete buttons -->
-                                                <c:if test="${request.status.statusId == 6}">
-                                                    <form method="GET" action="request" ">
-                                                        <input type="hidden" name="cvId" value="${request.cvId}" />
-                                                        <button type="submit" class="edit-btn btn "
-                                                                style="width: 59.5px; height: 41px;border-radius: 0.42rem;" ">
-                                                            <i class=" fas fa-pencil-alt"></i>
-                                                        </button>
-                                                    </form>
-                                                    <form method="POST" action="EditOrDeleteRequest"
-                                                          onsubmit="return confirm('Are you sure you want to delete this request?');">
-                                                        <input type="hidden" name="requestId"
-                                                               value="${request.requestId}" />
-                                                        <button type="submit" class="edit-btn btn "
-                                                                style="width: 59.5px; height: 41px;border-radius: 0.42rem;">
-                                                            <i class="fas fa-trash-alt"></i> </button>
-                                                    </form>
-                                                </c:if>
-
-
-
-                                                <!-- Payment button for 'Wait For Payment' status -->
-                                                <c:if test="${request.status.statusName == 'Wait For Payment'}">
-                                                    <form method="POST" action="payment">
-                                                        <input type="hidden" name="requestId"
-                                                               value="${request.requestId}" />
-                                                        <button type="submit"
-                                                                style="
-                                                                width: 59.5px;
-                                                                height: 41px; border-radius: 0.42rem; align-items: center; text-align: center; font-size: 20px; font-weight: bold;">
-                                                            <li>
-                                                                <a href="#" class="pay">
-                                                                    <i class="uil uil-credit-card"></i>
-                                                                </a>
-                                                            </li>
-                                                        </button>
-                                                    </form>
-                                                </c:if>
-                                        </td>
-                                    </tr>
+                                    <!-- Chọn tên mentor tương ứng nếu mentorNameFilter trùng với tên mentor -->
+                                    <option value="${mentor.userName}" ${mentorNameFilter == mentor.userName ? 'selected' : ''}>
+                                        ${mentor.userName}
+                                    </option>
                                 </c:forEach>
-             </table>
-               <ul class="pagination">
-    <c:if test="${currentPage > 1}">
-        <li>
-            <a href="ListRequest?page=${currentPage - 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
-        </li>
-    </c:if>
-    <c:forEach var="i" begin="1" end="${totalPages}">
-        <li class="${currentPage == i ? 'active' : ''}">
-            <a href="ListRequest?page=${i}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
-        </li>
-    </c:forEach>
-    <c:if test="${currentPage < totalPages}">
-        <li>
-            <a href="ListRequest?page=${currentPage + 1}&pageSize=${pageSize}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
-        </li>
-    </c:if>
-</ul>
-</div>
-</div></div>
-             
+                            </select>
+
+                            <label for="startTimeFilter">Filter by Start Time: </label>
+                            <input type="date" id="startTimeFilter" name="startTimeFilter"
+                                   value="${startTimeFilter != null ? startTimeFilter : ''}">
+
+                            <label for="endTimeFilter">Filter by End Time: </label>
+                            <input type="date" id="endTimeFilter" name="endTimeFilter"
+                                   value="${endTimeFilter != null ? endTimeFilter : ''}">
+
+                            <button type="submit">Filter</button>
+                        </form>
+
+                    </div>
+
+
+                    <table class="table mb-0 table-borderless">
+                        <thead>
+                            <tr class="userDatatable-header">
+                                <th>
+                                    <span class="userDatatable-title">Title</span>
+                                </th>
+                                <th>
+                                    <span class="userDatatable-title">Mentor Name</span>
+                                </th>
+                                <th>
+                                    <span class="userDatatable-title">Deadline</span>
+                                </th>
+                                <th>
+                                    <span class="userDatatable-title">Status</span>
+                                </th>
+                                <th>
+                                    <span class="userDatatable-title">Actions</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestTableBody">
+                            <c:forEach var="request" items="${requests}">
+                                <tr class="request-row" data-status="${request.status.statusName}">
+                                    <td>${request.title}</td>
+                                    <td>${request.mentorName}</td>
+                                    <td>${request.deadlineHour} ${request.deadlineDate}</td>
+                                    <td>${request.status.statusName}</td>
+                                    <td class="d-flex" style="margin-top:12px;">
+                                        <!-- View button -->
+                                        <input type="hidden" name="requestId" value="${request.requestId}" />
+                                        <div class="action-btn">
+
+
+                                            <a href="ViewDetailRequest?requestId=${request.requestId}&action=view" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
+                                                <i class="uil uil-eye align-center" style="color: blue;"></i>
+                                            </a>
+
+
+
+                                            <c:if test="${request.isEnoughPay eq true}">
+                                                <a href="ViewDetailRequest?requestId=${request.requestId}&action=feedback" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
+                                                    <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
+                                                </a>
+                                            </c:if>
+
+
+
+                                            <!-- Edit and Delete buttons -->
+                                            <c:if test="${request.status.statusId == 6}">
+                                                <form method="GET" action="request" ">
+                                                    <input type="hidden" name="cvId" value="${request.cvId}" />
+                                                    <button type="submit" class="edit-btn btn "
+                                                            style="width: 59.5px; height: 41px;border-radius: 0.42rem;" ">
+                                                        <i class=" fas fa-pencil-alt"></i>
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="EditOrDeleteRequest"
+                                                      onsubmit="return confirm('Are you sure you want to delete this request?');">
+                                                    <input type="hidden" name="requestId"
+                                                           value="${request.requestId}" />
+                                                    <button type="submit" class="edit-btn btn "
+                                                            style="width: 59.5px; height: 41px;border-radius: 0.42rem;">
+                                                        <i class="fas fa-trash-alt"></i> </button>
+                                                </form>
+                                            </c:if>
+
+
+
+                                            <!-- Payment button for 'Wait For Payment' status -->
+                                            <c:if test="${request.status.statusName == 'Wait For Payment'}">
+                                                <form method="POST" action="payment">
+                                                    <input type="hidden" name="requestId"
+                                                           value="${request.requestId}" />
+                                                    <button type="submit"
+                                                            style="
+                                                            width: 59.5px;
+                                                            height: 41px; border-radius: 0.42rem; align-items: center; text-align: center; font-size: 20px; font-weight: bold;">
+                                                        <li>
+                                                            <a href="#" class="pay">
+                                                                <i class="uil uil-credit-card"></i>
+                                                            </a>
+                                                        </li>
+                                                    </button>
+                                                </form>
+                                            </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                    </table>
+                    <ul class="pagination">
+                        <c:if test="${currentPage > 1}">
+                            <li>
+                                <a href="ListRequest?page=${currentPage - 1}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Previous</a>
+                            </li>
+                        </c:if>
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <li class="${currentPage == i ? 'active' : ''}">
+                                <a href="ListRequest?page=${i}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">${i}</a>
+                            </li>
+                        </c:forEach>
+                        <c:if test="${currentPage < totalPages}">
+                            <li>
+                                <a href="ListRequest?page=${currentPage + 1}&statusFilter=${statusFilter}&mentorNameFilter=${mentorNameFilter}&startTimeFilter=${startTimeFilter}&endTimeFilter=${endTimeFilter}">Next</a>
+                            </li>
+                        </c:if>
+                    </ul>
+
+
+                </div>
+            </div></div>
+
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -874,7 +725,7 @@
 
         </script>
 
-    
-</body>
+
+    </body>
 
 </html>

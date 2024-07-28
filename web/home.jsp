@@ -392,7 +392,7 @@
                                             </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-primary">
-                                            <i class="uil uil-arrow-growth"></i>
+                                            <i class="uil uil-list-ul"></i>
                                         </div>
                                     </div>
 
@@ -412,16 +412,16 @@
                                     <div
                                         class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
                                         <div class="ap-po-details__titlebar">
-                                            <p>Accepted Requests</p>
+                                            <p>Done Requests</p>
                                             <h1>${staticMentor.acceptedRequests}</h1>
                                             <div class="ap-po-details-time">
-                                                <span class="color-success"><i class="las la-arrow-up"></i>
+                                                <span class="color-success"><i class="uil uil-arrow-growth"></i>
                                                     <strong>${staticMentor.completePercentage}%</strong></span>
                                                 <small>Accept</small>
                                             </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-secondary">
-                                            <i class="uil uil-users-alt"></i>
+                                            <i class="uil uil-check-circle"></i>
                                         </div>
                                     </div>
 
@@ -441,16 +441,16 @@
                                     <div
                                         class=" ap-po-details-content d-flex flex-wrap justify-content-between w-100">
                                         <div class="ap-po-details__titlebar">
-                                            <p>Canceled Requests</p>
+                                            <p>Rejected Requests</p>
                                             <h1>${staticMentor.canceledRequests}</h1>
                                             <div class="ap-po-details-time">
-                                                <span class="color-danger"><i class="las la-arrow-down"></i>
+                                                <span class="color-danger"><i class="uil uil-arrow-down"></i>
                                                     <strong>${staticMentor.cancelPercentage}%</strong></span>
-                                                <small>Cancel</small>
+                                                <small>Reject</small>
                                             </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-success">
-                                            <i class="uil uil-usd-circle"></i>
+                                            <i class="uil uil-times-circle"></i>
                                         </div>
                                     </div>
 
@@ -479,7 +479,7 @@
                                             </div>
                                         </div>
                                         <div class="ap-po-details__icon-area color-info">
-                                            <i class="uil uil-tachometer-fast"></i>
+                                            <i class="uil uil-user"></i>
                                         </div>
                                     </div>
 
@@ -492,7 +492,7 @@
                             <div class="col-xxl-4 mb-25">
                                 <div class="card border-0 px-25">
                                     <div class="card-header px-0 border-0">
-                                        <h6>Request List</h6>
+                                        <h6>List of pending requests</h6>
                                         <form action="ListRequestMentor" method="get">
                                             <input type="hidden" name="statusFilter" value="2">
                                             <input type="hidden" name="menteeNameFilter" value="">

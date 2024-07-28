@@ -143,7 +143,7 @@ public class DetailSchedule_mentor extends HttpServlet {
 
             request.getRequestDispatcher("DetailSchedule_mentor.jsp").forward(request, response);
         } catch (SQLException e) {
-            throw new ServletException(e);
+            response.sendRedirect("PageError");
         }
 
     }

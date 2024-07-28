@@ -6,6 +6,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Attendance Summary</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -92,6 +94,9 @@ h2 {
             color: #28a745;
         }
         .now_pter{pointer-events: none;}
+        .text-primaryS{
+            color: #3498db;
+        }
     </style>
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <!-- Template CSS -->
@@ -414,8 +419,8 @@ document.getElementById('renderMoneyBtn').addEventListener('click', function() {
                         '<td class="text-end">' + absentAmount.toLocaleString() + ' VND</td>' +
                     '</tr>' +
                     '<tr>' +
-                        '<td class="text-primary fw-bold">Not Yet:</td>' +
-                        '<td class="text-primary fw-bold">'+name_notYet+'</td>' +
+                        '<td class="text-primaryS fw-bold">Not Yet:</td>' +
+                        '<td class="text-primaryS fw-bold">'+name_notYet+'</td>' +
                         '<td class="text-end">' + notYetCount + ' sessions</td>' +
                         '<td class="text-end">'+notyetAmount.toLocaleString() + ' VND</td>' +
                     '</tr>' +

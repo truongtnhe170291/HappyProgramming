@@ -69,49 +69,53 @@ public class ViewDetailSchedule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mentorName = request.getParameter("mentorName");
+        try {
+            String mentorName = request.getParameter("mentorName");
 //        String isNext = request.getParameter("isNext");
 //        if (isNext.isBlank()) {
 //            System.out.println("isNext null");
 //        } else {
 //            mentorName = "";
 //        }
-        
-        // get thu 2 của tuan sau nua
-        LocalDate today = LocalDate.now();
-        LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
-        LocalDate nextNextMonday = nextMonday.plusWeeks(1);
-        Cycle c = mentorDao.getNewCycleByUser(mentorName);
-        String status = "";
-        String startDate = "";
-        //get list schdule
-        if (mentorDao.checkContainSelectSlotSave(mentorName, 6) || mentorDao.checkContainSelectSlotSave(mentorName, 1) || mentorDao.checkContainSelectSlotSave(mentorName, 5) || mentorDao.checkContainSelectSlotSave(mentorName, 3) || mentorDao.checkContainSelectSlotSave(mentorName, 2)) {
-            List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(mentorName, c.getStart(), c.getEnd());
-            if (!listsp.isEmpty()) {
-                for (SchedulePublic s : listsp) {
-                    LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
-                    s.setNameOfDay(date.getDayOfWeek());
-                    status = s.getStatus();
+
+            // get thu 2 của tuan sau nua
+            LocalDate today = LocalDate.now();
+            LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+            LocalDate nextNextMonday = nextMonday.plusWeeks(1);
+            Cycle c = mentorDao.getNewCycleByUser(mentorName);
+            String status = "";
+            String startDate = "";
+            //get list schdule
+            if (mentorDao.checkContainSelectSlotSave(mentorName, 6) || mentorDao.checkContainSelectSlotSave(mentorName, 1) || mentorDao.checkContainSelectSlotSave(mentorName, 5) || mentorDao.checkContainSelectSlotSave(mentorName, 3) || mentorDao.checkContainSelectSlotSave(mentorName, 2)) {
+                List<SchedulePublic> listsp = mentorDao.listSlotsCycleByMentor(mentorName, c.getStart(), c.getEnd());
+                if (!listsp.isEmpty()) {
+                    for (SchedulePublic s : listsp) {
+                        LocalDate date = LocalDate.parse(s.getDayOfSlot().toString());
+                        s.setNameOfDay(date.getDayOfWeek());
+                        status = s.getStatus();
+                    }
+                } else {
+                    response.sendRedirect("HandleSlotMentor");
                 }
-            } else {
-                response.sendRedirect("HandleSlotMentor");
+
+                for (SchedulePublic s : listsp) {
+                    System.out.println(s.getNameOfDay());
+                }
+                request.setAttribute("listScheduleSave", listsp);
             }
 
-            for (SchedulePublic s : listsp) {
-                System.out.println(s.getNameOfDay());
-            }
-            request.setAttribute("listScheduleSave", listsp);
+            request.setAttribute("status", status);
+            request.setAttribute("mentorName", mentorName);
+
+            // get list Slot
+            List<Slot> listSlot = mentorDao.listSlots();
+
+            request.setAttribute("mon", c.getStart());
+            request.setAttribute("listSlot", listSlot);
+            request.getRequestDispatcher("ViewDetailSchedule_manager.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
-
-        request.setAttribute("status", status);
-        request.setAttribute("mentorName", mentorName);
-
-        // get list Slot
-        List<Slot> listSlot = mentorDao.listSlots();
-
-        request.setAttribute("mon", c.getStart());
-        request.setAttribute("listSlot", listSlot);
-        request.getRequestDispatcher("ViewDetailSchedule_manager.jsp").forward(request, response);
     }
 
     /**

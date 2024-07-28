@@ -122,9 +122,8 @@ public class FeedBackServlet extends HttpServlet {
             } else {
                 response.sendRedirect("login.jsp?error=You must be logged in to submit feedback.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().write("System Error");
+        } catch (IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 

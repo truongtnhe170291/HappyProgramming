@@ -59,7 +59,7 @@ public class ApplyCVServlet extends HttpServlet {
                 response.sendRedirect("cv");
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            response.sendRedirect("PageError");
         }
     }
 

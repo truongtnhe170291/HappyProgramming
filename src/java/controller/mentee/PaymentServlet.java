@@ -138,6 +138,7 @@ public class PaymentServlet extends HttpServlet {
             // chuyen huong neu error
         } catch (IOException e) {
             // chuyen huong neu error
+            response.sendRedirect("PageError");
         }
         // chuyen huong neu error
     }

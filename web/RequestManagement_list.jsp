@@ -5,6 +5,8 @@
         <meta charset="UTF-8">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
         <title>List Request Manager</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">

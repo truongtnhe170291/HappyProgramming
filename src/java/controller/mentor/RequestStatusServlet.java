@@ -86,7 +86,7 @@ public class RequestStatusServlet extends HttpServlet {
             requestDao.checkAndUpdateOverdueStatus();
             response.sendRedirect("ListRequestMentor");
         } catch (SQLException e) {
-            throw new ServletException(e);
+            response.sendRedirect("PageError");
         }
     }
 }

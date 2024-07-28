@@ -6,6 +6,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Manager_Skill</title>
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
 
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <link rel="stylesheet" href="assetss/css/style.css">

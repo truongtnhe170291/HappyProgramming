@@ -11,6 +11,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Guarda Wallet</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
 
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <style>

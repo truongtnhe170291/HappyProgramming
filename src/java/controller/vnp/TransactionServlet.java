@@ -65,6 +65,7 @@ public class TransactionServlet extends HttpServlet {
                 return;
             }
         } catch (NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
 
     }

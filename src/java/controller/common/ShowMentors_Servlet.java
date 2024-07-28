@@ -84,7 +84,7 @@ public class ShowMentors_Servlet extends HttpServlet {
             // Forward to the courseListSkillDetail.jsp
             request.getRequestDispatcher("courseListSkillDetail.jsp").forward(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ShowMentors_Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("PageError");
         }
     }
 

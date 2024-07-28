@@ -54,10 +54,14 @@ public class ManagerBlog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BlogDAO blogdao = new BlogDAO();
-        List<Blog> blog = blogdao.getBlogs();
-        request.setAttribute("blog", blog);
-        request.getRequestDispatcher("Manager_Blog.jsp").forward(request, response);
+        try {
+            BlogDAO blogdao = new BlogDAO();
+            List<Blog> blog = blogdao.getBlogs();
+            request.setAttribute("blog", blog);
+            request.getRequestDispatcher("Manager_Blog.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
+        }
     }
 
     /**
@@ -68,8 +72,6 @@ public class ManagerBlog extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -117,11 +119,8 @@ public class ManagerBlog extends HttpServlet {
             } else {
                 response.sendRedirect("error.jsp");
             }
-        } catch (Exception ex) {
-            // Handle errors
-            ex.printStackTrace();
-            request.setAttribute("errorMessage", "An error occurred while creating the blog: " + ex.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            response.sendRedirect("PageError");
         }
     }
 

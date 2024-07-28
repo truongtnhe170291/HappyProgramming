@@ -6,6 +6,8 @@
         <meta charset="UTF-8">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
         <title>List Request Manager</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
@@ -136,14 +138,9 @@
 
             /* Style for the popup content */
             .popup-content {
-                background-color: #fefefe;
-                margin: 5% auto;
+
                 padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-height: 80%;
-                overflow-y: auto;
-                /* Enable vertical scrolling */
+
             }
 
             /* Close button style */
@@ -213,7 +210,7 @@
                 margin-right: 20px;
                 margin-bottom: 20px;
             }
-            
+
             .prev{
                 border-top-left-radius: 8px;
                 border-bottom-left-radius: 8px;
@@ -398,7 +395,14 @@
                 color: transparent !important;
                 transform: translateY(-200px);
             }
-    
+
+            #notePopup{
+                transform: translate(-50%, -50%) !important;
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+
+            }
         </style>
     </head>
 
@@ -413,9 +417,9 @@
                         <ul class="navbar-nav mr-3">
                             <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
                                    collapse-btn"> <i data-feather="align-justify"></i></a></li>
-                            
-                               
-                           
+
+
+
                         </ul>
                     </div>
                     <ul class="navbar-nav navbar-right">
@@ -430,8 +434,8 @@
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello Manager</div>
                             <a href="WalletManager" class="dropdown-item has-icon text">  <i class="fas fa-wallet"></i>
-                My Wallet
-              </a>
+                                My Wallet
+                            </a>
                             <a href="logoutManager" class="dropdown-item has-icon text-danger"> <i
                                     class="fas fa-sign-out-alt"></i>
                                 Logout
@@ -464,9 +468,9 @@
                                                 <div class="filter-group">
                                                     <label for="statusFilter">Filter by Status:</label>
                                                     <select name="statusFilter" id="statusFilter">
-                                                        <option value="" ${empty param.statusFilter ? 'selected' : '' }>All</option>
+                                                        <option value="" ${empty statusFilter ? 'selected' : '' }>All</option>
                                                         <c:forEach items="${statusList}" var="status">
-                                                            <option value="${status.statusId}" ${param.statusFilter == status.statusId ? 'selected' : '' }>
+                                                            <option value="${status.statusId}" ${statusFilter == status.statusId ? 'selected' : '' }>
                                                                 ${status.statusName}
                                                             </option>
                                                         </c:forEach>
@@ -474,11 +478,12 @@
                                                 </div>
                                                 <div class="filter-group">
                                                     <label for="searchName">Search by Mentor Name:</label>
-                                                    <input type="text" name="searchName" id="searchName" value="${param.searchName}" />
+                                                    <input type="text" name="searchName" id="searchName" value="${searchName}" />
                                                     <button type="submit" class="apply-button">Apply</button>
                                                 </div>
                                             </div>
                                         </form>
+
 
                                         <div class="card-header">
                                             <h4>List CV Mentor</h4>
@@ -736,15 +741,15 @@
                         const popup = this.parentElement.querySelector('.popup');
                         popup.style.display = 'block';
                         document.querySelector('.main-sidebar').classList.add('add_event');
-                                                document.querySelector('.breadcrumb').classList.add('add_event');
+                        document.querySelector('.breadcrumb').classList.add('add_event');
 
                         document.getElementById('nv').classList.add('add_event');
- removedElement = document.querySelector('.navbar.navbar-expand-lg.main-navbar.sticky');
-    if (removedElement) {
-        removedElement.parentNode.removeChild(removedElement);
-    }                     
-                        document.querySelectorAll('.form-inline').forEach((ele)=> ele.classList.add('add_event'));
-                       
+                        removedElement = document.querySelector('.navbar.navbar-expand-lg.main-navbar.sticky');
+                        if (removedElement) {
+                            removedElement.parentNode.removeChild(removedElement);
+                        }
+                        document.querySelectorAll('.form-inline').forEach((ele) => ele.classList.add('add_event'));
+
                     });
                 });
 
@@ -752,39 +757,39 @@
                 closeButtons.forEach(function (button) {
                     button.addEventListener('click', function () {
                         const popup = this.closest('.popup');
-                          document.querySelector('.breadcrumb').classList.remove('add_event');
+                        document.querySelector('.breadcrumb').classList.remove('add_event');
                         document.querySelector('.main-sidebar').classList.remove('add_event');
                         document.getElementById('nv').classList.remove('add_event');
-                       if (removedElement) {
-        const mainWrapper = document.querySelector('.main-wrapper');
-        if (mainWrapper.firstChild) {
-            mainWrapper.insertBefore(removedElement, mainWrapper.firstChild.nextSibling);
-        } else {
-            mainWrapper.appendChild(removedElement);
-        }
-        removedElement = null;
-    }
-                        document.querySelectorAll('.form-inline').forEach((ele)=> ele.classList.remove('add_event'));
+                        if (removedElement) {
+                            const mainWrapper = document.querySelector('.main-wrapper');
+                            if (mainWrapper.firstChild) {
+                                mainWrapper.insertBefore(removedElement, mainWrapper.firstChild.nextSibling);
+                            } else {
+                                mainWrapper.appendChild(removedElement);
+                            }
+                            removedElement = null;
+                        }
+                        document.querySelectorAll('.form-inline').forEach((ele) => ele.classList.remove('add_event'));
                         popup.style.display = 'none';
                     });
                 });
 
                 window.onclick = function (event) {
                     if (event.target.classList.contains('popup')) {
-                                                  document.querySelector('.breadcrumb').classList.remove('add_event');
+                        document.querySelector('.breadcrumb').classList.remove('add_event');
 
-                         document.querySelector('.main-sidebar').classList.remove('add_event');
+                        document.querySelector('.main-sidebar').classList.remove('add_event');
                         document.getElementById('nv').classList.remove('add_event');
-                       if (removedElement) {
-        const mainWrapper = document.querySelector('.main-wrapper');
-        if (mainWrapper.firstChild) {
-            mainWrapper.insertBefore(removedElement, mainWrapper.firstChild.nextSibling);
-        } else {
-            mainWrapper.appendChild(removedElement);
-        }
-        removedElement = null;
-    }
-                        document.querySelectorAll('.form-inline').forEach((ele)=> ele.classList.remove('add_event'));
+                        if (removedElement) {
+                            const mainWrapper = document.querySelector('.main-wrapper');
+                            if (mainWrapper.firstChild) {
+                                mainWrapper.insertBefore(removedElement, mainWrapper.firstChild.nextSibling);
+                            } else {
+                                mainWrapper.appendChild(removedElement);
+                            }
+                            removedElement = null;
+                        }
+                        document.querySelectorAll('.form-inline').forEach((ele) => ele.classList.remove('add_event'));
                         event.target.style.display = 'none';
                     }
                 };

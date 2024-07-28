@@ -34,6 +34,7 @@ public class SetRateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try{
         Account curentAccount = (Account) request.getSession().getAttribute("user");
         if (curentAccount == null) {
             response.sendRedirect("Login.jsp");
@@ -44,6 +45,9 @@ public class SetRateController extends HttpServlet {
         String mentorName = curentAccount.getUserName();
         mentorDAO.changeMentorRate(mentorName, rate);
         response.sendRedirect("cv");
+        }catch(IOException | NumberFormatException e){
+            response.sendRedirect("PageError");
+        }
 
     }
 

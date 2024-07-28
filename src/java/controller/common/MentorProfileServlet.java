@@ -91,8 +91,6 @@ public class MentorProfileServlet extends HttpServlet {
 
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
-            //get rate of mentor
-            int rate = mentorDAO.getRateOfMentor(userName);
             Cycle c = mentorDAO.getNewCycleByUser(userName);
             if (c != null) {
                 if (LocalDate.now().isBefore(LocalDate.parse(c.getStart()))) {
@@ -117,19 +115,16 @@ public class MentorProfileServlet extends HttpServlet {
             } else {
                 request.setAttribute("noBook", "No Shedules");
             }
-            CV cv = cvdao.getCVByCVId(cvId);
+           
 
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
             request.setAttribute("listSlot", listSlot);
-            request.setAttribute("rate", rate);
-            request.setAttribute("cv", cv);
-
             mentor = mentorProfileDAO.getOneMentor(userName);
             request.setAttribute("mentor", mentor);
             request.getRequestDispatcher("Mentor.jsp").forward(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(MentorProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("PageError");
         }
 
     }

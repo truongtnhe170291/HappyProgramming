@@ -1,6 +1,4 @@
-﻿
-
-USE master;
+﻿USE master;
 GO
 
 
@@ -11,256 +9,500 @@ BEGIN
 	DROP DATABASE HappyProgrammingDB;
 END
 GO
--- Create the database
-CREATE DATABASE HappyProgrammingDB;
+USE [master]
 GO
-
-USE HappyProgrammingDB;
+/****** Object:  Database [HappyProgrammingDB]    Script Date: 7/27/2024 4:58:12 PM ******/
+CREATE DATABASE [HappyProgrammingDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'HappyProgrammingDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\HappyProgrammingDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'HappyProgrammingDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\HappyProgrammingDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
-
--- Create AccountStatuses table
-CREATE TABLE AccountStatuses(
-    status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name NVARCHAR(100)
-);
+ALTER DATABASE [HappyProgrammingDB] SET COMPATIBILITY_LEVEL = 150
 GO
-
--- Create Roles table
-CREATE TABLE Roles(
-    role_id INT IDENTITY(1,1) PRIMARY KEY,
-    role_name NVARCHAR(100)
-);
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [HappyProgrammingDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
 GO
-
--- Create Accounts table
-CREATE TABLE Accounts(
-    [user_name] NVARCHAR(200) PRIMARY KEY,
-    gmail NVARCHAR(200) NOT NULL,
-    full_name NVARCHAR(100),
-    [pass_word] NVARCHAR(200) NOT NULL,
-    dob DATE,
-    sex BIT,
-    [address] NVARCHAR(200),
-    phone NVARCHAR(100),
-    avatar NVARCHAR(250),
-    role_id INT FOREIGN KEY REFERENCES Roles(role_id),
-    status_id INT FOREIGN KEY REFERENCES AccountStatuses(status_id)
-);
+ALTER DATABASE [HappyProgrammingDB] SET ANSI_NULL_DEFAULT OFF 
 GO
-CREATE TABLE NoteAccount(
-    [user_name] NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-    PRIMARY KEY ([user_name]),
-	note NVARCHAR(Max)
-);
+ALTER DATABASE [HappyProgrammingDB] SET ANSI_NULLS OFF 
 GO
--- Create Mentees table
-CREATE TABLE Mentees(
-    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-    PRIMARY KEY (mentee_name)
-);
+ALTER DATABASE [HappyProgrammingDB] SET ANSI_PADDING OFF 
 GO
-
--- Create Mentors table
-CREATE TABLE Mentors(
-    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-    rate INT,
-    PRIMARY KEY (mentor_name)
-);
+ALTER DATABASE [HappyProgrammingDB] SET ANSI_WARNINGS OFF 
 GO
-
--- Create Managers table
-CREATE TABLE Managers(
-    manager_name NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-    PRIMARY KEY (manager_name)
-);
+ALTER DATABASE [HappyProgrammingDB] SET ARITHABORT OFF 
 GO
-
--- Create Skills table
-CREATE TABLE Skills(
-    skill_id INT IDENTITY(1,1) PRIMARY KEY,
-    skill_name NVARCHAR(200) NOT NULL,
-    img NVARCHAR(300),
-    [description] NVARCHAR(MAX),
-    [status] BIT
-);
+ALTER DATABASE [HappyProgrammingDB] SET AUTO_CLOSE OFF 
 GO
-
-CREATE TABLE CVStatus(
-	status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name NVARCHAR(100)
-);
+ALTER DATABASE [HappyProgrammingDB] SET AUTO_SHRINK OFF 
 GO
--- Create CV table
-CREATE TABLE CV(
-    cv_id INT IDENTITY(1,1) PRIMARY KEY,
-    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    gmail NVARCHAR(200) NOT NULL,
-    full_name NVARCHAR(100),
-    dob DATE,
-    sex BIT,
-    [address] NVARCHAR(200),
-    profession NVARCHAR(200),
-    profession_intro NVARCHAR(MAX),
-    achievement_description NVARCHAR(MAX),
-    service_description NVARCHAR(MAX),
-    avatar NVARCHAR(250),
-	status_id INT FOREIGN KEY REFERENCES CVStatus(status_id),
-	note NVARCHAR(Max)
-);
+ALTER DATABASE [HappyProgrammingDB] SET AUTO_UPDATE_STATISTICS ON 
 GO
-
--- Create CVSkills table
-CREATE TABLE CVSkills(
-    skill_id INT FOREIGN KEY REFERENCES Skills(skill_id),
-    cv_id INT FOREIGN KEY REFERENCES CV(cv_id),
-    PRIMARY KEY (cv_id, skill_id)
-);
-
+ALTER DATABASE [HappyProgrammingDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
 GO
-
--- Create Slots table
-CREATE TABLE Slots(
-    slot_id NVARCHAR(50) PRIMARY KEY,
-    slot_name NVARCHAR(100)
-);
+ALTER DATABASE [HappyProgrammingDB] SET CURSOR_DEFAULT  GLOBAL 
 GO
-
--- Create Cycle table
-CREATE TABLE Cycle(
-    cycle_id INT IDENTITY(1,1) PRIMARY KEY,
-	start_time DATE,
-	end_time DATE,
-	note NVARCHAR(Max),
-	mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-	deadline_date DATE,
-	unique(start_time, end_time,mentor_name)
-);
+ALTER DATABASE [HappyProgrammingDB] SET CONCAT_NULL_YIELDS_NULL OFF 
 GO
-
--- Create Status_Selected table
-CREATE TABLE Status_Selected(
-	status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name NVARCHAR(50)
-);
+ALTER DATABASE [HappyProgrammingDB] SET NUMERIC_ROUNDABORT OFF 
 GO
-
--- Create Selected_Slot table
-CREATE TABLE Selected_Slot(
-    selected_id INT IDENTITY(1,1) PRIMARY KEY,
-    slot_id NVARCHAR(50) FOREIGN KEY REFERENCES Slots(slot_id),
-    cycle_id INT FOREIGN KEY REFERENCES Cycle(cycle_id),
-	day_of_slot DATE,
-    status_id INT FOREIGN KEY REFERENCES Status_Selected(status_id),
-);
+ALTER DATABASE [HappyProgrammingDB] SET QUOTED_IDENTIFIER OFF 
 GO
-
-
--- Create RequestStatuses table
-CREATE TABLE RequestStatuses(
-    status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name NVARCHAR(100)
-);
+ALTER DATABASE [HappyProgrammingDB] SET RECURSIVE_TRIGGERS OFF 
 GO
-
--- Create RequestsFormMentee table
-CREATE TABLE RequestsFormMentee(
-    request_id INT IDENTITY(1,1) PRIMARY KEY,
-    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
-    deadline_date DATE,
-    deadline_hour TIME,
-    title NVARCHAR(1000),
-    [description] NVARCHAR(MAX),
-    status_id INT FOREIGN KEY REFERENCES RequestStatuses(status_id),
-	price INT,
-	note NVARCHAR(1000)
-);
-GO 
-CREATE TABLE RquestSelectedSlot(
-	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
-	selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id),
-	PRIMARY KEY (request_id, selected_id)
-);
-
+ALTER DATABASE [HappyProgrammingDB] SET  ENABLE_BROKER 
 GO
-
--- Create RequestSkills table
-CREATE TABLE RequestSkills(
-    skill_id INT FOREIGN KEY REFERENCES Skills(skill_id),
-    request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
-    PRIMARY KEY (skill_id, request_id)
-);
+ALTER DATABASE [HappyProgrammingDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
 GO
--- Create FeedBacks table
-CREATE TABLE FeedBacks(
-	feedback_id INT IDENTITY(1,1) PRIMARY KEY,
-	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
-    mentor_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentors(mentor_name),
-    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
-    star INT,
-    comment NVARCHAR(Max),
-    time_feedback DATE,
-);
+ALTER DATABASE [HappyProgrammingDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
 GO
-CREATE TABLE Wallet(
-	wallet_id NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	real_balance DECIMAL(15, 0),
-	hold DECIMAL(15, 0),
-	PRIMARY KEY (wallet_id)
-);
-
+ALTER DATABASE [HappyProgrammingDB] SET TRUSTWORTHY OFF 
 GO
-CREATE TABLE Hold(
-	hold_id INT IDENTITY(1,1) PRIMARY KEY,
-	[user_name] NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
-	amount DECIMAL(15, 0),
-	create_date DATETIME,
-	[message] NVARCHAR(Max),
-	hold bit
-)
+ALTER DATABASE [HappyProgrammingDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
 GO
-CREATE TABLE Transactions(
-	transaction_id INT IDENTITY(1,1) PRIMARY KEY,
-	user_send NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	user_receive NVARCHAR(200) FOREIGN KEY REFERENCES Accounts([user_name]),
-	create_date DATETIME,
-	amount DECIMAL(15, 0),
-	[message] NVARCHAR(Max)
-);
+ALTER DATABASE [HappyProgrammingDB] SET PARAMETERIZATION SIMPLE 
 GO
-CREATE TABLE Attendance (
-    attendance_id INT IDENTITY(1,1) PRIMARY KEY,
-    request_id INT FOREIGN KEY REFERENCES RequestsFormMentee(request_id),
-    selected_id INT FOREIGN KEY REFERENCES Selected_Slot(selected_id),
-    mentee_name NVARCHAR(200) FOREIGN KEY REFERENCES Mentees(mentee_name),
-    attendance_status VARCHAR(50),
-    attendance_date DATETIME DEFAULT GETDATE()
-);
+ALTER DATABASE [HappyProgrammingDB] SET READ_COMMITTED_SNAPSHOT OFF 
 GO
-CREATE TABLE Blogs (
-	blog_id INT IDENTITY(1,1) PRIMARY KEY,
-    img NVARCHAR(500),
-	link NVARCHAR(500),
-	[status] bit
-);
-
+ALTER DATABASE [HappyProgrammingDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET RECOVERY FULL 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET  MULTI_USER 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [HappyProgrammingDB] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [HappyProgrammingDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'HappyProgrammingDB', N'ON'
+GO
+ALTER DATABASE [HappyProgrammingDB] SET QUERY_STORE = OFF
 GO
 USE [HappyProgrammingDB]
 GO
-SET IDENTITY_INSERT [dbo].[Roles] ON 
-
-INSERT [dbo].[Roles] ([role_id], [role_name]) VALUES (1, N'Mentee')
-INSERT [dbo].[Roles] ([role_id], [role_name]) VALUES (2, N'Mentor')
-INSERT [dbo].[Roles] ([role_id], [role_name]) VALUES (3, N'Manager')
-SET IDENTITY_INSERT [dbo].[Roles] OFF
+/****** Object:  Table [dbo].[Accounts]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
 GO
-SET IDENTITY_INSERT [dbo].[AccountStatuses] ON 
-
-INSERT [dbo].[AccountStatuses] ([status_id], [status_name]) VALUES (1, N'Active')
-INSERT [dbo].[AccountStatuses] ([status_id], [status_name]) VALUES (2, N'Inactive')
-INSERT [dbo].[AccountStatuses] ([status_id], [status_name]) VALUES (3, N'Pending')
-SET IDENTITY_INSERT [dbo].[AccountStatuses] OFF
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Accounts](
+	[user_name] [nvarchar](200) NOT NULL,
+	[gmail] [nvarchar](200) NOT NULL,
+	[full_name] [nvarchar](100) NULL,
+	[pass_word] [nvarchar](200) NOT NULL,
+	[dob] [date] NULL,
+	[sex] [bit] NULL,
+	[address] [nvarchar](200) NULL,
+	[phone] [nvarchar](100) NULL,
+	[avatar] [nvarchar](250) NULL,
+	[role_id] [int] NULL,
+	[status_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[user_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AccountStatuses]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AccountStatuses](
+	[status_id] [int] IDENTITY(1,1) NOT NULL,
+	[status_name] [nvarchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[status_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Attendance]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Attendance](
+	[attendance_id] [int] IDENTITY(1,1) NOT NULL,
+	[request_id] [int] NULL,
+	[selected_id] [int] NULL,
+	[mentee_name] [nvarchar](200) NULL,
+	[attendance_status] [varchar](50) NULL,
+	[attendance_date] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[attendance_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Blogs]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Blogs](
+	[blog_id] [int] IDENTITY(1,1) NOT NULL,
+	[img] [nvarchar](500) NULL,
+	[link] [nvarchar](500) NULL,
+	[status] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[blog_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CV]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CV](
+	[cv_id] [int] IDENTITY(1,1) NOT NULL,
+	[mentor_name] [nvarchar](200) NULL,
+	[gmail] [nvarchar](200) NOT NULL,
+	[full_name] [nvarchar](100) NULL,
+	[dob] [date] NULL,
+	[sex] [bit] NULL,
+	[address] [nvarchar](200) NULL,
+	[profession] [nvarchar](200) NULL,
+	[profession_intro] [nvarchar](max) NULL,
+	[achievement_description] [nvarchar](max) NULL,
+	[service_description] [nvarchar](max) NULL,
+	[avatar] [nvarchar](250) NULL,
+	[status_id] [int] NULL,
+	[note] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[cv_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CVSkills]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CVSkills](
+	[skill_id] [int] NOT NULL,
+	[cv_id] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[cv_id] ASC,
+	[skill_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CVStatus]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CVStatus](
+	[status_id] [int] IDENTITY(1,1) NOT NULL,
+	[status_name] [nvarchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[status_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Cycle]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Cycle](
+	[cycle_id] [int] IDENTITY(1,1) NOT NULL,
+	[start_time] [date] NULL,
+	[end_time] [date] NULL,
+	[note] [nvarchar](max) NULL,
+	[mentor_name] [nvarchar](200) NULL,
+	[deadline_date] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[cycle_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FeedBacks]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FeedBacks](
+	[feedback_id] [int] IDENTITY(1,1) NOT NULL,
+	[request_id] [int] NULL,
+	[mentor_name] [nvarchar](200) NULL,
+	[mentee_name] [nvarchar](200) NULL,
+	[star] [int] NULL,
+	[comment] [nvarchar](max) NULL,
+	[time_feedback] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[feedback_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Hold]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Hold](
+	[hold_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_name] [nvarchar](200) NULL,
+	[request_id] [int] NULL,
+	[amount] [decimal](15, 0) NULL,
+	[create_date] [datetime] NULL,
+	[message] [nvarchar](max) NULL,
+	[hold] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[hold_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Managers]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Managers](
+	[manager_name] [nvarchar](200) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[manager_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Mentees]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mentees](
+	[mentee_name] [nvarchar](200) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[mentee_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Mentors]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mentors](
+	[mentor_name] [nvarchar](200) NOT NULL,
+	[rate] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[mentor_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[NoteAccount]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[NoteAccount](
+	[user_name] [nvarchar](200) NOT NULL,
+	[note] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[user_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RequestsFormMentee]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RequestsFormMentee](
+	[request_id] [int] IDENTITY(1,1) NOT NULL,
+	[mentor_name] [nvarchar](200) NULL,
+	[mentee_name] [nvarchar](200) NULL,
+	[deadline_date] [date] NULL,
+	[deadline_hour] [time](7) NULL,
+	[title] [nvarchar](1000) NULL,
+	[description] [nvarchar](max) NULL,
+	[status_id] [int] NULL,
+	[price] [int] NULL,
+	[note] [nvarchar](1000) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[request_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RequestSkills]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RequestSkills](
+	[skill_id] [int] NOT NULL,
+	[request_id] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[skill_id] ASC,
+	[request_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RequestStatuses]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RequestStatuses](
+	[status_id] [int] IDENTITY(1,1) NOT NULL,
+	[status_name] [nvarchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[status_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Roles]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Roles](
+	[role_id] [int] IDENTITY(1,1) NOT NULL,
+	[role_name] [nvarchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[role_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RquestSelectedSlot]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RquestSelectedSlot](
+	[request_id] [int] NOT NULL,
+	[selected_id] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[request_id] ASC,
+	[selected_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Selected_Slot]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Selected_Slot](
+	[selected_id] [int] IDENTITY(1,1) NOT NULL,
+	[slot_id] [nvarchar](50) NULL,
+	[cycle_id] [int] NULL,
+	[day_of_slot] [date] NULL,
+	[status_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[selected_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Skills]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Skills](
+	[skill_id] [int] IDENTITY(1,1) NOT NULL,
+	[skill_name] [nvarchar](200) NOT NULL,
+	[img] [nvarchar](300) NULL,
+	[description] [nvarchar](max) NULL,
+	[status] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[skill_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Slots]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Slots](
+	[slot_id] [nvarchar](50) NOT NULL,
+	[slot_name] [nvarchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[slot_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Status_Selected]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Status_Selected](
+	[status_id] [int] IDENTITY(1,1) NOT NULL,
+	[status_name] [nvarchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[status_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Transactions]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Transactions](
+	[transaction_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_send] [nvarchar](200) NULL,
+	[user_receive] [nvarchar](200) NULL,
+	[create_date] [datetime] NULL,
+	[amount] [decimal](15, 0) NULL,
+	[message] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[transaction_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Wallet]    Script Date: 7/27/2024 4:58:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Wallet](
+	[wallet_id] [nvarchar](200) NOT NULL,
+	[real_balance] [decimal](15, 0) NULL,
+	[hold] [decimal](15, 0) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[wallet_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 INSERT [dbo].[Accounts] ([user_name], [gmail], [full_name], [pass_word], [dob], [sex], [address], [phone], [avatar], [role_id], [status_id]) VALUES (N'alexander_thomas', N'alexander.thomas@gmail.com', N'Alexander Thomas', N'1', CAST(N'1992-11-11' AS Date), 1, N'258 Willow St', N'0334567890', N'mentor1.jpg', 2, 1)
 INSERT [dbo].[Accounts] ([user_name], [gmail], [full_name], [pass_word], [dob], [sex], [address], [phone], [avatar], [role_id], [status_id]) VALUES (N'amelia_hall', N'amelia.hall@gmail.com', N'Amelia Hall', N'1', CAST(N'1993-06-18' AS Date), 0, N'123 Sequoia St', N'0901234567', N'mentor8.jpg', 2, 1)
@@ -292,6 +534,287 @@ INSERT [dbo].[Accounts] ([user_name], [gmail], [full_name], [pass_word], [dob], 
 INSERT [dbo].[Accounts] ([user_name], [gmail], [full_name], [pass_word], [dob], [sex], [address], [phone], [avatar], [role_id], [status_id]) VALUES (N'VuMinh', N'quantahe170755@fpt.edu.vn', N'Vu Minh', N'1', CAST(N'2004-06-25' AS Date), 1, N'HN', N'0979781768', N'defaultAcount.jpg', 2, 1)
 INSERT [dbo].[Accounts] ([user_name], [gmail], [full_name], [pass_word], [dob], [sex], [address], [phone], [avatar], [role_id], [status_id]) VALUES (N'william_brown', N'william.brown@gmail.com', N'William Brown', N'1', CAST(N'1987-05-05' AS Date), 1, N'654 Pine St', N'0978901234', N'mentee5.jpg', 1, 1)
 GO
+SET IDENTITY_INSERT [dbo].[AccountStatuses] ON 
+
+INSERT [dbo].[AccountStatuses] ([status_id], [status_name]) VALUES (1, N'Active')
+INSERT [dbo].[AccountStatuses] ([status_id], [status_name]) VALUES (2, N'Inactive')
+INSERT [dbo].[AccountStatuses] ([status_id], [status_name]) VALUES (3, N'Pending')
+SET IDENTITY_INSERT [dbo].[AccountStatuses] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Attendance] ON 
+
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (1, 2, 3, N'hieu', N'Absent', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (2, 2, 1, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (3, 2, 4, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (4, 2, 8, N'hieu', NULL, NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (5, 5, 6, N'ava_taylor', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (6, 5, 9, N'ava_taylor', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (7, 5, 7, N'ava_taylor', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (8, 8, 22, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (9, 8, 21, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (10, 8, 24, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (11, 8, 30, N'hieu', N'Absent', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (12, 11, 23, N'ava_taylor', N'Absent', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (13, 11, 27, N'ava_taylor', N'Absent', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (14, 11, 25, N'ava_taylor', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (15, 12, 40, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (16, 12, 41, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (17, 12, 44, N'hieu', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (18, 14, 43, N'benjamin_anderson', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (19, 14, 42, N'benjamin_anderson', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (20, 14, 38, N'benjamin_anderson', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (21, 14, 49, N'benjamin_anderson', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (22, 17, 39, N'sophia_martinez', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (23, 17, 58, N'sophia_martinez', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (24, 17, 56, N'sophia_martinez', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (25, 17, 55, N'sophia_martinez', N'Absent', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (26, 17, 57, N'sophia_martinez', N'Attended', NULL)
+INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (27, 17, 59, N'sophia_martinez', NULL, NULL)
+SET IDENTITY_INSERT [dbo].[Attendance] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Blogs] ON 
+
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (1, N'1.jpg', N'https://dotnettipoftheday.org/moi-thu-ve-ngon-ngu-lap-trinh-c-sharp/', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (2, N'2.jpg', N'https://vtiacademy.edu.vn/ban-nen-hoc-ngon-ngu-lap-trinh-java-vi-ly-do-nay.html', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (3, N'3.png', N'https://teky.edu.vn/blog/ngon-ngu-sql/', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (4, N'4.png', N'https://www.greenacademy.edu.vn/kien-thuc-lap-trinh/javascript-la-gi-ung-dung-cua-ngon-ngu-javascript', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (5, N'5.png', N'https://vn.got-it.ai/blog/ngon-ngu-html-la-gi-vai-tro-cua-html-trong-website', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (6, N'6.jpg', N'https://zilatech.vn/ngon-ngu-php-la-gi-kien-thuc-tong-quan-cho-nguoi-moi-bat-dau/', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (7, N'7.png', N'https://mindx.edu.vn/blog/ngon-ngu-python', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (8, N'8.jpg', N'https://monamedia.co/reactjs-la-gi/', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (9, N'9.jpg', N'https://jobs.hybrid-technologies.vn/blog/tim-hieu-ve-ngon-ngu-lap-trinh-c/', 1)
+INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (10, N'10.jpg', N'https://cloud.z.com/vn/en/news/ruby/', 1)
+SET IDENTITY_INSERT [dbo].[Blogs] OFF
+GO
+SET IDENTITY_INSERT [dbo].[CV] ON 
+
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (1, N'minh', N'minhvqhe176726@fpt.edu.vn', N'John Doe', CAST(N'1985-01-15' AS Date), 1, N'123 Main St', N'Software Engineer', N'Experienced in Java and Python', N'Created a successful app', N'Offering software development services', N'mentor16.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (2, N'son', N'example2@gmail.com', N'Jane Smith', CAST(N'1990-02-20' AS Date), 0, N'456 Elm St', N'Graphic Designer', N'Expert in Adobe Suite', N'Designed award-winning logos', N'Providing graphic design services', N'mentor17.jpg', 2, N'Everything is ok')
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (3, N'alexander_thomas', N'alexander.thomas@gmail.com', N'Alexander Thomas', CAST(N'1992-11-11' AS Date), 1, N'258 Willow St', N'Software Engineer', N'Experienced software engineer with a strong background in developing scalable web applications and working with cross-functional teams.', N'Led the development of a high-traffic web application that improved the company’s user engagement by 20%.', N'Offers consulting services in software development and optimization.', N'mentor1.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (4, N'mia_moore', N'mia.moore@gmail.com', N'Mia Moore', CAST(N'1988-12-12' AS Date), 0, N'369 Poplar St', N'Graphic Designer', N'Creative graphic designer with over 10 years of experience in creating visual concepts that inspire, inform, and captivate consumers.', N'Designed a series of advertisements that increased client sales by 15%.', N'Provides freelance graphic design services, including branding and advertisement.', N'mentor2.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (5, N'daniel_white', N'daniel.white@gmail.com', N'Daniel White', CAST(N'1991-01-13' AS Date), 1, N'456 Fir St', N'Marketing Specialist', N'Results-driven marketing specialist with expertise in digital marketing strategies and campaign management.', N'Managed a marketing campaign that generated a 30% increase in lead generation.', N'Specializes in digital marketing consultation and campaign strategy.', N'mentor3.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (6, N'isabella_harris', N'isabella.harris@gmail.com', N'Isabella Harris', CAST(N'1987-02-14' AS Date), 0, N'789 Walnut St', N'Project Manager', N'Detail-oriented project manager with a proven track record in leading projects from inception to completion.', N'Successfully managed a project portfolio worth over $2 million, ensuring on-time and on-budget delivery.', N'Offers project management services, including project planning and risk management.', N'mentor4.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (7, N'matthew_clark', N'matthew.clark@gmail.com', N'Matthew Clark', CAST(N'1985-03-15' AS Date), 1, N'123 Cypress St', N'Financial Analyst', N'Analytical financial analyst with a strong background in financial modeling and investment analysis.', N'Developed financial models that improved forecasting accuracy by 25%.', N'Provides financial analysis and investment advisory services.', N'mentor5.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (8, N'charlotte_lewis', N'charlotte.lewis@gmail.com', N'Charlotte Lewis', CAST(N'1990-04-16' AS Date), 0, N'456 Chestnut St', N'Human Resources Manager', N'Dedicated HR manager with extensive experience in employee relations, talent acquisition, and HR policy development.', N'Implemented HR strategies that reduced employee turnover by 10%.', N'Specializes in HR consulting, including employee training and policy formulation.', N'mentor6.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (9, N'lucas_walker', N'lucas.walker@gmail.com', N'Lucas Walker', CAST(N'1988-05-17' AS Date), 1, N'789 Palm St', N'Data Scientist', N'Innovative data scientist with a passion for turning data into actionable insights.', N'Developed machine learning models that increased prediction accuracy by 40%.', N'Offers data science consulting services, including predictive modeling and data visualization.', N'mentor7.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (10, N'amelia_hall', N'amelia.hall@gmail.com', N'Amelia Hall', CAST(N'1993-06-18' AS Date), 0, N'123 Sequoia St', N'Content Writer', N'Versatile content writer with a knack for creating engaging and informative content for various industries.', N'Authored articles that boosted website traffic by 50%.', N'Provides freelance writing services, including blog posts, articles, and SEO content.', N'mentor8.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (11, N'jayden_allen', N'jayden.allen@gmail.com', N'Jayden Allen', CAST(N'1989-07-19' AS Date), 1, N'456 Hemlock St', N'Network Engineer', N'Skilled network engineer with experience in designing and maintaining network infrastructure.', N'Implemented network solutions that improved system uptime by 15%.', N'Offers network engineering services, including network design and troubleshooting.', N'mentor9.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (12, N'ella_young', N'ella.young@gmail.com', N'Ella Young', CAST(N'1991-08-20' AS Date), 0, N'789 Hickory St', N'UX/UI Designer', N'Creative UX/UI designer focused on enhancing user experience and interface design.', N'Designed user interfaces that enhanced user satisfaction by 25%.', N'Provides UX/UI design services, including user research and interface design.', N'mentor10.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (13, N'logan_hernandez', N'logan.hernandez@gmail.com', N'Logan Hernandez', CAST(N'1990-09-21' AS Date), 1, N'147 Linden St', N'Cybersecurity Specialist', N'Experienced cybersecurity specialist with expertise in securing network infrastructure and data protection.', N'Developed security protocols that reduced security breaches by 20%.', N'Specializes in cybersecurity consulting, including vulnerability assessments and security training.', N'mentor11.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (14, N'sophia_king', N'sophia.king@gmail.com', N'Sophia King', CAST(N'1992-10-22' AS Date), 0, N'258 Juniper St', N'Operations Manager', N'Efficient operations manager with a strong background in optimizing business processes and operational efficiency.', N'Streamlined operations that improved process efficiency by 30%.', N'Offers operations management consulting, including process improvement and supply chain management.', N'mentor12.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (15, N'mason_scott', N'mason.scott@gmail.com', N'Mason Scott', CAST(N'1987-11-23' AS Date), 1, N'369 Magnolia St', N'Business Analyst', N'Strategic business analyst with a talent for analyzing business processes and identifying improvement opportunities.', N'Developed business solutions that increased operational efficiency by 20%.', N'Provides business analysis services, including process mapping and requirements gathering.', N'mentor13.jpg', 1, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (16, N'mia_green', N'mia.green@gmail.com', N'Mia Green', CAST(N'1988-12-24' AS Date), 0, N'147 Dogwood St', N'Customer Service Manager', N'Dedicated customer service manager with a focus on enhancing customer satisfaction and retention.', N'Implemented customer service strategies that increased customer satisfaction by 15%.', N'Specializes in customer service consulting, including training and strategy development.', N'mentor14.jpg', 2, NULL)
+INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (17, N'isabella_baker', N'isabella.baker@gmail.com', N'Isabella Baker', CAST(N'1991-02-26' AS Date), 0, N'369 Ash St', N'Public Relations Specialist', N'Creative public relations specialist with experience in managing media relations and crafting communication strategies.', N'Executed PR campaigns that enhanced brand reputation by 20%.', N'Offers public relations consulting, including media outreach and communication strategy development.', N'mentor15.jpg', 2, NULL)
+SET IDENTITY_INSERT [dbo].[CV] OFF
+GO
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (6, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 1)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 2)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 3)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (6, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 4)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 5)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 6)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 7)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 8)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 9)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 10)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 11)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 12)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (6, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 13)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 14)
+GO
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 14)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 15)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 16)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 17)
+INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 17)
+GO
+SET IDENTITY_INSERT [dbo].[CVStatus] ON 
+
+INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (1, N'Pending')
+INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (2, N'Approved')
+INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (3, N'Rejected')
+INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (4, N'Draft')
+SET IDENTITY_INSERT [dbo].[CVStatus] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Cycle] ON 
+
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (1, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'son', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (2, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'minh', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (3, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'alexander_thomas', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (4, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'mia_moore', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (5, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'daniel_white', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (6, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'isabella_harris', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (7, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'matthew_clark', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (8, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'charlotte_lewis', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (9, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'lucas_walker', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (10, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'amelia_hall', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (11, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'jayden_allen', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (12, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'ella_young', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (13, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'logan_hernandez', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (14, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'sophia_king', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (15, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'mason_scott', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (16, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'mia_green', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (17, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'isabella_baker', CAST(N'2024-06-10' AS Date))
+INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (18, CAST(N'2024-08-05' AS Date), CAST(N'2024-09-01' AS Date), N'', N'mia_green', CAST(N'2024-08-01' AS Date))
+SET IDENTITY_INSERT [dbo].[Cycle] OFF
+GO
+SET IDENTITY_INSERT [dbo].[FeedBacks] ON 
+
+INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (4, 5, N'son', N'ava_taylor', 5, N'You are good mentor', CAST(N'2024-06-27' AS Date))
+INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (5, 2, N'son', N'hieu', 4, N'good teacher', CAST(N'2024-06-27' AS Date))
+INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (6, 8, N'minh', N'hieu', 2, N'Not bad!', CAST(N'2024-06-29' AS Date))
+INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (7, 11, N'minh', N'ava_taylor', 3, N'No problem, but i don''t want to learn.', CAST(N'2024-06-26' AS Date))
+INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (8, 14, N'alexander_thomas', N'benjamin_anderson', 5, N'Teacher is very good!', CAST(N'2024-06-26' AS Date))
+INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (9, 12, N'alexander_thomas', N'hieu', 5, N'So nice!', CAST(N'2024-06-26' AS Date))
+SET IDENTITY_INSERT [dbo].[FeedBacks] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Hold] ON 
+
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (1, N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:22:50.237' AS DateTime), N'Hold money by request with title: Learn C++', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (2, N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:23:19.110' AS DateTime), N'Return the money hold by request with title: Learn C++', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (3, N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:06.453' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (4, N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:56.203' AS DateTime), N'Cancel hold money because paid request with title: Learn Javascript', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (5, N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:07.817' AS DateTime), N'Hold money by request with title: Learn PHP', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (6, N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:54.343' AS DateTime), N'Cancel hold money because paid request with title: Learn PHP', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (7, N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:11:22.187' AS DateTime), N'Hold money by request with title: Learn CSS', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (8, N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:12:25.877' AS DateTime), N'Return the money hold by request with title: Learn CSS', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (9, N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:13:52.033' AS DateTime), N'Hold money by request with title: Request CSS again', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (10, N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:20:41.457' AS DateTime), N'Hold money by request with title: Learn Java', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (11, N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:16:17.880' AS DateTime), N'Hold money by request with title: Request Ruby', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (12, N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:38:13.127' AS DateTime), N'Hold money by request with title: Request C#', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (13, N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-15T18:43:01.007' AS DateTime), N'Return the money hold by request with title: Request C#', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (14, N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Request CSS again', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (15, N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn Javascript', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (16, N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn SQL', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (17, N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:49:07.430' AS DateTime), N'Hold money by request with title: Learn Skill Ruby', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (18, N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:51:51.853' AS DateTime), N'Cancel hold money because paid request with title: Learn Skill Ruby', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (19, N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:54:51.650' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (20, N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:55:44.007' AS DateTime), N'Return the money hold by request with title: Learn Apache Cassandra', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (21, N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:32:30.617' AS DateTime), N'Hold money by request with title: Request PowerShell', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (22, N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:34:05.287' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (23, N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:37:23.913' AS DateTime), N'Cancel hold money because paid request with title: Learn Apache Cassandra', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (24, N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:29:03.933' AS DateTime), N'Hold money by request with title: Learn Python', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (25, N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:29.470' AS DateTime), N'Return the money hold by request with title: Learn Python', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (26, N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:36:05.903' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (27, N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:07:48.863' AS DateTime), N'Cancel hold money because paid request with title: Learn C', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (28, N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:35:20.597' AS DateTime), N'Return the money hold by request with title: Request PowerShell', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (29, N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:30:50.463' AS DateTime), N'Hold money by request with title: Learn SQL', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (30, N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:05:26.693' AS DateTime), N'Hold money by request with title: Learn C', 1)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (31, N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:21:54.260' AS DateTime), N'Cancel hold money because paid request with title: Learn Java', 0)
+INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (32, N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Cancel hold money because paid request with title: Request Ruby', 0)
+SET IDENTITY_INSERT [dbo].[Hold] OFF
+GO
+INSERT [dbo].[Managers] ([manager_name]) VALUES (N'manager')
+GO
 INSERT [dbo].[Mentees] ([mentee_name]) VALUES (N'ava_taylor')
 INSERT [dbo].[Mentees] ([mentee_name]) VALUES (N'benjamin_anderson')
 INSERT [dbo].[Mentees] ([mentee_name]) VALUES (N'emily_davis')
@@ -322,36 +845,693 @@ INSERT [dbo].[Mentors] ([mentor_name], [rate]) VALUES (N'son', 100000)
 INSERT [dbo].[Mentors] ([mentor_name], [rate]) VALUES (N'sophia_king', 100000)
 INSERT [dbo].[Mentors] ([mentor_name], [rate]) VALUES (N'VuMinh', 100000)
 GO
-INSERT [dbo].[Managers] ([manager_name]) VALUES (N'manager')
-GO
-SET IDENTITY_INSERT [dbo].[CVStatus] ON 
+SET IDENTITY_INSERT [dbo].[RequestsFormMentee] ON 
 
-INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (1, N'Pending')
-INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (2, N'Approved')
-INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (3, N'Rejected')
-INSERT [dbo].[CVStatus] ([status_id], [status_name]) VALUES (4, N'Draft')
-SET IDENTITY_INSERT [dbo].[CVStatus] OFF
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (1, N'son', N'hieu', CAST(N'2024-06-08' AS Date), CAST(N'18:22:00' AS Time), N'Learn C++', N'This course aims to introduce participants to the fundamental concepts and tools used in data science. Topics covered include data manipulation, statistical analysis, machine learning algorithms, and data visualization techniques.', 3, 400000, N'I''m busy')
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (2, N'son', N'hieu', CAST(N'2024-06-07' AS Date), CAST(N'18:23:00' AS Time), N'Learn Javascript', N'Improve your academic writing skills with this workshop designed to help participants master the art of scholarly communication. Topics covered include structuring essays, citing sources correctly, academic integrity.', 7, 400000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (3, N'son', N'ava_taylor', CAST(N'2024-06-07' AS Date), CAST(N'19:28:00' AS Time), N'Learn Python', N'Participants will learn practical techniques to enhance clarity, coherence, and persuasiveness in their academic writing.', 3, 300000, N'The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule')
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (4, N'son', N'ava_taylor', CAST(N'2024-06-07' AS Date), CAST(N'18:30:00' AS Time), N'Learn SQL', N'This seminar provides a comprehensive introduction to personal financial planning.', 4, 300000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (5, N'son', N'ava_taylor', CAST(N'2024-06-07' AS Date), CAST(N'18:31:00' AS Time), N'Learn PHP', N'Topics covered include budgeting, saving strategies, investment basics, managing debt, and retirement planning.', 7, 300000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (6, N'son', N'ava_taylor', CAST(N'2024-06-12' AS Date), CAST(N'18:35:00' AS Time), N'Learn Javascript', N'I really want to learn your course', 4, 300000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (7, N'son', N'ava_taylor', CAST(N'2024-06-09' AS Date), CAST(N'18:42:00' AS Time), N'Learn C++', N'I''m really want to learn C++', 4, 200000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (8, N'minh', N'hieu', CAST(N'2024-06-08' AS Date), CAST(N'19:05:00' AS Time), N'Learn C', N'I really want to learn C, please help me', 7, 400000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (9, N'minh', N'hieu', CAST(N'2024-06-07' AS Date), CAST(N'19:11:00' AS Time), N'Learn CSS', N'Skill CSS is very usefull i want to learn.', 3, 300000, N'I''m can''t teach')
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (10, N'minh', N'hieu', CAST(N'2024-06-08' AS Date), CAST(N'19:13:00' AS Time), N'Request CSS again', N'I really want to learn CSS.', 4, 300000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (11, N'minh', N'ava_taylor', CAST(N'2024-06-08' AS Date), CAST(N'18:20:00' AS Time), N'Learn Java', N'Java is good skill. I want to learn it.', 1, 300000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (12, N'alexander_thomas', N'hieu', CAST(N'2024-06-09' AS Date), CAST(N'21:16:00' AS Time), N'Request Ruby', N'I want to learn skill Ruby. Can you help me?', 7, 450000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (13, N'alexander_thomas', N'benjamin_anderson', CAST(N'2024-06-08' AS Date), CAST(N'22:38:00' AS Time), N'Request C#', N'C# has a clean and easy-to-understand syntax, making it approachable for developers familiar with C-like languages. I want to learn.', 4, 450000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (14, N'alexander_thomas', N'benjamin_anderson', CAST(N'2024-06-09' AS Date), CAST(N'21:48:00' AS Time), N'Learn Skill Ruby', N'Ruby has a clean and readable syntax that focuses on human-friendly code. I hope i can learn this skill.', 1, 600000, NULL)
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (15, N'alexander_thomas', N'benjamin_anderson', CAST(N'2024-06-08' AS Date), CAST(N'22:54:00' AS Time), N'Learn Apache Cassandra', N'Apache Cassandra is an open-source, distributed NoSQL database designed for handling large amounts of data across many commodity servers with no single point of failure. So i want to learn', 3, 600000, N'Sory, I''m busy')
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (16, N'alexander_thomas', N'sophia_martinez', CAST(N'2024-06-07' AS Date), CAST(N'22:32:00' AS Time), N'Request PowerShell', N'Shell is a command-line interface or graphical user interface that allows users to interact with the operating system and applications using command-line commands. Popular types of shells include Bash and PowerShell.', 3, 600000, N'The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule')
+INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (17, N'alexander_thomas', N'sophia_martinez', CAST(N'2024-06-09' AS Date), CAST(N'12:33:00' AS Time), N'Learn Apache Cassandra', N'Uses a column-family data model that is more flexible than traditional relational databases.', 1, 900000, NULL)
+SET IDENTITY_INSERT [dbo].[RequestsFormMentee] OFF
 GO
-SET IDENTITY_INSERT [dbo].[CV] ON 
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (2, 9)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (2, 10)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (3, 3)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (4, 8)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (5, 1)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (5, 7)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (6, 11)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (7, 13)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (8, 2)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (8, 6)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (9, 12)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (9, 14)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (10, 5)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (11, 4)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (14, 16)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (17, 15)
+INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (17, 17)
+GO
+SET IDENTITY_INSERT [dbo].[RequestStatuses] ON 
 
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (1, N'minh', N'minhvqhe176726@fpt.edu.vn', N'John Doe', CAST(N'1985-01-15' AS Date), 1, N'123 Main St', N'Software Engineer', N'Experienced in Java and Python', N'Created a successful app', N'Offering software development services', N'mentor16.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (2, N'son', N'example2@gmail.com', N'Jane Smith', CAST(N'1990-02-20' AS Date), 0, N'456 Elm St', N'Graphic Designer', N'Expert in Adobe Suite', N'Designed award-winning logos', N'Providing graphic design services', N'mentor17.jpg', 2, N'Everything is ok')
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (3, N'alexander_thomas', N'alexander.thomas@gmail.com', N'Alexander Thomas', CAST(N'1992-11-11' AS Date), 1, N'258 Willow St', N'Software Engineer', N'Experienced software engineer with a strong background in developing scalable web applications and working with cross-functional teams.', N'Led the development of a high-traffic web application that improved the company’s user engagement by 20%.', N'Offers consulting services in software development and optimization.', N'mentor1.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (4, N'mia_moore', N'mia.moore@gmail.com', N'Mia Moore', CAST(N'1988-12-12' AS Date), 0, N'369 Poplar St', N'Graphic Designer', N'Creative graphic designer with over 10 years of experience in creating visual concepts that inspire, inform, and captivate consumers.', N'Designed a series of advertisements that increased client sales by 15%.', N'Provides freelance graphic design services, including branding and advertisement.', N'mentor2.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (5, N'daniel_white', N'daniel.white@gmail.com', N'Daniel White', CAST(N'1991-01-13' AS Date), 1, N'456 Fir St', N'Marketing Specialist', N'Results-driven marketing specialist with expertise in digital marketing strategies and campaign management.', N'Managed a marketing campaign that generated a 30% increase in lead generation.', N'Specializes in digital marketing consultation and campaign strategy.', N'mentor3.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (6, N'isabella_harris', N'isabella.harris@gmail.com', N'Isabella Harris', CAST(N'1987-02-14' AS Date), 0, N'789 Walnut St', N'Project Manager', N'Detail-oriented project manager with a proven track record in leading projects from inception to completion.', N'Successfully managed a project portfolio worth over $2 million, ensuring on-time and on-budget delivery.', N'Offers project management services, including project planning and risk management.', N'mentor4.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (7, N'matthew_clark', N'matthew.clark@gmail.com', N'Matthew Clark', CAST(N'1985-03-15' AS Date), 1, N'123 Cypress St', N'Financial Analyst', N'Analytical financial analyst with a strong background in financial modeling and investment analysis.', N'Developed financial models that improved forecasting accuracy by 25%.', N'Provides financial analysis and investment advisory services.', N'mentor5.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (8, N'charlotte_lewis', N'charlotte.lewis@gmail.com', N'Charlotte Lewis', CAST(N'1990-04-16' AS Date), 0, N'456 Chestnut St', N'Human Resources Manager', N'Dedicated HR manager with extensive experience in employee relations, talent acquisition, and HR policy development.', N'Implemented HR strategies that reduced employee turnover by 10%.', N'Specializes in HR consulting, including employee training and policy formulation.', N'mentor6.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (9, N'lucas_walker', N'lucas.walker@gmail.com', N'Lucas Walker', CAST(N'1988-05-17' AS Date), 1, N'789 Palm St', N'Data Scientist', N'Innovative data scientist with a passion for turning data into actionable insights.', N'Developed machine learning models that increased prediction accuracy by 40%.', N'Offers data science consulting services, including predictive modeling and data visualization.', N'mentor7.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (10, N'amelia_hall', N'amelia.hall@gmail.com', N'Amelia Hall', CAST(N'1993-06-18' AS Date), 0, N'123 Sequoia St', N'Content Writer', N'Versatile content writer with a knack for creating engaging and informative content for various industries.', N'Authored articles that boosted website traffic by 50%.', N'Provides freelance writing services, including blog posts, articles, and SEO content.', N'mentor8.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (11, N'jayden_allen', N'jayden.allen@gmail.com', N'Jayden Allen', CAST(N'1989-07-19' AS Date), 1, N'456 Hemlock St', N'Network Engineer', N'Skilled network engineer with experience in designing and maintaining network infrastructure.', N'Implemented network solutions that improved system uptime by 15%.', N'Offers network engineering services, including network design and troubleshooting.', N'mentor9.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (12, N'ella_young', N'ella.young@gmail.com', N'Ella Young', CAST(N'1991-08-20' AS Date), 0, N'789 Hickory St', N'UX/UI Designer', N'Creative UX/UI designer focused on enhancing user experience and interface design.', N'Designed user interfaces that enhanced user satisfaction by 25%.', N'Provides UX/UI design services, including user research and interface design.', N'mentor10.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (13, N'logan_hernandez', N'logan.hernandez@gmail.com', N'Logan Hernandez', CAST(N'1990-09-21' AS Date), 1, N'147 Linden St', N'Cybersecurity Specialist', N'Experienced cybersecurity specialist with expertise in securing network infrastructure and data protection.', N'Developed security protocols that reduced security breaches by 20%.', N'Specializes in cybersecurity consulting, including vulnerability assessments and security training.', N'mentor11.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (14, N'sophia_king', N'sophia.king@gmail.com', N'Sophia King', CAST(N'1992-10-22' AS Date), 0, N'258 Juniper St', N'Operations Manager', N'Efficient operations manager with a strong background in optimizing business processes and operational efficiency.', N'Streamlined operations that improved process efficiency by 30%.', N'Offers operations management consulting, including process improvement and supply chain management.', N'mentor12.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (15, N'mason_scott', N'mason.scott@gmail.com', N'Mason Scott', CAST(N'1987-11-23' AS Date), 1, N'369 Magnolia St', N'Business Analyst', N'Strategic business analyst with a talent for analyzing business processes and identifying improvement opportunities.', N'Developed business solutions that increased operational efficiency by 20%.', N'Provides business analysis services, including process mapping and requirements gathering.', N'mentor13.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (16, N'mia_green', N'mia.green@gmail.com', N'Mia Green', CAST(N'1988-12-24' AS Date), 0, N'147 Dogwood St', N'Customer Service Manager', N'Dedicated customer service manager with a focus on enhancing customer satisfaction and retention.', N'Implemented customer service strategies that increased customer satisfaction by 15%.', N'Specializes in customer service consulting, including training and strategy development.', N'mentor14.jpg', 2, NULL)
-INSERT [dbo].[CV] ([cv_id], [mentor_name], [gmail], [full_name], [dob], [sex], [address], [profession], [profession_intro], [achievement_description], [service_description], [avatar], [status_id], [note]) VALUES (17, N'isabella_baker', N'isabella.baker@gmail.com', N'Isabella Baker', CAST(N'1991-02-26' AS Date), 0, N'369 Ash St', N'Public Relations Specialist', N'Creative public relations specialist with experience in managing media relations and crafting communication strategies.', N'Executed PR campaigns that enhanced brand reputation by 20%.', N'Offers public relations consulting, including media outreach and communication strategy development.', N'mentor15.jpg', 2, NULL)
-SET IDENTITY_INSERT [dbo].[CV] OFF
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (1, N'Open Class')
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (2, N'Processing')
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (3, N'Rejected')
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (4, N'Out Of Date')
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (5, N'Wait For Payment')
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (6, N'Saved')
+INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (7, N'Done')
+SET IDENTITY_INSERT [dbo].[RequestStatuses] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Roles] ON 
+
+INSERT [dbo].[Roles] ([role_id], [role_name]) VALUES (1, N'Mentee')
+INSERT [dbo].[Roles] ([role_id], [role_name]) VALUES (2, N'Mentor')
+INSERT [dbo].[Roles] ([role_id], [role_name]) VALUES (3, N'Manager')
+SET IDENTITY_INSERT [dbo].[Roles] OFF
+GO
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 1)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 2)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 4)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 7)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 1)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 3)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 4)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 8)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (3, 2)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (3, 5)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (3, 9)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (4, 11)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (4, 14)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (4, 15)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (5, 6)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (5, 7)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (5, 9)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (6, 2)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (6, 13)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (6, 15)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (7, 2)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (7, 5)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 21)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 22)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 24)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 30)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (9, 25)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (9, 26)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (9, 28)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (10, 29)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (10, 31)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (10, 32)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (11, 23)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (11, 25)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (11, 27)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (12, 40)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (12, 41)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (12, 44)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (13, 37)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (13, 42)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (13, 43)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 38)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 42)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 43)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 49)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 39)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 56)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 57)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 59)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 39)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 56)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 58)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 59)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 39)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 55)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 56)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 57)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 58)
+INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 59)
+GO
+SET IDENTITY_INSERT [dbo].[Selected_Slot] ON 
+
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (1, N'SLOT02', 1, CAST(N'2024-06-17' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (2, N'SLOT02', 1, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (3, N'SLOT02', 1, CAST(N'2024-06-21' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (4, N'SLOT02', 1, CAST(N'2024-06-23' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (5, N'SLOT04', 1, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (6, N'SLOT02', 1, CAST(N'2024-06-24' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (7, N'SLOT02', 1, CAST(N'2024-06-26' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (8, N'SLOT02', 1, CAST(N'2024-06-28' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (9, N'SLOT02', 1, CAST(N'2024-06-30' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (10, N'SLOT04', 1, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (11, N'SLOT02', 1, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (12, N'SLOT02', 1, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (13, N'SLOT02', 1, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (14, N'SLOT02', 1, CAST(N'2024-07-07' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (15, N'SLOT04', 1, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (16, N'SLOT02', 1, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (17, N'SLOT02', 1, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (18, N'SLOT02', 1, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (19, N'SLOT02', 1, CAST(N'2024-07-14' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (20, N'SLOT04', 1, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (21, N'SLOT03', 2, CAST(N'2024-06-17' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (22, N'SLOT02', 2, CAST(N'2024-06-19' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (23, N'SLOT02', 2, CAST(N'2024-06-21' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (24, N'SLOT04', 2, CAST(N'2024-06-22' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (25, N'SLOT03', 2, CAST(N'2024-06-24' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (26, N'SLOT02', 2, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (27, N'SLOT02', 2, CAST(N'2024-06-28' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (28, N'SLOT04', 2, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (29, N'SLOT03', 2, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (30, N'SLOT02', 2, CAST(N'2024-07-03' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (31, N'SLOT02', 2, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (32, N'SLOT04', 2, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (33, N'SLOT03', 2, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (34, N'SLOT02', 2, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (35, N'SLOT02', 2, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (36, N'SLOT04', 2, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (37, N'SLOT04', 3, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (38, N'SLOT03', 3, CAST(N'2024-06-19' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (39, N'SLOT02', 3, CAST(N'2024-06-19' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (40, N'SLOT02', 3, CAST(N'2024-06-18' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (41, N'SLOT02', 3, CAST(N'2024-06-20' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (42, N'SLOT02', 3, CAST(N'2024-06-17' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (43, N'SLOT02', 3, CAST(N'2024-06-21' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (44, N'SLOT03', 3, CAST(N'2024-06-21' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (45, N'SLOT04', 3, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (46, N'SLOT03', 3, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (47, N'SLOT02', 3, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (48, N'SLOT02', 3, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (49, N'SLOT02', 3, CAST(N'2024-06-27' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (50, N'SLOT02', 3, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (51, N'SLOT02', 3, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (52, N'SLOT03', 3, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (53, N'SLOT04', 3, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (54, N'SLOT03', 3, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (55, N'SLOT02', 3, CAST(N'2024-07-03' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (56, N'SLOT02', 3, CAST(N'2024-07-02' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (57, N'SLOT02', 3, CAST(N'2024-07-04' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (58, N'SLOT02', 3, CAST(N'2024-07-01' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (59, N'SLOT02', 3, CAST(N'2024-07-05' AS Date), 6)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (60, N'SLOT03', 3, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (61, N'SLOT04', 3, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (62, N'SLOT03', 3, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (63, N'SLOT02', 3, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (64, N'SLOT02', 3, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (65, N'SLOT02', 3, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (66, N'SLOT02', 3, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (67, N'SLOT02', 3, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (68, N'SLOT03', 3, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (69, N'SLOT02', 4, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (70, N'SLOT01', 4, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (71, N'SLOT01', 4, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (72, N'SLOT01', 4, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (73, N'SLOT01', 4, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (74, N'SLOT02', 4, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (75, N'SLOT01', 4, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (76, N'SLOT04', 4, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (77, N'SLOT02', 4, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (78, N'SLOT01', 4, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (79, N'SLOT01', 4, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (80, N'SLOT01', 4, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (81, N'SLOT01', 4, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (82, N'SLOT02', 4, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (83, N'SLOT01', 4, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (84, N'SLOT02', 4, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (85, N'SLOT01', 4, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (86, N'SLOT01', 4, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (87, N'SLOT01', 4, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (88, N'SLOT01', 4, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (89, N'SLOT02', 4, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (90, N'SLOT01', 4, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (91, N'SLOT02', 4, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (92, N'SLOT01', 4, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (93, N'SLOT01', 4, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (94, N'SLOT01', 4, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (95, N'SLOT01', 4, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (96, N'SLOT02', 4, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (97, N'SLOT01', 4, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (98, N'SLOT01', 5, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (99, N'SLOT01', 5, CAST(N'2024-06-18' AS Date), 2)
+GO
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (100, N'SLOT01', 5, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (101, N'SLOT03', 5, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (102, N'SLOT03', 5, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (103, N'SLOT03', 5, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (104, N'SLOT01', 5, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (105, N'SLOT01', 5, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (106, N'SLOT03', 5, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (107, N'SLOT03', 5, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (108, N'SLOT01', 5, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (109, N'SLOT01', 5, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (110, N'SLOT01', 5, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (111, N'SLOT03', 5, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (112, N'SLOT03', 5, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (113, N'SLOT03', 5, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (114, N'SLOT01', 5, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (115, N'SLOT01', 5, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (116, N'SLOT03', 5, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (117, N'SLOT03', 5, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (118, N'SLOT01', 5, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (119, N'SLOT01', 5, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (120, N'SLOT01', 5, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (121, N'SLOT03', 5, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (122, N'SLOT03', 5, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (123, N'SLOT03', 5, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (124, N'SLOT01', 5, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (125, N'SLOT01', 5, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (126, N'SLOT03', 5, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (127, N'SLOT03', 5, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (128, N'SLOT01', 5, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (129, N'SLOT01', 5, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (130, N'SLOT01', 5, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (131, N'SLOT03', 5, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (132, N'SLOT03', 5, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (133, N'SLOT03', 5, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (134, N'SLOT01', 5, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (135, N'SLOT01', 5, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (136, N'SLOT03', 5, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (137, N'SLOT03', 5, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (138, N'SLOT03', 6, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (139, N'SLOT02', 6, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (140, N'SLOT02', 6, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (141, N'SLOT02', 6, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (142, N'SLOT03', 6, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (143, N'SLOT03', 6, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (144, N'SLOT03', 6, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (145, N'SLOT02', 6, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (146, N'SLOT02', 6, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (147, N'SLOT02', 6, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (148, N'SLOT03', 6, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (149, N'SLOT03', 6, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (150, N'SLOT03', 6, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (151, N'SLOT02', 6, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (152, N'SLOT02', 6, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (153, N'SLOT02', 6, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (154, N'SLOT03', 6, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (155, N'SLOT03', 6, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (156, N'SLOT03', 6, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (157, N'SLOT02', 6, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (158, N'SLOT02', 6, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (159, N'SLOT02', 6, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (160, N'SLOT03', 6, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (161, N'SLOT03', 6, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (162, N'SLOT01', 7, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (163, N'SLOT02', 7, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (164, N'SLOT03', 7, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (165, N'SLOT01', 7, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (166, N'SLOT01', 7, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (167, N'SLOT01', 7, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (168, N'SLOT02', 7, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (169, N'SLOT02', 7, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (170, N'SLOT02', 7, CAST(N'2024-06-22' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (171, N'SLOT03', 7, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (172, N'SLOT01', 7, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (173, N'SLOT02', 7, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (174, N'SLOT03', 7, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (175, N'SLOT01', 7, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (176, N'SLOT01', 7, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (177, N'SLOT01', 7, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (178, N'SLOT02', 7, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (179, N'SLOT02', 7, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (180, N'SLOT02', 7, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (181, N'SLOT03', 7, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (182, N'SLOT01', 7, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (183, N'SLOT02', 7, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (184, N'SLOT03', 7, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (185, N'SLOT01', 7, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (186, N'SLOT01', 7, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (187, N'SLOT01', 7, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (188, N'SLOT02', 7, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (189, N'SLOT02', 7, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (190, N'SLOT02', 7, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (191, N'SLOT03', 7, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (192, N'SLOT01', 7, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (193, N'SLOT02', 7, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (194, N'SLOT03', 7, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (195, N'SLOT01', 7, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (196, N'SLOT01', 7, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (197, N'SLOT01', 7, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (198, N'SLOT02', 7, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (199, N'SLOT02', 7, CAST(N'2024-07-12' AS Date), 2)
+GO
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (200, N'SLOT02', 7, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (201, N'SLOT03', 7, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (202, N'SLOT01', 8, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (203, N'SLOT01', 8, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (204, N'SLOT01', 8, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (205, N'SLOT01', 8, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (206, N'SLOT01', 8, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (207, N'SLOT04', 8, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (208, N'SLOT04', 8, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (209, N'SLOT04', 8, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (210, N'SLOT04', 8, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (211, N'SLOT04', 8, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (212, N'SLOT01', 8, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (213, N'SLOT01', 8, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (214, N'SLOT01', 8, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (215, N'SLOT01', 8, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (216, N'SLOT01', 8, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (217, N'SLOT04', 8, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (218, N'SLOT04', 8, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (219, N'SLOT04', 8, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (220, N'SLOT04', 8, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (221, N'SLOT04', 8, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (222, N'SLOT01', 8, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (223, N'SLOT01', 8, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (224, N'SLOT01', 8, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (225, N'SLOT01', 8, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (226, N'SLOT01', 8, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (227, N'SLOT04', 8, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (228, N'SLOT04', 8, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (229, N'SLOT04', 8, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (230, N'SLOT04', 8, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (231, N'SLOT04', 8, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (232, N'SLOT01', 8, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (233, N'SLOT01', 8, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (234, N'SLOT01', 8, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (235, N'SLOT01', 8, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (236, N'SLOT01', 8, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (237, N'SLOT04', 8, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (238, N'SLOT04', 8, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (239, N'SLOT04', 8, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (240, N'SLOT04', 8, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (241, N'SLOT04', 8, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (242, N'SLOT01', 9, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (243, N'SLOT01', 9, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (244, N'SLOT01', 9, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (245, N'SLOT01', 9, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (246, N'SLOT01', 9, CAST(N'2024-06-22' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (247, N'SLOT04', 9, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (248, N'SLOT04', 9, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (249, N'SLOT04', 9, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (250, N'SLOT04', 9, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (251, N'SLOT04', 9, CAST(N'2024-06-22' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (252, N'SLOT02', 9, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (253, N'SLOT01', 9, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (254, N'SLOT01', 9, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (255, N'SLOT01', 9, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (256, N'SLOT01', 9, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (257, N'SLOT01', 9, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (258, N'SLOT04', 9, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (259, N'SLOT04', 9, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (260, N'SLOT04', 9, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (261, N'SLOT04', 9, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (262, N'SLOT04', 9, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (263, N'SLOT02', 9, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (264, N'SLOT01', 9, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (265, N'SLOT01', 9, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (266, N'SLOT01', 9, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (267, N'SLOT01', 9, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (268, N'SLOT01', 9, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (269, N'SLOT04', 9, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (270, N'SLOT04', 9, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (271, N'SLOT04', 9, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (272, N'SLOT04', 9, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (273, N'SLOT04', 9, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (274, N'SLOT02', 9, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (275, N'SLOT02', 9, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (276, N'SLOT01', 9, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (277, N'SLOT01', 9, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (278, N'SLOT01', 9, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (279, N'SLOT01', 9, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (280, N'SLOT01', 9, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (281, N'SLOT04', 9, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (282, N'SLOT04', 9, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (283, N'SLOT04', 9, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (284, N'SLOT04', 9, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (285, N'SLOT04', 9, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (286, N'SLOT02', 9, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (287, N'SLOT01', 10, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (288, N'SLOT02', 10, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (289, N'SLOT01', 10, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (290, N'SLOT02', 10, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (291, N'SLOT01', 10, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (292, N'SLOT02', 10, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (293, N'SLOT01', 10, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (294, N'SLOT02', 10, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (295, N'SLOT01', 10, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (296, N'SLOT02', 10, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (297, N'SLOT01', 10, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (298, N'SLOT02', 10, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (299, N'SLOT01', 10, CAST(N'2024-06-26' AS Date), 2)
+GO
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (300, N'SLOT02', 10, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (301, N'SLOT01', 10, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (302, N'SLOT02', 10, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (303, N'SLOT01', 10, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (304, N'SLOT02', 10, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (305, N'SLOT01', 10, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (306, N'SLOT02', 10, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (307, N'SLOT01', 10, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (308, N'SLOT02', 10, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (309, N'SLOT01', 10, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (310, N'SLOT02', 10, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (311, N'SLOT01', 10, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (312, N'SLOT02', 10, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (313, N'SLOT01', 10, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (314, N'SLOT02', 10, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (315, N'SLOT01', 10, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (316, N'SLOT02', 10, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (317, N'SLOT01', 10, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (318, N'SLOT02', 10, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (319, N'SLOT02', 11, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (320, N'SLOT02', 11, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (321, N'SLOT02', 11, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (322, N'SLOT02', 11, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (323, N'SLOT02', 11, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (324, N'SLOT02', 11, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (325, N'SLOT02', 11, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (326, N'SLOT02', 11, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (327, N'SLOT02', 11, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (328, N'SLOT02', 11, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (329, N'SLOT02', 11, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (330, N'SLOT02', 11, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (331, N'SLOT02', 11, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (332, N'SLOT02', 11, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (333, N'SLOT02', 11, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (334, N'SLOT02', 11, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (335, N'SLOT02', 11, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (336, N'SLOT02', 11, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (337, N'SLOT02', 11, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (338, N'SLOT02', 11, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (339, N'SLOT04', 12, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (340, N'SLOT04', 12, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (341, N'SLOT04', 12, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (342, N'SLOT04', 12, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (343, N'SLOT04', 12, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (344, N'SLOT04', 12, CAST(N'2024-06-22' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (345, N'SLOT04', 12, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (346, N'SLOT04', 12, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (347, N'SLOT04', 12, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (348, N'SLOT04', 12, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (349, N'SLOT04', 12, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (350, N'SLOT04', 12, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (351, N'SLOT04', 12, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (352, N'SLOT04', 12, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (353, N'SLOT04', 12, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (354, N'SLOT04', 12, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (355, N'SLOT04', 12, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (356, N'SLOT04', 12, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (357, N'SLOT04', 12, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (358, N'SLOT04', 12, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (359, N'SLOT04', 12, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (360, N'SLOT04', 12, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (361, N'SLOT04', 12, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (362, N'SLOT04', 12, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (363, N'SLOT01', 13, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (364, N'SLOT01', 13, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (365, N'SLOT01', 13, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (366, N'SLOT01', 13, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (367, N'SLOT04', 13, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (368, N'SLOT04', 13, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (369, N'SLOT04', 13, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (370, N'SLOT04', 13, CAST(N'2024-06-22' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (371, N'SLOT01', 13, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (372, N'SLOT01', 13, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (373, N'SLOT01', 13, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (374, N'SLOT01', 13, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (375, N'SLOT04', 13, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (376, N'SLOT04', 13, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (377, N'SLOT04', 13, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (378, N'SLOT04', 13, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (379, N'SLOT01', 13, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (380, N'SLOT01', 13, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (381, N'SLOT01', 13, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (382, N'SLOT01', 13, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (383, N'SLOT04', 13, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (384, N'SLOT04', 13, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (385, N'SLOT04', 13, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (386, N'SLOT04', 13, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (387, N'SLOT01', 13, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (388, N'SLOT01', 13, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (389, N'SLOT01', 13, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (390, N'SLOT01', 13, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (391, N'SLOT04', 13, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (392, N'SLOT04', 13, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (393, N'SLOT04', 13, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (394, N'SLOT04', 13, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (395, N'SLOT02', 14, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (396, N'SLOT02', 14, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (397, N'SLOT02', 14, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (398, N'SLOT02', 14, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (399, N'SLOT02', 14, CAST(N'2024-06-22' AS Date), 2)
+GO
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (400, N'SLOT02', 14, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (401, N'SLOT03', 14, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (402, N'SLOT03', 14, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (403, N'SLOT02', 14, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (404, N'SLOT02', 14, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (405, N'SLOT02', 14, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (406, N'SLOT02', 14, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (407, N'SLOT02', 14, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (408, N'SLOT02', 14, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (409, N'SLOT03', 14, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (410, N'SLOT03', 14, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (411, N'SLOT02', 14, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (412, N'SLOT02', 14, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (413, N'SLOT02', 14, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (414, N'SLOT02', 14, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (415, N'SLOT02', 14, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (416, N'SLOT02', 14, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (417, N'SLOT03', 14, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (418, N'SLOT03', 14, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (419, N'SLOT02', 14, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (420, N'SLOT02', 14, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (421, N'SLOT02', 14, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (422, N'SLOT02', 14, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (423, N'SLOT02', 14, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (424, N'SLOT02', 14, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (425, N'SLOT03', 14, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (426, N'SLOT03', 14, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (427, N'SLOT01', 15, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (428, N'SLOT01', 15, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (429, N'SLOT01', 15, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (430, N'SLOT01', 15, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (431, N'SLOT01', 15, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (432, N'SLOT03', 15, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (433, N'SLOT02', 15, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (434, N'SLOT02', 15, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (435, N'SLOT02', 15, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (436, N'SLOT03', 15, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (437, N'SLOT03', 15, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (438, N'SLOT01', 15, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (439, N'SLOT01', 15, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (440, N'SLOT01', 15, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (441, N'SLOT01', 15, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (442, N'SLOT01', 15, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (443, N'SLOT03', 15, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (444, N'SLOT02', 15, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (445, N'SLOT02', 15, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (446, N'SLOT02', 15, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (447, N'SLOT03', 15, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (448, N'SLOT03', 15, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (449, N'SLOT01', 15, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (450, N'SLOT01', 15, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (451, N'SLOT01', 15, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (452, N'SLOT01', 15, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (453, N'SLOT01', 15, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (454, N'SLOT03', 15, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (455, N'SLOT02', 15, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (456, N'SLOT02', 15, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (457, N'SLOT02', 15, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (458, N'SLOT03', 15, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (459, N'SLOT03', 15, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (460, N'SLOT01', 15, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (461, N'SLOT01', 15, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (462, N'SLOT01', 15, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (463, N'SLOT01', 15, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (464, N'SLOT01', 15, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (465, N'SLOT03', 15, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (466, N'SLOT02', 15, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (467, N'SLOT02', 15, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (468, N'SLOT02', 15, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (469, N'SLOT03', 15, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (470, N'SLOT03', 15, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (471, N'SLOT01', 16, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (472, N'SLOT01', 16, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (473, N'SLOT01', 16, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (474, N'SLOT01', 16, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (475, N'SLOT04', 16, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (476, N'SLOT04', 16, CAST(N'2024-06-18' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (477, N'SLOT01', 16, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (478, N'SLOT01', 16, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (479, N'SLOT01', 16, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (480, N'SLOT01', 16, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (481, N'SLOT04', 16, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (482, N'SLOT04', 16, CAST(N'2024-06-25' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (483, N'SLOT01', 16, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (484, N'SLOT01', 16, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (485, N'SLOT01', 16, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (486, N'SLOT01', 16, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (487, N'SLOT04', 16, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (488, N'SLOT04', 16, CAST(N'2024-07-02' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (489, N'SLOT01', 16, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (490, N'SLOT01', 16, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (491, N'SLOT01', 16, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (492, N'SLOT01', 16, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (493, N'SLOT04', 16, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (494, N'SLOT04', 16, CAST(N'2024-07-09' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (495, N'SLOT01', 17, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (496, N'SLOT02', 17, CAST(N'2024-06-17' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (497, N'SLOT01', 17, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (498, N'SLOT02', 17, CAST(N'2024-06-19' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (499, N'SLOT01', 17, CAST(N'2024-06-20' AS Date), 2)
+GO
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (500, N'SLOT02', 17, CAST(N'2024-06-20' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (501, N'SLOT02', 17, CAST(N'2024-06-22' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (502, N'SLOT02', 17, CAST(N'2024-06-21' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (503, N'SLOT01', 17, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (504, N'SLOT02', 17, CAST(N'2024-06-24' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (505, N'SLOT01', 17, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (506, N'SLOT02', 17, CAST(N'2024-06-26' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (507, N'SLOT01', 17, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (508, N'SLOT02', 17, CAST(N'2024-06-27' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (509, N'SLOT02', 17, CAST(N'2024-06-29' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (510, N'SLOT02', 17, CAST(N'2024-06-28' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (511, N'SLOT01', 17, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (512, N'SLOT02', 17, CAST(N'2024-07-01' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (513, N'SLOT01', 17, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (514, N'SLOT02', 17, CAST(N'2024-07-03' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (515, N'SLOT01', 17, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (516, N'SLOT02', 17, CAST(N'2024-07-04' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (517, N'SLOT02', 17, CAST(N'2024-07-06' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (518, N'SLOT02', 17, CAST(N'2024-07-05' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (519, N'SLOT01', 17, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (520, N'SLOT02', 17, CAST(N'2024-07-08' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (521, N'SLOT01', 17, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (522, N'SLOT02', 17, CAST(N'2024-07-10' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (523, N'SLOT01', 17, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (524, N'SLOT02', 17, CAST(N'2024-07-11' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (525, N'SLOT02', 17, CAST(N'2024-07-13' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (526, N'SLOT02', 17, CAST(N'2024-07-12' AS Date), 2)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (527, N'SLOT01', 18, CAST(N'2024-08-05' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (528, N'SLOT01', 18, CAST(N'2024-08-06' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (529, N'SLOT01', 18, CAST(N'2024-08-07' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (530, N'SLOT01', 18, CAST(N'2024-08-08' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (531, N'SLOT02', 18, CAST(N'2024-08-09' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (532, N'SLOT03', 18, CAST(N'2024-08-08' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (533, N'SLOT03', 18, CAST(N'2024-08-07' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (534, N'SLOT03', 18, CAST(N'2024-08-06' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (535, N'SLOT03', 18, CAST(N'2024-08-05' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (536, N'SLOT01', 18, CAST(N'2024-08-12' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (537, N'SLOT01', 18, CAST(N'2024-08-13' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (538, N'SLOT01', 18, CAST(N'2024-08-14' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (539, N'SLOT01', 18, CAST(N'2024-08-15' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (540, N'SLOT02', 18, CAST(N'2024-08-16' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (541, N'SLOT03', 18, CAST(N'2024-08-15' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (542, N'SLOT03', 18, CAST(N'2024-08-14' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (543, N'SLOT03', 18, CAST(N'2024-08-13' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (544, N'SLOT03', 18, CAST(N'2024-08-12' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (545, N'SLOT01', 18, CAST(N'2024-08-19' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (546, N'SLOT01', 18, CAST(N'2024-08-20' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (547, N'SLOT01', 18, CAST(N'2024-08-21' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (548, N'SLOT01', 18, CAST(N'2024-08-22' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (549, N'SLOT02', 18, CAST(N'2024-08-23' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (550, N'SLOT03', 18, CAST(N'2024-08-22' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (551, N'SLOT03', 18, CAST(N'2024-08-21' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (552, N'SLOT03', 18, CAST(N'2024-08-20' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (553, N'SLOT03', 18, CAST(N'2024-08-19' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (554, N'SLOT01', 18, CAST(N'2024-08-26' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (555, N'SLOT01', 18, CAST(N'2024-08-27' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (556, N'SLOT01', 18, CAST(N'2024-08-28' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (557, N'SLOT01', 18, CAST(N'2024-08-29' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (558, N'SLOT02', 18, CAST(N'2024-08-30' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (559, N'SLOT03', 18, CAST(N'2024-08-29' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (560, N'SLOT03', 18, CAST(N'2024-08-28' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (561, N'SLOT03', 18, CAST(N'2024-08-27' AS Date), 1)
+INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (562, N'SLOT03', 18, CAST(N'2024-08-26' AS Date), 1)
+SET IDENTITY_INSERT [dbo].[Selected_Slot] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Skills] ON 
 
@@ -785,157 +1965,6 @@ Usage and Applications of Cloud Computing:
 With its ability to provide scalable, cost-effective, and on-demand resources, cloud computing has become a fundamental technology for modern IT infrastructure and business operations.', 1)
 SET IDENTITY_INSERT [dbo].[Skills] OFF
 GO
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (6, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 1)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 2)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 3)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (6, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 4)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 5)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 6)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 7)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 8)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 9)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (14, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 10)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (5, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 11)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (8, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 12)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (6, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (13, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 13)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (2, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 14)
-GO
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 14)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (3, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (16, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 15)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (1, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (4, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (7, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (10, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (19, 16)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (9, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (11, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (12, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (15, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (17, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (18, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (20, 17)
-INSERT [dbo].[CVSkills] ([skill_id], [cv_id]) VALUES (21, 17)
-GO
-SET IDENTITY_INSERT [dbo].[Cycle] ON 
-
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (1, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'son', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (2, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'minh', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (3, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'alexander_thomas', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (4, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'mia_moore', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (5, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'daniel_white', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (6, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'isabella_harris', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (7, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'matthew_clark', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (8, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'charlotte_lewis', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (9, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'lucas_walker', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (10, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'amelia_hall', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (11, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'jayden_allen', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (12, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'ella_young', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (13, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'logan_hernandez', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (14, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'sophia_king', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (15, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'mason_scott', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (16, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'mia_green', CAST(N'2024-06-10' AS Date))
-INSERT [dbo].[Cycle] ([cycle_id], [start_time], [end_time], [note], [mentor_name], [deadline_date]) VALUES (17, CAST(N'2024-06-17' AS Date), CAST(N'2024-07-14' AS Date), N'', N'isabella_baker', CAST(N'2024-06-10' AS Date))
-SET IDENTITY_INSERT [dbo].[Cycle] OFF
-GO
 INSERT [dbo].[Slots] ([slot_id], [slot_name]) VALUES (N'SLOT01', N'7:00 - 9:00')
 INSERT [dbo].[Slots] ([slot_id], [slot_name]) VALUES (N'SLOT02', N'9:00 - 11:00')
 INSERT [dbo].[Slots] ([slot_id], [slot_name]) VALUES (N'SLOT03', N'13:00 - 15:00')
@@ -950,776 +1979,6 @@ INSERT [dbo].[Status_Selected] ([status_id], [status_name]) VALUES (4, N'Saved')
 INSERT [dbo].[Status_Selected] ([status_id], [status_name]) VALUES (5, N'Out Of Date')
 INSERT [dbo].[Status_Selected] ([status_id], [status_name]) VALUES (6, N'Done')
 SET IDENTITY_INSERT [dbo].[Status_Selected] OFF
-GO
-SET IDENTITY_INSERT [dbo].[Selected_Slot] ON 
-
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (1, N'SLOT02', 1, CAST(N'2024-06-17' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (2, N'SLOT02', 1, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (3, N'SLOT02', 1, CAST(N'2024-06-21' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (4, N'SLOT02', 1, CAST(N'2024-06-23' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (5, N'SLOT04', 1, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (6, N'SLOT02', 1, CAST(N'2024-06-24' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (7, N'SLOT02', 1, CAST(N'2024-06-26' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (8, N'SLOT02', 1, CAST(N'2024-06-28' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (9, N'SLOT02', 1, CAST(N'2024-06-30' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (10, N'SLOT04', 1, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (11, N'SLOT02', 1, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (12, N'SLOT02', 1, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (13, N'SLOT02', 1, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (14, N'SLOT02', 1, CAST(N'2024-07-07' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (15, N'SLOT04', 1, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (16, N'SLOT02', 1, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (17, N'SLOT02', 1, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (18, N'SLOT02', 1, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (19, N'SLOT02', 1, CAST(N'2024-07-14' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (20, N'SLOT04', 1, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (21, N'SLOT03', 2, CAST(N'2024-06-17' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (22, N'SLOT02', 2, CAST(N'2024-06-19' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (23, N'SLOT02', 2, CAST(N'2024-06-21' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (24, N'SLOT04', 2, CAST(N'2024-06-22' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (25, N'SLOT03', 2, CAST(N'2024-06-24' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (26, N'SLOT02', 2, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (27, N'SLOT02', 2, CAST(N'2024-06-28' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (28, N'SLOT04', 2, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (29, N'SLOT03', 2, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (30, N'SLOT02', 2, CAST(N'2024-07-03' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (31, N'SLOT02', 2, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (32, N'SLOT04', 2, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (33, N'SLOT03', 2, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (34, N'SLOT02', 2, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (35, N'SLOT02', 2, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (36, N'SLOT04', 2, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (37, N'SLOT04', 3, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (38, N'SLOT03', 3, CAST(N'2024-06-19' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (39, N'SLOT02', 3, CAST(N'2024-06-19' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (40, N'SLOT02', 3, CAST(N'2024-06-18' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (41, N'SLOT02', 3, CAST(N'2024-06-20' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (42, N'SLOT02', 3, CAST(N'2024-06-17' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (43, N'SLOT02', 3, CAST(N'2024-06-21' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (44, N'SLOT03', 3, CAST(N'2024-06-21' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (45, N'SLOT04', 3, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (46, N'SLOT03', 3, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (47, N'SLOT02', 3, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (48, N'SLOT02', 3, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (49, N'SLOT02', 3, CAST(N'2024-06-27' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (50, N'SLOT02', 3, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (51, N'SLOT02', 3, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (52, N'SLOT03', 3, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (53, N'SLOT04', 3, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (54, N'SLOT03', 3, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (55, N'SLOT02', 3, CAST(N'2024-07-03' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (56, N'SLOT02', 3, CAST(N'2024-07-02' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (57, N'SLOT02', 3, CAST(N'2024-07-04' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (58, N'SLOT02', 3, CAST(N'2024-07-01' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (59, N'SLOT02', 3, CAST(N'2024-07-05' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (60, N'SLOT03', 3, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (61, N'SLOT04', 3, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (62, N'SLOT03', 3, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (63, N'SLOT02', 3, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (64, N'SLOT02', 3, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (65, N'SLOT02', 3, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (66, N'SLOT02', 3, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (67, N'SLOT02', 3, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (68, N'SLOT03', 3, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (69, N'SLOT02', 4, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (70, N'SLOT01', 4, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (71, N'SLOT01', 4, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (72, N'SLOT01', 4, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (73, N'SLOT01', 4, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (74, N'SLOT02', 4, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (75, N'SLOT01', 4, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (76, N'SLOT04', 4, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (77, N'SLOT02', 4, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (78, N'SLOT01', 4, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (79, N'SLOT01', 4, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (80, N'SLOT01', 4, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (81, N'SLOT01', 4, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (82, N'SLOT02', 4, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (83, N'SLOT01', 4, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (84, N'SLOT02', 4, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (85, N'SLOT01', 4, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (86, N'SLOT01', 4, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (87, N'SLOT01', 4, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (88, N'SLOT01', 4, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (89, N'SLOT02', 4, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (90, N'SLOT01', 4, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (91, N'SLOT02', 4, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (92, N'SLOT01', 4, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (93, N'SLOT01', 4, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (94, N'SLOT01', 4, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (95, N'SLOT01', 4, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (96, N'SLOT02', 4, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (97, N'SLOT01', 4, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (98, N'SLOT01', 5, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (99, N'SLOT01', 5, CAST(N'2024-06-18' AS Date), 2)
-GO
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (100, N'SLOT01', 5, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (101, N'SLOT03', 5, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (102, N'SLOT03', 5, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (103, N'SLOT03', 5, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (104, N'SLOT01', 5, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (105, N'SLOT01', 5, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (106, N'SLOT03', 5, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (107, N'SLOT03', 5, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (108, N'SLOT01', 5, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (109, N'SLOT01', 5, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (110, N'SLOT01', 5, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (111, N'SLOT03', 5, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (112, N'SLOT03', 5, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (113, N'SLOT03', 5, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (114, N'SLOT01', 5, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (115, N'SLOT01', 5, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (116, N'SLOT03', 5, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (117, N'SLOT03', 5, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (118, N'SLOT01', 5, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (119, N'SLOT01', 5, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (120, N'SLOT01', 5, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (121, N'SLOT03', 5, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (122, N'SLOT03', 5, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (123, N'SLOT03', 5, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (124, N'SLOT01', 5, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (125, N'SLOT01', 5, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (126, N'SLOT03', 5, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (127, N'SLOT03', 5, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (128, N'SLOT01', 5, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (129, N'SLOT01', 5, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (130, N'SLOT01', 5, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (131, N'SLOT03', 5, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (132, N'SLOT03', 5, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (133, N'SLOT03', 5, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (134, N'SLOT01', 5, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (135, N'SLOT01', 5, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (136, N'SLOT03', 5, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (137, N'SLOT03', 5, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (138, N'SLOT03', 6, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (139, N'SLOT02', 6, CAST(N'2024-06-18' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (140, N'SLOT02', 6, CAST(N'2024-06-19' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (141, N'SLOT02', 6, CAST(N'2024-06-20' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (142, N'SLOT03', 6, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (143, N'SLOT03', 6, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (144, N'SLOT03', 6, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (145, N'SLOT02', 6, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (146, N'SLOT02', 6, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (147, N'SLOT02', 6, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (148, N'SLOT03', 6, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (149, N'SLOT03', 6, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (150, N'SLOT03', 6, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (151, N'SLOT02', 6, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (152, N'SLOT02', 6, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (153, N'SLOT02', 6, CAST(N'2024-07-04' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (154, N'SLOT03', 6, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (155, N'SLOT03', 6, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (156, N'SLOT03', 6, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (157, N'SLOT02', 6, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (158, N'SLOT02', 6, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (159, N'SLOT02', 6, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (160, N'SLOT03', 6, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (161, N'SLOT03', 6, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (162, N'SLOT01', 7, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (163, N'SLOT02', 7, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (164, N'SLOT03', 7, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (165, N'SLOT01', 7, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (166, N'SLOT01', 7, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (167, N'SLOT01', 7, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (168, N'SLOT02', 7, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (169, N'SLOT02', 7, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (170, N'SLOT02', 7, CAST(N'2024-06-22' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (171, N'SLOT03', 7, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (172, N'SLOT01', 7, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (173, N'SLOT02', 7, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (174, N'SLOT03', 7, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (175, N'SLOT01', 7, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (176, N'SLOT01', 7, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (177, N'SLOT01', 7, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (178, N'SLOT02', 7, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (179, N'SLOT02', 7, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (180, N'SLOT02', 7, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (181, N'SLOT03', 7, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (182, N'SLOT01', 7, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (183, N'SLOT02', 7, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (184, N'SLOT03', 7, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (185, N'SLOT01', 7, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (186, N'SLOT01', 7, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (187, N'SLOT01', 7, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (188, N'SLOT02', 7, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (189, N'SLOT02', 7, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (190, N'SLOT02', 7, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (191, N'SLOT03', 7, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (192, N'SLOT01', 7, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (193, N'SLOT02', 7, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (194, N'SLOT03', 7, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (195, N'SLOT01', 7, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (196, N'SLOT01', 7, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (197, N'SLOT01', 7, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (198, N'SLOT02', 7, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (199, N'SLOT02', 7, CAST(N'2024-07-12' AS Date), 2)
-GO
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (200, N'SLOT02', 7, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (201, N'SLOT03', 7, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (202, N'SLOT01', 8, CAST(N'2024-06-17' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (203, N'SLOT01', 8, CAST(N'2024-06-18' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (204, N'SLOT01', 8, CAST(N'2024-06-19' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (205, N'SLOT01', 8, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (206, N'SLOT01', 8, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (207, N'SLOT04', 8, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (208, N'SLOT04', 8, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (209, N'SLOT04', 8, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (210, N'SLOT04', 8, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (211, N'SLOT04', 8, CAST(N'2024-06-21' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (212, N'SLOT01', 8, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (213, N'SLOT01', 8, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (214, N'SLOT01', 8, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (215, N'SLOT01', 8, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (216, N'SLOT01', 8, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (217, N'SLOT04', 8, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (218, N'SLOT04', 8, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (219, N'SLOT04', 8, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (220, N'SLOT04', 8, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (221, N'SLOT04', 8, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (222, N'SLOT01', 8, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (223, N'SLOT01', 8, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (224, N'SLOT01', 8, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (225, N'SLOT01', 8, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (226, N'SLOT01', 8, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (227, N'SLOT04', 8, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (228, N'SLOT04', 8, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (229, N'SLOT04', 8, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (230, N'SLOT04', 8, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (231, N'SLOT04', 8, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (232, N'SLOT01', 8, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (233, N'SLOT01', 8, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (234, N'SLOT01', 8, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (235, N'SLOT01', 8, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (236, N'SLOT01', 8, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (237, N'SLOT04', 8, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (238, N'SLOT04', 8, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (239, N'SLOT04', 8, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (240, N'SLOT04', 8, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (241, N'SLOT04', 8, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (242, N'SLOT01', 9, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (243, N'SLOT01', 9, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (244, N'SLOT01', 9, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (245, N'SLOT01', 9, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (246, N'SLOT01', 9, CAST(N'2024-06-22' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (247, N'SLOT04', 9, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (248, N'SLOT04', 9, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (249, N'SLOT04', 9, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (250, N'SLOT04', 9, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (251, N'SLOT04', 9, CAST(N'2024-06-22' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (252, N'SLOT02', 9, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (253, N'SLOT01', 9, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (254, N'SLOT01', 9, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (255, N'SLOT01', 9, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (256, N'SLOT01', 9, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (257, N'SLOT01', 9, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (258, N'SLOT04', 9, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (259, N'SLOT04', 9, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (260, N'SLOT04', 9, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (261, N'SLOT04', 9, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (262, N'SLOT04', 9, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (263, N'SLOT02', 9, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (264, N'SLOT01', 9, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (265, N'SLOT01', 9, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (266, N'SLOT01', 9, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (267, N'SLOT01', 9, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (268, N'SLOT01', 9, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (269, N'SLOT04', 9, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (270, N'SLOT04', 9, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (271, N'SLOT04', 9, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (272, N'SLOT04', 9, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (273, N'SLOT04', 9, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (274, N'SLOT02', 9, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (275, N'SLOT02', 9, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (276, N'SLOT01', 9, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (277, N'SLOT01', 9, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (278, N'SLOT01', 9, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (279, N'SLOT01', 9, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (280, N'SLOT01', 9, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (281, N'SLOT04', 9, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (282, N'SLOT04', 9, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (283, N'SLOT04', 9, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (284, N'SLOT04', 9, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (285, N'SLOT04', 9, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (286, N'SLOT02', 9, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (287, N'SLOT01', 10, CAST(N'2024-06-17' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (288, N'SLOT02', 10, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (289, N'SLOT01', 10, CAST(N'2024-06-18' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (290, N'SLOT02', 10, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (291, N'SLOT01', 10, CAST(N'2024-06-19' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (292, N'SLOT02', 10, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (293, N'SLOT01', 10, CAST(N'2024-06-20' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (294, N'SLOT02', 10, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (295, N'SLOT01', 10, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (296, N'SLOT02', 10, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (297, N'SLOT01', 10, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (298, N'SLOT02', 10, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (299, N'SLOT01', 10, CAST(N'2024-06-26' AS Date), 6)
-GO
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (300, N'SLOT02', 10, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (301, N'SLOT01', 10, CAST(N'2024-06-27' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (302, N'SLOT02', 10, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (303, N'SLOT01', 10, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (304, N'SLOT02', 10, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (305, N'SLOT01', 10, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (306, N'SLOT02', 10, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (307, N'SLOT01', 10, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (308, N'SLOT02', 10, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (309, N'SLOT01', 10, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (310, N'SLOT02', 10, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (311, N'SLOT01', 10, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (312, N'SLOT02', 10, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (313, N'SLOT01', 10, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (314, N'SLOT02', 10, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (315, N'SLOT01', 10, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (316, N'SLOT02', 10, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (317, N'SLOT01', 10, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (318, N'SLOT02', 10, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (319, N'SLOT02', 11, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (320, N'SLOT02', 11, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (321, N'SLOT02', 11, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (322, N'SLOT02', 11, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (323, N'SLOT02', 11, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (324, N'SLOT02', 11, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (325, N'SLOT02', 11, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (326, N'SLOT02', 11, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (327, N'SLOT02', 11, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (328, N'SLOT02', 11, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (329, N'SLOT02', 11, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (330, N'SLOT02', 11, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (331, N'SLOT02', 11, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (332, N'SLOT02', 11, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (333, N'SLOT02', 11, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (334, N'SLOT02', 11, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (335, N'SLOT02', 11, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (336, N'SLOT02', 11, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (337, N'SLOT02', 11, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (338, N'SLOT02', 11, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (339, N'SLOT04', 12, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (340, N'SLOT04', 12, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (341, N'SLOT04', 12, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (342, N'SLOT04', 12, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (343, N'SLOT04', 12, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (344, N'SLOT04', 12, CAST(N'2024-06-22' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (345, N'SLOT04', 12, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (346, N'SLOT04', 12, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (347, N'SLOT04', 12, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (348, N'SLOT04', 12, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (349, N'SLOT04', 12, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (350, N'SLOT04', 12, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (351, N'SLOT04', 12, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (352, N'SLOT04', 12, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (353, N'SLOT04', 12, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (354, N'SLOT04', 12, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (355, N'SLOT04', 12, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (356, N'SLOT04', 12, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (357, N'SLOT04', 12, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (358, N'SLOT04', 12, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (359, N'SLOT04', 12, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (360, N'SLOT04', 12, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (361, N'SLOT04', 12, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (362, N'SLOT04', 12, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (363, N'SLOT01', 13, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (364, N'SLOT01', 13, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (365, N'SLOT01', 13, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (366, N'SLOT01', 13, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (367, N'SLOT04', 13, CAST(N'2024-06-17' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (368, N'SLOT04', 13, CAST(N'2024-06-18' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (369, N'SLOT04', 13, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (370, N'SLOT04', 13, CAST(N'2024-06-22' AS Date), 6)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (371, N'SLOT01', 13, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (372, N'SLOT01', 13, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (373, N'SLOT01', 13, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (374, N'SLOT01', 13, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (375, N'SLOT04', 13, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (376, N'SLOT04', 13, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (377, N'SLOT04', 13, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (378, N'SLOT04', 13, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (379, N'SLOT01', 13, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (380, N'SLOT01', 13, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (381, N'SLOT01', 13, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (382, N'SLOT01', 13, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (383, N'SLOT04', 13, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (384, N'SLOT04', 13, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (385, N'SLOT04', 13, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (386, N'SLOT04', 13, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (387, N'SLOT01', 13, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (388, N'SLOT01', 13, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (389, N'SLOT01', 13, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (390, N'SLOT01', 13, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (391, N'SLOT04', 13, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (392, N'SLOT04', 13, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (393, N'SLOT04', 13, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (394, N'SLOT04', 13, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (395, N'SLOT02', 14, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (396, N'SLOT02', 14, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (397, N'SLOT02', 14, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (398, N'SLOT02', 14, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (399, N'SLOT02', 14, CAST(N'2024-06-22' AS Date), 2)
-GO
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (400, N'SLOT02', 14, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (401, N'SLOT03', 14, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (402, N'SLOT03', 14, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (403, N'SLOT02', 14, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (404, N'SLOT02', 14, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (405, N'SLOT02', 14, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (406, N'SLOT02', 14, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (407, N'SLOT02', 14, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (408, N'SLOT02', 14, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (409, N'SLOT03', 14, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (410, N'SLOT03', 14, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (411, N'SLOT02', 14, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (412, N'SLOT02', 14, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (413, N'SLOT02', 14, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (414, N'SLOT02', 14, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (415, N'SLOT02', 14, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (416, N'SLOT02', 14, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (417, N'SLOT03', 14, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (418, N'SLOT03', 14, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (419, N'SLOT02', 14, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (420, N'SLOT02', 14, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (421, N'SLOT02', 14, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (422, N'SLOT02', 14, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (423, N'SLOT02', 14, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (424, N'SLOT02', 14, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (425, N'SLOT03', 14, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (426, N'SLOT03', 14, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (427, N'SLOT01', 15, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (428, N'SLOT01', 15, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (429, N'SLOT01', 15, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (430, N'SLOT01', 15, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (431, N'SLOT01', 15, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (432, N'SLOT03', 15, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (433, N'SLOT02', 15, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (434, N'SLOT02', 15, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (435, N'SLOT02', 15, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (436, N'SLOT03', 15, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (437, N'SLOT03', 15, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (438, N'SLOT01', 15, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (439, N'SLOT01', 15, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (440, N'SLOT01', 15, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (441, N'SLOT01', 15, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (442, N'SLOT01', 15, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (443, N'SLOT03', 15, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (444, N'SLOT02', 15, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (445, N'SLOT02', 15, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (446, N'SLOT02', 15, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (447, N'SLOT03', 15, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (448, N'SLOT03', 15, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (449, N'SLOT01', 15, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (450, N'SLOT01', 15, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (451, N'SLOT01', 15, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (452, N'SLOT01', 15, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (453, N'SLOT01', 15, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (454, N'SLOT03', 15, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (455, N'SLOT02', 15, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (456, N'SLOT02', 15, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (457, N'SLOT02', 15, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (458, N'SLOT03', 15, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (459, N'SLOT03', 15, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (460, N'SLOT01', 15, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (461, N'SLOT01', 15, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (462, N'SLOT01', 15, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (463, N'SLOT01', 15, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (464, N'SLOT01', 15, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (465, N'SLOT03', 15, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (466, N'SLOT02', 15, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (467, N'SLOT02', 15, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (468, N'SLOT02', 15, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (469, N'SLOT03', 15, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (470, N'SLOT03', 15, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (471, N'SLOT01', 16, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (472, N'SLOT01', 16, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (473, N'SLOT01', 16, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (474, N'SLOT01', 16, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (475, N'SLOT04', 16, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (476, N'SLOT04', 16, CAST(N'2024-06-18' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (477, N'SLOT01', 16, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (478, N'SLOT01', 16, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (479, N'SLOT01', 16, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (480, N'SLOT01', 16, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (481, N'SLOT04', 16, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (482, N'SLOT04', 16, CAST(N'2024-06-25' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (483, N'SLOT01', 16, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (484, N'SLOT01', 16, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (485, N'SLOT01', 16, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (486, N'SLOT01', 16, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (487, N'SLOT04', 16, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (488, N'SLOT04', 16, CAST(N'2024-07-02' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (489, N'SLOT01', 16, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (490, N'SLOT01', 16, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (491, N'SLOT01', 16, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (492, N'SLOT01', 16, CAST(N'2024-07-12' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (493, N'SLOT04', 16, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (494, N'SLOT04', 16, CAST(N'2024-07-09' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (495, N'SLOT01', 17, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (496, N'SLOT02', 17, CAST(N'2024-06-17' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (497, N'SLOT01', 17, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (498, N'SLOT02', 17, CAST(N'2024-06-19' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (499, N'SLOT01', 17, CAST(N'2024-06-20' AS Date), 2)
-GO
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (500, N'SLOT02', 17, CAST(N'2024-06-20' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (501, N'SLOT02', 17, CAST(N'2024-06-22' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (502, N'SLOT02', 17, CAST(N'2024-06-21' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (503, N'SLOT01', 17, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (504, N'SLOT02', 17, CAST(N'2024-06-24' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (505, N'SLOT01', 17, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (506, N'SLOT02', 17, CAST(N'2024-06-26' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (507, N'SLOT01', 17, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (508, N'SLOT02', 17, CAST(N'2024-06-27' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (509, N'SLOT02', 17, CAST(N'2024-06-29' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (510, N'SLOT02', 17, CAST(N'2024-06-28' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (511, N'SLOT01', 17, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (512, N'SLOT02', 17, CAST(N'2024-07-01' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (513, N'SLOT01', 17, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (514, N'SLOT02', 17, CAST(N'2024-07-03' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (515, N'SLOT01', 17, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (516, N'SLOT02', 17, CAST(N'2024-07-04' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (517, N'SLOT02', 17, CAST(N'2024-07-06' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (518, N'SLOT02', 17, CAST(N'2024-07-05' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (519, N'SLOT01', 17, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (520, N'SLOT02', 17, CAST(N'2024-07-08' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (521, N'SLOT01', 17, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (522, N'SLOT02', 17, CAST(N'2024-07-10' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (523, N'SLOT01', 17, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (524, N'SLOT02', 17, CAST(N'2024-07-11' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (525, N'SLOT02', 17, CAST(N'2024-07-13' AS Date), 2)
-INSERT [dbo].[Selected_Slot] ([selected_id], [slot_id], [cycle_id], [day_of_slot], [status_id]) VALUES (526, N'SLOT02', 17, CAST(N'2024-07-12' AS Date), 2)
-SET IDENTITY_INSERT [dbo].[Selected_Slot] OFF
-GO
-SET IDENTITY_INSERT [dbo].[RequestStatuses] ON 
-
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (1, N'Open Class')
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (2, N'Processing')
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (3, N'Rejected')
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (4, N'Out Of Date')
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (5, N'Wait For Payment')
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (6, N'Saved')
-INSERT [dbo].[RequestStatuses] ([status_id], [status_name]) VALUES (7, N'Done')
-SET IDENTITY_INSERT [dbo].[RequestStatuses] OFF
-GO
-SET IDENTITY_INSERT [dbo].[RequestsFormMentee] ON 
-
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (1, N'son', N'hieu', CAST(N'2024-06-08' AS Date), CAST(N'18:22:00' AS Time), N'Learn C++', N'This course aims to introduce participants to the fundamental concepts and tools used in data science. Topics covered include data manipulation, statistical analysis, machine learning algorithms, and data visualization techniques.', 3, 400000, N'I''m busy')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (2, N'son', N'hieu', CAST(N'2024-06-07' AS Date), CAST(N'18:23:00' AS Time), N'Learn Javascript', N'Improve your academic writing skills with this workshop designed to help participants master the art of scholarly communication. Topics covered include structuring essays, citing sources correctly, academic integrity.', 7, 400000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (3, N'son', N'ava_taylor', CAST(N'2024-06-07' AS Date), CAST(N'19:28:00' AS Time), N'Learn Python', N'Participants will learn practical techniques to enhance clarity, coherence, and persuasiveness in their academic writing.', 3, 300000, N'The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (4, N'son', N'ava_taylor', CAST(N'2024-06-07' AS Date), CAST(N'18:30:00' AS Time), N'Learn SQL', N'This seminar provides a comprehensive introduction to personal financial planning.', 4, 300000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (5, N'son', N'ava_taylor', CAST(N'2024-06-07' AS Date), CAST(N'18:31:00' AS Time), N'Learn PHP', N'Topics covered include budgeting, saving strategies, investment basics, managing debt, and retirement planning.', 7, 300000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (6, N'son', N'ava_taylor', CAST(N'2024-06-12' AS Date), CAST(N'18:35:00' AS Time), N'Learn Javascript', N'I really want to learn your course', 4, 300000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (7, N'son', N'ava_taylor', CAST(N'2024-06-09' AS Date), CAST(N'18:42:00' AS Time), N'Learn C++', N'I''m really want to learn C++', 4, 200000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (8, N'minh', N'hieu', CAST(N'2024-06-08' AS Date), CAST(N'19:05:00' AS Time), N'Learn C', N'I really want to learn C, please help me', 7, 400000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (9, N'minh', N'hieu', CAST(N'2024-06-07' AS Date), CAST(N'19:11:00' AS Time), N'Learn CSS', N'Skill CSS is very usefull i want to learn.', 3, 300000, N'I''m can''t teach')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (10, N'minh', N'hieu', CAST(N'2024-06-08' AS Date), CAST(N'19:13:00' AS Time), N'Request CSS again', N'I really want to learn CSS.', 4, 300000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (11, N'minh', N'ava_taylor', CAST(N'2024-06-08' AS Date), CAST(N'18:20:00' AS Time), N'Learn Java', N'Java is good skill. I want to learn it.', 7, 300000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (12, N'alexander_thomas', N'hieu', CAST(N'2024-06-09' AS Date), CAST(N'21:16:00' AS Time), N'Request Ruby', N'I want to learn skill Ruby. Can you help me?', 7, 450000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (13, N'alexander_thomas', N'benjamin_anderson', CAST(N'2024-06-08' AS Date), CAST(N'22:38:00' AS Time), N'Request C#', N'C# has a clean and easy-to-understand syntax, making it approachable for developers familiar with C-like languages. I want to learn.', 4, 450000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (14, N'alexander_thomas', N'benjamin_anderson', CAST(N'2024-06-09' AS Date), CAST(N'21:48:00' AS Time), N'Learn Skill Ruby', N'Ruby has a clean and readable syntax that focuses on human-friendly code. I hope i can learn this skill.', 7, 600000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (15, N'alexander_thomas', N'benjamin_anderson', CAST(N'2024-06-08' AS Date), CAST(N'22:54:00' AS Time), N'Learn Apache Cassandra', N'Apache Cassandra is an open-source, distributed NoSQL database designed for handling large amounts of data across many commodity servers with no single point of failure. So i want to learn', 3, 600000, N'Sory, I''m busy')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (16, N'alexander_thomas', N'sophia_martinez', CAST(N'2024-06-07' AS Date), CAST(N'22:32:00' AS Time), N'Request PowerShell', N'Shell is a command-line interface or graphical user interface that allows users to interact with the operating system and applications using command-line commands. Popular types of shells include Bash and PowerShell.', 3, 600000, N'The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (17, N'alexander_thomas', N'sophia_martinez', CAST(N'2024-06-09' AS Date), CAST(N'12:33:00' AS Time), N'Learn Apache Cassandra', N'Uses a column-family data model that is more flexible than traditional relational databases.', 7, 900000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (18, N'isabella_harris', N'william_brown', CAST(N'2024-06-09' AS Date), CAST(N'14:40:00' AS Time), N'Javascript', N'This involves creating the user interface and user experience (UI/UX) of a website. So I want to learn', 7, 800000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (19, N'charlotte_lewis', N'william_brown', CAST(N'2024-06-09' AS Date), CAST(N'23:47:00' AS Time), N'Learn Adobe Photoshop', N'Photoshop provides a comprehensive set of tools for editing images, including cropping, resizing, retouching, it is useful with me', 7, 400000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (20, N'amelia_hall', N'william_brown', CAST(N'2024-06-11' AS Date), CAST(N'15:51:00' AS Time), N'Request Skill WPF', N'WPF is a UI framework developed by Microsoft for building visually appealing desktop applications on the Windows platform using C#. I want to study', 7, 600000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (21, N'amelia_hall', N'william_brown', CAST(N'2024-06-08' AS Date), CAST(N'14:55:00' AS Time), N'Apache Hadoop', N'Apache Hadoop is an open-source framework for distributed storage and processing of large data sets using a cluster of commodity hardware.', 3, 600000, N'The schedule you selected was rejected because this mentor has accepted another mentee, Please choose another schedule')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (22, N'charlotte_lewis', N'emily_davis', CAST(N'2024-06-09' AS Date), CAST(N'03:10:00' AS Time), N'Request for Adobe Photoshop', N'Editing Tools: Photoshop provides a comprehensive set of tools for editing images.', 3, 300000, N'The schedule you selected was rejected because this request The schedule you selected was rejected because this request is duplicated with another request, Please choose another schedule')
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (23, N'amelia_hall', N'emily_davis', CAST(N'2024-06-09' AS Date), CAST(N'03:11:00' AS Time), N'Request Data Analysis', N'Clearly define the objectives and questions to be answered through data analysis.', 7, 600000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (24, N'logan_hernandez', N'emily_davis', CAST(N'2024-06-10' AS Date), CAST(N'04:17:00' AS Time), N'Learn SQL', N'I want to learn this skill, please teach me.', 7, 450000, NULL)
-INSERT [dbo].[RequestsFormMentee] ([request_id], [mentor_name], [mentee_name], [deadline_date], [deadline_hour], [title], [description], [status_id], [price], [note]) VALUES (25, N'logan_hernandez', N'emily_davis', CAST(N'2024-06-09' AS Date), CAST(N'04:15:00' AS Time), N'Apache Cassandra', N'Cassandra is designed to handle large volumes of data across multiple nodes.', 4, 450000, NULL)
-SET IDENTITY_INSERT [dbo].[RequestsFormMentee] OFF
-GO
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 1)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 2)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 4)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (1, 7)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 1)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 3)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 4)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (2, 8)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (3, 2)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (3, 5)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (3, 9)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (4, 11)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (4, 14)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (4, 15)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (5, 6)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (5, 7)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (5, 9)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (6, 2)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (6, 13)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (6, 15)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (7, 2)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (7, 5)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 21)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 22)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 24)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (8, 30)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (9, 25)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (9, 26)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (9, 28)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (10, 29)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (10, 31)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (10, 32)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (11, 23)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (11, 25)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (11, 27)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (12, 40)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (12, 41)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (12, 44)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (13, 37)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (13, 42)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (13, 43)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 38)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 42)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 43)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (14, 49)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 39)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 56)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 57)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (15, 59)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 39)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 56)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 58)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (16, 59)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 39)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 55)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 56)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 57)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 58)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (17, 59)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (18, 139)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (18, 140)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (18, 141)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (18, 153)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (19, 202)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (19, 203)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (19, 204)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (19, 211)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (20, 293)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (20, 299)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (20, 301)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (21, 293)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (21, 303)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (21, 305)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (22, 205)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (22, 206)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (22, 207)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (23, 287)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (23, 289)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (23, 291)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (24, 367)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (24, 368)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (24, 370)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (25, 364)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (25, 365)
-INSERT [dbo].[RquestSelectedSlot] ([request_id], [selected_id]) VALUES (25, 366)
-GO
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (2, 9)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (2, 10)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (3, 3)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (4, 8)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (5, 1)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (5, 7)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (6, 11)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (7, 13)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (8, 2)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (8, 6)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (8, 18)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (9, 12)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (9, 14)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (10, 5)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (11, 4)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (11, 24)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (12, 19)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (12, 22)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (13, 23)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (14, 16)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (16, 20)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (17, 15)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (17, 17)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (17, 25)
-INSERT [dbo].[RequestSkills] ([skill_id], [request_id]) VALUES (19, 21)
-GO
-SET IDENTITY_INSERT [dbo].[FeedBacks] ON 
-
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (4, 5, N'son', N'ava_taylor', 5, N'You are good mentor', CAST(N'2024-06-27' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (5, 2, N'son', N'hieu', 4, N'good teacher', CAST(N'2024-06-27' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (6, 8, N'minh', N'hieu', 2, N'Not bad!', CAST(N'2024-06-29' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (7, 11, N'minh', N'ava_taylor', 3, N'No problem, but i don''t want to learn.', CAST(N'2024-06-26' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (8, 14, N'alexander_thomas', N'benjamin_anderson', 5, N'Teacher is very good!', CAST(N'2024-06-26' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (9, 12, N'alexander_thomas', N'hieu', 5, N'So nice!', CAST(N'2024-06-26' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (10, 20, N'amelia_hall', N'william_brown', 4, N'Good teacher!', CAST(N'2024-06-29' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (11, 18, N'isabella_harris', N'william_brown', 5, N'I learn, I feel this teacher is goog!', CAST(N'2024-06-29' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (12, 19, N'charlotte_lewis', N'william_brown', 4, N'Charlotte Lewis is good teacher!', CAST(N'2024-06-29' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (13, 24, N'logan_hernandez', N'emily_davis', 5, N'excellent teacher!', CAST(N'2024-06-23' AS Date))
-INSERT [dbo].[FeedBacks] ([feedback_id], [request_id], [mentor_name], [mentee_name], [star], [comment], [time_feedback]) VALUES (14, 23, N'amelia_hall', N'emily_davis', 5, N'Good, i learn a lot.', CAST(N'2024-06-23' AS Date))
-SET IDENTITY_INSERT [dbo].[FeedBacks] OFF
-GO
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'alexander_thomas', CAST(1597500 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'amelia_hall', CAST(970000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'ava_taylor', CAST(6585000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'benjamin_anderson', CAST(6400000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'charlotte_lewis', CAST(380000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'emily_davis', CAST(6120000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'hieu', CAST(6010000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'isabella_harris', CAST(600000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'james_wilson', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'logan_hernandez', CAST(427500 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'manager', CAST(310000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'michael_jones', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'minh', CAST(400000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'olivia_johnson', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'son', CAST(485000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'sophia_martinez', CAST(6355000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'william_brown', CAST(5360000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
-GO
-SET IDENTITY_INSERT [dbo].[Hold] ON 
-
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (1, N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:22:50.237' AS DateTime), N'Hold money by request with title: Learn C++', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (2, N'hieu', 1, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:23:19.110' AS DateTime), N'Return the money hold by request with title: Learn C++', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (3, N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:06.453' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (4, N'hieu', 2, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:24:56.203' AS DateTime), N'Cancel hold money because paid request with title: Learn Javascript', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (5, N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:07.817' AS DateTime), N'Hold money by request with title: Learn PHP', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (6, N'ava_taylor', 5, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:54.343' AS DateTime), N'Cancel hold money because paid request with title: Learn PHP', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (7, N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:11:22.187' AS DateTime), N'Hold money by request with title: Learn CSS', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (8, N'hieu', 9, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:12:25.877' AS DateTime), N'Return the money hold by request with title: Learn CSS', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (9, N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:13:52.033' AS DateTime), N'Hold money by request with title: Request CSS again', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (10, N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:20:41.457' AS DateTime), N'Hold money by request with title: Learn Java', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (11, N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:16:17.880' AS DateTime), N'Hold money by request with title: Request Ruby', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (12, N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:38:13.127' AS DateTime), N'Hold money by request with title: Request C#', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (13, N'benjamin_anderson', 13, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-15T18:43:01.007' AS DateTime), N'Return the money hold by request with title: Request C#', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (14, N'hieu', 10, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Request CSS again', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (15, N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn Javascript', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (16, N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Return the money hold by request with title: Learn SQL', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (17, N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:49:07.430' AS DateTime), N'Hold money by request with title: Learn Skill Ruby', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (18, N'benjamin_anderson', 14, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:51:51.853' AS DateTime), N'Cancel hold money because paid request with title: Learn Skill Ruby', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (19, N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:54:51.650' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (20, N'benjamin_anderson', 15, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T18:55:44.007' AS DateTime), N'Return the money hold by request with title: Learn Apache Cassandra', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (21, N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:32:30.617' AS DateTime), N'Hold money by request with title: Request PowerShell', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (22, N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:34:05.287' AS DateTime), N'Hold money by request with title: Learn Apache Cassandra', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (23, N'sophia_martinez', 17, CAST(900000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:37:23.913' AS DateTime), N'Cancel hold money because paid request with title: Learn Apache Cassandra', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (24, N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:29:03.933' AS DateTime), N'Hold money by request with title: Learn Python', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (25, N'ava_taylor', 3, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:32:29.470' AS DateTime), N'Return the money hold by request with title: Learn Python', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (26, N'ava_taylor', 6, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:36:05.903' AS DateTime), N'Hold money by request with title: Learn Javascript', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (27, N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:07:48.863' AS DateTime), N'Cancel hold money because paid request with title: Learn C', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (28, N'sophia_martinez', 16, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T19:35:20.597' AS DateTime), N'Return the money hold by request with title: Request PowerShell', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (29, N'ava_taylor', 4, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T14:30:50.463' AS DateTime), N'Hold money by request with title: Learn SQL', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (30, N'hieu', 8, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:05:26.693' AS DateTime), N'Hold money by request with title: Learn C', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (31, N'ava_taylor', 11, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-05T15:21:54.260' AS DateTime), N'Cancel hold money because paid request with title: Learn Java', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (32, N'hieu', 12, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-05T16:37:02.033' AS DateTime), N'Cancel hold money because paid request with title: Request Ruby', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (33, N'william_brown', 18, CAST(800000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:40:28.123' AS DateTime), N'Hold money by request with title: Javascript', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (34, N'william_brown', 19, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:43:17.773' AS DateTime), N'Hold money by request with title: Learn Adobe Photoshop', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (35, N'william_brown', 18, CAST(800000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:46:34.963' AS DateTime), N'Cancel hold money because paid request with title: Javascript', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (36, N'william_brown', 19, CAST(400000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:48:31.177' AS DateTime), N'Cancel hold money because paid request with title: Learn Adobe Photoshop', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (37, N'william_brown', 20, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:52:17.100' AS DateTime), N'Hold money by request with title: Request Skill WPF', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (38, N'william_brown', 21, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:55:58.563' AS DateTime), N'Hold money by request with title: Apache Hadoop', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (39, N'william_brown', 21, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:57:42.127' AS DateTime), N'Return the money hold by request with title: Apache Hadoop', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (40, N'william_brown', 20, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-05T23:58:34.703' AS DateTime), N'Cancel hold money because paid request with title: Request Skill WPF', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (41, N'emily_davis', 22, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-06T00:10:26.583' AS DateTime), N'Hold money by request with title: Request for Adobe Photoshop', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (42, N'emily_davis', 23, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-06T00:11:54.833' AS DateTime), N'Hold money by request with title: Request Data Analysis', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (43, N'emily_davis', 24, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-06T00:13:58.730' AS DateTime), N'Hold money by request with title: Learn SQL', 1)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (44, N'emily_davis', 24, CAST(450000 AS Decimal(15, 0)), CAST(N'2024-06-06T00:17:14.980' AS DateTime), N'Cancel hold money because paid request with title: Learn SQL', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (45, N'emily_davis', 22, CAST(300000 AS Decimal(15, 0)), CAST(N'2024-06-06T00:17:14.993' AS DateTime), N'Return the money hold by request with title: Request for Adobe Photoshop', 0)
-INSERT [dbo].[Hold] ([hold_id], [user_name], [request_id], [amount], [create_date], [message], [hold]) VALUES (46, N'emily_davis', 23, CAST(600000 AS Decimal(15, 0)), CAST(N'2024-06-06T00:18:15.663' AS DateTime), N'Cancel hold money because paid request with title: Request Data Analysis', 0)
-SET IDENTITY_INSERT [dbo].[Hold] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Transactions] ON 
 
@@ -1739,102 +1998,141 @@ INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [cre
 INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (14, N'hieu', N'manager', CAST(N'2024-06-05T16:37:02.033' AS DateTime), CAST(450000 AS Decimal(15, 0)), N'Pay request to mentor with title: Request Ruby')
 INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (15, N'benjamin_anderson', N'manager', CAST(N'2024-06-05T18:51:51.857' AS DateTime), CAST(600000 AS Decimal(15, 0)), N'Pay request to mentor with title: Learn Skill Ruby')
 INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (16, N'sophia_martinez', N'manager', CAST(N'2024-06-05T19:37:23.917' AS DateTime), CAST(900000 AS Decimal(15, 0)), N'Pay request to mentor with title: Learn Apache Cassandra')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (17, N'william_brown', N'manager', CAST(N'2024-06-05T23:46:34.967' AS DateTime), CAST(800000 AS Decimal(15, 0)), N'Pay request to mentor with title: Javascript')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (18, N'william_brown', N'manager', CAST(N'2024-06-05T23:48:31.180' AS DateTime), CAST(400000 AS Decimal(15, 0)), N'Pay request to mentor with title: Learn Adobe Photoshop')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (19, N'william_brown', N'manager', CAST(N'2024-06-05T23:58:34.703' AS DateTime), CAST(600000 AS Decimal(15, 0)), N'Pay request to mentor with title: Request Skill WPF')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (20, N'emily_davis', N'manager', CAST(N'2024-06-06T00:17:14.980' AS DateTime), CAST(450000 AS Decimal(15, 0)), N'Pay request to mentor with title: Learn SQL')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (21, N'emily_davis', N'manager', CAST(N'2024-06-06T00:18:15.667' AS DateTime), CAST(600000 AS Decimal(15, 0)), N'Pay request to mentor with title: Request Data Analysis')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (22, N'manager', N'amelia_hall', CAST(N'2024-07-15T15:24:16.247' AS DateTime), CAST(570000 AS Decimal(15, 0)), N'Complete pre-course for request: 20')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (23, N'amelia_hall', N'manager', CAST(N'2024-07-15T15:24:16.247' AS DateTime), CAST(30000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (24, N'manager', N'logan_hernandez', CAST(N'2024-07-15T15:35:38.353' AS DateTime), CAST(427500 AS Decimal(15, 0)), N'Complete pre-course for request: 24')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (25, N'logan_hernandez', N'manager', CAST(N'2024-07-15T15:35:38.353' AS DateTime), CAST(22500 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (26, N'manager', N'amelia_hall', CAST(N'2024-07-15T15:37:21.850' AS DateTime), CAST(400000 AS Decimal(15, 0)), N'Complete pre-course for request: Request Data Analysis - emily_davis')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (27, N'manager', N'emily_davis', CAST(N'2024-07-15T15:37:21.850' AS DateTime), CAST(170000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (28, N'emily_davis', N'manager', CAST(N'2024-07-15T15:37:21.850' AS DateTime), CAST(30000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (29, N'manager', N'alexander_thomas', CAST(N'2024-07-15T15:41:28.677' AS DateTime), CAST(427500 AS Decimal(15, 0)), N'Complete pre-course for request: Request Ruby - hieu')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (30, N'alexander_thomas', N'manager', CAST(N'2024-07-15T15:41:28.677' AS DateTime), CAST(22500 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (31, N'manager', N'alexander_thomas', CAST(N'2024-07-15T15:42:11.433' AS DateTime), CAST(570000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn Skill Ruby - benjamin_anderson')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (32, N'alexander_thomas', N'manager', CAST(N'2024-07-15T15:42:11.433' AS DateTime), CAST(30000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (33, N'manager', N'alexander_thomas', CAST(N'2024-07-15T15:42:46.393' AS DateTime), CAST(600000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn Apache Cassandra - sophia_martinez')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (34, N'manager', N'sophia_martinez', CAST(N'2024-07-15T15:42:46.393' AS DateTime), CAST(255000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (35, N'sophia_martinez', N'manager', CAST(N'2024-07-15T15:42:46.393' AS DateTime), CAST(45000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (36, N'manager', N'isabella_harris', CAST(N'2024-07-15T15:43:04.447' AS DateTime), CAST(600000 AS Decimal(15, 0)), N'Complete pre-course for request: Javascript - william_brown')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (37, N'manager', N'william_brown', CAST(N'2024-07-15T15:43:04.447' AS DateTime), CAST(160000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (38, N'william_brown', N'manager', CAST(N'2024-07-15T15:43:04.447' AS DateTime), CAST(40000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (39, N'manager', N'charlotte_lewis', CAST(N'2024-07-15T15:43:17.160' AS DateTime), CAST(380000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn Adobe Photoshop - william_brown')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (40, N'charlotte_lewis', N'manager', CAST(N'2024-07-15T15:43:17.160' AS DateTime), CAST(20000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (41, N'manager', N'minh', CAST(N'2024-07-15T15:43:59.747' AS DateTime), CAST(100000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn Java - ava_taylor')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (42, N'manager', N'ava_taylor', CAST(N'2024-07-15T15:43:59.747' AS DateTime), CAST(185000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (43, N'ava_taylor', N'manager', CAST(N'2024-07-15T15:43:59.747' AS DateTime), CAST(15000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (44, N'manager', N'minh', CAST(N'2024-07-15T15:44:15.340' AS DateTime), CAST(300000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn C - hieu')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (45, N'manager', N'hieu', CAST(N'2024-07-15T15:44:15.340' AS DateTime), CAST(80000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (46, N'hieu', N'manager', CAST(N'2024-07-15T15:44:15.340' AS DateTime), CAST(20000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (47, N'manager', N'son', CAST(N'2024-07-15T15:44:28.560' AS DateTime), CAST(200000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn Javascript - hieu')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (48, N'manager', N'hieu', CAST(N'2024-07-15T15:44:28.560' AS DateTime), CAST(180000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (49, N'hieu', N'manager', CAST(N'2024-07-15T15:44:28.560' AS DateTime), CAST(20000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (50, N'manager', N'son', CAST(N'2024-07-15T15:44:49.977' AS DateTime), CAST(285000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn PHP - ava_taylor')
-INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (51, N'son', N'manager', CAST(N'2024-07-15T15:44:49.977' AS DateTime), CAST(15000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (17, N'manager', N'alexander_thomas', CAST(N'2024-07-27T16:55:12.713' AS DateTime), CAST(427500 AS Decimal(15, 0)), N'Complete pre-course for request: Request Ruby - hieu')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (18, N'alexander_thomas', N'manager', CAST(N'2024-07-27T16:55:12.713' AS DateTime), CAST(22500 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (19, N'manager', N'minh', CAST(N'2024-07-27T16:55:40.400' AS DateTime), CAST(300000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn C - hieu')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (20, N'manager', N'hieu', CAST(N'2024-07-27T16:55:40.400' AS DateTime), CAST(80000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (21, N'hieu', N'manager', CAST(N'2024-07-27T16:55:40.400' AS DateTime), CAST(20000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (22, N'manager', N'son', CAST(N'2024-07-27T16:56:04.250' AS DateTime), CAST(285000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn PHP - ava_taylor')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (23, N'son', N'manager', CAST(N'2024-07-27T16:56:04.250' AS DateTime), CAST(15000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (24, N'manager', N'son', CAST(N'2024-07-27T16:56:24.517' AS DateTime), CAST(200000 AS Decimal(15, 0)), N'Complete pre-course for request: Learn Javascript - hieu')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (25, N'manager', N'hieu', CAST(N'2024-07-27T16:56:24.517' AS DateTime), CAST(180000 AS Decimal(15, 0)), N'Complete pre-course return money with not attended')
+INSERT [dbo].[Transactions] ([transaction_id], [user_send], [user_receive], [create_date], [amount], [message]) VALUES (26, N'hieu', N'manager', CAST(N'2024-07-27T16:56:24.517' AS DateTime), CAST(20000 AS Decimal(15, 0)), N'Complete pre-course with 5% Amount for System')
 SET IDENTITY_INSERT [dbo].[Transactions] OFF
 GO
-SET IDENTITY_INSERT [dbo].[Attendance] ON 
-
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (1, 2, 3, N'hieu', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (2, 2, 1, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (3, 2, 4, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (4, 2, 8, N'hieu', NULL, NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (5, 5, 6, N'ava_taylor', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (6, 5, 9, N'ava_taylor', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (7, 5, 7, N'ava_taylor', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (8, 8, 22, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (9, 8, 21, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (10, 8, 24, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (11, 8, 30, N'hieu', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (12, 11, 23, N'ava_taylor', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (13, 11, 27, N'ava_taylor', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (14, 11, 25, N'ava_taylor', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (15, 12, 40, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (16, 12, 41, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (17, 12, 44, N'hieu', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (18, 14, 43, N'benjamin_anderson', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (19, 14, 42, N'benjamin_anderson', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (20, 14, 38, N'benjamin_anderson', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (21, 14, 49, N'benjamin_anderson', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (22, 17, 39, N'sophia_martinez', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (23, 17, 58, N'sophia_martinez', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (24, 17, 56, N'sophia_martinez', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (25, 17, 55, N'sophia_martinez', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (26, 17, 57, N'sophia_martinez', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (27, 17, 59, N'sophia_martinez', NULL, NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (28, 18, 139, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (29, 18, 140, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (30, 18, 141, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (31, 18, 153, N'william_brown', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (32, 19, 202, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (33, 19, 203, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (34, 19, 204, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (35, 19, 211, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (36, 20, 293, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (37, 20, 299, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (38, 20, 301, N'william_brown', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (39, 24, 367, N'emily_davis', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (40, 24, 368, N'emily_davis', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (41, 24, 370, N'emily_davis', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (42, 23, 287, N'emily_davis', N'Attended', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (43, 23, 289, N'emily_davis', N'Absent', NULL)
-INSERT [dbo].[Attendance] ([attendance_id], [request_id], [selected_id], [mentee_name], [attendance_status], [attendance_date]) VALUES (44, 23, 291, N'emily_davis', N'Attended', NULL)
-SET IDENTITY_INSERT [dbo].[Attendance] OFF
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'alexander_thomas', CAST(427500 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'ava_taylor', CAST(6400000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'benjamin_anderson', CAST(6400000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'emily_davis', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'hieu', CAST(6010000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'james_wilson', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'manager', CAST(1877500 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'michael_jones', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'minh', CAST(300000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'olivia_johnson', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'son', CAST(485000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'sophia_martinez', CAST(6100000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
+INSERT [dbo].[Wallet] ([wallet_id], [real_balance], [hold]) VALUES (N'william_brown', CAST(7000000 AS Decimal(15, 0)), CAST(0 AS Decimal(15, 0)))
 GO
-SET IDENTITY_INSERT [dbo].[Blogs] ON 
-
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (1, N'1.jpg', N'https://dotnettipoftheday.org/moi-thu-ve-ngon-ngu-lap-trinh-c-sharp/', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (2, N'2.jpg', N'https://vtiacademy.edu.vn/ban-nen-hoc-ngon-ngu-lap-trinh-java-vi-ly-do-nay.html', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (3, N'3.png', N'https://teky.edu.vn/blog/ngon-ngu-sql/', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (4, N'4.png', N'https://www.greenacademy.edu.vn/kien-thuc-lap-trinh/javascript-la-gi-ung-dung-cua-ngon-ngu-javascript', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (5, N'5.png', N'https://vn.got-it.ai/blog/ngon-ngu-html-la-gi-vai-tro-cua-html-trong-website', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (6, N'6.jpg', N'https://zilatech.vn/ngon-ngu-php-la-gi-kien-thuc-tong-quan-cho-nguoi-moi-bat-dau/', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (7, N'7.png', N'https://mindx.edu.vn/blog/ngon-ngu-python', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (8, N'8.jpg', N'https://monamedia.co/reactjs-la-gi/', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (9, N'9.jpg', N'https://jobs.hybrid-technologies.vn/blog/tim-hieu-ve-ngon-ngu-lap-trinh-c/', 1)
-INSERT [dbo].[Blogs] ([blog_id], [img], [link], [status]) VALUES (10, N'10.jpg', N'https://cloud.z.com/vn/en/news/ruby/', 1)
-SET IDENTITY_INSERT [dbo].[Blogs] OFF
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Cycle__49A0104A68B4D182]    Script Date: 7/27/2024 4:58:12 PM ******/
+ALTER TABLE [dbo].[Cycle] ADD UNIQUE NONCLUSTERED 
+(
+	[start_time] ASC,
+	[end_time] ASC,
+	[mentor_name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Attendance] ADD  DEFAULT (getdate()) FOR [attendance_date]
+GO
+ALTER TABLE [dbo].[Accounts]  WITH CHECK ADD FOREIGN KEY([role_id])
+REFERENCES [dbo].[Roles] ([role_id])
+GO
+ALTER TABLE [dbo].[Accounts]  WITH CHECK ADD FOREIGN KEY([status_id])
+REFERENCES [dbo].[AccountStatuses] ([status_id])
+GO
+ALTER TABLE [dbo].[Attendance]  WITH CHECK ADD FOREIGN KEY([mentee_name])
+REFERENCES [dbo].[Mentees] ([mentee_name])
+GO
+ALTER TABLE [dbo].[Attendance]  WITH CHECK ADD FOREIGN KEY([request_id])
+REFERENCES [dbo].[RequestsFormMentee] ([request_id])
+GO
+ALTER TABLE [dbo].[Attendance]  WITH CHECK ADD FOREIGN KEY([selected_id])
+REFERENCES [dbo].[Selected_Slot] ([selected_id])
+GO
+ALTER TABLE [dbo].[CV]  WITH CHECK ADD FOREIGN KEY([mentor_name])
+REFERENCES [dbo].[Mentors] ([mentor_name])
+GO
+ALTER TABLE [dbo].[CV]  WITH CHECK ADD FOREIGN KEY([status_id])
+REFERENCES [dbo].[CVStatus] ([status_id])
+GO
+ALTER TABLE [dbo].[CVSkills]  WITH CHECK ADD FOREIGN KEY([cv_id])
+REFERENCES [dbo].[CV] ([cv_id])
+GO
+ALTER TABLE [dbo].[CVSkills]  WITH CHECK ADD FOREIGN KEY([skill_id])
+REFERENCES [dbo].[Skills] ([skill_id])
+GO
+ALTER TABLE [dbo].[Cycle]  WITH CHECK ADD FOREIGN KEY([mentor_name])
+REFERENCES [dbo].[Mentors] ([mentor_name])
+GO
+ALTER TABLE [dbo].[FeedBacks]  WITH CHECK ADD FOREIGN KEY([mentee_name])
+REFERENCES [dbo].[Mentees] ([mentee_name])
+GO
+ALTER TABLE [dbo].[FeedBacks]  WITH CHECK ADD FOREIGN KEY([mentor_name])
+REFERENCES [dbo].[Mentors] ([mentor_name])
+GO
+ALTER TABLE [dbo].[FeedBacks]  WITH CHECK ADD FOREIGN KEY([request_id])
+REFERENCES [dbo].[RequestsFormMentee] ([request_id])
+GO
+ALTER TABLE [dbo].[Hold]  WITH CHECK ADD FOREIGN KEY([request_id])
+REFERENCES [dbo].[RequestsFormMentee] ([request_id])
+GO
+ALTER TABLE [dbo].[Hold]  WITH CHECK ADD FOREIGN KEY([user_name])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[Managers]  WITH CHECK ADD FOREIGN KEY([manager_name])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[Mentees]  WITH CHECK ADD FOREIGN KEY([mentee_name])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[Mentors]  WITH CHECK ADD FOREIGN KEY([mentor_name])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[NoteAccount]  WITH CHECK ADD FOREIGN KEY([user_name])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[RequestsFormMentee]  WITH CHECK ADD FOREIGN KEY([mentee_name])
+REFERENCES [dbo].[Mentees] ([mentee_name])
+GO
+ALTER TABLE [dbo].[RequestsFormMentee]  WITH CHECK ADD FOREIGN KEY([mentor_name])
+REFERENCES [dbo].[Mentors] ([mentor_name])
+GO
+ALTER TABLE [dbo].[RequestsFormMentee]  WITH CHECK ADD FOREIGN KEY([status_id])
+REFERENCES [dbo].[RequestStatuses] ([status_id])
+GO
+ALTER TABLE [dbo].[RequestSkills]  WITH CHECK ADD FOREIGN KEY([request_id])
+REFERENCES [dbo].[RequestsFormMentee] ([request_id])
+GO
+ALTER TABLE [dbo].[RequestSkills]  WITH CHECK ADD FOREIGN KEY([skill_id])
+REFERENCES [dbo].[Skills] ([skill_id])
+GO
+ALTER TABLE [dbo].[RquestSelectedSlot]  WITH CHECK ADD FOREIGN KEY([request_id])
+REFERENCES [dbo].[RequestsFormMentee] ([request_id])
+GO
+ALTER TABLE [dbo].[RquestSelectedSlot]  WITH CHECK ADD FOREIGN KEY([selected_id])
+REFERENCES [dbo].[Selected_Slot] ([selected_id])
+GO
+ALTER TABLE [dbo].[Selected_Slot]  WITH CHECK ADD FOREIGN KEY([cycle_id])
+REFERENCES [dbo].[Cycle] ([cycle_id])
+GO
+ALTER TABLE [dbo].[Selected_Slot]  WITH CHECK ADD FOREIGN KEY([slot_id])
+REFERENCES [dbo].[Slots] ([slot_id])
+GO
+ALTER TABLE [dbo].[Selected_Slot]  WITH CHECK ADD FOREIGN KEY([status_id])
+REFERENCES [dbo].[Status_Selected] ([status_id])
+GO
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD FOREIGN KEY([user_send])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD FOREIGN KEY([user_receive])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+ALTER TABLE [dbo].[Wallet]  WITH CHECK ADD FOREIGN KEY([wallet_id])
+REFERENCES [dbo].[Accounts] ([user_name])
+GO
+USE [master]
+GO
+ALTER DATABASE [HappyProgrammingDB] SET  READ_WRITE 
 GO

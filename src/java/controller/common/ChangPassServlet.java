@@ -45,43 +45,49 @@ public class ChangPassServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String op = request.getParameter("opass"); // old password
-        String p = request.getParameter("pass");   // new password
-        String rp = request.getParameter("rpass"); // confirm new password
-        //get session of user
-        Account a = (Account) request.getSession().getAttribute("user");
-        //get Username of user
-        String userName = a.getUserName();
-        //invoke an instance of AccountService
-        AccountService accountService = AccountService.getInstance();
-        //check if old password is incorrect
-        if (accountService.getAccount(userName, op) == null) {
-            String msg = "Old password is incorrect!";
-            request.setAttribute("msg", msg);
-            request.getRequestDispatcher("changepass.jsp").forward(request, response);
-            return;
-        }
-        //check if new password does not match confirm password
-        if (!p.equals(rp)) {
-            String msg = "New passwords do not match!";
-            request.setAttribute("msg", msg);
-            request.getRequestDispatcher("changepass.jsp").forward(request, response);
-            return;
-        }
-        //check if new password is the same as old password
-        if (op.equals(rp)) {
-            String msg = "New password is the same as Old Password!";
-            request.setAttribute("msg", msg);
-            request.getRequestDispatcher("changepass.jsp").forward(request, response);
-            return;
-        }
-        //invoke a new instance of Account and set new password for account
-        Account acc = new Account();
-        acc.setUserName(userName);
-        acc.setPassword(rp);
-        //if successfully submitted form then update password and redirect user to login page
-        if (accountService.changePassWord(acc)) {
-            response.sendRedirect("login");
+        try {
+            String op = request.getParameter("opass"); // old password
+            String p = request.getParameter("pass");   // new password
+            String rp = request.getParameter("rpass"); // confirm new password
+            //get session of user
+            Account a = (Account) request.getSession().getAttribute("user");
+            //get Username of user
+            String userName = a.getUserName();
+            //invoke an instance of AccountService
+            AccountService accountService = AccountService.getInstance();
+            //check if old password is incorrect
+            if (accountService.getAccount(userName, op) == null) {
+                String msg = "Old password is incorrect!";
+                request.setAttribute("msg", msg);
+                request.getRequestDispatcher("changepass.jsp").forward(request, response);
+                return;
+            }
+            //check if new password does not match confirm password
+            if (!p.equals(rp)) {
+                String msg = "New passwords do not match!";
+                request.setAttribute("msg", msg);
+                request.getRequestDispatcher("changepass.jsp").forward(request, response);
+                return;
+            }
+            //check if new password is the same as old password
+            if (op.equals(rp)) {
+                String msg = "New password is the same as Old Password!";
+                request.setAttribute("msg", msg);
+                request.getRequestDispatcher("changepass.jsp").forward(request, response);
+                return;
+            }
+            //invoke a new instance of Account and set new password for account
+            Account acc = new Account();
+            acc.setUserName(userName);
+            acc.setPassword(rp);
+            //if successfully submitted form then update password and redirect user to login page
+            if (accountService.changePassWord(acc)) {
+                request.getSession().removeAttribute("user");
+                request.setAttribute("messaget", "Change pass successful");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
 
     }

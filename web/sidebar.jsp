@@ -12,6 +12,7 @@
         <title>FMASTER</title>
 
         <jsp:include page="style/linkcss.jsp" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 
 
@@ -76,7 +77,7 @@
                         </li>
                         <li class="has-child">
                             <a href="#" class="ch">
-                                <span class="nav-icon uil uil-users-alt"></span>
+<i class="nav-icon fa-solid fa-window-restore"></i>
                                 <span class="menu-text">CV</span>
                                 <span class="toggle-icon"></span>
                             </a>

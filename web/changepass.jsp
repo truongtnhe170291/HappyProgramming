@@ -10,6 +10,8 @@ Author     : 84979
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <title>Fmaster</title>
         <style>
             .login-box {

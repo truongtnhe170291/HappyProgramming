@@ -58,42 +58,44 @@ public class SkillServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    SkillDAO skillDAO = new SkillDAO();
-    String searchTerm = request.getParameter("searchTerm");
-    String pageParam = request.getParameter("page");
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            SkillDAO skillDAO = new SkillDAO();
+            String searchTerm = request.getParameter("searchTerm");
+            String pageParam = request.getParameter("page");
 
-    int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-    int pageSize = 6; // Số lượng kỹ năng trên mỗi trang
+            int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
+            int pageSize = 6; // Số lượng kỹ năng trên mỗi trang
 
-    List<Skill> list;
-    int totalSkillCount;
+            List<Skill> list;
+            int totalSkillCount;
 
-    if (searchTerm != null && !searchTerm.isEmpty()) {
-        // Nếu có từ khóa tìm kiếm, lấy danh sách kỹ năng tìm kiếm theo từ khóa và đếm số lượng kết quả
-        list = skillDAO.searchSkills(searchTerm, page, pageSize);
-        totalSkillCount = skillDAO.getCountSearchSkill(searchTerm);
-    } else {
-        // Nếu không có từ khóa tìm kiếm, lấy danh sách kỹ năng theo trang và đếm tổng số kỹ năng
-        list = skillDAO.getSkillsPage(page, pageSize);
-        totalSkillCount = skillDAO.getTotalSkillCount();
+            if (searchTerm != null && !searchTerm.isEmpty()) {
+                // Nếu có từ khóa tìm kiếm, lấy danh sách kỹ năng tìm kiếm theo từ khóa và đếm số lượng kết quả
+                list = skillDAO.searchSkills(searchTerm, page, pageSize);
+                totalSkillCount = skillDAO.getCountSearchSkill(searchTerm);
+            } else {
+                // Nếu không có từ khóa tìm kiếm, lấy danh sách kỹ năng theo trang và đếm tổng số kỹ năng
+                list = skillDAO.getSkillsPage(page, pageSize);
+                totalSkillCount = skillDAO.getTotalSkillCount();
+            }
+
+            int totalPages = (int) Math.ceil((double) totalSkillCount / pageSize);
+
+            // Đặt các thông tin cần thiết vào request để gửi đến JSP
+            request.setAttribute("listSkill", list);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("searchTerm", searchTerm); // Đặt lại searchTerm
+
+            // Chuyển tiếp đến trang JSP để hiển thị danh sách kỹ năng
+            request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
+        }
     }
-
-    int totalPages = (int) Math.ceil((double) totalSkillCount / pageSize);
-
-    // Đặt các thông tin cần thiết vào request để gửi đến JSP
-    request.setAttribute("listSkill", list);
-    request.setAttribute("currentPage", page);
-    request.setAttribute("totalPages", totalPages);
-    request.setAttribute("searchTerm", searchTerm); // Đặt lại searchTerm
-
-    // Chuyển tiếp đến trang JSP để hiển thị danh sách kỹ năng
-    request.getRequestDispatcher("blog_skill.jsp").forward(request, response);
-}
-
-
 
     public static void main(String[] args) {
         SkillDAO skillDAO = new SkillDAO();

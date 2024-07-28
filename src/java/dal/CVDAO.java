@@ -71,8 +71,10 @@ public class CVDAO {
             int result = ps.executeUpdate();
             if (result == 1) {
                 if (removeCVSkills(cvId)) {
-                    for (int skilId : cv.getSkills()) { //với mỗi skill intert vào bảng CVSkill
-                        AddDataCVSkill(skilId, cvId);
+                    if (cv.getSkills() != null) {
+                        for (int skilId : cv.getSkills()) { //với mỗi skill intert vào bảng CVSkill
+                            AddDataCVSkill(skilId, cvId);
+                        }
                     }
                     return true;
                 } else {
@@ -120,13 +122,15 @@ public class CVDAO {
             ps.setString(9, cv.getAchievementDescription());
             ps.setString(10, cv.getServiceDescription());
             ps.setString(11, cv.getImgcv());
-            ps.setNull(12, cv.getStattusId());
+            ps.setInt(12, cv.getStattusId());
             int result = ps.executeUpdate();
             if (result == 1) {
                 // Lấy ra CV mới nhất
                 int cvId = getCVId();
-                for (int skilId : cv.getSkills()) { //với mỗi skill intert vào bảng CVSkill
-                    AddDataCVSkill(skilId, cvId);
+                if (cv.getSkills() != null) {
+                    for (int skilId : cv.getSkills()) { //với mỗi skill intert vào bảng CVSkill
+                        AddDataCVSkill(skilId, cvId);
+                    }
                 }
                 return true;
             }
@@ -220,38 +224,39 @@ public class CVDAO {
 
         return null;
     }
-    
+
     public List<CVDTO> searchCVByMentorNameAndStatus(String mentorName, int statusId, int page, int pageSize) throws SQLException {
-    int offset = (page - 1) * pageSize;
-    String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name "
-               + "WHERE m.mentor_name LIKE ? AND c.status_id = ? ORDER BY c.cv_id DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
-    List<CVDTO> cvList = new ArrayList<>();
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, "%" + mentorName + "%");
-        ps.setInt(2, statusId);
-        ps.setInt(3, offset);
-        ps.setInt(4, pageSize);
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                CVDTO cv = new CVDTO();
-                cv.setCvId(rs.getInt("cv_id"));
-                cv.setUserName(rs.getString("mentor_name"));
-                cv.setAddress(rs.getString("address"));
-                cv.setGmail(rs.getString("gmail"));
-                cv.setFullName(rs.getString("full_name"));
-                cv.setDob(rs.getDate("dob"));
-                cv.setSex(rs.getBoolean("sex"));
-                cv.setProfession(rs.getString("profession"));
-                cv.setProfessionIntro(rs.getString("profession_intro"));
-                cv.setAchievementDescription(rs.getString("achievement_description"));
-                cv.setServiceDescription(rs.getString("service_description"));
-                cv.setImgcv(rs.getString("avatar"));
-                cv.setRate(rs.getInt("rate"));
-                cv.setStattusId(rs.getInt("status_id"));
-                cv.setNote(rs.getString("note"));
-                cvList.add(cv);
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name "
+                + "WHERE m.mentor_name LIKE ? AND c.status_id = ? ORDER BY c.cv_id DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+        List<CVDTO> cvList = new ArrayList<>();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + mentorName + "%");
+            ps.setInt(2, statusId);
+            ps.setInt(3, offset);
+            ps.setInt(4, pageSize);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CVDTO cv = new CVDTO();
+                    cv.setCvId(rs.getInt("cv_id"));
+                    cv.setUserName(rs.getString("mentor_name"));
+                    cv.setAddress(rs.getString("address"));
+                    cv.setGmail(rs.getString("gmail"));
+                    cv.setFullName(rs.getString("full_name"));
+                    cv.setDob(rs.getDate("dob"));
+                    cv.setSex(rs.getBoolean("sex"));
+                    cv.setProfession(rs.getString("profession"));
+                    cv.setProfessionIntro(rs.getString("profession_intro"));
+                    cv.setAchievementDescription(rs.getString("achievement_description"));
+                    cv.setServiceDescription(rs.getString("service_description"));
+                    cv.setImgcv(rs.getString("avatar"));
+                    cv.setRate(rs.getInt("rate"));
+                    cv.setStattusId(rs.getInt("status_id"));
+                    cv.setNote(rs.getString("note"));
+                    cvList.add(cv);
+                }
             }
-        } if (cvList.isEmpty()) {
+            if (cvList.isEmpty()) {
                 return cvList;
             }
             for (CVDTO cv : cvList) {
@@ -262,23 +267,23 @@ public class CVDAO {
             e.printStackTrace();
         }
         return cvList;
-}
-
-public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM CV WHERE mentor_name LIKE ? AND status_id = ?";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, "%" + mentorName + "%");
-        ps.setInt(2, statusId);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-    return 0;
-}
+
+    public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM CV WHERE mentor_name LIKE ? AND status_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + mentorName + "%");
+            ps.setInt(2, statusId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public CV getCVByUserName(String userName) {
         String sql = "select * from CV c where c.mentor_name = ?";
@@ -351,21 +356,21 @@ public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId)
         }
         return 0;
     }
-    public int getTotalCVCountByMentorName(String mentorName) {
-    String sql = "SELECT COUNT(*) FROM CV WHERE mentor_name = ?";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, mentorName);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return 0;
-}
 
+    public int getTotalCVCountByMentorName(String mentorName) {
+        String sql = "SELECT COUNT(*) FROM CV WHERE mentor_name = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, mentorName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public int getTotalCVCountByStatus(int statusId) {
         String sql = "SELECT COUNT(*) FROM CV WHERE status_id = ?";
@@ -431,37 +436,38 @@ public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId)
         }
         return cvList;
     }
-    
+
     public List<CVDTO> searchCVByMentorName(String mentorName, int page, int pageSize) throws SQLException {
-    int offset = (page - 1) * pageSize;
-    String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name "
-               + "WHERE m.mentor_name LIKE ? ORDER BY c.cv_id DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
-    List<CVDTO> cvList = new ArrayList<>();
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, "%" + mentorName + "%");
-        ps.setInt(2, offset);
-        ps.setInt(3, pageSize);
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                CVDTO cv = new CVDTO();
-                cv.setCvId(rs.getInt("cv_id"));
-                cv.setUserName(rs.getString("mentor_name"));
-                cv.setAddress(rs.getString("address"));
-                cv.setGmail(rs.getString("gmail"));
-                cv.setFullName(rs.getString("full_name"));
-                cv.setDob(rs.getDate("dob"));
-                cv.setSex(rs.getBoolean("sex"));
-                cv.setProfession(rs.getString("profession"));
-                cv.setProfessionIntro(rs.getString("profession_intro"));
-                cv.setAchievementDescription(rs.getString("achievement_description"));
-                cv.setServiceDescription(rs.getString("service_description"));
-                cv.setImgcv(rs.getString("avatar"));
-                cv.setRate(rs.getInt("rate"));
-                cv.setStattusId(rs.getInt("status_id"));
-                cv.setNote(rs.getString("note"));
-                cvList.add(cv);
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name "
+                + "WHERE m.mentor_name LIKE ? ORDER BY c.cv_id DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+        List<CVDTO> cvList = new ArrayList<>();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + mentorName + "%");
+            ps.setInt(2, offset);
+            ps.setInt(3, pageSize);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CVDTO cv = new CVDTO();
+                    cv.setCvId(rs.getInt("cv_id"));
+                    cv.setUserName(rs.getString("mentor_name"));
+                    cv.setAddress(rs.getString("address"));
+                    cv.setGmail(rs.getString("gmail"));
+                    cv.setFullName(rs.getString("full_name"));
+                    cv.setDob(rs.getDate("dob"));
+                    cv.setSex(rs.getBoolean("sex"));
+                    cv.setProfession(rs.getString("profession"));
+                    cv.setProfessionIntro(rs.getString("profession_intro"));
+                    cv.setAchievementDescription(rs.getString("achievement_description"));
+                    cv.setServiceDescription(rs.getString("service_description"));
+                    cv.setImgcv(rs.getString("avatar"));
+                    cv.setRate(rs.getInt("rate"));
+                    cv.setStattusId(rs.getInt("status_id"));
+                    cv.setNote(rs.getString("note"));
+                    cvList.add(cv);
+                }
             }
-        } if (cvList.isEmpty()) {
+            if (cvList.isEmpty()) {
                 return cvList;
             }
             for (CVDTO cv : cvList) {
@@ -472,8 +478,7 @@ public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId)
             e.printStackTrace();
         }
         return cvList;
-}
-
+    }
 
     public List<Status> getAllStatuses() {
         String sql = "select * from CVStatus";
@@ -495,8 +500,8 @@ public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId)
 
     public List<CVDTO> getAllCV(int page, int pageSize) {
         int offset = (page - 1) * pageSize;
-        String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name \n" +
-"                ORDER BY c.cv_id DESC  OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+        String sql = "SELECT c.*, m.rate FROM CV c JOIN Mentors m ON c.mentor_name = m.mentor_name \n"
+                + "                ORDER BY c.cv_id DESC  OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
         List<CVDTO> cvList = new ArrayList<>();
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, offset);
@@ -522,9 +527,7 @@ public int getTotalCVCountByMentorNameAndStatus(String mentorName, int statusId)
                     cvList.add(cv);
                 }
             }
-            if (cvList.isEmpty()) {
-                return cvList;
-            }
+           
             for (CVDTO cv : cvList) {
                 cv.setStatus(getStatusById(cv.getStattusId()));
                 cv.setListSkill(getSkillsByCVId(cv.getCvId()));

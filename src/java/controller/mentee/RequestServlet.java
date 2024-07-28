@@ -115,6 +115,7 @@ public class RequestServlet extends HttpServlet {
             request.getRequestDispatcher("Mentee_Request.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 
@@ -304,7 +305,7 @@ public class RequestServlet extends HttpServlet {
 //                System.out.println("insert fails");
 //            }
         } catch (JsonSyntaxException | IOException e) {
-            System.out.println(e.getMessage());
+            response.sendRedirect("PageError");
         }
 
     }

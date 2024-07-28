@@ -12,6 +12,8 @@
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>FMASTER</title>
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
 <link
 	href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'
 	rel='stylesheet'>
@@ -62,16 +64,16 @@ body{
 								<!-- User Name Input -->
 								<div class="form-group row justify-content-center px-3">
 									<div class="col-9 px-0">
-										<input type="text" name="password" placeholder="&#xf084; &nbsp; New Password"
-											class="form-control border-info placeicon">
+										<input id="password" type="text" name="password" placeholder="&#xf084; &nbsp; New Password"
+											class="form-control border-info placeicon" />
 									</div>
 								</div>
 								<!-- Password Input -->
 								<div class="form-group row justify-content-center px-3">
 									<div class="col-9 px-0">
-										<input type="password" name="confPassword"
+										<input id="confPassword" type="password" name="confPassword"
 											placeholder="&#xf084; &nbsp; Confirm New Password"
-											class="form-control border-info placeicon">
+											class="form-control border-info placeicon" />
 									</div>
 								</div>
 							
@@ -121,9 +123,13 @@ body{
 const status =  `${statust}`;
 console.log(status);
 document.getElementById('submitbutton_reset').addEventListener('click', function(e){
-    e.preventDefault();
+   const pass =  document.getElementById('password').value;
+ const passconf = document.getElementById('confPassword').value;
+ if(pass !== passconf){
+     e.preventDefault();
         showToastMessage('confirm password not the same new password');
-      
+    }
+      else{}
 });
     function showToastMessage(message) {
                 Toastify({
