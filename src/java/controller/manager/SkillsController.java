@@ -75,8 +75,8 @@ public class SkillsController extends HttpServlet {
             request.setAttribute("skillName", skillName);
 
             request.getRequestDispatcher("Manager_Skill.jsp").forward(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 
@@ -121,8 +121,8 @@ public class SkillsController extends HttpServlet {
             // Redirect back to skills page or wherever needed
             response.sendRedirect("skills");
 
-        } catch (Exception e) {
-            throw new ServletException(e);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 

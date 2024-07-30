@@ -36,32 +36,35 @@ public class WalletServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account user = (Account) request.getSession().getAttribute("user");
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-        WalletDAO dao = new WalletDAO();
-        Wallet wallet = dao.getWalletByUsenName(user.getUserName());
-        if (wallet == null) {
-            if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
-                wallet = dao.getWalletByUsenName(user.getUserName());
+        try {
+            Account user = (Account) request.getSession().getAttribute("user");
+            if (user == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            WalletDAO dao = new WalletDAO();
+            Wallet wallet = dao.getWalletByUsenName(user.getUserName());
+            if (wallet == null) {
+                if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
+                    wallet = dao.getWalletByUsenName(user.getUserName());
+                    request.setAttribute("wallet", wallet);
+                }
+            } else {
                 request.setAttribute("wallet", wallet);
             }
-        } else {
-            request.setAttribute("wallet", wallet);
+            int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
+            int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());
+            request.setAttribute("userInfo", user.getUserName());
+            List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), 1);
+            List<Hold> listHold = dao.getHoldByPaging(user.getUserName(), 1);
+            request.setAttribute("listTran", list);
+            request.setAttribute("listHold", listHold);
+            request.setAttribute("numPage", numPage);
+            request.setAttribute("numPageHold", numPageHold);
+            request.getRequestDispatcher("Wallet.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("PageError");
         }
-        int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
-        int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());
-        request.setAttribute("userInfo", user.getUserName());
-        List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), 1);
-        List<Hold> listHold = dao.getHoldByPaging(user.getUserName(), 1);
-        request.setAttribute("listTran", list);
-        request.setAttribute("listHold", listHold);
-        request.setAttribute("numPage", numPage);
-        request.setAttribute("numPageHold", numPageHold);
-        request.getRequestDispatcher("Wallet.jsp").forward(request, response);
-
     }
 
     /**

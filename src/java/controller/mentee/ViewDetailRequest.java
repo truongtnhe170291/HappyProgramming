@@ -158,7 +158,7 @@ public class ViewDetailRequest extends HttpServlet {
 //            System.out.println(dateStrBegin);
 //            System.out.println(dateStrEnd);
         } catch (SQLException e) {
-            throw new ServletException(e);
+            response.sendRedirect("PageError");
         }
     }
 

@@ -78,7 +78,7 @@ public class Home extends HttpServlet {
             request.setAttribute("feedback", feedback);
             request.getRequestDispatcher("home.jsp").forward(request, response);
         } catch (SQLException e) {
-            e.printStackTrace();
+            response.sendRedirect("PageError");
         }
     }
 

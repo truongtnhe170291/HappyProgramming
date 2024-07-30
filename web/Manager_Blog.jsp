@@ -8,6 +8,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Blog Management</title>
          <link rel="stylesheet" href="assetss/css/app.min.css">
+         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <link rel="stylesheet" href="assetss/css/style.css">
         <link rel="stylesheet" href="assetss/css/components.css">
         <link rel="stylesheet" href="assetss/css/custom.css">

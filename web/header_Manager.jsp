@@ -8,9 +8,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        
+        <style>
+            #setst{
+                transform: translateX(-5px);
+                padding-right: 5px;
+                width: 15.85px;
+height: 15.85px;
+font-size: 18px;
+            }
+        </style>
     </head>
     <body>
         <div class="navbar-bg"></div>
@@ -24,12 +34,12 @@
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">
-          
+                        <div class="dropdown-title">Hello Manager</div>
+
           <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assetss/img/user.png"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img style="font-size:70px;" id="img_v" alt="image" src="img/manager_vua.jpg"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello Manager</div>
               <div class="dropdown-divider"></div>
                <a href="WalletManager" class="dropdown-item has-icon text">  <i class="fas fa-wallet"></i>
                 My Wallet
@@ -62,16 +72,13 @@
                 
                 <li><a class="nav-link" href="skills">List Skills</a></li>
                 <li><a class="nav-link" href="requestmentee">List Request</a></li>
+                                <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
+
               </ul>
             </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Schedule Management</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="HandleSlotMentor">Schedule</a></li>
-              </ul>
-            </li>
+            
           <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Account</span></a>
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i id="setst" class="fas fa-user-circle "></i><span>Account</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="accountstatus">active</a></li>
                 <li><a class="nav-link" href="ManagerBlog">Blog</a></li>

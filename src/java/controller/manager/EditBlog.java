@@ -6,15 +6,11 @@ package controller.manager;
 
 import dal.BlogDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
-import java.nio.file.Paths;
 
 /**
  *
@@ -22,6 +18,7 @@ import java.nio.file.Paths;
  */
 @WebServlet(name = "EditBlog", urlPatterns = {"/EditBlog"})
 public class EditBlog extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,18 +40,22 @@ public class EditBlog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Retrieve blog ID
-        int blogId = Integer.parseInt(request.getParameter("blogId"));
+        try {
+            // Retrieve blog ID
+            int blogId = Integer.parseInt(request.getParameter("blogId"));
 
-        // Delete from database
-        BlogDAO blogDAO = new BlogDAO();
-        boolean isDeleted = blogDAO.deleteBlog(blogId);
+            // Delete from database
+            BlogDAO blogDAO = new BlogDAO();
+            boolean isDeleted = blogDAO.deleteBlog(blogId);
 
-        // Redirect or forward based on success or failure
-        if (isDeleted) {
-            response.sendRedirect("ManagerBlog");
-        } else {
-            response.sendRedirect("error.jsp");
+            // Redirect or forward based on success or failure
+            if (isDeleted) {
+                response.sendRedirect("ManagerBlog");
+            } else {
+                response.sendRedirect("error.jsp");
+            }
+        } catch (IOException | NumberFormatException e) {
+            response.sendRedirect("PageError");
         }
     }
 

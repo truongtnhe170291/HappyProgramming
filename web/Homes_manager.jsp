@@ -7,6 +7,8 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
         <title>Manager</title>
         <!-- General CSS Files -->
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
         <link rel="stylesheet" href="assetss/css/app.min.css">
         <!-- Template CSS -->
         <link rel="stylesheet" href="assetss/css/style.css">
@@ -23,7 +25,52 @@
             .amount.negative {
                 color: red;
             }
+ .pagination {
+        display: flex;
+        gap: 5px;
+    }
+    .page-link {
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .page-link:hover {
+        background-color: #f0f0f0;
+    }
+    .page-link.active {
+        background-color: #0074D9;
+        color: white;
+        border-color: #4CAF50;
+    }
+    .filter-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
 
+.filter-input {
+  margin-right: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filter-button {
+  padding: 8px 15px;
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #2e59d9;
+}
         </style>
 
         <script>
@@ -152,20 +199,12 @@
             <div class="card-header">
                 <h4>History Transactions</h4>
                 <div class="card-header-form">
-                    <div class="input-group">
-                        <input type="text" id="search-remitter" class="form-control" placeholder="Search sender...">
-                        <form action="ManagerHomePage" method="post">
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="search-receiver" class="form-control" placeholder="Search receiver...">
-                    </div>
-                    <div class="input-group">
-                        <input type="date" id="search-date" class="form-control">
-                    </div>
+                   <div class="filter-container">
+  <input type="text" id="search-remitter" class="filter-input" placeholder="Search sender...">
+  <input type="text" id="search-receiver" class="filter-input" placeholder="Search receiver...">
+  <input type="date" id="search-date" class="filter-input">
+  <button id="filter-button" class="filter-button">Filter</button>
+</div>
                 </div>
             </div>
             <div class="card-body">
@@ -199,11 +238,14 @@
                     <p style="text-align: center; color: red">There are no suitable record...</p>
                 </c:if>
             </div> 
-            <div style="display: flex; justify-content: center; margin-bottom: 5px">
-                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                    <a style="color: green" href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
-                </c:forEach>
-            </div>
+           <div style="display: flex; justify-content: flex-end; margin-bottom: 5px;">
+    <div class="pagination">
+        <c:forEach begin="1" end="${requestScope.numPage}" var="i">
+            <a href="transaction?action=manager&index=${i}" 
+               class="page-link ${param.index == i ? 'active' : ''}">${i}</a>
+        </c:forEach>
+    </div>
+</div>
         </div>
     </div>
 </div>
@@ -306,35 +348,35 @@
             </div>
         </div>
                                             <script>
-                                                document.addEventListener('DOMContentLoaded', () => {
-        const searchRemitter = document.getElementById('search-remitter');
-        const searchReceiver = document.getElementById('search-receiver');
-        const searchDate = document.getElementById('search-date');
-        const transactionBody = document.getElementById('transaction-body');
-        const rows = Array.from(transactionBody.getElementsByTagName('tr'));
+                                               document.addEventListener('DOMContentLoaded', () => {
+    const searchRemitter = document.getElementById('search-remitter');
+    const searchReceiver = document.getElementById('search-receiver');
+    const searchDate = document.getElementById('search-date');
+    const filterButton = document.getElementById('filter-button');
+    const transactionBody = document.getElementById('transaction-body');
+    const rows = Array.from(transactionBody.getElementsByTagName('tr'));
 
-        function filterTransactions() {
-            const remitterValue = searchRemitter.value.toLowerCase();
-            const receiverValue = searchReceiver.value.toLowerCase();
-            const dateValue = searchDate.value;
+    function filterTransactions() {
+        const remitterValue = searchRemitter.value.toLowerCase();
+        const receiverValue = searchReceiver.value.toLowerCase();
+        const dateValue = searchDate.value;
 
-            rows.forEach(row => {
-                const sender = row.querySelector('.sender').textContent.toLowerCase();
-                const receiver = row.querySelector('.receiver').textContent.toLowerCase();
-                const date = row.querySelector('.date').textContent.split(' ')[0];
+        rows.forEach(row => {
+            const sender = row.querySelector('.sender').textContent.toLowerCase();
+            const receiver = row.querySelector('.receiver').textContent.toLowerCase();
+            const date = new Date(row.querySelector('.date').textContent);
+            const formattedDate = date.toISOString().split('T')[0];
 
-                const matchesRemitter = sender.includes(remitterValue);
-                const matchesReceiver = receiver.includes(receiverValue);
-                const matchesDate = !dateValue || date === dateValue;
+            const matchesRemitter = sender.includes(remitterValue);
+            const matchesReceiver = receiver.includes(receiverValue);
+            const matchesDate = !dateValue || formattedDate === dateValue;
 
-                row.style.display = matchesRemitter && matchesReceiver && matchesDate ? '' : 'none';
-            });
-        }
+            row.style.display = matchesRemitter && matchesReceiver && matchesDate ? '' : 'none';
+        });
+    }
 
-        searchRemitter.addEventListener('input', filterTransactions);
-        searchReceiver.addEventListener('input', filterTransactions);
-        searchDate.addEventListener('input', filterTransactions);
-    });
+    filterButton.addEventListener('click', filterTransactions);
+});
                                             </script>
         <!-- General JS Scripts -->
         <script src="assetss/js/app.min.js"></script>

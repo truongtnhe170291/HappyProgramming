@@ -107,76 +107,72 @@ public class MentorProfileDAO {
         return mentorsWithSkill;
     }
 
-   public List<MentorProfileDTO> getTop3Mentors() throws SQLException {
-    String sql = "SELECT TOP 3 " +
-                 "    A.[user_name], " +
-                 "    A.[gmail], " +
-                 "    C.cv_id, " +
-                 "    A.[full_name], " +
-                 "    A.[pass_word], " +
-                 "    A.[dob], " +
-                 "    A.[sex], " +
-                 "    A.[address], " +
-                 "    A.[phone], " +
-                 "    A.[avatar], " +
-                 "    A.[role_id], " +
-                 "    A.[status_id], " +
-                 "    M.rate, " +
-                 "    C.profession, " +
-                 "    C.profession_intro, " +
-                 "    C.achievement_description, " +
-                 "    C.service_description, " +
-                 "    ISNULL(AVG(F.star), 0) AS avg_star, " +
-                 "    COUNT(RFM.request_id) AS request_count " +
-                 "FROM Accounts A " +
-                 "JOIN Mentors M ON A.[user_name] = M.mentor_name " +
-                 "JOIN CV C ON M.mentor_name = C.mentor_name " +
-                 "LEFT JOIN FeedBacks F ON M.mentor_name = F.mentor_name " +
-                 "LEFT JOIN RequestsFormMentee RFM ON M.mentor_name = RFM.mentor_name " +
-                 "WHERE A.[role_id] = 2 " +
-                 "GROUP BY " +
-                 "    A.[user_name], A.[gmail], C.cv_id, A.[full_name], A.[pass_word], " +
-                 "    A.[dob], A.[sex], A.[address], A.[phone], A.[avatar], " +
-                 "    A.[role_id], A.[status_id], M.rate, C.profession, " +
-                 "    C.profession_intro, C.achievement_description, C.service_description " +
-                 "ORDER BY request_count DESC, avg_star DESC;";
 
-    ps = con.prepareStatement(sql);
-    rs = ps.executeQuery();
+    public List<MentorProfileDTO> getTop3Mentors() throws SQLException {
+        String sql = " SELECT TOP 3   \n"
+                + "                      A.[user_name],   \n"
+                + "                      C.[gmail],  \n"
+                + "                      C.cv_id,   \n"
+                + "                      C.[full_name],  \n"
+                + "                      C.[dob],   \n"
+                + "                      C.[sex],   \n"
+                + "                      C.[address],  \n"
+                + "                      C.[avatar],   \n"
+                + "                      A.[status_id],   \n"
+                + "                      M.rate,   \n"
+                + "                      C.profession,   \n"
+                + "                      C.profession_intro,   \n"
+                + "                      C.achievement_description,   \n"
+                + "                      C.service_description,   \n"
+                + "                      ISNULL(AVG(F.star), 0) AS avg_star,   \n"
+                + "                      COUNT(RFM.request_id) AS request_count   \n"
+                + "                  FROM Accounts A   \n"
+                + "                  JOIN Mentors M ON A.[user_name] = M.mentor_name   \n"
+                + "                  JOIN CV C ON M.mentor_name = C.mentor_name   \n"
+                + "                  LEFT JOIN FeedBacks F ON M.mentor_name = F.mentor_name   \n"
+                + "                  LEFT JOIN RequestsFormMentee RFM ON M.mentor_name = RFM.mentor_name   \n"
+                + "                  WHERE A.[role_id] = 2  and c.status_id = 2  \n"
+                + "                  GROUP BY   \n"
+                + "                      A.[user_name], C.[gmail], C.cv_id, C.[full_name],   \n"
+                + "                      C.[dob], C.[sex], C.[address], C.[avatar],   \n"
+                + "                      A.[status_id], M.rate, C.profession,   \n"
+                + "                      C.profession_intro, C.achievement_description, C.service_description   \n"
+                + "                  ORDER BY request_count DESC, avg_star DESC; ";
 
-    List<MentorProfileDTO> mentors = new ArrayList<>();
-    while (rs.next()) {
-        MentorProfileDTO mentor = new MentorProfileDTO();
-        mentor.setRate(rs.getFloat("rate"));
-        mentor.setCvID(rs.getInt("cv_id"));
-        mentor.setGmail(rs.getString("gmail"));
-        mentor.setFullName(rs.getString("full_name"));
-        mentor.setSex(rs.getBoolean("sex"));
-        mentor.setAddress(rs.getString("address"));
-        mentor.setPhone(rs.getString("phone"));
-        mentor.setDob(rs.getDate("dob"));
-        mentor.setAvatar(rs.getString("avatar"));
-        mentor.setProfession(rs.getString("profession"));
-        mentor.setProfessionIntro(rs.getString("profession_intro"));
-        mentor.setAchievementDescription(rs.getString("achievement_description"));
-        mentor.setService_description(rs.getString("service_description"));
-        mentor.setMentorName(rs.getString("user_name"));
-        mentor.setStarAVG(rs.getFloat("avg_star"));
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
 
-        // Fetch skills for this mentor
-        List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
-        mentor.setListSkills(skills);
+        List<MentorProfileDTO> mentors = new ArrayList<>();
+        while (rs.next()) {
+            MentorProfileDTO mentor = new MentorProfileDTO();
+            mentor.setRate(rs.getFloat("rate"));
+            mentor.setCvID(rs.getInt("cv_id"));
+            mentor.setGmail(rs.getString("gmail"));
+            mentor.setFullName(rs.getString("full_name"));
+            mentor.setSex(rs.getBoolean("sex"));
+            mentor.setAddress(rs.getString("address"));
+            mentor.setDob(rs.getDate("dob"));
+            mentor.setAvatar(rs.getString("avatar"));
+            mentor.setProfession(rs.getString("profession"));
+            mentor.setProfessionIntro(rs.getString("profession_intro"));
+            mentor.setAchievementDescription(rs.getString("achievement_description"));
+            mentor.setService_description(rs.getString("service_description"));
+            mentor.setMentorName(rs.getString("user_name"));
+            mentor.setStarAVG(rs.getFloat("avg_star"));
+            mentors.add(mentor);
+        }
+        for(MentorProfileDTO m : mentors){
+            // Fetch skills for this mentor
+            List<Skill> skills = fetchSkills(m.getCvID(), con);
+            m.setListSkills(skills);
 
-        // Fetch feedbacks for this mentor
-        List<FeedBackDTO> feedbacks = fetchFeedbacks(rs.getString("user_name"), con);
-        mentor.setFeedBacks(feedbacks);
+            // Fetch feedbacks for this mentor
+            List<FeedBackDTO> feedbacks = fetchFeedbacks(m.getMentorName(), con);
+            m.setFeedBacks(feedbacks);
+        }
 
-        mentors.add(mentor);
+        return mentors;
     }
-
-    return mentors;
-}
-
     
     public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
         String sql = "SELECT c.*, a.phone, m.rate FROM CV c JOIN Accounts a ON c.mentor_name = a.user_name\n"
@@ -217,17 +213,15 @@ public class MentorProfileDAO {
         return mentor;
     }
 
-
-
     private List<Skill> fetchSkills(int cvID, Connection con) throws SQLException {
         String sql = "select s.* from CVSkills cvs Join Skills s on cvs.skill_id = s.skill_id\n"
                 + "join cv c on c.cv_id = cvs.cv_id\n"
                 + "where c.status_id = 2 and cvs.cv_id = ?";
 
-         ps = con.prepareStatement(sql);
+        ps = con.prepareStatement(sql);
         ps.setInt(1, cvID); // Set the mentorName parameter
 
-        ResultSet rs = ps.executeQuery();
+        rs = ps.executeQuery();
 
         List<Skill> skills = new ArrayList<>();
         while (rs.next()) {
@@ -245,7 +239,7 @@ public class MentorProfileDAO {
                 + "INNER JOIN dbo.Accounts a ON m.mentee_name = a.user_name "
                 + "WHERE f.mentor_name = ?";
 
-         ps = con.prepareStatement(sql);
+        ps = con.prepareStatement(sql);
         ps.setString(1, mentorName); // Set the mentorName parameter
 
         ResultSet rs = ps.executeQuery();
@@ -263,41 +257,40 @@ public class MentorProfileDAO {
 
         return feedbacks;
     }
-    
+
     public List<FeedBackDTO> get5Feedback(String mentorName) throws SQLException {
-    String sql = "SELECT TOP 5 f.mentee_name, f.star, f.comment, f.time_feedback, a.avatar "
+        String sql = "SELECT TOP 5 f.mentee_name, f.star, f.comment, f.time_feedback, a.avatar "
                 + "FROM dbo.FeedBacks f "
                 + "INNER JOIN dbo.Mentees m ON f.mentee_name = m.mentee_name "
                 + "INNER JOIN dbo.Accounts a ON m.mentee_name = a.user_name "
                 + "WHERE f.mentor_name = ? "
                 + "ORDER BY f.time_feedback DESC";
 
-    PreparedStatement ps = con.prepareStatement(sql);
-    ps.setString(1, mentorName); // Set the mentorName parameter
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, mentorName); // Set the mentorName parameter
 
-    ResultSet rs = ps.executeQuery();
+        ResultSet rs = ps.executeQuery();
 
-    List<FeedBackDTO> feedbacks = new ArrayList<>();
-    while (rs.next()) {
-        FeedBackDTO feedback = new FeedBackDTO();
-        feedback.setMenteeName(rs.getString("mentee_name"));
-        feedback.setStar(rs.getInt("star"));
-        feedback.setComment(rs.getString("comment"));
-        feedback.setTimeFeedBack(rs.getDate("time_feedback"));
-        feedback.setAvatar(rs.getString("avatar")); // Set the avatar property
-        feedbacks.add(feedback);
+        List<FeedBackDTO> feedbacks = new ArrayList<>();
+        while (rs.next()) {
+            FeedBackDTO feedback = new FeedBackDTO();
+            feedback.setMenteeName(rs.getString("mentee_name"));
+            feedback.setStar(rs.getInt("star"));
+            feedback.setComment(rs.getString("comment"));
+            feedback.setTimeFeedBack(rs.getDate("time_feedback"));
+            feedback.setAvatar(rs.getString("avatar")); // Set the avatar property
+            feedbacks.add(feedback);
+        }
+
+        return feedbacks;
     }
-
-    return feedbacks;
-}
-
 
     public static void main(String[] args) throws SQLException {
 
         MentorProfileDAO dao = new MentorProfileDAO();
 
-        MentorProfileDTO mentorProfile = dao.getOneMentor("son");
-        System.out.println(mentorProfile.getAvatar());
+        List<MentorProfileDTO> mentorProfile = dao.getTop3Mentors();
+        System.out.println(mentorProfile.get(0).getMentorName());
 
     }
     

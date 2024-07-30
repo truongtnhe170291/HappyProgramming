@@ -8,6 +8,8 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Document title -->
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
     <title>POLO | The Multi-Purpose HTML5 Template</title>
     <!-- Stylesheets & Fonts -->
     <link href="css/plugins.css" rel="stylesheet">
@@ -88,7 +90,21 @@
         .right {
             right: 0;
         }
+.mentor-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
 
+.skill-tag {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    display: inline-block;
+}
     </style>
 </head>
 
@@ -125,7 +141,7 @@
                     </div>
                     <!-- end: content -->
                     <!-- Sidebar-->
-                    <div class="sidebar sticky-sidebar col-lg-3">
+                    <div class="sidebar  col-lg-3">
                         <!--Tabs with Posts-->
 
                         <div class="widget">
@@ -148,7 +164,7 @@
 
                     </div>
                     <div class="container">
-                        <h2>FEATURED TEMPLATES</h2>
+                        <h2>MENTORS</h2>
                         <div class="slider-container">
                             <button class="arrow left" id="leftArrow">&lt;</button>
                             <div class="slider">
@@ -159,9 +175,11 @@
                                             <a href="MentorProfileServlet?cvId=${member.cv_id}">
                                                 <h3>${member.getFull_name()}</h3>
                                             </a>
-                                            <c:forEach items="${member.listSkills}" var="skill">
-                                                <p>${skill.skillName}</p>
-                                            </c:forEach>
+                                            <div class="mentor-skills">
+    <c:forEach items="${member.listSkills}" var="skill">
+        <span class="skill-tag">${skill.skillName}</span>
+    </c:forEach>
+</div>
                                             <div class="star-rating" data-rating="${member.starAVG}">
 
                                             </div>

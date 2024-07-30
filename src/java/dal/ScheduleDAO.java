@@ -82,12 +82,12 @@ public class ScheduleDAO {
 
     public List<ScheduleDTO> getAllRequestByMentor(int page, int pageSize) {
         int offset = (page - 1) * pageSize;
-        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
+        String sql = "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time, ss.status_id "
                 + "FROM Selected_Slot ss "
                 + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
                 + "JOIN Slots s ON s.slot_id = ss.slot_id "
                 + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
-                + "ORDER BY c.deadline_date DESC "
+                + "ORDER BY c.deadline_date DESC, ss.status_id ASC "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         List<ScheduleDTO> list = new ArrayList<>();
