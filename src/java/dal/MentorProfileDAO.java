@@ -78,6 +78,16 @@ public class MentorProfileDAO {
         // Trả về danh sách mentor
         return mentors;
     }
+   public List<MentorProfile> getAllListMentor() throws SQLException {
+    // Lấy danh sách tất cả mentor từ cơ sở dữ liệu
+    List<MentorProfile> allmentor = getAllMentors();
+    // Tạo danh sách mới để lưu trữ các mentor
+    List<MentorProfile> listmentor = new ArrayList<>();
+    // Thêm tất cả mentor từ allmentor vào listmentor
+    listmentor.addAll(allmentor);
+    // Trả về danh sách mentor
+    return listmentor;
+}
 
     public List<MentorProfile> getAllMentorBySkillID(int skillID) throws SQLException {
         // Lấy danh sách tất cả các mentor
@@ -97,87 +107,76 @@ public class MentorProfileDAO {
         return mentorsWithSkill;
     }
 
-    public List<MentorProfileDTO> getTop3Mentors() throws SQLException {
-      String sql = "WITH RankedMentors AS (" +
-             "    SELECT " +
-             "        A.[user_name], " +
-             "        A.[gmail], " +
-             "        c.cv_id, " +
-             "        A.[full_name], " +
-             "        A.[pass_word], " +
-             "        A.[dob], " +
-             "        A.[sex], " +
-             "        A.[address], " +
-             "        A.[phone], " +
-             "        A.[avatar], " +
-             "        A.[role_id], " +
-             "        A.[status_id], " +
-             "        m.rate, " +
-             "        c.profession, " +
-             "        c.profession_intro, " +
-             "        c.achievement_description, " +
-             "        c.service_description, " +
-             "        ISNULL(f.avg_star, 0) AS avg_star, " +
-             "        ROW_NUMBER() OVER(PARTITION BY A.[user_name] ORDER BY m.rate DESC) AS RowNum " +
-             "    FROM " +
-             "        [HappyProgrammingDB].[dbo].[Accounts] A " +
-             "    JOIN " +
-             "        [HappyProgrammingDB].[dbo].[RequestsFormMentee] RFM ON A.[user_name] = RFM.[mentor_name] " +
-             "    JOIN " +
-             "        [HappyProgrammingDB].[dbo].[CV] c ON c.mentor_name = A.[user_name] " +
-             "    JOIN " +
-             "        [HappyProgrammingDB].[dbo].[Mentors] m ON m.mentor_name = A.[user_name] " +
-             "    LEFT JOIN " +
-             "        (SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star " +
-             "         FROM [HappyProgrammingDB].[dbo].[FeedBacks] " +
-             "         GROUP BY mentor_name " +
-             "        ) f ON A.[user_name] = f.mentor_name " +
-             "    WHERE " +
-             "        A.[role_id] = 2 " +
-             "        AND RFM.[status_id] = 1 " +
-             ") " +
-             "SELECT * " +
-             "FROM RankedMentors " +
-             "WHERE RowNum = 1 " +
-             "ORDER BY rate DESC " +
-             "OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY;";
+   public List<MentorProfileDTO> getTop3Mentors() throws SQLException {
+    String sql = "SELECT TOP 3 " +
+                 "    A.[user_name], " +
+                 "    A.[gmail], " +
+                 "    C.cv_id, " +
+                 "    A.[full_name], " +
+                 "    A.[pass_word], " +
+                 "    A.[dob], " +
+                 "    A.[sex], " +
+                 "    A.[address], " +
+                 "    A.[phone], " +
+                 "    A.[avatar], " +
+                 "    A.[role_id], " +
+                 "    A.[status_id], " +
+                 "    M.rate, " +
+                 "    C.profession, " +
+                 "    C.profession_intro, " +
+                 "    C.achievement_description, " +
+                 "    C.service_description, " +
+                 "    ISNULL(AVG(F.star), 0) AS avg_star, " +
+                 "    COUNT(RFM.request_id) AS request_count " +
+                 "FROM Accounts A " +
+                 "JOIN Mentors M ON A.[user_name] = M.mentor_name " +
+                 "JOIN CV C ON M.mentor_name = C.mentor_name " +
+                 "LEFT JOIN FeedBacks F ON M.mentor_name = F.mentor_name " +
+                 "LEFT JOIN RequestsFormMentee RFM ON M.mentor_name = RFM.mentor_name " +
+                 "WHERE A.[role_id] = 2 " +
+                 "GROUP BY " +
+                 "    A.[user_name], A.[gmail], C.cv_id, A.[full_name], A.[pass_word], " +
+                 "    A.[dob], A.[sex], A.[address], A.[phone], A.[avatar], " +
+                 "    A.[role_id], A.[status_id], M.rate, C.profession, " +
+                 "    C.profession_intro, C.achievement_description, C.service_description " +
+                 "ORDER BY request_count DESC, avg_star DESC;";
 
+    ps = con.prepareStatement(sql);
+    rs = ps.executeQuery();
 
-        ps = con.prepareStatement(sql);
-        rs = ps.executeQuery();
+    List<MentorProfileDTO> mentors = new ArrayList<>();
+    while (rs.next()) {
+        MentorProfileDTO mentor = new MentorProfileDTO();
+        mentor.setRate(rs.getFloat("rate"));
+        mentor.setCvID(rs.getInt("cv_id"));
+        mentor.setGmail(rs.getString("gmail"));
+        mentor.setFullName(rs.getString("full_name"));
+        mentor.setSex(rs.getBoolean("sex"));
+        mentor.setAddress(rs.getString("address"));
+        mentor.setPhone(rs.getString("phone"));
+        mentor.setDob(rs.getDate("dob"));
+        mentor.setAvatar(rs.getString("avatar"));
+        mentor.setProfession(rs.getString("profession"));
+        mentor.setProfessionIntro(rs.getString("profession_intro"));
+        mentor.setAchievementDescription(rs.getString("achievement_description"));
+        mentor.setService_description(rs.getString("service_description"));
+        mentor.setMentorName(rs.getString("user_name"));
+        mentor.setStarAVG(rs.getFloat("avg_star"));
 
-        List<MentorProfileDTO> mentors = new ArrayList<>();
-        while (rs.next()) {
-            MentorProfileDTO mentor = new MentorProfileDTO();
-            mentor.setRate(rs.getFloat("rate"));
-            mentor.setCvID(rs.getInt("cv_id"));
-            mentor.setGmail(rs.getString("gmail"));
-            mentor.setFullName(rs.getString("full_name"));
-            mentor.setSex(rs.getBoolean("sex"));
-            mentor.setAddress(rs.getString("address"));
-            mentor.setPhone(rs.getString("phone"));
-            mentor.setDob(rs.getDate("dob"));
-            mentor.setAvatar(rs.getString("avatar"));
-            mentor.setProfession(rs.getString("profession"));
-            mentor.setProfessionIntro(rs.getString("profession_intro"));
-            mentor.setAchievementDescription(rs.getString("achievement_description"));
-            mentor.setService_description(rs.getString("service_description"));
-            mentor.setMentorName(rs.getString("user_name"));
-            mentor.setStarAVG(rs.getFloat("avg_star"));
+        // Fetch skills for this mentor
+        List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
+        mentor.setListSkills(skills);
 
-            // Fetch skills for this mentor
-            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
-            mentor.setListSkills(skills);
+        // Fetch feedbacks for this mentor
+        List<FeedBackDTO> feedbacks = fetchFeedbacks(rs.getString("user_name"), con);
+        mentor.setFeedBacks(feedbacks);
 
-            // Fetch feedbacks for this mentor
-            List<FeedBackDTO> feedbacks = fetchFeedbacks(rs.getString("user_name"), con);
-            mentor.setFeedBacks(feedbacks);
-
-            mentors.add(mentor);
-        }
-
-        return mentors;
+        mentors.add(mentor);
     }
+
+    return mentors;
+}
+
     
     public MentorProfileDTO getOneMentor(String mentorName) throws SQLException {
         String sql = "SELECT c.*, a.phone, m.rate FROM CV c JOIN Accounts a ON c.mentor_name = a.user_name\n"
@@ -301,4 +300,116 @@ public class MentorProfileDAO {
         System.out.println(mentorProfile.getAvatar());
 
     }
+    
+    public List<MentorProfile> searchMentorsBySkill(String searchTerm) {
+    // Loại bỏ khoảng trắng đầu và cuối của chuỗi tìm kiếm
+    if (searchTerm != null) {
+        searchTerm = searchTerm.trim();
+    }
+
+    // Câu truy vấn SQL để tìm kiếm mentor dựa trên tên kỹ năng
+    String sql = "SELECT DISTINCT m.full_name, m.avatar, a.user_name, f.avg_star, m.cv_id " +
+                 "FROM CV m " +
+                 "INNER JOIN Accounts a ON m.mentor_name = a.user_name " +
+                 "LEFT JOIN ( " +
+                 "  SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star " +
+                 "  FROM FeedBacks " +
+                 "  GROUP BY mentor_name) f ON m.mentor_name = f.mentor_name " +
+                 "INNER JOIN CVSkills cs ON m.cv_id = cs.cv_id " +
+                 "INNER JOIN Skills s ON cs.skill_id = s.skill_id " +
+                 "WHERE s.skill_name LIKE ? " + // Tìm kiếm kỹ năng bằng cách sử dụng LIKE
+                 "ORDER BY f.avg_star DESC"; // Sắp xếp theo điểm trung bình phản hồi
+
+    List<MentorProfile> list = new ArrayList<>();
+    try {
+        // Chuẩn bị câu lệnh SQL
+        PreparedStatement ps = con.prepareStatement(sql);
+        
+        // Thêm wildcard (%) vào chuỗi tìm kiếm để thực hiện tìm kiếm với LIKE
+        ps.setString(1, "%" + searchTerm + "%");
+        
+        // Thực hiện truy vấn và lấy kết quả
+        ResultSet rs = ps.executeQuery();
+        
+        // Lặp qua kết quả để xây dựng danh sách các mentor
+        while (rs.next()) {
+            MentorProfile mentor = new MentorProfile();
+            
+            // Lấy thông tin cơ bản của mentor
+            mentor.setFull_name(rs.getString("full_name"));
+            mentor.setAvatar(rs.getString("avatar"));
+            mentor.setMentorName(rs.getString("user_name"));
+            mentor.setStar(rs.getFloat("avg_star"));
+            mentor.setCv_id(rs.getInt("cv_id"));
+
+            // Lấy danh sách kỹ năng của mentor từ phương thức fetchSkills
+            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
+            mentor.setListSkills(skills);
+
+            // Thêm mentor vào danh sách kết quả
+            list.add(mentor);
+        }
+    } catch (SQLException e) {
+        // Xử lý ngoại lệ nếu có lỗi xảy ra trong quá trình thực hiện truy vấn
+        e.printStackTrace();
+    }
+    // Trả về danh sách các mentor phù hợp với kỹ năng tìm kiếm
+    return list;
+}
+    
+    public List<MentorProfile> searchMentorsByName(String searchTerm) {
+    // Loại bỏ khoảng trắng đầu và cuối của chuỗi tìm kiếm
+    if (searchTerm != null) {
+        searchTerm = searchTerm.trim();
+    }
+
+    // Câu truy vấn SQL để tìm kiếm mentor dựa trên tên mentor
+    String sql = "SELECT DISTINCT m.full_name, m.avatar, a.user_name, f.avg_star, m.cv_id " +
+                 "FROM CV m " +
+                 "INNER JOIN Accounts a ON m.mentor_name = a.user_name " +
+                 "LEFT JOIN ( " +
+                 "  SELECT mentor_name, AVG(CAST(star AS DECIMAL(10,2))) AS avg_star " +
+                 "  FROM FeedBacks " +
+                 "  GROUP BY mentor_name) f ON m.mentor_name = f.mentor_name " +
+                 "WHERE m.full_name LIKE ? " + // Tìm kiếm mentor bằng cách sử dụng LIKE
+                 "ORDER BY f.avg_star DESC"; // Sắp xếp theo điểm trung bình phản hồi
+
+    List<MentorProfile> list = new ArrayList<>();
+    try {
+        // Chuẩn bị câu lệnh SQL
+        PreparedStatement ps = con.prepareStatement(sql);
+        
+        // Thêm wildcard (%) vào chuỗi tìm kiếm để thực hiện tìm kiếm với LIKE
+        ps.setString(1, "%" + searchTerm + "%");
+        
+        // Thực hiện truy vấn và lấy kết quả
+        ResultSet rs = ps.executeQuery();
+        
+        // Lặp qua kết quả để xây dựng danh sách các mentor
+        while (rs.next()) {
+            MentorProfile mentor = new MentorProfile();
+            
+            // Lấy thông tin cơ bản của mentor
+            mentor.setFull_name(rs.getString("full_name"));
+            mentor.setAvatar(rs.getString("avatar"));
+            mentor.setMentorName(rs.getString("user_name"));
+            mentor.setStar(rs.getFloat("avg_star"));
+            mentor.setCv_id(rs.getInt("cv_id"));
+
+            // Lấy danh sách kỹ năng của mentor từ phương thức fetchSkills
+            List<Skill> skills = fetchSkills(rs.getInt("cv_id"), con);
+            mentor.setListSkills(skills);
+
+            // Thêm mentor vào danh sách kết quả
+            list.add(mentor);
+        }
+    } catch (SQLException e) {
+        // Xử lý ngoại lệ nếu có lỗi xảy ra trong quá trình thực hiện truy vấn
+        e.printStackTrace();
+    }
+    // Trả về danh sách các mentor phù hợp với tên tìm kiếm
+    return list;
+}
+
+    
 }
