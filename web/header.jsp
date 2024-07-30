@@ -57,6 +57,7 @@
                                                 <li><a href="StaticRequest">STATISTICS REQUEST</a></li>
                                                 <li><a href="ListRequest">HISTORY REQUEST</a></li>
                                                 <li><a href="Schedule_General_Mentee">GENERAL SCHEDULE</a></li>
+                                                <li><a href="listmentor">Mentor</a></li>
                                                 </c:if>
                                         </ul>
                                     </li>
