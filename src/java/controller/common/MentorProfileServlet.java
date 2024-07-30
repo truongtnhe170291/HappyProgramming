@@ -91,6 +91,7 @@ public class MentorProfileServlet extends HttpServlet {
 
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
+            //get rate of mentor
             Cycle c = mentorDAO.getNewCycleByUser(userName);
             if (c != null) {
                 if (LocalDate.now().isBefore(LocalDate.parse(c.getStart()))) {
@@ -115,7 +116,6 @@ public class MentorProfileServlet extends HttpServlet {
             } else {
                 request.setAttribute("noBook", "No Shedules");
             }
-           
 
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
