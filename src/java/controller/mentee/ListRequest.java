@@ -43,164 +43,105 @@ import models.Status;
 public class ListRequest extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            Account a = (Account) request.getSession().getAttribute("user");
-            if (a == null) {
-                response.sendRedirect("login");
-                return;
-            }
-
-            MentorDAO mentorDao = new MentorDAO();
-            String menteeName = a.getUserName();
-            RequestDAO rdao = new RequestDAO();
-
-            ArrayList<Slot> listSlots = mentorDao.listSlots();
-            ArrayList<Day> listDays = mentorDao.listDays();
-
-            // Lọc danh sách ngày cho một tuần
-            ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
-
-            rdao.updateExpiredRequestsStatus();
-
-            List<RequestDTO> requests = new ArrayList<>();
-            List<Status> statuses = rdao.getAllStatusesMentee();
-            List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
-
-            String statusFilter = request.getParameter("statusFilter");
-            String mentorNameFilter = request.getParameter("mentorNameFilter");
-            String startTimeFilter = request.getParameter("startTimeFilter");
-            String endTimeFilter = request.getParameter("endTimeFilter");
-
-            int statusId = -1;
-            LocalDate startTime = null;
-            LocalDate endTime = null;
-            String mentorName = mentorNameFilter != null && !mentorNameFilter.equals("all") ? mentorNameFilter : "";
-
-            if (startTimeFilter != null && !startTimeFilter.isEmpty()) {
-                startTime = LocalDate.parse(startTimeFilter);
-            }
-            if (endTimeFilter != null && !endTimeFilter.isEmpty()) {
-                endTime = LocalDate.parse(endTimeFilter);
-            }
-
-            // Lấy thông tin phân trang
-            int page = 1;
-            int pageSize = 5;
-            if (request.getParameter("page") != null) {
-                page = Integer.parseInt(request.getParameter("page"));
-            }
-            if (request.getParameter("pageSize") != null) {
-                pageSize = Integer.parseInt(request.getParameter("pageSize"));
-            }
-
-            int totalRequests = 0;
-
-            if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter))
-                    && (mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName))
-                    && startTime == null && endTime == null) {
-                // Case 1: No filters applied
-                totalRequests = rdao.getCountRequestOfMenteeInDeadlineByStatus(menteeName);
-                requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName, page, pageSize);
-
-            } else if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter))
-                    && (mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName))
-                    && (startTime != null || endTime != null)) {
-                // Case 2: Only time filters applied
-                totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
-                requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime, page, pageSize);
-
-            } else if ((statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter))
-                    && (startTime == null && endTime == null)) {
-                // Case 3: Only mentor filter applied
-                totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
-                requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null, page, pageSize);
-
-            } else if ((mentorNameFilter == null || mentorNameFilter.isEmpty() || "all".equals(mentorName))
-                    && (startTime == null && endTime == null)) {
-                // Case 4: Only status filter applied
-                statusId = Integer.parseInt(statusFilter);
-                totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
-                requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null, page, pageSize);
-
-            } else {
-                // Case 5: Combination of filters
-                statusId = (statusFilter == null || statusFilter.isEmpty() || "all".equals(statusFilter)) ? -1 : Integer.parseInt(statusFilter);
-                totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
-                requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime, page, pageSize);
-
-            }
-
-            int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
-
-            // Log schedules for debugging
-            for (RequestDTO requestDTO : requests) {
-                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                List<SchedulePublic> oneWeekSchedule = getOneWeek(listSchedule);  // Lọc lịch trình theo tuần
-                requestDTO.setListSchedule(oneWeekSchedule);  // Cập nhật danh sách lịch trình cho requestDTO
-
-                for (SchedulePublic schedule : oneWeekSchedule) {
-                    System.out.println("Request ID: " + requestDTO.getRequestId()
-                            + " Schedule: " + schedule.getSlotId()
-                            + " " + schedule.getDayOfSlot());
-                }
-            }
-
-            //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
-            LocalDate todayLocalDate = LocalDate.now();
-            String todayString = todayLocalDate.toString();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date today = null;
-
-            try {
-                today = sdf.parse(todayString);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            for (RequestDTO requestDTO : requests) {
-                List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-
-                String startTimeStr = listSchedule.get(0).getDayOfSlot().toString();
-                String endTimeStr = listSchedule.get(listSchedule.size() - 1).getDayOfSlot().toString();
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
-                LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
-
-                long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-                LocalDate middleDate = startDate.plusDays(daysBetween / 2);
-
-                if (todayLocalDate.isEqual(middleDate) || todayLocalDate.isAfter(middleDate) && requestDTO.getStatus().getStatusId() == 1) {
-                    requestDTO.setIsEnoughPay(true);
-                }
-            }
-
-            for (RequestDTO requestDTO : requests) {
-                System.out.println(requestDTO);
-            }
-            //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
-
-            request.setAttribute("requests", requests);
-            request.setAttribute("listSlots", listSlots);
-            request.setAttribute("listDays", oneWeekDays);  // Chỉ hiển thị danh sách ngày của một tuần
-            request.setAttribute("mentors1", mentors1);
-            request.setAttribute("statuses", statuses);
-            request.setAttribute("statusId", statusId);
-            request.setAttribute("mentorName", mentorName);
-            request.setAttribute("startTime", startTimeFilter);
-            request.setAttribute("endTime", endTimeFilter);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("pageSize", pageSize);
-            request.setAttribute("totalPages", totalPages);
-
-            request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-        } catch (Exception e) {
-            response.sendRedirect("PageError");
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        Account a = (Account) request.getSession().getAttribute("user");
+        if (a == null) {
+            response.sendRedirect("login");
+            return;
         }
+
+        MentorDAO mentorDao = new MentorDAO();
+        String menteeName = a.getUserName();
+        RequestDAO rdao = new RequestDAO();
+
+        rdao.updateExpiredRequestsStatus();
+
+        List<RequestDTO> requests = new ArrayList<>();
+        List<Status> statuses = rdao.getAllStatusesMentee();
+        List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
+
+        // Lấy tham số lọc từ yêu cầu
+        String statusFilter = request.getParameter("statusFilter");
+        String mentorNameFilter = request.getParameter("mentorNameFilter");
+        String startTimeFilter = request.getParameter("startTimeFilter");
+        String endTimeFilter = request.getParameter("endTimeFilter");
+
+        int statusId = -1;
+        LocalDate startTime = null;
+        LocalDate endTime = null;
+        String mentorName = "all".equals(mentorNameFilter) ? "" : mentorNameFilter;
+
+        if (startTimeFilter != null && !startTimeFilter.isEmpty()) {
+            startTime = LocalDate.parse(startTimeFilter);
+        }
+        if (endTimeFilter != null && !endTimeFilter.isEmpty()) {
+            endTime = LocalDate.parse(endTimeFilter);
+        }
+        if (statusFilter != null && !statusFilter.isEmpty() && !"all".equals(statusFilter)) {
+            statusId = Integer.parseInt(statusFilter);
+        }
+
+        // Phân trang
+        int page = 1;
+        int pageSize = 5;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        if (request.getParameter("pageSize") != null) {
+            pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        }
+
+        int totalRequests = 0;
+
+        if ("all".equals(statusFilter) && "all".equals(mentorName) && startTime == null && endTime == null) {
+            // Case 1: No filters applied
+            totalRequests = rdao.getCountRequestOfMenteeInDeadlineByStatus(menteeName);
+            requests = rdao.getRequestOfMenteeInDeadlineByStatus(menteeName, page, pageSize);
+
+        } else if ("all".equals(statusFilter) && startTime != null || endTime != null) {
+            // Case 2: Only time filters applied
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime, page, pageSize);
+
+        } else if ("all".equals(statusFilter) && "all".equals(mentorName)) {
+            // Case 3: Status and mentorName filters "All"
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null, page, pageSize);
+
+        } else if ("all".equals(mentorName) && startTime == null && endTime == null) {
+            // Case 4: mentorName filter and all time filter
+            statusId = Integer.parseInt(statusFilter);
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, null, null, page, pageSize);
+
+        } else {
+            // Case 5: Combination of filters
+            totalRequests = rdao.getCountRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime);
+            requests = rdao.getRequestsByMenteeStatusMentorTime(menteeName, statusId, mentorName, startTime, endTime, page, pageSize);
+        }
+
+        int totalPages = (int) Math.ceil((double) totalRequests / pageSize);
+
+        // Set attributes for JSP rendering
+        request.setAttribute("requests", requests);
+        request.setAttribute("mentors1", mentors1);
+        request.setAttribute("statuses", statuses);
+        request.setAttribute("statusFilter", statusFilter);
+        request.setAttribute("mentorNameFilter", mentorNameFilter);
+        request.setAttribute("startTimeFilter", startTimeFilter );
+        request.setAttribute("endTimeFilter", endTimeFilter );
+        request.setAttribute("currentPage", page);
+        request.setAttribute("pageSize", pageSize);
+        request.setAttribute("totalPages", totalPages);
+
+        request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
+    } catch (Exception e) {
+        response.sendRedirect("PageError");
     }
+}
+
 
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();

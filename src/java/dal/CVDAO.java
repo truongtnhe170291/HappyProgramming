@@ -527,9 +527,7 @@ public class CVDAO {
                     cvList.add(cv);
                 }
             }
-            if (cvList.isEmpty()) {
-                return cvList;
-            }
+           
             for (CVDTO cv : cvList) {
                 cv.setStatus(getStatusById(cv.getStattusId()));
                 cv.setListSkill(getSkillsByCVId(cv.getCvId()));
