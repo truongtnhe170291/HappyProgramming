@@ -98,13 +98,14 @@
         <div class="search-container">
             <form action="listmentor" method="GET">
                 <div class="filters">
-                    <input type="text" name="searchTermName" placeholder="Mentor Name" />
-                   
-                    <input type="text" placeholder="Skill" name="searchTerm" />
-                    
-                    <button type="submit" >Search</button>
+                    <input type="text" name="searchTermName" placeholder="Mentor Name" 
+                           value="${param.searchTermName != null ? param.searchTermName : ''}" />
+                    <input type="text" placeholder="Skill" name="searchTerm" 
+                           value="${param.searchTerm != null ? param.searchTerm : ''}" />
+                    <button type="submit">Search</button>
                 </div>
             </form>
+
             <div class="mentor-grid">
                 <c:forEach items="${requestScope.mentorlist}" var="mentor">
                     <a

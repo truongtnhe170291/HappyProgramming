@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.io.File;
 
 import java.io.FileOutputStream;
 
@@ -79,30 +80,33 @@ public class ManagerBlog extends HttpServlet {
             // Retrieve image part
             Part filePart = request.getPart("img");
             String fileName = filePart.getSubmittedFileName();
+            String uploadDirectory = "D:\\TaiLieu\\SWP391\\HappyProgramming\\web\\imgblog\\"; // Ensure trailing backslash
 
-            // Check if file name exists and handle default if not
-            if (fileName == null || fileName.isEmpty()) {
-                fileName = "default_blog_img.jpg";
+// Ensure upload directory exists
+            File uploadDir = new File(uploadDirectory);
+            if (!uploadDir.exists()) {
+                if (uploadDir.mkdirs()) {
+                    System.out.println("Upload directory created.");
+                } else {
+                    System.out.println("Failed to create upload directory.");
+                }
             }
 
-            // Save the file to the server
-            String uploadDirectory = "D:\\SWP\\HappyProgramming\\web\\imgblog\\";
+// Save the file to the server
             String filePath = uploadDirectory + fileName;
-            try (OutputStream out = new FileOutputStream(filePath)) {
-                InputStream in = filePart.getInputStream();
-                byte[] bytes = new byte[in.available()];
-                int bytesRead = in.read(bytes);
-                if (bytesRead != -1) {
-                    out.write(bytes);
-                } else {
-                    System.out.println("No bytes read from the input stream.");
-                    fileName = "default_blog_img.jpg"; // Handle default image if saving fails
+            try (InputStream in = filePart.getInputStream(); OutputStream out = new FileOutputStream(filePath)) {
+
+                byte[] buffer = new byte[4096]; // Buffer size
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
                 }
+                System.out.println("File saved successfully: " + filePath);
             } catch (IOException e) {
-                e.printStackTrace(); // Print the stack trace for more details
                 System.out.println("Error saving file: " + e.getMessage());
                 fileName = "default_blog_img.jpg"; // Handle default image if saving fails
             }
+
             // Get other form data
             String link = VietnameseConverter.removeDiacritics(request.getParameter("link"));
 

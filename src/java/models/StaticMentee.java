@@ -11,17 +11,18 @@ package models;
  */
 public class StaticMentee {
     private int totalRequest;
-    private int totalHour;
+
     private int totalMentor;
 
     public StaticMentee() {
     }
 
-    public StaticMentee(int totalRequest, int totalHour, int totalMentor) {
+    public StaticMentee(int totalRequest, int totalMentor) {
         this.totalRequest = totalRequest;
-        this.totalHour = totalHour;
         this.totalMentor = totalMentor;
     }
+    
+
 
         
    
@@ -33,13 +34,7 @@ public class StaticMentee {
         this.totalRequest = totalRequest;
     }
 
-    public int getTotalHour() {
-        return totalHour;
-    }
-
-    public void setTotalHour(int totalHour) {
-        this.totalHour = totalHour;
-    }
+    
 
     public int getTotalMentor() {
         return totalMentor;
@@ -51,9 +46,9 @@ public class StaticMentee {
 
     @Override
     public String toString() {
-        return "StaticMentee{" + "totalRequest=" + totalRequest + ", totalHour=" + totalHour + ", totalMentor=" + totalMentor + '}';
+        return "StaticMentee{" + "totalRequest=" + totalRequest + ", totalMentor=" + totalMentor + '}';
     }
-    
-    
+
+   
     
 }

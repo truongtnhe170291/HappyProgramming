@@ -82,7 +82,7 @@ public class SearchSkill extends HttpServlet {
             String searchTerm = request.getParameter("searchTerm");
 
             // Gọi hàm searchSkills để tìm kiếm kỹ năng theo từ khóa
-            List<Skill> skills = skillDAO.searchSkills(searchTerm, 1, 2);
+            List<Skill> skills = skillDAO.searchSkills(searchTerm, 1, 10);
 
             // Lưu danh sách kỹ năng tìm được vào request
             request.setAttribute("listSkill", skills);

@@ -120,7 +120,6 @@ public class MentorProfileServlet extends HttpServlet {
             List<Slot> listSlot = mentorDAO.listSlots();
             // set attribute
             request.setAttribute("listSlot", listSlot);
-
             mentor = mentorProfileDAO.getOneMentor(userName);
             request.setAttribute("mentor", mentor);
             request.getRequestDispatcher("Mentor.jsp").forward(request, response);

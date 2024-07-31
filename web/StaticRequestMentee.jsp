@@ -119,11 +119,7 @@
                 <div>Total Requests</div>
                 <div class="total-value">${staticMentees.totalRequest}</div>
             </div>
-            <div class="total-item">
-                <i class="fas fa-clock"></i>
-                <div>Total Hours</div>
-                <div class="total-value">${staticMentees.totalHour}</div>
-            </div>
+         
             <div class="total-item">
                 <i class="fas fa-user-tie"></i>
                 <div>Total Mentors</div>
