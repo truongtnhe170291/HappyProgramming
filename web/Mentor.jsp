@@ -27,6 +27,7 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
             <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+            <script src="https://kit.fontawesome.com/7005da8e68.js" crossorigin="anonymous"></script>
 
         <style>
          .header {
@@ -533,6 +534,25 @@ display: contents;
 }
 
         </style>
+        <style>
+            .fav-btn{
+                border: 1px;
+                border-radius: 50%;
+                padding: 10px;
+                background-color: #ff4336;
+                margin-right: 10px;
+                
+            }
+            a i{
+                font-size: 16px;
+                color: white;
+            }
+            .pull-right{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        </style>
     </head>
 
     <body>
@@ -571,9 +591,12 @@ display: contents;
                 <li>Price <strong class="pull-right">
                         <c:out value="${mentor.rate}" />
                     </strong></li>
-                <li> <strong class="pull-right">
+                <li>
+                    <button class="fav-btn"><a href="/"><i class="icon-heart-empty"></i></a></button>
+                    <strong class="pull-right">
                         <a href="request?cvId=${mentor.cvID}" class="btn btn-success martes_book">Book</a>
-                    </strong></li>
+                    </strong>
+                </li>
             </ul>
         </div>
     </aside>
