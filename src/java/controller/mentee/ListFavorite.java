@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import models.Account;
 
 /**
  *
@@ -73,6 +74,13 @@ public class ListFavorite extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Account currentAcc = (Account) request.getSession().getAttribute("user");
+        if (currentAcc == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        
         processRequest(request, response);
     }
 

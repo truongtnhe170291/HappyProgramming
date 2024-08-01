@@ -91,6 +91,17 @@ public class MentorProfileServlet extends HttpServlet {
 
             //get user_name of Mentor  by cvid
             String userName = cvdao.getCVByCVId(cvId).getUserName();
+
+            // Get the current logged-in user
+            Account currentAcc = (Account) request.getSession().getAttribute("user");
+
+            // Check if the user is logged in and get the favorite status
+            boolean isFavorited = false;
+            if (currentAcc != null) {
+                String menteeUserName = currentAcc.getUserName();
+                isFavorited = mentorDAO.isFavorited(menteeUserName, userName);
+            }
+
             //get rate of mentor
             Cycle c = mentorDAO.getNewCycleByUser(userName);
             if (c != null) {
@@ -122,6 +133,8 @@ public class MentorProfileServlet extends HttpServlet {
             request.setAttribute("listSlot", listSlot);
             mentor = mentorProfileDAO.getOneMentor(userName);
             request.setAttribute("mentor", mentor);
+            request.setAttribute("userName", userName);
+            request.setAttribute("isFavorited", isFavorited);
             request.getRequestDispatcher("Mentor.jsp").forward(request, response);
         } catch (SQLException ex) {
             response.sendRedirect("PageError");
@@ -129,28 +142,32 @@ public class MentorProfileServlet extends HttpServlet {
 
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Account currentAcc = (Account) request.getSession().getAttribute("user");
 
+        if (currentAcc == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        String mentorUserName = request.getParameter("mentorUsername");
+        String cvId = request.getParameter("cvId");
+        String menteeUserName = currentAcc.getUserName();
+        MentorDAO mentorDAO = new MentorDAO();
+
+        String notification = "";
+        if (mentorDAO.isFavorited(menteeUserName, mentorUserName)) {
+            mentorDAO.removeFavorite(menteeUserName, mentorUserName);
+            notification = "Mentor unfavorited!";
+        } else {
+            mentorDAO.addFavorite(menteeUserName, mentorUserName);
+            notification = "Mentor favorited!";
+        }
+
+        request.getSession().setAttribute("notification", notification);
+        response.sendRedirect("MentorProfileServlet?cvId=" + cvId);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

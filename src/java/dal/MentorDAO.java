@@ -60,8 +60,6 @@ public class MentorDAO {
         }
         return list;
     }
-    
- 
 
 //    public ArrayList<SchedulePublic> listSlotsCycleByMentor(String mentorName, int status) {
 //        ArrayList<SchedulePublic> list = new ArrayList<>();
@@ -536,6 +534,49 @@ public class MentorDAO {
             }
         } catch (SQLException e) {
             System.out.println("checkContainSelectSlotSave: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public void addFavorite(String menteeUserName, String mentorUserName) {
+        try {
+            String query = "INSERT INTO FavoriteMentors (menteeUserName, mentorUserName) VALUES (?, ?)";
+            con = new DBContext().connection;//mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, menteeUserName);
+            ps.setString(2, mentorUserName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("insertCycle: " + e.getMessage());
+        }
+    }
+
+    public void removeFavorite(String menteeUserName, String mentorUserName) {
+        try {
+            String query = "DELETE FROM FavoriteMentors WHERE menteeUserName = ? AND mentorUserName = ?";
+            con = new DBContext().connection;//mo ket noi voi sql
+            ps = con.prepareStatement(query);
+            ps.setString(1, menteeUserName);
+            ps.setString(2, mentorUserName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("insertCycle: " + e.getMessage());
+        }
+    }
+
+    public boolean isFavorited(String menteeUserName, String mentorUserName) {
+        try {
+            String query = "SELECT COUNT(*) FROM FavoriteMentors WHERE menteeUserName = ? AND mentorUserName = ?";
+            con = new DBContext().connection;
+            ps = con.prepareStatement(query);
+            ps.setString(1, menteeUserName);
+            ps.setString(2, mentorUserName);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("isFavorited: " + e.getMessage());
         }
         return false;
     }
