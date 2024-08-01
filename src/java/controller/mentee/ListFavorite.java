@@ -4,6 +4,8 @@
  */
 package controller.mentee;
 
+import dal.MentorDAO;
+import dal.MentorProfileRateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,7 +13,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Account;
+import models.MentorProfileRate;
 
 /**
  *
@@ -37,7 +44,7 @@ public class ListFavorite extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListFavoriteMentors</title>");            
+            out.println("<title>Servlet ListFavoriteMentors</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ListFavoriteMentors at " + request.getContextPath() + "</h1>");
@@ -58,9 +65,25 @@ public class ListFavorite extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        request.getRequestDispatcher("ListFavorite.jsp").forward(request, response);
-        processRequest(request, response);
+        try {
+
+            Account currentAcc = (Account) request.getSession().getAttribute("user");
+            if (currentAcc == null) {
+                response.sendRedirect("login");
+                return;
+            }
+            String menteeUserName = currentAcc.getUserName();
+
+            MentorProfileRateDAO mentorprofiledao = new MentorProfileRateDAO();
+            List<MentorProfileRate> mentor = mentorprofiledao.getAllListFavMentor(menteeUserName);
+
+            request.setAttribute("mentorlist", mentor);
+            request.getRequestDispatcher("ListFavorite.jsp").forward(request, response);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ListFavorite.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -74,14 +97,20 @@ public class ListFavorite extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         Account currentAcc = (Account) request.getSession().getAttribute("user");
         if (currentAcc == null) {
             response.sendRedirect("login");
             return;
         }
-        
-        processRequest(request, response);
+        String menteeUserName = currentAcc.getUserName();
+        String mentorUserName = request.getParameter("mentorUsername");
+        MentorDAO mentorDAO = new MentorDAO();
+
+        String notification = "Mentor unfavorited!";
+        mentorDAO.removeFavorite(menteeUserName, mentorUserName);
+        request.getSession().setAttribute("notification", notification);
+        response.sendRedirect("Favorites");
     }
 
     /**
