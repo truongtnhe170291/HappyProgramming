@@ -5,7 +5,8 @@
 
 package controller.common;
 
-import dal.MentorProfileDAO;
+
+import dal.MentorProfileRateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,7 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import models.MentorProfile;
+
+import models.MentorProfileRate;
 
 /**
  *
@@ -65,10 +67,10 @@ public class SearchMentorBySkill extends HttpServlet {
         }
 
         // Tạo đối tượng DAO để truy cập dữ liệu
-        MentorProfileDAO dao = new MentorProfileDAO();
+        MentorProfileRateDAO dao = new MentorProfileRateDAO();
        
             // Tìm kiếm các mentor dựa trên kỹ năng
-            List<MentorProfile> mentors = dao.searchMentorsBySkill(searchTerm);
+            List<MentorProfileRate> mentors = dao.searchMentorsBySkill(searchTerm);
             // Đưa danh sách mentor vào thuộc tính của yêu cầu để sử dụng trong JSP
             request.setAttribute("mentors", mentors);
             // Chuyển tiếp yêu cầu đến trang JSP để hiển thị kết quả

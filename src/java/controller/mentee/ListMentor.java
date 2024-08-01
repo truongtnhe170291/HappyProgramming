@@ -6,6 +6,7 @@ package controller.mentee;
 
 import controllers.ShowMentors_Servlet;
 import dal.MentorProfileDAO;
+import dal.MentorProfileRateDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.MentorProfile;
+import models.MentorProfileRate;
 
 /**
  *
@@ -70,27 +72,30 @@ public class ListMentor extends HttpServlet {
             String searchTermName = request.getParameter("searchTermName");
 
             // Tạo đối tượng DAO để lấy dữ liệu mentor từ cơ sở dữ liệu
-            MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-            List<MentorProfile> mentors = mentorProfileDAO.getAllListMentor();
+            MentorProfileRateDAO mentorprofiledao = new MentorProfileRateDAO();
+           List<MentorProfileRate> mentor = mentorprofiledao.getAllListMentor();
+            
 
             // Nếu có từ khóa tìm kiếm theo tên, tìm mentor theo tên
             if ((searchTermName != null && !searchTermName.isEmpty())
                     && (searchTerm != null && !searchTerm.isEmpty())) {
                 // Tìm mentor theo kỹ năng và tên
-                mentors = mentorProfileDAO.searchMentorsBySkillandName(searchTermName,searchTerm);
+                mentor = mentorprofiledao.searchMentorsBySkillandName(searchTermName, searchTerm);
+                
             } else if (searchTermName != null && !searchTermName.isEmpty()) {
                 // Nếu có từ khóa tìm kiếm theo tên, tìm mentor theo tên
-                mentors = mentorProfileDAO.searchMentorsByName(searchTermName);
+                mentor = mentorprofiledao.searchMentorsByName(searchTermName);
+               
             } else if (searchTerm != null && !searchTerm.isEmpty()) {
                 // Nếu có từ khóa tìm kiếm theo kỹ năng, tìm mentor theo kỹ năng
-                mentors = mentorProfileDAO.searchMentorsBySkill(searchTerm);
+                mentor = mentorprofiledao.searchMentorsBySkill(searchTerm);
             } else {
                 // Nếu không có từ khóa tìm kiếm, lấy tất cả danh sách mentor
-                mentors = mentorProfileDAO.getAllListMentor();
+                mentor = mentorprofiledao.getAllListMentor();
             }
             // Đặt danh sách mentor vào request attribute
-            request.setAttribute("mentorlist", mentors);
-            System.out.println(mentors);
+            request.setAttribute("mentorlist", mentor);
+            System.out.println(mentor);
             // Chuyển tiếp yêu cầu đến trang JSP để hiển thị danh sách mentor
             request.getRequestDispatcher("Mentorskill.jsp").forward(request, response);
         } catch (SQLException ex) {
@@ -124,11 +129,11 @@ public class ListMentor extends HttpServlet {
     }// </editor-fold>
 
     public static void main(String[] args) {
-        MentorProfileDAO dao = new MentorProfileDAO();
+        MentorProfileRateDAO dao = new MentorProfileRateDAO();
 
         try {
-            List<MentorProfile> mentors = dao.getAllListMentor();
-            for (MentorProfile mentor : mentors) {
+            List<MentorProfileRate> mentors = dao.getAllListMentor();
+            for (MentorProfileRate mentor : mentors) {
                 System.out.println(mentor);
             }
         } catch (SQLException e) {

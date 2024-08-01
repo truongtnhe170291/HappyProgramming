@@ -133,6 +133,7 @@
                                     ${skill.skillName}<c:if test="${!loop.last}">, </c:if>
                                 </c:forEach>
                             </p>
+                            <p>price/slot : ${mentor.rate}</p>
                         </div>
                     </a>
                 </c:forEach>
