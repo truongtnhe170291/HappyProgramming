@@ -144,7 +144,26 @@
                 padding: 10px 0;
                 border-bottom: 1px solid #eee;
             }
+            .pts{
+                margin-top: 12px;
+                float:right;
+                    display:flex;
+            }
+.pt a {
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    margin: 0 2px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
+.pt a.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
             .wallet-icon {
                 width: 32px;
                 height: 32px;
@@ -350,18 +369,7 @@
             .hold_history a:hover {
                 text-decoration: underline;
             }
-            .pt{
-                padding: 0 4px;
-                line-height: 30px;
-                border-radius: 5px;
-                text-align: center;
-                width:30px;
-                height:30px;
-                float:right;
-                margin-top:20px;
-                background-color:#ccc;
-            }
-            /* Đặt cho khung thông báo */
+           
             .no-transaction-message {
                 display: flex;
                 justify-content: center;
@@ -378,7 +386,42 @@
             #historyContent .pt {
                 display: none;
             }
+.wallet-container {
+                width:120%;
+                max-width:120%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 15px;
+                padding: 30px;
+                color: #fff;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+                margin-bottom: 30px;
+            }
 
+            .wallet-container h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .wallet-details p {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .wallet-details strong {
+                font-weight: 600;
+            }
+
+            #walletId, #realBalance {
+                font-size: 22px;
+                font-weight: 700;
+            }
+            .tss{
+                font-size: 15px;
+                font-weight: bold;
+               color: #f0f0f0 !important;
+            }
         </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
@@ -397,12 +440,23 @@
                 </header>
                 <main>
                     <section class="wallet-overview">
-                        <div class="total-balance">
-                            <h3>Hold: <span id="available_binance" value="${requestScope.wallet.hold}">${requestScope.wallet.hold}</span><span> VND</span></h3>
+                       
+                        <div class="wallet-container">
+                    <h2>Wallet Information</h2>
+                    <div class="wallet-details">
+                         <div class="total-balance">
+                             <h3>Available: <span class="tss" id="real_binance" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}-${requestScope.wallet.hold}</span><span class="tss"> VND</span></h3>
                         </div>
                         <div class="total-balance">
-                            <h3>Balance: <span id="real_binance" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}</span><span> VND</span></h3>
+                         <h3>Balance: <span class="tss" id="real_binances" value="${requestScope.wallet.real_balance}">${requestScope.wallet.real_balance}</span><span class="tss"> VND</span></h3>
+
                         </div>
+                        <div class="total-balance">
+                            <h3>Hold: <span class="tss" id="available_binance" value="${requestScope.wallet.hold}">${requestScope.wallet.hold}</span><span class="tss"> VND</span></h3>
+                        </div>
+                    </div>
+                </div>
+
 
                         <!--            <div class="wallet-list"></div>-->
                     </section>
@@ -419,16 +473,20 @@
                                         <td>${tran.create_date}</td>
                                         <td>${tran.message}</td>
                                         <td class="test_trans ${tran.amount < 0 ? 'negative' : 'positive'}" value="${tran.amount}">
-                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount} VNĐ
+                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount} VND
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <div class="pts">
+                            <c:forEach begin="1" end="${requestScope.numPage}" var="i">
                             <div class="pt">
-                                <c:forEach begin="1" end="${requestScope.numPage}" var="i">
-                                    <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
-                                </c:forEach>
+                                
+  <a href="transaction?action=mentee&index=${i}">${i}</a> &nbsp;
+                               
                             </div>
+                                     </c:forEach>
+                             </div>
                         </div>
 
                         <div id="holdContent" class="tab-content">
@@ -443,11 +501,15 @@
                                     </tr>
                                 </c:forEach>
                             </table>
+                            <div class="pts">
+                                                            <c:forEach begin="1" end="${requestScope.numPageHold}" var="i">
+
                             <div class="pt">
-                                <c:forEach begin="1" end="${requestScope.numPageHold}" var="i">
                                     <a href="PagingHold?action=menteeHold&index=${i}">${i}</a> &nbsp;
-                                </c:forEach>
                             </div>
+                                                            </c:forEach>
+                                </div>
+
                         </div>
 
 
@@ -500,8 +562,48 @@
 
                 updateBalanceDisplay("available_binance");
                 updateBalanceDisplay("real_binance");
+                updateBalanceDisplay("real_binances");
             });
         </script>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all pagination links within divs with class 'pt'
+    const paginationLinks = document.querySelectorAll('div.pt a');
+
+    function setActiveLink() {
+        const currentPage = window.location.href.split('&index=')[1];
+        if (currentPage) {
+            
+            paginationLinks.forEach(link => {
+                let t = `&index=`+currentPage; 
+                if (link.href.includes(t)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    // Initially set the active link when the page loads
+    setActiveLink();
+
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Remove active class from all pagination links
+            paginationLinks.forEach(link => link.classList.remove('active'));
+            
+            // Add active class to the clicked link
+            this.classList.add('active');
+        });
+    });
+
+    // Update active link when the page is loaded or navigated to a new page
+    window.addEventListener('popstate', setActiveLink);
+});
+</script>
+
+
         <script>
             function formatDateTime(dateTime) {
                 return dateTime.replace("T", " ");

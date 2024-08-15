@@ -325,23 +325,28 @@ public class RequestDAO {
 
 
     public int getCountRequestOfMenteeInDeadlineByStatus(String menteeName) throws SQLException {
-        int count = 0;
-        String sql = "SELECT COUNT(*) FROM RequestsFormMentee WHERE mentee_name = ?";
+    int count = 0;
+    String sql = "SELECT COUNT(*) " +
+                 "FROM RequestsFormMentee r " +
+                 "JOIN CV c ON c.mentor_name = r.mentor_name " +
+                 "WHERE r.mentee_name = ? " ;
+                
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, menteeName);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    count = rs.getInt(1);
-                }
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, menteeName);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
             }
-        } catch (SQLException e) {
-            System.out.println("getCountRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
-            throw e;
         }
-
-        return count;
+    } catch (SQLException e) {
+        System.out.println("getCountRequestOfMenteeInDeadlineByStatus: " + e.getMessage());
+        throw e;
     }
+
+    return count;
+}
+
 
     public int getCountRequestsByMenteeStatusMentorTime(String menteeName, Integer statusId, String mentorName, LocalDate startTime, LocalDate endTime) throws SQLException {
         int count = 0;

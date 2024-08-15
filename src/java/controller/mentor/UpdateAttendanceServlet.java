@@ -43,7 +43,6 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
         record.setAttendanceDate(sqlDate);
         record.setAttendanceStatus(status);
         record.setSelectedId(selected_id);
-System.out.println(menteeName + request_id +sqlDate + status + selected_id);
         ScheduleDAO attendance = new ScheduleDAO();
         boolean success = attendance.updateAttendance(record);
 
