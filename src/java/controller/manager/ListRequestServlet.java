@@ -129,7 +129,7 @@ public class ListRequestServlet extends HttpServlet {
 
             for (RequestDTO requestDTO : requests) {
                 List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                if(listSchedule.get(listSchedule.size() - 1).getDayOfSlot().equals(today) || listSchedule.get(listSchedule.size() - 1).getDayOfSlot().before(today)){
+                if(listSchedule.get(listSchedule.size() - 1).getDayOfSlot().equals(today) || listSchedule.get(listSchedule.size() - 1).getDayOfSlot().before(today) && requestDTO.getStatus().getStatusId() == 1){
                     requestDTO.setIsEnoughPay(true);
                 }else{
                     requestDTO.setIsEnoughPay(false);

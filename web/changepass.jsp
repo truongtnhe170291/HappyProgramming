@@ -165,7 +165,7 @@ Author     : 84979
                     <label>Old Password</label>
                 </div>
                 <div class="user-box">
-                    <input type="text" name="pass" required>
+                    <input type="password" name="pass" required>
                     <label>New Password</label>
                 </div>
                 <div class="user-box">

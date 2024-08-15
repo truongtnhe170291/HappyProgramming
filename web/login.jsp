@@ -75,10 +75,16 @@
                                         </div>
 
                                     </form>
-                                    <div id="backh" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                                        <a href="homeMentee">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
-
-                                    </div>
+                                    <!--                                    <div id="backh" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                                            <a href="homeMentee">  <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/> </a>
+                                    
+                                                                        </div>-->
+                                    <form action="homeMentee" method="get">
+                                        <div style="padding: 0px 80px" class="admin__button-group button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                            <input class="btn btn-primary btn-default w-100 btn-squared text-capitalize lh-normal px-50 signIn-createBtn " type='submit' value="Back To Home"/>
+                                        </div>
+                                    </form>
+                                    
                                     <br/>
                                     <div class="button-group align-items-center justify-content-center color-ruby" id="message">
                                         ${mess}

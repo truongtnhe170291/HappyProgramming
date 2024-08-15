@@ -529,7 +529,6 @@
                                                                         <a href="PayForMentor?requestId=${request.requestId}">Money for mentor</a>
                                                                     </c:if>
                                                                         
-                                                                    <a href="">View</a>   
                                                                             
                                                                 </td>
                                                             </tr>

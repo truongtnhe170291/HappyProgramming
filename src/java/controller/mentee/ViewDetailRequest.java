@@ -129,9 +129,9 @@ public class ViewDetailRequest extends HttpServlet {
 
 //            System.out.println(middleDate.format(formatter));
 //            System.out.println(today);
-            String isFeedback = request.getParameter("feedback");
+            String action = request.getParameter("action");
 
-            if (isFeedback != null) {
+            if (action.equals("feedback")) {
                 if (today.isEqual(middleDate) || today.isAfter(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
                     MentorDAO mentorDAO = new MentorDAO();
                     MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
@@ -151,7 +151,7 @@ public class ViewDetailRequest extends HttpServlet {
                     request.setAttribute("avaiableFb", "avaiableFb");
                     request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
                 }
-            } else {
+            } else if (action.equals("view")) {
                 request.getRequestDispatcher("ViewDetail_MenteeRequest.jsp").forward(request, response);
             }
 

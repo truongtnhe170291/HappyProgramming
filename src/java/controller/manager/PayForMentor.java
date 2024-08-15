@@ -86,85 +86,23 @@ public class PayForMentor extends HttpServlet {
 
             String requestId = request.getParameter("requestId");
 
-            MentorDAO mentorDao = new MentorDAO();
-            String menteeName = a.getUserName();
+            System.out.println(requestId);
             RequestDAO rdao = new RequestDAO();
-            FeedBackDAO fbDao = new FeedBackDAO();
-
-            ArrayList<Slot> listSlots = mentorDao.listSlots();
-            ArrayList<Day> listDays = mentorDao.listDays();
-
-            LocalDate today = LocalDate.now();
-            LocalDate nextMonday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
-            LocalDate nextNextMonday = nextMonday.plusWeeks(1);
-
-            // Lọc danh sách ngày cho một tuần
 
             rdao.updateExpiredRequestsStatus();
 
             List<RequestDTO> requests = new ArrayList<>();
-            List<Status> statuses = rdao.getAllStatuses();
-            List<Mentor> mentors1 = rdao.getMentorByRequest(menteeName);
 
-            int statusId = -1;
             requests = rdao.getRequestManager(requestId);
 
-            List<SchedulePublic> listSchedule = requests.get(0).getListSchedule();
-            RequestDTO requestDetail = requests.get(0);
             // Log schedules for debugging
-            String skill = requestDetail.getListSkills().get(0).getSkillName();
-
-            request.setAttribute("listScheduleSave", listSchedule);
-            request.setAttribute("startTime", listSchedule.get(0).getStartTime());
-            request.setAttribute("requestDetail", requestDetail);
-            request.setAttribute("skillName", skill);
-
-            request.setAttribute("mon", nextNextMonday.toString());
-
             request.setAttribute("requests", requests);
-            request.setAttribute("listSlot", listSlots);
-
-            // kiểm tra xem hôm nay có phải là ngày nằm giữa các ngày của requestID này không
-            String startTimeStr = listSchedule.get(0).getDayOfSlot().toString();
-            String endTimeStr = listSchedule.get(listSchedule.size() - 1).getDayOfSlot().toString();
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
-            LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
-
-            long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-            LocalDate middleDate = startDate.plusDays(daysBetween / 2);
-
-//            System.out.println(middleDate.format(formatter));
-//            System.out.println(today);
-            String isFeedback = request.getParameter("feedback");
-
-            if (isFeedback != null) {
-                if (today.isEqual(middleDate) || today.isAfter(middleDate) && requests.get(0).getStatus().getStatusId() == 1) {
-                    MentorDAO mentorDAO = new MentorDAO();
-                    MentorProfileDAO mentorProfileDAO = new MentorProfileDAO();
-                    MentorProfileDTO mentor = mentorProfileDAO.getOneMentor(requests.get(0).getMentorName());
-                    request.setAttribute("mentor", mentor);
-                    request.setAttribute("mentorName", requests.get(0).getMentorName());
-                    request.setAttribute("requestId", requestId);
-
-                    if (fbDao.isContainFeedback(Integer.parseInt(requestId))) {
-                        FeedBack fb = fbDao.getFeedBackByRequestId(Integer.parseInt(requestId));
-                        request.setAttribute("feedbackObj", fb);
-                    } else {
-                        request.setAttribute("isContainFb", "no");
-                    }
-                    request.getRequestDispatcher("Rate_Comment.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("avaiableFb", "avaiableFb");
-                    request.getRequestDispatcher("ListRequest.jsp").forward(request, response);
-                }
-            } else {
-                request.getRequestDispatcher("ViewDetail_MenteeRequest.jsp").forward(request, response);
+            for (RequestDTO request1 : requests) {
+                System.out.println(request1);
             }
-
-//            System.out.println(dateStrBegin);
-//            System.out.println(dateStrEnd);
+            
+            request.getRequestDispatcher("General_schedule_mentee.jsp").forward(request, response);
+ 
         } catch (SQLException e) {
             throw new ServletException(e);
         }

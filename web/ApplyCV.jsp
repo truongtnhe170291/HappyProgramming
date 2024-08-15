@@ -412,7 +412,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="name4">Full Name</label>
-                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Duran Clayton">
+                                                                    <input name="fullName" value="${cv.fullName}" type="text" class="form-control" id="fullname2" placeholder="Your full name ...">
                                                                 </div>
                                                                 <div style="display: none" id="nameError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your name is invalid.
@@ -422,7 +422,7 @@
                                                             <div style="margin-bottom: 15px">
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber1">Mail</label>
-                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="Design">
+                                                                    <input name="gmail" value="${cv.gmail}" type="text" class="form-control" id="email2" placeholder="example@gmail.com">
                                                                 </div>
                                                                 <div style="display: none" id="emailError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Your email is invalid.
@@ -467,7 +467,7 @@
 
                                                                 <div class="form-group mb-25">
                                                                     <label for="phoneNumber1">Address</label>
-                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Design">
+                                                                    <input name="address" value="${cv.address}" type="text" class="form-control" id="address2" placeholder="Your address ...">
                                                                 </div>
                                                                 <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your Address.
@@ -476,7 +476,7 @@
 
                                                             <div class="form-group mb-25">
                                                                 <label for="phoneNumber1">Profession</label>
-                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Design">
+                                                                <input name="profession" value="${cv.profession}" type="text" class="form-control" id="phoneNumber1" placeholder="Your profession ...">
                                                             <div style="display: none" id="addressError2" class="alert alert-warning alert-dismissible fade show" role="alert">
                                                                     <strong style="color: red">Oh no!</strong> Please input your profession.
                                                                 </div>

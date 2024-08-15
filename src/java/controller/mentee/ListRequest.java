@@ -153,7 +153,7 @@ public class ListRequest extends HttpServlet {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date today = null;
-            
+
             try {
                 today = sdf.parse(todayString);
             } catch (Exception e) {
@@ -162,15 +162,24 @@ public class ListRequest extends HttpServlet {
 
             for (RequestDTO requestDTO : requests) {
                 List<SchedulePublic> listSchedule = requestDTO.getListSchedule();
-                if(listSchedule.get(listSchedule.size() - 1).getDayOfSlot().equals(today) || listSchedule.get(listSchedule.size() - 1).getDayOfSlot().before(today)){
+
+                String startTimeStr = listSchedule.get(0).getDayOfSlot().toString();
+                String endTimeStr = listSchedule.get(listSchedule.size() - 1).getDayOfSlot().toString();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate startDate = LocalDate.parse(startTimeStr, formatter);
+                LocalDate endDate = LocalDate.parse(endTimeStr, formatter);
+
+                long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+                LocalDate middleDate = startDate.plusDays(daysBetween / 2);
+
+                if (todayLocalDate.isEqual(middleDate) || todayLocalDate.isAfter(middleDate) && requestDTO.getStatus().getStatusId() == 1) {
                     requestDTO.setIsEnoughPay(true);
-                }else{
-                    requestDTO.setIsEnoughPay(false);
                 }
             }
-            
+
             for (RequestDTO requestDTO : requests) {
-                System.out.println(requestDTO.isIsEnoughPay());
+                System.out.println(requestDTO);
             }
             //Check điều kiện nếu như trnajg thái là openclass và thời gian nằm giữa 2 slot đầu và cuối thì sẽ điền form "ý kiến giảng dạy"
 

@@ -584,7 +584,7 @@
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>-->
 
-                                            <a href="ViewDetailRequest?requestId=${request.requestId}" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
+                                            <a href="ViewDetailRequest?requestId=${request.requestId}&action=view" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                 <i class="uil uil-eye align-center" style="color: blue;"></i>
                                             </a>
 
@@ -594,8 +594,8 @@
                                                 <!--</a>-->
                                             <%--</c:if>--%>   
 
-                                            <c:if test="${request.status.statusId eq 1}">
-                                                <a href="ViewDetailRequest?requestId=${request.requestId}&feedback=yes" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
+                                            <c:if test="${request.isEnoughPay eq true}">
+                                                <a href="ViewDetailRequest?requestId=${request.requestId}&action=feedback" class="btn btn-primary align-center centaxs" style="background-color: #fff; border: none;">
                                                     <i class="uil uil-comment-alt-message align-center" style="color: blue;"></i>
                                                 </a>
                                             </c:if>      
@@ -837,15 +837,7 @@
                 });
 
             </script>
-            <% 
-                 String avaiableFb = (String) request.getAttribute("avaiableFb");
-            %>
-            <script>
-                const isAvaiable = "<%= avaiableFb %>";
-                if (isAvaiable != "null") {
-                    alert("Not yet the date of implementation of feedback");
-                }
-            </script>
+            
         </div>
     </body>
 
