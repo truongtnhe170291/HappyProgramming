@@ -8,7 +8,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import dal.MentorDAO;
+import dal.RequestDAO;
 import dal.ScheduleDAO;
 import dal.WalletDAO;
 import java.io.IOException;
@@ -86,11 +88,7 @@ public class PayForMentor extends HttpServlet {
             request.setAttribute("priceOfMentor", priceOfMentor);
             request.setAttribute("listAtten", listAtten);
             request.getRequestDispatcher("ListRequestFromMenteeManager.jsp").forward(request, response);
-            
 
-            
-            
-        
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -104,15 +102,20 @@ public class PayForMentor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
- protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        Account acc = (Account) request.getSession().getAttribute("user");
+        if (acc == null) {
+            response.sendRedirect("LoginManager");
+            return;
+        }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        
+
         PrintWriter out = response.getWriter();
-        
+
         try {
             StringBuilder buffer = new StringBuilder();
             BufferedReader reader = request.getReader();
@@ -121,16 +124,19 @@ public class PayForMentor extends HttpServlet {
                 buffer.append(line);
             }
             String data = buffer.toString();
-            
+
             Gson gson = new Gson();
             JsonObject jsonObject = gson.fromJson(data, JsonObject.class);
-            
+
             int priceOfMentor = jsonObject.get("priceOfMentor").getAsInt();
             int attendedCount = jsonObject.get("attendedCount").getAsInt();
             int absentCount = jsonObject.get("absentCount").getAsInt();
             int notYetCount = jsonObject.get("notYetCount").getAsInt();
             int totalAmount = jsonObject.get("totalAmount").getAsInt();
-            
+            int attendedAmount = jsonObject.get("attendedAmount").getAsInt();
+            int absentAmount = jsonObject.get("absentAmount").getAsInt();
+            int notYetAmount = jsonObject.get("notyetAmount").getAsInt();
+
             JsonArray listAttenJson = jsonObject.getAsJsonArray("listAtten");
             List<AttendanceRecord> listAtten = new ArrayList<>();
             for (JsonElement element : listAttenJson) {
@@ -138,57 +144,75 @@ public class PayForMentor extends HttpServlet {
                 AttendanceRecord atten = gson.fromJson(attenObject, AttendanceRecord.class);
                 listAtten.add(atten);
             }
-            
 
-            
-       
-             WalletDAO walletDAO = new WalletDAO();
-        
-        String mentorName = listAtten.get(0).getMentorName();
-        long mentorAmount = attendedCount * priceOfMentor;
-        Wallet mentorWallet = new Wallet(mentorName, mentorAmount, 0);
-        walletDAO.updateWallet(mentorWallet);
+            WalletDAO walletDAO = new WalletDAO();
+            // mentor
+            String mentorName = listAtten.get(0).getMentorName();
+            Wallet wmentor = walletDAO.getWalletByUsenName(mentorName);
+            if (wmentor != null) {
+                Wallet mentorWallet = new Wallet(mentorName, attendedCount + wmentor.getReal_balance(), 0);
+                walletDAO.updateWallet(mentorWallet);
+            } else {
+                Wallet mentorWallet = new Wallet(mentorName, attendedCount, 0);
+                walletDAO.updateWallet(mentorWallet);
+            }
 
-        String menteeName = listAtten.get(0).getMenteeName();
-        long menteeAmount = absentCount * priceOfMentor;
-        Wallet menteeWallet = new Wallet(menteeName, -menteeAmount, 0);
-        walletDAO.updateWallet(menteeWallet);
+            //mentee
+            String menteeName = listAtten.get(0).getMenteeName();
+            Wallet wmentee = walletDAO.getWalletByUsenName(menteeName);
+            Wallet menteeWallet = new Wallet(menteeName, wmentee.getReal_balance() + absentCount + notYetCount, 0);
+            walletDAO.updateWallet(menteeWallet);
 
-        Wallet managerWallet = new Wallet("manager", totalAmount, 0);
-        walletDAO.updateWallet(managerWallet);
+            //manager
+            Wallet wmanager = walletDAO.getWalletByUsenName(acc.getUserName());
+            long managemon = absentAmount + notYetAmount;
+            System.out.println("start");
+            System.out.println(managemon);
+            Wallet managerWallet = new Wallet(acc.getUserName(), totalAmount + wmanager.getReal_balance() - absentAmount - notYetAmount - attendedAmount, 0);
 
-     // Thêm các giao dịch
-LocalDateTime now = LocalDateTime.now();
+            walletDAO.updateWallet(managerWallet);
 
+            // Thêm các giao dịch
+            LocalDateTime now = LocalDateTime.now();
+            int request_id = listAtten.get(0).getRequestId();
 // Giao dịch cho mentor
-Transaction mentorTransaction = new Transaction();
-mentorTransaction.setUser_send(menteeName);
-mentorTransaction.setUser_receive(mentorName);
-mentorTransaction.setCreate_date(now);
-mentorTransaction.setAmount(mentorAmount);
-mentorTransaction.setMessage("Complete pre-course");
-walletDAO.insertTransaction(mentorTransaction);
-
+            if (attendedAmount > 0) {
+                Transaction mentorTransaction = new Transaction();
+                mentorTransaction.setUser_send(acc.getUserName());
+                mentorTransaction.setUser_receive(mentorName);
+                mentorTransaction.setCreate_date(now);
+                mentorTransaction.setAmount(attendedAmount);
+                mentorTransaction.setMessage("Complete pre-course for request: " + request_id);
+                walletDAO.insertTransaction(mentorTransaction);
+            }
 // Giao dịch cho mentee (nếu có buổi vắng mặt)
-if (menteeAmount > 0) {
-    Transaction menteeTransaction = new Transaction();
-    menteeTransaction.setUser_send(menteeName);
-    menteeTransaction.setUser_receive("manager");
-    menteeTransaction.setCreate_date(now);
-    menteeTransaction.setAmount(menteeAmount);
-    menteeTransaction.setMessage("Complete pre-course");
-    walletDAO.insertTransaction(menteeTransaction);
-}
+            if (absentAmount > 0 || notYetAmount > 0) {
+                Transaction menteeTransaction = new Transaction();
+                menteeTransaction.setUser_send(acc.getUserName());
+                menteeTransaction.setUser_receive(menteeName);
+                menteeTransaction.setCreate_date(now);
+                menteeTransaction.setAmount(absentAmount + notYetAmount);
+                menteeTransaction.setMessage("Complete pre-course return money with not attended");
+                walletDAO.insertTransaction(menteeTransaction);
+            }
 
 // Giao dịch cho manager
-Transaction managerTransaction = new Transaction();
-managerTransaction.setUser_send(menteeName);
-managerTransaction.setUser_receive("manager");
-managerTransaction.setCreate_date(now);
-managerTransaction.setAmount(totalAmount);
-managerTransaction.setMessage("Complete pre-course");
-walletDAO.insertTransaction(managerTransaction);
+            Transaction managerTransaction = new Transaction();
+            String sender = "";
+            if (attendedCount > 0 && absentCount == 0 && notYetCount == 0) {
+                sender = mentorName;
+            } else {
+                sender = menteeName;
+            }
+            managerTransaction.setUser_send(sender);
+            managerTransaction.setUser_receive(acc.getUserName());
+            managerTransaction.setCreate_date(now);
+            managerTransaction.setAmount(totalAmount);
+            managerTransaction.setMessage("Complete pre-course with 5% Amount for System");
+            walletDAO.insertTransaction(managerTransaction);
 
+            RequestDAO rdao = new RequestDAO();
+            rdao.updateStatus(request_id, 7);
             JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("status", "success");
             jsonResponse.addProperty("message", "Payment processed successfully");
@@ -196,14 +220,14 @@ walletDAO.insertTransaction(managerTransaction);
             jsonResponse.addProperty("attendedSessions", attendedCount);
             jsonResponse.addProperty("absentSessions", absentCount);
             jsonResponse.addProperty("notYetSessions", notYetCount);
-            
+
             out.print(gson.toJson(jsonResponse));
-        } catch (Exception e) {
+        } catch (JsonSyntaxException | IOException e) {
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("status", "error");
             errorResponse.addProperty("message", "An error occurred: " + e.getMessage());
             out.print(new Gson().toJson(errorResponse));
-            
+
             e.printStackTrace();
         } finally {
             out.flush();

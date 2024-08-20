@@ -165,15 +165,16 @@ h2 {
         function goBack() {
     window.history.back();
 }
-let listBack = [
+
+  let listBack = [
         <c:forEach items="${requestScope.listAtten}" var="atten" varStatus="status">
                 {
                     requestId: ${atten.requestId},
             menteeName: "${atten.menteeName}",
             mentorName: "${atten.mentorName}", 
-        },
-    </c:forEach>
-
+             
+        },  
+        </c:forEach>
 ]
 let listAtten = [
     <c:forEach items="${requestScope.listAtten}" var="atten" varStatus="status">
@@ -212,7 +213,10 @@ let attendedCount = listAtten.filter(a => a.attendanceStatus === "Attended").len
 let absentCount = listAtten.filter(a => a.attendanceStatus === "Absent").length;
 let notYetCount = listAtten.filter(a => a.attendanceStatus !== "Attended" && a.attendanceStatus !== "Absent").length;
 let pricePerSession = ${requestScope.priceOfMentor};
-
+ let attendedAmount = 0;
+    let name_notYet = '';
+let absentAmount =0;
+        let notyetAmount =0;
 document.getElementById('renderMoneyBtn').addEventListener('click', function() {
      Toastify({
                         text: 'Render money successfully',
@@ -223,29 +227,36 @@ document.getElementById('renderMoneyBtn').addEventListener('click', function() {
                         backgroundColor: "#93DC5C",
                         stopOnFocus: true,
                     }).showToast();
-    let attendedAmount = attendedCount * pricePerSession;
-    let name_notYet = '';
-let absentAmount =0;
-        let notyetAmount =0;
+   
         let totalAmount = (attendedCount + notYetCount + absentCount)*pricePerSession - ((attendedCount +notYetCount + absentCount)*pricePerSession * 0.95);
-console.log(absentCount ,notYetCount )
         
-        if(notYetCount > 0 && absentCount !== 0){
+        if(notYetCount > 0 && absentCount > 0){
+        attendedAmount  = attendedCount * pricePerSession ;
      absentAmount = (absentCount * pricePerSession) - totalAmount*0.5;
 name_notYet = listAtten[0].menteeName;
     notyetAmount = (notYetCount * pricePerSession) - totalAmount*0.5;}
 else if( absentCount === 0 && notYetCount > 0 ){
     name_notYet = listAtten[0].menteeName;
-
+attendedAmount  = attendedCount * pricePerSession ;
     absentAmount = (absentCount * pricePerSession);
     notyetAmount = (notYetCount * pricePerSession) - totalAmount;
 }
+else if (attendedCount >  0 && notYetCount === 0 && absentCount === 0){
+      name_notYet = listAtten[0].menteeName;
+      attendedAmount  = attendedCount * pricePerSession - totalAmount;
+
+    absentAmount = (absentCount * pricePerSession);
+    notyetAmount = (notYetCount * pricePerSession);
+}
 else{
-    
+    attendedAmount  = attendedCount * pricePerSession ;
+
     absentAmount = (absentCount * pricePerSession) - totalAmount;
 name_notYet = 'No Name';
-    notyetAmount = (notYetCount * pricePerSession)
+    notyetAmount = (notYetCount * pricePerSession);
 }
+
+
     let summaryHTML = 
     '<div class="financial-summary card">' +
         '<div class="card-header bg-primary text-white">' +
@@ -324,9 +335,13 @@ document.getElementById('paymentBtn').addEventListener('click', function() {
         return;
     }
 
+
     let dataToSend = {
         priceOfMentor: ${requestScope.priceOfMentor},
         attendedCount: attendedCount,
+        attendedAmount: attendedAmount,
+        absentAmount: absentAmount,
+        notyetAmount: notyetAmount,
         absentCount: absentCount,
         notYetCount: notYetCount,
         totalAmount:  (attendedCount + notYetCount+ absentCount)*pricePerSession - ((attendedCount +notYetCount + absentCount)*pricePerSession * 0.95),
