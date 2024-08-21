@@ -16,6 +16,7 @@ import java.util.List;
 import models.Account;
 import models.Hold;
 import models.Transaction;
+import models.Wallet;
 
 /**
  *
@@ -90,6 +91,18 @@ public class PagingHomePageServlet extends HttpServlet {
                     response.sendRedirect("login");
                     return;
                 }
+                // Tạo đối tượng DAO để thao tác với dữ liệu ví
+            Wallet wallet = dao.getWalletByUsenName(user.getUserName());
+
+            // Nếu ví chưa tồn tại, tạo ví mới với số dư ban đầu bằng 0
+            if (wallet == null) {
+                if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
+                    wallet = dao.getWalletByUsenName(user.getUserName());
+                }
+            }
+
+            // Đặt ví vào request attribute
+            request.setAttribute("wallet", wallet);
                 List<Transaction> list = dao.getTransactionByPaging(user.getUserName(), index);
                 int numPage = dao.getNumberPageByUserNameTransaction(user.getUserName());
                 request.setAttribute("listTran", list);
@@ -100,7 +113,7 @@ public class PagingHomePageServlet extends HttpServlet {
                 int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());
                 request.setAttribute("listHold", listHold);
                 request.setAttribute("numPageHold", numPageHold);
-                
+                request.setAttribute("listHold", listHold);
                 request.getRequestDispatcher("Wallet.jsp").forward(request, response);
             }
         } catch (IOException | NumberFormatException e) {

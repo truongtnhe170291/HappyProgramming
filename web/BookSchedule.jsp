@@ -440,7 +440,7 @@
         const saveButton = document.getElementById("saveSelectedSlots");
         const sendButton = document.getElementById("sendSelectedSlots");
         const tatussss = '${status}';
-if( tatussss !== 'Reject' ){
+if( tatussss !== 'Rejected' ){
     document.getElementById('rejmodal').style.display = 'none';
 }else{
      document.getElementById('rejmodal').style.display = 'block';

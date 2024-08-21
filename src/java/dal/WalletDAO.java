@@ -36,8 +36,8 @@ public class WalletDAO {
 
     public static void main(String[] args) {
         WalletDAO dao = new WalletDAO();
-        List<Transaction> list = dao.getTransactionByPaging("manager", 2);
-        System.out.println(list.size());
+        List<Transaction> list = dao.getTransactionByPaging("manager", 4);
+        System.out.println(list.get(0).getAmount());
     }
 
     public List<Transaction> getTransactionByPaging(String user, int index) {

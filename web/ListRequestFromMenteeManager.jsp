@@ -91,6 +91,7 @@ h2 {
             margin-bottom: 20px;
             color: #28a745;
         }
+        .now_pter{pointer-events: none;}
     </style>
        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
             <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -135,7 +136,7 @@ h2 {
                         <c:if test="${dayOfMonth == loop.index}">
 <c:set var="statusClass" value="${not empty atten.attendanceStatus ? atten.attendanceStatus.toLowerCase() : 'not-yet'}" />
 <div class="slot ${statusClass}">
-                               ${atten.mentorName} - ${atten.skillName} - ${atten.slotName} - ${atten.attendanceStatus} 
+                               ${atten.mentorName} - ${atten.skillName} - ${atten.slotName} - ${not empty atten.attendanceStatus ? atten.attendanceStatus : 'not-yet'} 
                             </div>
                         </c:if>
                     </c:forEach>
@@ -217,18 +218,7 @@ let pricePerSession = ${requestScope.priceOfMentor};
     let name_notYet = '';
 let absentAmount =0;
         let notyetAmount =0;
-document.getElementById('renderMoneyBtn').addEventListener('click', function() {
-     Toastify({
-                        text: 'Render money successfully',
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#93DC5C",
-                        stopOnFocus: true,
-                    }).showToast();
-   
-        let totalAmount = (attendedCount + notYetCount + absentCount)*pricePerSession - ((attendedCount +notYetCount + absentCount)*pricePerSession * 0.95);
+         let totalAmount = (attendedCount + notYetCount + absentCount)*pricePerSession - ((attendedCount +notYetCount + absentCount)*pricePerSession * 0.95);
         
         if(notYetCount > 0 && absentCount > 0){
         attendedAmount  = attendedCount * pricePerSession ;
@@ -255,6 +245,18 @@ else{
 name_notYet = 'No Name';
     notyetAmount = (notYetCount * pricePerSession);
 }
+document.getElementById('renderMoneyBtn').addEventListener('click', function() {
+     Toastify({
+                        text: 'Render money successfully',
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#93DC5C",
+                        stopOnFocus: true,
+                    }).showToast();
+   
+       
 
 
     let summaryHTML = 
@@ -335,7 +337,7 @@ document.getElementById('paymentBtn').addEventListener('click', function() {
         return;
     }
 
-
+document.getElementById('paymentBtn').classList.add('now_pter');
     let dataToSend = {
         priceOfMentor: ${requestScope.priceOfMentor},
         attendedCount: attendedCount,
@@ -370,8 +372,12 @@ document.getElementById('paymentBtn').addEventListener('click', function() {
                         gravity: "top",
                         position: "right",
                         backgroundColor: "#93DC5C",
-                        stopOnFocus: true
+                        stopOnFocus: true,
+                        callback: function () {
+                window.location.href = "ManagerHomePage";
+            }
                     }).showToast();
+                    
     })
     .catch((error) => {
         console.error('Error:', error);
