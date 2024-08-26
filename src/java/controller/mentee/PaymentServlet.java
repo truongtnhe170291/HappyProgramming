@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import models.Account;
+import models.AttendanceRecord;
 import models.Hold;
 import models.Request;
 import models.SchedulePublic;
@@ -117,6 +118,16 @@ public class PaymentServlet extends HttpServlet {
                                 }
                             }
                         }
+                        // Insert Schedule to Attendance table
+                        for(SchedulePublic s : listSchedule){
+                            AttendanceRecord record = new AttendanceRecord();
+                            record.setMenteeName(r.getMenteeName());
+                            record.setRequestId(r.getRequestId());
+                            record.setSelectedId(s.getSelectedId());
+                            sdao.updateAttendance(record);
+                        }
+                        
+                        
                         response.sendRedirect("ListRequest");
                         //return;
                     }

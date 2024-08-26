@@ -27,7 +27,42 @@
                 background-size: cover;
             }
 
+            .blog{
+                display: flex;
+            }
+           
+    .footer {
+        background-color: #ccc;
+        padding: 40px 0;
+    }
 
+    .footer h3 {
+        margin-bottom: 20px;
+    }
+
+    .footer ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .footer ul li {
+        margin-bottom: 10px;
+    }
+
+    .footer ul li a {
+        text-decoration: none;
+        color: #343a40;
+    }
+
+    .footer ul li a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-bottom {
+        background-color: #e9ecef;
+        padding: 20px 0;
+        text-align: center;
+    }
         </style>
     </head>
 
@@ -193,9 +228,10 @@
                     <div class="heading-text heading-section">
                         <h2>Top 3 mentor suggested</h2>
                         <span class="lead">Renowned for their exceptional teaching prowess, this mentor commands a vast following of eager learners. </span>
-                    </div>
+                    </div>                      
+                    <div id="blog" class="grid-layout post-3-columns m-b-30 d-flex" data-item="post-item">
+
                     <c:forEach items="${requestScope.topMentors}" var="member">
-                        <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
                             <!-- Post item-->
                             <div class="post-item border">
                                 <div class="post-item-wrap">
@@ -226,9 +262,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                       
                     </c:forEach>
-
+ </div>
 
                     <!--                             end: Post item-->
                     <!--                         Post item-->
@@ -329,6 +365,36 @@
 
 
                 </section>
+            <div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h3>About FMaster</h3>
+                <p>FMaster is the ultimate destination for creative minds. Whether you're here to learn, create, or be inspired, your journey starts now.</p>
+            </div>
+            <div class="col-lg-4">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.jsp">Home</a></li>
+                    <li><a href="about.jsp">About Us</a></li>
+                    <li><a href="contact.jsp">Contact Us</a></li>
+                    <li><a href="faq.jsp">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h3>Contact Us</h3>
+                <p>Email: support@fmaster.com</p>
+                <p>Phone: +123-456-7890</p>
+                <p>Address: 1234 FMaster St, Knowledge City, IN 56789</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2024 FMaster. All rights reserved.</p>
+        </div>
+    </div>
+</div>
                 <a id="scrollTop"><i class="icon-chevron-up"></i><i class="icon-chevron-up"></i></a>
                 <script src="js/jquery.js"></script>
                 <script src="js/plugins.js"></script>

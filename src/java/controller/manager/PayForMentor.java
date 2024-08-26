@@ -8,6 +8,7 @@ import dal.FeedBackDAO;
 import dal.MentorDAO;
 import dal.MentorProfileDAO;
 import dal.RequestDAO;
+import dal.ScheduleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,6 +24,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import models.Account;
+import models.AttendanceRecord;
 import models.Day;
 import models.FeedBack;
 import models.Mentor;
@@ -80,13 +82,23 @@ public class PayForMentor extends HttpServlet {
         try {
             Account a = (Account) request.getSession().getAttribute("user");
             if (a == null) {
-                response.sendRedirect("LoginManager.jsp");
+                response.sendRedirect("LoginManager");
                 return;
             }
-
-            String requestId = request.getParameter("requestId");
-
             MentorDAO mentorDao = new MentorDAO();
+            ScheduleDAO sdao = new ScheduleDAO();
+            String requestId = request.getParameter("requestId");
+            List<AttendanceRecord> listAtten = sdao.getListAttendanceRecoderByRequestId(requestId);
+            int priceOfMentor = mentorDao.getRateOfMentor(listAtten.get(0).getMentorName());
+            // chuyển đến trang dữ liệu thô
+            request.setAttribute("priceOfMentor", priceOfMentor);
+            request.setAttribute("listAtten", listAtten);
+            request.getRequestDispatcher("ListRequestFromMenteeManager.jsp").forward(request, response);
+            
+            
+            
+            
+            
             String menteeName = a.getUserName();
             RequestDAO rdao = new RequestDAO();
             FeedBackDAO fbDao = new FeedBackDAO();

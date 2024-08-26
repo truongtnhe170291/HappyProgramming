@@ -16,6 +16,7 @@ import java.util.List;
 import models.Account;
 import models.Hold;
 import models.Transaction;
+import models.Wallet;
 
 /**
  *
@@ -47,6 +48,18 @@ public class PagingHold extends HttpServlet {
                 index = 1;
             }
             WalletDAO dao = new WalletDAO();
+            // Tạo đối tượng DAO để thao tác với dữ liệu ví
+            Wallet wallet = dao.getWalletByUsenName(user.getUserName());
+
+            // Nếu ví chưa tồn tại, tạo ví mới với số dư ban đầu bằng 0
+            if (wallet == null) {
+                if (dao.insertWallet(new Wallet(user.getUserName(), 0, 0))) {
+                    wallet = dao.getWalletByUsenName(user.getUserName());
+                }
+            }
+
+            // Đặt ví vào request attribute
+            request.setAttribute("wallet", wallet);
             if (action.equals("menteeHold")) {
                 if (user == null) {
                     response.sendRedirect("login");
@@ -62,7 +75,7 @@ public class PagingHold extends HttpServlet {
                 int numPageHold = dao.getNumberPageByUserNameHold(user.getUserName());
                 request.setAttribute("listHold", listHold);
                 request.setAttribute("numPageHold", numPageHold);
-                
+
                 request.getRequestDispatcher("Wallet.jsp").forward(request, response);
                 //paging for manager
 

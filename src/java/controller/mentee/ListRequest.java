@@ -62,7 +62,7 @@ public class ListRequest extends HttpServlet {
             // Lọc danh sách ngày cho một tuần
             ArrayList<Day> oneWeekDays = getOneWeekDays(listDays);
 
-            rdao.updateExpiredRequestsStatus();
+//            rdao.updateExpiredRequestsStatus();
 
             List<RequestDTO> requests = new ArrayList<>();
             List<Status> statuses = rdao.getAllStatusesMentee();
@@ -195,6 +195,9 @@ public class ListRequest extends HttpServlet {
 
     public static void main(String[] args) throws SQLException {
         RequestDAO rdao = new RequestDAO();
+        int totalR = rdao.getCountRequestOfMenteeInDeadlineByStatus("truong"); 
+        System.out.println(totalR);
+        System.out.println(rdao.getRequestOfMenteeInDeadlineByStatus("truong",1,7).size());
         List<RequestDTO> requests = new ArrayList<>();
 
     }

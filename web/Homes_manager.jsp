@@ -13,9 +13,58 @@
         <link rel="stylesheet" href="assetss/css/components.css">
         <!-- Custom style CSS -->
         <link rel="stylesheet" href="assetss/css/custom.css">
-    </head>
 
+        <style>
+            /* Add this to your style.css or inside a <style> tag in the <head> section */
+            .amount.positive {
+                color: green;
+            }
+
+            .amount.negative {
+                color: red;
+            }
+
+        </style>
+
+        <script>
+            function formatNumber(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            function formatDate(dateString) {
+                const options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                };
+                const date = new Date(dateString);
+                return date.toLocaleDateString('vi-VN', options);
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const balanceElement = document.getElementById('realBalance');
+                if (balanceElement) {
+                    balanceElement.textContent = formatNumber(balanceElement.textContent);
+                }
+
+                const amountElements = document.querySelectorAll('.amount');
+                amountElements.forEach(function (element) {
+                    element.textContent = formatNumber(element.textContent) + ' VND';
+                });
+
+                const dateElements = document.querySelectorAll('.transaction-date');
+                dateElements.forEach(function (element) {
+                    element.textContent = formatDate(element.textContent);
+                });
+            });
+        </script>
+
+    </head>
     <body>
+
         <div class="loader"></div>
         <div id="app">
             <div class="main-wrapper main-wrapper-1">
@@ -132,8 +181,8 @@
                                                         </td>
                                                         <td>${tran.message}</td>
 
-                                                        <td>
-                                                            <div class="badge-outline col-green">+${tran.formatMoney()}</div>
+                                                        <td class="amount ${tran.user_send == sessionScope.user.userName ? 'negative' : 'positive'}">
+                                                            ${tran.user_send == sessionScope.user.userName ? "-" : "+"}${tran.amount}
                                                         </td>
 
                                                     </tr>
@@ -144,20 +193,20 @@
                                         <c:if test="${listTran eq null}">
                                             <p style="text-align: center; color: red">There are no suitable record...</p>
                                         </c:if>
-                                        
+
                                     </div> 
-                                    
+
                                     <div style="display: flex; justify-content: center; margin-bottom: 5px">
                                         <c:forEach begin="1" end="${requestScope.numPage}" var="i">
                                             <a style="color: green" href="transaction?action=manager&index=${i}">${i}</a> &nbsp;
                                         </c:forEach>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
 
-                        
+
                     </section>
                     <div class="settingSidebar">
                         <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>

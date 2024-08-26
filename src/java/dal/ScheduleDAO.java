@@ -191,100 +191,97 @@ public class ScheduleDAO {
     }
 
     public int getTotalRequestByStatus(int status) {
-    String sql = "SELECT COUNT(*) AS totalRequests FROM ("
-               + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
-               + "FROM Selected_Slot ss "
-               + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
-               + "JOIN Slots s ON s.slot_id = ss.slot_id "
-               + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
-               + "WHERE ss.status_id = ?"
-               + ") AS subquery";
+        String sql = "SELECT COUNT(*) AS totalRequests FROM ("
+                + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
+                + "FROM Selected_Slot ss "
+                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
+                + "JOIN Slots s ON s.slot_id = ss.slot_id "
+                + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
+                + "WHERE ss.status_id = ?"
+                + ") AS subquery";
 
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, status);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("totalRequests");
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, status);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalRequests");
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("getTotalRequestByStatus: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getTotalRequestByStatus: " + e.getMessage());
+        return 0;
     }
-    return 0;
-}
-
 
     public int getTotalRequestByMentorName(String mentorName) {
-    String sql = "SELECT COUNT(*) AS totalRequests FROM ("
-               + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
-               + "FROM Selected_Slot ss "
-               + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
-               + "JOIN Slots s ON s.slot_id = ss.slot_id "
-               + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
-               + "WHERE c.mentor_name LIKE ?"
-               + ") AS subquery";
+        String sql = "SELECT COUNT(*) AS totalRequests FROM ("
+                + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
+                + "FROM Selected_Slot ss "
+                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
+                + "JOIN Slots s ON s.slot_id = ss.slot_id "
+                + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
+                + "WHERE c.mentor_name LIKE ?"
+                + ") AS subquery";
 
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, "%" + mentorName + "%");
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("totalRequests");
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + mentorName + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalRequests");
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("getTotalRequestByMentorName: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getTotalRequestByMentorName: " + e.getMessage());
+        return 0;
     }
-    return 0;
-}
 
+    public int getTotalRequestByMentorNameAndStatus(String mentorName, int status) {
+        String sql = "SELECT COUNT(*) AS totalRequests FROM ("
+                + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
+                + "FROM Selected_Slot ss "
+                + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
+                + "JOIN Slots s ON s.slot_id = ss.slot_id "
+                + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
+                + "WHERE c.mentor_name LIKE ? AND ss.status_id = ?"
+                + ") AS subquery";
 
- public int getTotalRequestByMentorNameAndStatus(String mentorName, int status) {
-    String sql = "SELECT COUNT(*) AS totalRequests FROM ("
-               + "SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time "
-               + "FROM Selected_Slot ss "
-               + "JOIN Cycle c ON ss.cycle_id = c.cycle_id "
-               + "JOIN Slots s ON s.slot_id = ss.slot_id "
-               + "JOIN Status_Selected sta ON sta.status_id = ss.status_id "
-               + "WHERE c.mentor_name LIKE ? AND ss.status_id = ?"
-               + ") AS subquery";
-
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, "%" + mentorName + "%");
-        ps.setInt(2, status);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("totalRequests");
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + mentorName + "%");
+            ps.setInt(2, status);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalRequests");
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("getTotalRequestByMentorNameAndStatus: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getTotalRequestByMentorNameAndStatus: " + e.getMessage());
+        return 0;
     }
-    return 0;
-}
-
 
     public int getTotalRequests() {
-    String sql = "SELECT COUNT(*) AS totalRequests\n"
-               + "FROM (\n"
-               + "    SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time \n"
-               + "    FROM Selected_Slot ss \n"
-               + "    JOIN Cycle c ON ss.cycle_id = c.cycle_id \n"
-               + "    JOIN Slots s ON s.slot_id = ss.slot_id \n"
-               + "    JOIN Status_Selected sta ON sta.status_id = ss.status_id \n"
-               + ") AS subquery;";
+        String sql = "SELECT COUNT(*) AS totalRequests\n"
+                + "FROM (\n"
+                + "    SELECT DISTINCT c.cycle_id, c.mentor_name, c.deadline_date, sta.status_name, c.start_time, c.end_time \n"
+                + "    FROM Selected_Slot ss \n"
+                + "    JOIN Cycle c ON ss.cycle_id = c.cycle_id \n"
+                + "    JOIN Slots s ON s.slot_id = ss.slot_id \n"
+                + "    JOIN Status_Selected sta ON sta.status_id = ss.status_id \n"
+                + ") AS subquery;";
 
-    int totalRequests = 0;
-    try {
-        ps = con.prepareStatement(sql);
-        rs = ps.executeQuery();
-        if (rs.next()) {
-            totalRequests = rs.getInt("totalRequests");
+        int totalRequests = 0;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                totalRequests = rs.getInt("totalRequests");
+            }
+        } catch (SQLException e) {
+            System.out.println("getTotalRequests: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("getTotalRequests: " + e.getMessage());
-    } 
-    return totalRequests;
-}
+        return totalRequests;
+    }
 
     public int getTotalRequestsPeding() {
         String sql = "SELECT COUNT(DISTINCT c.cycle_id) AS totalRequests FROM Selected_Slot ss \n"
@@ -822,6 +819,40 @@ public class ScheduleDAO {
             System.out.println("insertNewAttendance: " + e.getMessage());
             return false;
         }
+    }
+
+    public List<AttendanceRecord> getListAttendanceRecoderByRequestId(String requestId) {
+        List<AttendanceRecord> list = new ArrayList<>();
+        String sql = "select * from Attendance a "
+                + " join Selected_Slot ss on a.selected_id = ss.selected_id"
+                + " join RequestsFormMentee rfm on a.request_id = rfm.request_id"
+                + " join RequestSkills rs on rfm.request_id = rs.request_id"
+                + " join Skills s on s.skill_id = rs.skill_id"
+                + " join Slots slot on slot.slot_id = ss.slot_id"
+                + " where a.request_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, requestId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                AttendanceRecord record = new AttendanceRecord();
+                record.setAttendanceId(rs.getInt("attendance_id"));
+                record.setMenteeName(rs.getString("mentee_name"));
+                record.setMentorName(rs.getString("mentor_name"));
+                record.setSelectedId(rs.getInt("selected_id"));
+                record.setSkillName(rs.getString("skill_name"));
+                record.setDayOfSlot(rs.getDate("day_of_slot"));
+                record.setSlotId(rs.getString("slot_id"));
+                record.setSlotName(rs.getString("slot_name"));
+                record.setAttendanceStatus(rs.getString("attendance_status"));
+                record.setAttendanceDate(rs.getDate("attendance_date"));
+                record.setRequestId(rs.getInt("request_id"));
+                list.add(record);
+           }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
     }
 
 }
